@@ -22,9 +22,9 @@ jobs:
       - uses: actions/checkout@v2
       - run: dart --version
       - run: |
-          (cd chrome_apis && dart pub get) && \
-          (cd examples/extension_dart && dart pub get) && \
-          (cd examples/extension_flutter && flutter pub get)
+          (dart pub get) && \
+          (cd extension_examples/dart && dart pub get) && \
+          (cd extension_examples/flutter && flutter pub get)
       - run: flutter analyze --fatal-infos .
       - run: dart run puppeteer:download_chrome
       - run: xvfb-run --auto-servernum dart test
