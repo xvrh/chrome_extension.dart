@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:dart_style/dart_style.dart';
-import 'package:path/path.dart' as p;
 import 'apis.dart';
-import 'code_style/dart_project.dart';
 import 'generator/utils/string.dart';
 
 final RegExp _importRegex = RegExp(r"import '([^']+)';\r?\n");
