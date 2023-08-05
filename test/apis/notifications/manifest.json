@@ -1,0 +1,8 @@
+{
+  "permissions": [
+    "notifications"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

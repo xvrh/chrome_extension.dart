@@ -1,0 +1,8 @@
+{
+  "permissions": [
+    "declarativeNetRequest"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

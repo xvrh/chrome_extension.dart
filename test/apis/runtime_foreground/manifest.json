@@ -1,0 +1,12 @@
+{
+  "permissions": [
+    "tabs"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "version": "2.0",
+  "background": {
+    "service_worker": "background.js"
+  }
+}

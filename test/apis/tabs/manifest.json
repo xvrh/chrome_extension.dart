@@ -1,0 +1,9 @@
+{
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

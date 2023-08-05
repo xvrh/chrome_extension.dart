@@ -1,0 +1,9 @@
+{
+  "permissions": [
+    "system",
+    "system.memory"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

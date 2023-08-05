@@ -1,0 +1,8 @@
+{
+  "permissions": [
+    "wallpaper"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

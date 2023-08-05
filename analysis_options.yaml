@@ -1,0 +1,31 @@
+include: package:lints/recommended.yaml
+
+analyzer:
+  language:
+    strict-casts: true
+
+linter:
+  rules:
+    always_declare_return_types: true
+    avoid_dynamic_calls: true
+    avoid_escaping_inner_quotes: true
+    avoid_final_parameters: true
+    avoid_setters_without_getters: true
+    cast_nullable_to_non_nullable: true
+    close_sinks: true
+    conditional_uri_does_not_exist: true
+    no_adjacent_strings_in_list: true
+    no_default_cases: true
+    no_leading_underscores_for_local_identifiers: true
+    omit_local_variable_types: true
+    only_throw_errors: true
+    prefer_interpolation_to_compose_strings: true
+    sort_child_properties_last: true
+    sort_pub_dependencies: true
+    test_types_in_equals: true
+    unawaited_futures: true
+    unnecessary_late: true
+    unnecessary_parenthesis: true
+    unnecessary_statements: true
+    unsafe_html: true
+    use_raw_strings: true

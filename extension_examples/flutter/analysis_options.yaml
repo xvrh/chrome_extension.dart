@@ -1,0 +1,55 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at
+  # https://dart-lang.github.io/linter/lints/index.html.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    always_declare_return_types: true
+    avoid_dynamic_calls: true
+    avoid_escaping_inner_quotes: true
+    avoid_final_parameters: true
+    avoid_setters_without_getters: true
+    cast_nullable_to_non_nullable: true
+    close_sinks: true
+    conditional_uri_does_not_exist: true
+    no_adjacent_strings_in_list: true
+    no_default_cases: true
+    no_leading_underscores_for_local_identifiers: true
+    omit_local_variable_types: true
+    only_throw_errors: true
+    prefer_interpolation_to_compose_strings: true
+    prefer_single_quotes: true
+    sort_child_properties_last: true
+    sort_pub_dependencies: true
+    test_types_in_equals: true
+    unawaited_futures: true
+    unnecessary_late: true
+    unnecessary_parenthesis: true
+    unnecessary_statements: true
+    unsafe_html: true
+    use_raw_strings: true
+
+    prefer_const_constructors: false
+    prefer_const_literals_to_create_immutables: false
+    prefer_const_constructors_in_immutables: false
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options

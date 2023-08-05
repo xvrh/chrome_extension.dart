@@ -1,0 +1,24 @@
+name: extension_flutter
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  chrome_apis:
+    path: ../..
+  cupertino_icons:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+  lints:
+
+flutter:
+  uses-material-design: true

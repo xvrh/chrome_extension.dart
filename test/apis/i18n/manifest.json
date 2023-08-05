@@ -1,0 +1,8 @@
+{
+  "permissions": [
+    "i18n"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}
