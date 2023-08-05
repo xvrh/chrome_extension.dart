@@ -1,0 +1,8 @@
+{
+  "permissions": [
+    "processes"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

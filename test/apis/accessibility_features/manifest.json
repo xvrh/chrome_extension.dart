@@ -1,0 +1,9 @@
+{
+  "permissions": [
+    "accessibilityFeatures.read",
+    "accessibilityFeatures.modify"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

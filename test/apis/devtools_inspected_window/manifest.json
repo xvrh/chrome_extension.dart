@@ -1,0 +1,14 @@
+{
+  "devtools_page": "devtools.html",
+  "content_scripts": [
+    {
+      "matches": ["@SERVER_URL/*"],
+      "js": ["content_script.dart.js"],
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "activeTab"
+  ]
+}

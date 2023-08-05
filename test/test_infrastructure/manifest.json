@@ -1,0 +1,9 @@
+{
+  "background": {
+    "service_worker": "background.dart.js"
+  },
+  "permissions": [
+    "tabs"
+  ]
+}
+

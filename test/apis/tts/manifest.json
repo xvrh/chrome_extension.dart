@@ -1,0 +1,8 @@
+{
+  "permissions": [
+    "tts"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}

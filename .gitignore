@@ -1,0 +1,13 @@
+_*
+.*
+!.gitignore
+!.github
+
+*.dart.js
+*.dart.js.deps
+*.dart.js.map
+*.dart.precompiled.js
+.DS_Store
+out
+docs/
+build/

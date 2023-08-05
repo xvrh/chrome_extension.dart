@@ -1,0 +1,17 @@
+name: extension_example
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.5 <4.0.0'
+
+dependencies:
+  chrome_apis:
+    path: ../..
+  cupertino_icons:
+  web: 0.1.4-beta
+
+dev_dependencies:
+  lints:
+  test:

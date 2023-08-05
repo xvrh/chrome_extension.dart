@@ -1,0 +1,16 @@
+{
+  "permissions": [
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["@SERVER_URL/*"],
+      "js": ["content_script.dart.js"],
+      "all_frames": true
+    }
+  ],
+  "version": "2.0",
+  "background": {
+    "service_worker": "tests.dart.js"
+  }
+}
