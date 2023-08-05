@@ -6,7 +6,7 @@ import 'package:dart_style/dart_style.dart';
 import 'dart_project.dart';
 
 void main() {
-  for (var project in getSubOrContainingProjects(projectRoot)) {
+  for (var project in getSubOrContainingProjects(Directory.current.path)) {
     for (var dartFile in project.getDartFiles()) {
       try {
         fixFile(dartFile);

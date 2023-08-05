@@ -1,5 +1,5 @@
-import '../../tool/generator/comment.dart';
 import 'package:test/test.dart';
+import '../../tool/generator/comment.dart';
 
 void main() {
   test('convertHtmlToDartdoc', () {

@@ -1,9 +1,9 @@
 library chrome_idl_convert_test;
 
+import 'package:test/test.dart';
 import '../../tool/generator/chrome_type.dart' show Context;
 import '../../tool/generator/idl_convert.dart';
 import '../../tool/generator/idl_parser.dart';
-import 'package:test/test.dart';
 
 late ChromeIDLParser chromeIDLParser;
 

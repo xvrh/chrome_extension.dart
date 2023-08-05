@@ -2,8 +2,8 @@ library model_json_test;
 
 import 'dart:convert';
 import 'dart:io';
-import '../../tool/generator/json_model.dart' as json_model;
 import 'package:test/test.dart';
+import '../../tool/generator/json_model.dart' as json_model;
 
 void main() {
   group('json_model', () {

@@ -3,8 +3,6 @@ import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
 import 'pubspec_helper.dart';
 
-final projectRoot = Directory.current.parent.path;
-
 List<DartProject> getDartProjects(String root) {
   var paths = <DartProject>[];
 

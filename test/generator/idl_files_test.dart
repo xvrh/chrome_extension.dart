@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'package:test/test.dart';
 import '../../tool/generator/chrome_type.dart';
 import '../../tool/generator/idl_convert.dart';
 import '../../tool/generator/idl_parser.dart';
-import 'package:test/test.dart';
 
 void main() {
   group('ChromeIDLParser', () {

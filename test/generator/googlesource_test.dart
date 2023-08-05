@@ -2,9 +2,9 @@ library googlesource_test;
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:test/test.dart';
 import '../../tool/generator/download/googlesource.dart';
 import '../../tool/generator/download/simple_http_client.dart';
-import 'package:test/test.dart';
 
 void main() => defineTests();
 

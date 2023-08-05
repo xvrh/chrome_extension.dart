@@ -1,9 +1,9 @@
 import 'dart:io';
-import 'apis.dart';
-import 'generator/utils/string.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:path/path.dart' as p;
+import 'apis.dart';
 import 'code_style/dart_project.dart';
+import 'generator/utils/string.dart';
 
 final RegExp _importRegex = RegExp(r"import '([^']+)';\r?\n");
 final RegExp _ignoreForFileRegex =
@@ -14,8 +14,7 @@ final DartFormatter _dartFormatter =
 
 void main() {
   var readme = generateReadme();
-  File('../README.md').writeAsStringSync(readme);
-  File('../chrome_apis/README.md').writeAsStringSync(readme);
+  File('README.md').writeAsStringSync(readme);
 }
 
 String generateReadme() {
@@ -24,7 +23,7 @@ String generateReadme() {
   var readme = template.replaceAllMapped(_importRegex, (match) {
     var filePath = match.group(1)!;
 
-    var fileContent = File(p.join(projectRoot, filePath)).readAsStringSync();
+    var fileContent = File(filePath).readAsStringSync();
     fileContent = fileContent.replaceAll(_ignoreForFileRegex, '');
 
     fileContent = _dartFormatter.format(fileContent);

@@ -1,5 +1,5 @@
-import '../../../tool/generator/utils/string/split_words.dart';
 import 'package:test/test.dart';
+import '../../../tool/generator/utils/string/split_words.dart';
 
 void main() {
   test('split word', () {

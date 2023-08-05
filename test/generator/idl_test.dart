@@ -1,9 +1,9 @@
 library chrome_idl_test;
 
-import '../../tool/generator/idl_model.dart';
-import '../../tool/generator/idl_parser.dart';
 import 'package:petitparser/parser.dart';
 import 'package:test/test.dart';
+import '../../tool/generator/idl_model.dart';
+import '../../tool/generator/idl_parser.dart';
 
 late ChromeIDLParser chromeIDLParser;
 

@@ -1,11 +1,11 @@
 library omaha_test;
 
 import 'dart:async';
-import '../../tool/generator/download/omaha.dart';
-import '../../tool/generator/download/simple_http_client.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
+import '../../tool/generator/download/omaha.dart';
+import '../../tool/generator/download/simple_http_client.dart';
 import 'omaha_test.mocks.dart';
 
 @GenerateMocks([SimpleHttpClient])

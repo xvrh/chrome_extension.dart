@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:path/path.dart' as p;
@@ -6,7 +7,7 @@ import 'dart_project.dart';
 // A script that replace all absolute imports to relative one
 // import 'package:slot/src/my_slot.dart' => 'import '../my_slot.dart';
 void main() {
-  var root = projectRoot;
+  var root = Directory.current.path;
 
   for (var project in getSubOrContainingProjects(root)) {
     for (var dartFile in project.getDartFiles().where(

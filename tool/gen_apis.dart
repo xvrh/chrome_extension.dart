@@ -1,13 +1,13 @@
 import 'dart:io';
+import 'package:path/path.dart' as p;
 import 'apis.dart';
+import 'code_style/fix_import_order.dart';
 import 'generator/chrome_model.dart';
 import 'generator/code_generator.dart';
 import 'generator/idl_convert.dart' as idl;
 import 'generator/json_convert.dart';
 import 'generator/json_model.dart' as json;
 import 'generator/utils/string.dart';
-import 'package:path/path.dart' as p;
-import 'code_style/fix_import_order.dart';
 
 final idlPath = 'idl';
 final targetPath = 'lib';
