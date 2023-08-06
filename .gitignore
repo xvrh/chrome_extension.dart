@@ -2,6 +2,7 @@ _*
 .*
 !.gitignore
 !.github
+!.pubignore
 
 *.dart.js
 *.dart.js.deps
