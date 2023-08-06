@@ -9,8 +9,8 @@ void _tests(TestContext context) {
   test('getVoices', () async {
     var voices = await chrome.tts.getVoices();
 
-    // The voices list is empty in the linux CI
-    if (context.info.operatingSystem != 'linux') {
+    // The voices list is empty in the CI except for macOS
+    if (context.info.operatingSystem == 'macos') {
       check(voices).isNotEmpty();
       var voice = voices.first;
       check(voice.lang).isNotNull();

@@ -38,7 +38,7 @@ Future<void> runTests(String source,
         return r.change(
             headers: {...r.headers, 'Access-Control-Allow-Origin': '*'});
       })).addHandler(server.router),
-      InternetAddress.anyIPv4,
+      InternetAddress.loopbackIPv4,
       0);
 
   var serverUrl = 'http://${httpServer.address.host}:${httpServer.port}';

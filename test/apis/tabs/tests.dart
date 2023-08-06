@@ -56,14 +56,17 @@ void _tests(TestContext context) {
   });
 
   test('create -- non-default options', () async {
+    var url = context.staticPath('assets/simple_page.html');
     var createProperties = CreateProperties(
         windowId: window.id,
         index: 0,
-        url: 'https://www.google.com/',
+        url: url,
         active: false,
         pinned: true,
         openerTabId: window.tabs!.first.id);
 
+    var onUpdatedResult =
+        chrome.tabs.onUpdated.where((e) => e.tab.url == url).first;
     var tab = await chrome.tabs.create(createProperties);
     expect(tab.id, isPositive);
     expect(tab.index, 0);
@@ -71,9 +74,8 @@ void _tests(TestContext context) {
     expect(tab.active, isFalse);
     expect(tab.pinned, isTrue);
     expect(tab.openerTabId, window.tabs!.first.id);
-    tab =
-        (await chrome.tabs.onUpdated.where((e) => e.tabId == tab.id).first).tab;
-    expect(tab.url, 'https://www.google.com/');
+    var updatedTab = (await onUpdatedResult).tab;
+    expect(tab.id, updatedTab.id);
   });
 
   test('duplicate', () async {
@@ -111,18 +113,17 @@ void _tests(TestContext context) {
   });
 
   test('update', () async {
+    var url = context.staticPath('assets/simple_page.html');
     var updateProperties = UpdateProperties(
-        url: 'https://www.google.com/',
-        active: true,
-        highlighted: true,
-        pinned: true);
+        url: url, active: true, highlighted: true, pinned: true);
+
+    var onUpdatedResult =
+        chrome.tabs.onUpdated.where((e) => e.tab.url == url).first;
     var tab = await chrome.tabs.update(window.tabs!.first.id, updateProperties);
     expect(tab!.active, isTrue);
     expect(tab.highlighted, isTrue);
     expect(tab.pinned, isTrue);
-    tab = (await chrome.tabs.onUpdated.where((e) => e.tabId == tab!.id).first)
-        .tab;
-    expect(tab.url, 'https://www.google.com/');
+    await onUpdatedResult;
   });
 
   test('move 1 tab', () async {
@@ -237,7 +238,9 @@ void _tests(TestContext context) {
 
   test('highlight throw exception if pass id', () async {
     var newTab1 = await chrome.tabs.create(CreateProperties(
-        windowId: window.id, index: 0, url: 'https://google.com'));
+        windowId: window.id,
+        index: 0,
+        url: context.staticPath('assets/simple_page.html')));
     expect(
         () => chrome.tabs
             .highlight(HighlightInfo(windowId: window.id, tabs: newTab1.id!)),
@@ -246,7 +249,9 @@ void _tests(TestContext context) {
 
   test('onHighlighted', () async {
     var newTab1 = await chrome.tabs.create(CreateProperties(
-        windowId: window.id, index: 0, url: 'https://google.com'));
+        windowId: window.id,
+        index: 0,
+        url: context.staticPath('assets/simple_page.html')));
     var newTab2 = await chrome.tabs
         .create(CreateProperties(windowId: window.id, index: 1));
     var onHighlighted = chrome.tabs.onHighlighted.first;

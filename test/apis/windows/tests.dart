@@ -105,7 +105,7 @@ void _tests(TestContext context) {
   // Requires extension access to incognito windows.
   test('create incognito window', () async {
     var createData = CreateData(
-        url: 'https://www.google.com/',
+        url: context.staticPath('assets/simple_page.html'),
         left: 10,
         top: 10,
         width: 300,
