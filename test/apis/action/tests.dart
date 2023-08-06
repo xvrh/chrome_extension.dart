@@ -101,6 +101,7 @@ void _tests(TestContext context) {
         SetBadgeBackgroundColorDetails(color: [0, 0, 0, 0], tabId: tab.id);
 
     await chrome.action.setBadgeBackgroundColor(badgeColor);
+    await Future.delayed(const Duration(milliseconds: 100)); // Flake on Linux?
     var actual =
         await chrome.action.getBadgeBackgroundColor(TabDetails(tabId: tab.id));
     check(actual[0]).equals(colorList[0]);
