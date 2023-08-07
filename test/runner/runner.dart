@@ -55,11 +55,7 @@ Future<void> runTests(String source,
     ..['host_permissions'] ??= [
       "$serverUrl/*",
       "ws://127.0.0.1:$puppeteerPort/*",
-    ]
-    ..['content_security_policy'] = {
-      'extension_pages':
-          "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
-    };
+    ];
   manifestFile.writeAsStringSync(jsonEncode(manifest));
 
   for (var dartFile in sourceDir
@@ -102,7 +98,6 @@ Future<void> _compileJs(String input, String output,
     'compile',
     'js',
     input,
-    '--csp',
     '--enable-asserts',
     '--output',
     output,
