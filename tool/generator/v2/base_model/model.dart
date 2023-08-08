@@ -1,11 +1,31 @@
 import 'reference.dart';
 export 'reference.dart';
 
+class Api {
+  final List<Property> properties;
+  final List<Method> methods;
+  final List<Event> events;
+  final List<Dictionary> dictionaries;
+  final List<Enumeration> enumerations;
+  final List<Alias> aliases;
+
+  Api({
+    required this.properties,
+    required this.methods,
+    required this.events,
+    required this.dictionaries,
+    required this.enumerations,
+    required this.aliases,
+  });
+}
+
 sealed class TopLevelDeclaration {
+  final Api api;
   final String name;
   final String documentation;
 
-  TopLevelDeclaration(this.name, {required this.documentation});
+  TopLevelDeclaration(this.name,
+      {required this.api, required this.documentation});
 }
 
 class Dictionary extends TopLevelDeclaration {
@@ -16,6 +36,7 @@ class Dictionary extends TopLevelDeclaration {
 
   Dictionary(
     super.name, {
+    required super.api,
     required this.properties,
     required this.methods,
     required this.events,
@@ -63,8 +84,9 @@ class Method {
 class Parameter {
   final String name;
   final Reference reference;
+  final String documentation;
 
-  Parameter(this.name, this.reference);
+  Parameter(this.name, this.reference, {required this.documentation});
 }
 
 sealed class Returns {
@@ -93,7 +115,12 @@ class AsyncReturns extends Returns {
 class Enumeration extends TopLevelDeclaration {
   final List<EnumerationValue> values;
 
-  Enumeration(super.name, {required super.documentation, required this.values});
+  Enumeration(
+    super.name, {
+    required super.api,
+    required super.documentation,
+    required this.values,
+  });
 }
 
 class EnumerationValue {
@@ -108,6 +135,7 @@ class Alias extends TopLevelDeclaration {
 
   Alias(
     super.name, {
+    required super.api,
     required this.target,
     required super.documentation,
   });
