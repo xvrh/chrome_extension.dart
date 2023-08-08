@@ -1,23 +1,4 @@
-class Api {
-  final String name;
-  final List<Method> methods;
-}
-
-class Method {
-  final String name;
-  final List<Parameter> parameters;
-  final Reference? returns;
-  final
-
-  Method(this.name, this.parameters);
-}
-
-class Parameter {
-  final String name;
-  final Reference reference;
-
-  Parameter(this.name, this.reference);
-}
+import 'model.dart' show Parameter, TopLevelDeclaration;
 
 sealed class Reference {
   final bool isNullable;
@@ -46,4 +27,10 @@ class NamedReference extends Reference {
   final String name;
 
   NamedReference(this.name, {required super.isNullable});
+}
+
+class LocaleReference extends Reference {
+  final TopLevelDeclaration declaration;
+
+  LocaleReference(this.declaration, {required super.isNullable});
 }
