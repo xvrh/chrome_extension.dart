@@ -1,5 +1,5 @@
 import 'package:checks/checks.dart';
-import 'package:chrome_apis/extension.dart';
+import 'package:chrome_extension/extension.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 

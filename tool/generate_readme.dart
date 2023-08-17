@@ -32,7 +32,7 @@ String generateReadme() {
   var apiList = StringBuffer();
   for (var api in extensionApis) {
     apiList.writeln(
-        '- `package:chrome_apis/${api.snakeCase}.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/${api.replaceAll('.', '_')}/))');
+        '- `package:chrome_extension/${api.snakeCase}.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/${api.replaceAll('.', '_')}/))');
   }
 
   readme = readme.replaceAll('<!-- LIST APIS -->', '$apiList');

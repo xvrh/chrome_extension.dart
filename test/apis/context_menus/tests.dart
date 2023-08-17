@@ -1,5 +1,5 @@
-import 'package:chrome_apis/context_menus.dart';
-import 'package:chrome_apis/runtime.dart' as runtime;
+import 'package:chrome_extension/context_menus.dart';
+import 'package:chrome_extension/runtime.dart' as runtime;
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 

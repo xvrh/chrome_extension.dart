@@ -1,6 +1,6 @@
-import 'package:chrome_apis/alarms.dart';
-import 'package:chrome_apis/power.dart';
-import 'package:chrome_apis/storage.dart';
+import 'package:chrome_extension/alarms.dart';
+import 'package:chrome_extension/power.dart';
+import 'package:chrome_extension/storage.dart';
 
 void main() async {
   // Use the chrome.power API

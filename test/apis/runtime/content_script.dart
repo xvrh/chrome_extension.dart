@@ -1,4 +1,4 @@
-import 'package:chrome_apis/runtime.dart';
+import 'package:chrome_extension/runtime.dart';
 
 void main() {
   chrome.runtime.onMessage.listen((event) {

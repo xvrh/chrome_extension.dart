@@ -7,7 +7,7 @@ environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
-  chrome_apis:
+  chrome_extension:
     path: ../..
   cupertino_icons:
   web: 0.1.4-beta

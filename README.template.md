@@ -1,4 +1,4 @@
-# chrome_apis
+# chrome_extension
 
 A library for accessing the `chrome.*` [APIs](https://developer.chrome.com/docs/extensions/reference/) available in Chrome extensions.
 
@@ -21,4 +21,4 @@ import 'example/example.dart';
 ## Documentation
 
 * [Chrome Extensions API reference](https://developer.chrome.com/docs/extensions/reference/)
-* See [example folder](https://github.com/xvrh/chrome.dart/tree/master/chrome_apis/example/)
+* See [example folder](https://github.com/xvrh/chrome_extension/tree/main/extension_examples)

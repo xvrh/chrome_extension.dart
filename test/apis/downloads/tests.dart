@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:checks/checks.dart';
-import 'package:chrome_apis/downloads.dart';
+import 'package:chrome_extension/downloads.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 

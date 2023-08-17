@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:checks/checks.dart';
-import 'package:chrome_apis/runtime.dart';
-import 'package:chrome_apis/tabs.dart' as tabs;
+import 'package:chrome_extension/runtime.dart';
+import 'package:chrome_extension/tabs.dart' as tabs;
 import 'package:puppeteer/puppeteer.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
