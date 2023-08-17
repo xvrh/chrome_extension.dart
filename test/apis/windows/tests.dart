@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:chrome_apis/tabs.dart' as tabs;
-import 'package:chrome_apis/windows.dart';
+import 'package:chrome_extension/tabs.dart' as tabs;
+import 'package:chrome_extension/windows.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 

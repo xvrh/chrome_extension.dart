@@ -1,6 +1,6 @@
 import 'package:checks/checks.dart';
-import 'package:chrome_apis/privacy.dart';
-import 'package:chrome_apis/types.dart';
+import 'package:chrome_extension/privacy.dart';
+import 'package:chrome_extension/types.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 

@@ -1,4 +1,4 @@
-import 'package:chrome_apis/browsing_data.dart';
+import 'package:chrome_extension/browsing_data.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 

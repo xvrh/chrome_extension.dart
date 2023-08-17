@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'package:chrome_apis/wallpaper.dart';
+import 'package:chrome_extension/wallpaper.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 
