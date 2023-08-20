@@ -5,18 +5,18 @@ packages:
     dependency: transitive
     description:
       name: _fe_analyzer_shared
-      sha256: "58826e40314219b223f4723dd4205845040161cdc2df3e6a1cdceed5d8165084"
+      sha256: eb376e9acf6938204f90eb3b1f00b578640d3188b4c8a8ec054f9f479af8d051
       url: "https://pub.dev"
     source: hosted
-    version: "63.0.0"
+    version: "64.0.0"
   analyzer:
     dependency: "direct dev"
     description:
       name: analyzer
-      sha256: f85566ec7b3d25cbea60f7dd4f157c5025f2f19233ca4feeed33b616c78a26a3
+      sha256: "69f54f967773f6c26c7dcb13e93d7ccee8b17a641689da39e878d5cf13b06893"
       url: "https://pub.dev"
     source: hosted
-    version: "6.1.0"
+    version: "6.2.0"
   archive:
     dependency: transitive
     description:
@@ -126,7 +126,7 @@ packages:
     description:
       path: "pkgs/checks"
       ref: HEAD
-      resolved-ref: "5d571d64a298d476689dd60113b0fc67fdb7e157"
+      resolved-ref: d0fc4bde2e05e62c75bc3ac7b3de3f510816ea44
       url: "https://github.com/dart-lang/test.git"
     source: git
     version: "0.3.0-wip"
@@ -135,7 +135,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "7707960c9b2215d8750b7fc0968b1fbcc6f55f03"
+      resolved-ref: a51bd20f306586770fa40dc19af30133dfd0d57f
       url: "https://github.com/dart-lang/code_builder.git"
     source: git
     version: "4.6.0-wip"
@@ -344,7 +344,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: ff79de69e9ef9e8647bd6008c29c16651c9ac220
+      resolved-ref: e54a00667cbe9a27de08e4c0ea355bacbe8c98d0
       url: "https://github.com/dart-lang/mockito.git"
     source: git
     version: "5.4.3-wip"
@@ -375,11 +375,10 @@ packages:
   petitparser:
     dependency: "direct dev"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "235fd022867f36e726cb7c7c880782a8af5b3f67"
-      url: "https://github.com/petitparser/dart-petitparser.git"
-    source: git
+      name: petitparser
+      sha256: "54e61005585962c9cb6f0df05a3ed82453e01deb1b1f83833b0b6cf7eab93da4"
+      url: "https://pub.dev"
+    source: hosted
     version: "6.0.0"
   pointycastle:
     dependency: transitive
@@ -417,10 +416,10 @@ packages:
     dependency: "direct dev"
     description:
       name: puppeteer
-      sha256: "59e723cc5b69537159a7c34efd645dc08a6a1ac4647d7d7823606802c0f93cdb"
+      sha256: "0d27d2923d17fccb9792538452da63f242ac0ee31d46bc73df622c029c7ee86f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.2.0"
+    version: "3.3.0"
   shelf:
     dependency: "direct dev"
     description:
@@ -545,10 +544,10 @@ packages:
     dependency: "direct dev"
     description:
       name: test
-      sha256: b9a384c4b9c4966dbf7215e7c033a78db1da7e5dcaf8da9232c5f24735f65652
+      sha256: "9b0dd8e36af4a5b1569029949d50a52cb2a2a2fdaa20cebb96e6603b9ae241f9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.24.5"
+    version: "1.24.6"
   test_api:
     dependency: transitive
     description:
@@ -561,10 +560,10 @@ packages:
     dependency: transitive
     description:
       name: test_core
-      sha256: c6a536288535efef8526eea8adfa4e25fdd2849fa7f457ecb2a52099998ce8f7
+      sha256: "4bef837e56375537055fdbbbf6dd458b1859881f4c7e6da936158f77d61ab265"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.5"
+    version: "0.5.6"
   timing:
     dependency: transitive
     description:

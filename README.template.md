@@ -1,4 +1,7 @@
-# chrome_extension
+# chrome_extension.dart
+
+[![pub package](https://img.shields.io/pub/v/chrome_extension.svg)](https://pub.dartlang.org/packages/chrome_extension)
+[![Build Status](https://github.com/xvrh/chrome_extension.dart/workflows/Build/badge.svg)](https://github.com/xvrh/chrome_extension.dart)
 
 A library for accessing the `chrome.*` [APIs](https://developer.chrome.com/docs/extensions/reference/) available in Chrome extensions.
 
