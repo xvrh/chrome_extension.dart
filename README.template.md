@@ -24,4 +24,4 @@ import 'example/example.dart';
 ## Documentation
 
 * [Chrome Extensions API reference](https://developer.chrome.com/docs/extensions/reference/)
-* See [example folder](https://github.com/xvrh/chrome_extension/tree/main/extension_examples)
+* See [example folder](https://github.com/xvrh/chrome_extension/tree/main/extension_examples) for some examples of Flutter and Dart Chrome extensions
