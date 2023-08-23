@@ -1,3 +1,7 @@
+## 0.1.1
+
+- Update the readme.
+
 ## 0.1.0
 
 - Initial implementation of the binding for the chrome.* APIs
