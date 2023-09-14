@@ -1,0 +1,9 @@
+{
+  "permissions": [
+    "scripting", "activeTab"
+  ],
+  "background": {
+    "service_worker": "tests.dart.js"
+  },
+  "host_permissions": ["@SERVER_URL/*"]
+}

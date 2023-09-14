@@ -73,22 +73,6 @@ extension JSChoiceExtension<T extends Object> on T {
 }
 
 extension EventStreamExtension on js.Event {
-  Stream<T> asStreamDeprecated<T>(
-      Function Function(void Function(T)) callbackFactory) {
-    var controller = StreamController<T>.broadcast();
-    var listener = callbackFactory(controller.add);
-    controller
-      ..onListen = () {
-        addListener(listener);
-      }
-      ..onCancel = () {
-        removeListener(listener);
-        controller.close();
-      };
-
-    return controller.stream;
-  }
-
   EventStream<T> asStream<T>(
       Function Function(void Function(T)) callbackFactory) {
     return EventStream<T>(this, callbackFactory);
