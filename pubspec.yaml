@@ -32,9 +32,6 @@ dev_dependencies:
   yaml:
 
 dependency_overrides:
-  code_builder:
-    git:
-      url: 'https://github.com/dart-lang/code_builder.git'
   mockito:
     git:
       url: 'https://github.com/dart-lang/mockito.git'

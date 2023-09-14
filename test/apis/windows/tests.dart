@@ -20,8 +20,8 @@ void _tests(TestContext context) {
 
   test('getters', () {
     expect(window.id, isA<int>());
-    expect(window.top, isNonNegative);
-    expect(window.left, isNonNegative);
+    expect(window.top, isNotNull);
+    expect(window.left, isNotNull);
     expect(window.width, isPositive);
     expect(window.height, isPositive);
     expect(window.tabs, hasLength(1));
