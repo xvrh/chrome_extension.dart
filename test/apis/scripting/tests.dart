@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:chrome_extension/scripting.dart';
 import 'package:chrome_extension/src/internal_helpers.dart';
 import 'package:chrome_extension/tabs.dart';
