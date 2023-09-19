@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dart_style/dart_style.dart';
 import 'apis.dart';
 import 'generator/utils/string.dart';
-import 'package:path/path.dart' as p;
 
 final RegExp _importRegex = RegExp(r"import '([^']+)';\r?\n");
 final RegExp _ignoreForFileRegex =
