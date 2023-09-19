@@ -126,18 +126,17 @@ void main() async {
 
 #### Develop the app using Flutter Desktop
 
-In order to develop in a comfortable environment with hot-reload and hot-restart working,
-develop most of the app using Flutter desktop.
+In order to develop in a comfortable environment with hot-reload,
+most of the app can be developed using Flutter desktop.
 
-The app needs an abstraction layer between the UI and the `chrome_extension` APIs.
+This will require an abstraction layer between the UI and the `chrome_extension` APIs.
 
-The desktop entry point injects a fake implementation of this abstraction layer to be runnable on Desktop.
+A fake implementation of this abstraction layer is used in the Desktop entry point:
 
 ```dart
 // lib/main_desktop.dart
 void main() {
-  // In the desktop entry point, injects a fake service that doesn't use the
-  // real chrome_extension package.
+  // Inject a fake service that doesn't use the real chrome_extension package.
   var service = FakeBookmarkService();
   runApp(MyExtensionPopup(service));
 }
@@ -152,10 +151,10 @@ class FakeBookmarkService implements BookmarkService {
 }
 ```
 
-Launch this entry point with  
+Launch this entry point in desktop with  
 `flutter run -t lib/main_desktop.dart -d macos|windows|linux`
 
-Create the real entry point and compile it with a custom build script
+Create the real entry point:
 
 ```dart
 // lib/main.dart
@@ -200,13 +199,6 @@ class ChromeBookmarkService implements BookmarkService {
 ```
 
 ```dart
-import 'dart:io';
-import 'package:process_runner/process_runner.dart';
-
-final _process = ProcessRunner(printOutputDefault: true);
-
-// --- example
-
 // tool/build.dart
 void main() async {
   await _process.runProcess([
@@ -234,8 +226,6 @@ void main() async {
     ]);
   }
 }
-
-// ---
 ```
 
 It builds the flutter app and compiles all the other Dart scripts

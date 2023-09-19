@@ -2,8 +2,7 @@
 
 // lib/main_desktop.dart
 void main() {
-  // In the desktop entry point, injects a fake service that doesn't use the
-  // real chrome_extension package.
+  // Inject a fake service that doesn't use the real chrome_extension package.
   var service = FakeBookmarkService();
   runApp(MyExtensionPopup(service));
 }

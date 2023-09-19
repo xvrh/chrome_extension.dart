@@ -30,21 +30,21 @@ import 'example/example.dart';
 
 #### Develop the app using Flutter Desktop
 
-In order to develop in a comfortable environment with hot-reload and hot-restart working,
-develop most of the app using Flutter desktop.
+In order to develop in a comfortable environment with hot-reload,
+most of the app can be developed using Flutter desktop.
 
-The app needs an abstraction layer between the UI and the `chrome_extension` APIs.
+This will require an abstraction layer between the UI and the `chrome_extension` APIs.
 
-The desktop entry point injects a fake implementation of this abstraction layer to be runnable on Desktop.
+A fake implementation of this abstraction layer is used in the Desktop entry point:
 
 ```dart
 import 'example/desktop_entry_point.dart#example';
 ```
 
-Launch this entry point with  
+Launch this entry point in desktop with  
 `flutter run -t lib/main_desktop.dart -d macos|windows|linux`
 
-Create the real entry point and compile it with a custom build script
+Create the real entry point:
 
 ```dart
 import 'example/real_entry_point.dart#example';
@@ -77,7 +77,7 @@ import 'example/real_entry_point.dart#example';
 ```
 
 ```dart
-import 'example/build_script.dart';
+import 'example/build_script.dart#example';
 ```
 
 It builds the flutter app and compiles all the other Dart scripts
