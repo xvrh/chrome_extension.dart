@@ -121,3 +121,165 @@ void main() async {
 
 * [Chrome Extensions API reference](https://developer.chrome.com/docs/extensions/reference/)
 * See [example folder](https://github.com/xvrh/chrome_extension/tree/main/extension_examples) for some examples of Flutter and Dart Chrome extensions
+
+## Tips to build Chrome extensions with Flutter
+
+#### Develop the app using Flutter Desktop
+
+In order to develop in a comfortable environment with hot-reload and hot-restart working,
+develop most of the app using Flutter desktop.
+
+The app needs an abstraction layer between the UI and the `chrome_extension` APIs.
+
+The desktop entry point injects a fake implementation of this abstraction layer to be runnable on Desktop.
+
+```dart
+// lib/main_desktop.dart
+void main() {
+  // In the desktop entry point, injects a fake service that doesn't use the
+  // real chrome_extension package.
+  var service = FakeBookmarkService();
+  runApp(MyExtensionPopup(service));
+}
+
+abstract class BookmarkService {
+  Future<List<Bookmark>> getBookmarks();
+}
+
+class FakeBookmarkService implements BookmarkService {
+  @override
+  Future<List<Bookmark>> getBookmarks() async => [Bookmark()];
+}
+```
+
+Launch this entry point with  
+`flutter run -t lib/main_desktop.dart -d macos|windows|linux`
+
+Create the real entry point and compile it with a custom build script
+
+```dart
+// lib/main.dart
+void main() {
+  var service = ChromeBookmarkService();
+  runApp(MyExtensionPopup(service));
+}
+
+class ChromeBookmarkService implements BookmarkService {
+  @override
+  Future<List<Bookmark>> getBookmarks() async {
+    // Real implementation using chrome.bookmarks
+    return (await chrome.bookmarks.getTree()).map(Bookmark.new).toList();
+  }
+}
+```
+
+#### Build script
+
+`web/manifest.json`
+```json
+{
+  "manifest_version": 3,
+  "name": "my_extension",
+  "permissions": [
+    "activeTab"
+  ],
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.dart.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons-16.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  }
+}
+```
+
+```dart
+import 'dart:io';
+import 'package:process_runner/process_runner.dart';
+
+final _process = ProcessRunner(printOutputDefault: true);
+
+// --- example
+
+// tool/build.dart
+void main() async {
+  await _process.runProcess([
+    'flutter',
+    'build',
+    'web',
+    '-t',
+    'web/popup.dart',
+    '--csp',
+    '--web-renderer=canvaskit',
+    '--no-web-resources-cdn',
+  ]);
+  for (var script in [
+    'background.dart',
+    'content_script.dart',
+    'options.dart'
+  ]) {
+    await _process.runProcess([
+      Platform.resolvedExecutable,
+      'compile',
+      'js',
+      'web/$script',
+      '--output',
+      'build/web/$script.js',
+    ]);
+  }
+}
+
+// ---
+```
+
+It builds the flutter app and compiles all the other Dart scripts
+(for example: options.dart.js, popup.dart.js, background.dart.js)
+
+#### Testing
+
+Write tests for the extension using [`puppeteer-dart`](https://pub.dev/packages/puppeteer).
+
+```dart
+import 'package:collection/collection.dart';
+import 'package:puppeteer/puppeteer.dart';
+
+void main() async {
+  // Compile the extension
+  var extensionPath = '...';
+
+  var browser = await puppeteer.launch(
+    headless: false,
+    args: [
+      '--disable-extensions-except=$extensionPath',
+      '--load-extension=$extensionPath',
+      // Allow to connect to puppeteer from inside your extension if needed for the testing
+      '--remote-allow-origins=*',
+    ],
+  );
+
+  // Find the background page target
+  var targetName = 'service_worker';
+  var backgroundPageTarget =
+      browser.targets.firstWhereOrNull((t) => t.type == targetName);
+  backgroundPageTarget ??=
+      await browser.waitForTarget((target) => target.type == targetName);
+  var worker = (await backgroundPageTarget.worker)!;
+
+  var url = Uri.parse(worker.url!);
+  assert(url.scheme == 'chrome-extension');
+  var extensionId = url.host;
+
+  // Go to the popup page
+  await (await browser.pages)
+      .first
+      .goto('chrome-extension://$extensionId/popup.html');
+
+  // Etc...
+}
+```

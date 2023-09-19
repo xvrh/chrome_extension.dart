@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Update the readme to give some tips on how to build Chrome extensions with Flutter.
+
 ## 0.1.1
 
 - Update the readme.

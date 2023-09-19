@@ -126,7 +126,7 @@ packages:
     description:
       path: "pkgs/checks"
       ref: HEAD
-      resolved-ref: "64494959ecdb2e777711487a1fb86555c0c20570"
+      resolved-ref: d8e9d87d3a523c01afb07d3b723b0202b57486c7
       url: "https://github.com/dart-lang/test.git"
     source: git
     version: "0.3.0-wip"
@@ -174,10 +174,10 @@ packages:
     dependency: "direct dev"
     description:
       name: dart_style
-      sha256: "1efa911ca7086affd35f463ca2fc1799584fb6aa89883cf0af8e3664d6a02d55"
+      sha256: abd7625e16f51f554ea244d090292945ec4d4be7bfbaf2ec8cccea568919d334
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   fetch_api:
     dependency: transitive
     description:
@@ -198,10 +198,10 @@ packages:
     dependency: transitive
     description:
       name: file
-      sha256: "5fc22d7c25582e38ad9a8515372cd9a93834027aacf1801cf01164dac0ffa08c"
+      sha256: "1b92bec4fc2a72f59a8e15af5f52cd441e4a7860b49499d69dfa817af20e925d"
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.0"
+    version: "6.1.4"
   fixnum:
     dependency: transitive
     description:
@@ -343,7 +343,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "412c0beb51a12ed4a8833db7f542558ab92c0c65"
+      resolved-ref: "097e5635a6c1859e03e9c606c2ab4cfa74618bcc"
       url: "https://github.com/dart-lang/mockito.git"
     source: git
     version: "5.4.3-wip"
@@ -379,6 +379,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.1"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      sha256: ae68c7bfcd7383af3629daafb32fb4e8681c7154428da4febcff06200585f102
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.2"
   pointycastle:
     dependency: transitive
     description:
@@ -395,6 +403,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  process:
+    dependency: transitive
+    description:
+      name: process
+      sha256: "53fd8db9cec1d37b0574e12f07520d582019cb6c44abf5479a01505099a34a09"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.4"
+  process_runner:
+    dependency: "direct dev"
+    description:
+      name: process_runner
+      sha256: a3511a69d42216522166583f19cce6bf44efe109f3ca52fc7994f64bbdbe01e6
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.2"
   pub_semver:
     dependency: transitive
     description:
@@ -415,10 +439,10 @@ packages:
     dependency: "direct dev"
     description:
       name: puppeteer
-      sha256: "0d27d2923d17fccb9792538452da63f242ac0ee31d46bc73df622c029c7ee86f"
+      sha256: "43678bb9bd69385cf896ea13fe8c965d95850cba48af8dffd6c130565ebdf5ed"
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.0"
+    version: "3.4.0"
   shelf:
     dependency: "direct dev"
     description:
