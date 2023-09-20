@@ -27,8 +27,8 @@ Future<void> setup(void Function(TestContext) callback) async {
         }
       }
     }));
-  } catch (e) {
-    print("Global error $e");
+  } catch (e, s) {
+    print("Global error $e\n$s");
   }
 }
 

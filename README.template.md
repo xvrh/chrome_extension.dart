@@ -25,3 +25,68 @@ import 'example/example.dart';
 
 * [Chrome Extensions API reference](https://developer.chrome.com/docs/extensions/reference/)
 * See [example folder](https://github.com/xvrh/chrome_extension/tree/main/extension_examples) for some examples of Flutter and Dart Chrome extensions
+
+## Tips to build Chrome extensions with Flutter
+
+#### Develop the app using Flutter Desktop
+
+In order to develop in a comfortable environment with hot-reload,
+most of the app can be developed using Flutter desktop.
+
+This will require an abstraction layer between the UI and the `chrome_extension` APIs.
+
+A fake implementation of this abstraction layer is used in the Desktop entry point:
+
+```dart
+import 'example/desktop_entry_point.dart#example';
+```
+
+Launch this entry point in desktop with  
+`flutter run -t lib/main_desktop.dart -d macos|windows|linux`
+
+Create the real entry point:
+
+```dart
+import 'example/real_entry_point.dart#example';
+```
+
+#### Build script
+
+`web/manifest.json`
+```json
+{
+  "manifest_version": 3,
+  "name": "my_extension",
+  "permissions": [
+    "activeTab"
+  ],
+  "options_page": "options.html",
+  "background": {
+    "service_worker": "background.dart.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons-16.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  }
+}
+```
+
+```dart
+import 'example/build_script.dart#example';
+```
+
+It builds the flutter app and compiles all the other Dart scripts
+(for example: options.dart.js, popup.dart.js, background.dart.js)
+
+#### Testing
+
+Write tests for the extension using [`puppeteer-dart`](https://pub.dev/packages/puppeteer).
+
+```dart
+import 'example/test.dart';
+```
