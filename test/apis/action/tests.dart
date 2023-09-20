@@ -45,12 +45,14 @@ void _tests(TestContext context) {
     var details = SetBadgeTextDetails(text: badgeText);
     await chrome.action.setBadgeText(details);
 
+    await _addSmallDelay();
     var getBadgedetails = TabDetails();
     var actual = await chrome.action.getBadgeText(getBadgedetails);
     check(actual).equals(badgeText);
 
     var clearBadgedetails = SetBadgeTextDetails(text: '');
     await chrome.action.setBadgeText(clearBadgedetails);
+    await _addSmallDelay();
     actual = await chrome.action.getBadgeText(getBadgedetails);
     check(actual).equals('');
   });
@@ -62,12 +64,15 @@ void _tests(TestContext context) {
     var details = SetBadgeTextDetails(text: badgeText, tabId: tab.id);
     await chrome.action.setBadgeText(details);
 
+    await _addSmallDelay();
     var getBadgeDetails = TabDetails(tabId: tab.id);
     var actual = await chrome.action.getBadgeText(getBadgeDetails);
     check(actual).equals(badgeText);
 
     var clearBadgedetails = SetBadgeTextDetails(text: '', tabId: tab.id);
     await chrome.action.setBadgeText(clearBadgedetails);
+
+    await _addSmallDelay();
     actual = await chrome.action.getBadgeText(getBadgeDetails);
     check(actual).equals('');
   });
@@ -179,4 +184,9 @@ void _tests(TestContext context) {
     await chrome.action.onClicked.first;
     // TODO: need to figure out a way to fire this event.
   }, skip: 'need to figure out a way to fire this event.');
+}
+
+Future<void> _addSmallDelay() async {
+  // On Windows, on some version of chrome we need a small delay between a "Set" and a "Get"
+  await Future.delayed(const Duration(milliseconds: 10));
 }
