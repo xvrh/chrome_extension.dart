@@ -16,6 +16,9 @@ dev_dependencies:
   collection:
   dart_style:
   fetch_client:
+    git:
+      url: https://github.com/xvrh/fetch_client.git
+      ref: 'iterator-error'
   http:
   json_annotation:
   json_serializable:

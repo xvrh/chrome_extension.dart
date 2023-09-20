@@ -189,10 +189,11 @@ packages:
   fetch_client:
     dependency: "direct dev"
     description:
-      name: fetch_client
-      sha256: "83c07b07a63526a43630572c72715707ca113a8aa3459efbc7b2d366b79402af"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: iterator-error
+      resolved-ref: "3df832140f13ac5351875031a693f48d4d538ee1"
+      url: "https://github.com/xvrh/fetch_client.git"
+    source: git
     version: "1.0.2"
   file:
     dependency: transitive
