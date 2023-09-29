@@ -32,34 +32,21 @@ extension JSGcmExtension on JSGcm {
   /// Registers the application with FCM. The registration ID will be returned
   /// by the `callback`. If `register` is called again with the same list of
   /// `senderIds`, the same registration ID will be returned.
-  external void register(
-    /// A list of server IDs that are allowed to send messages to the
-    /// application. It should contain at least one and no more than 100 sender
-    /// IDs.
-    JSArray senderIds,
+  external JSPromise register(
 
-    /// Function called when registration completes. It should check
-    /// [runtime.lastError] for error when `registrationId` is empty.
-    JSFunction callback,
-  );
+      /// A list of server IDs that are allowed to send messages to the
+      /// application. It should contain at least one and no more than 100 sender
+      /// IDs.
+      JSArray senderIds);
 
   /// Unregisters the application from FCM.
-  external void unregister(
-
-      /// A function called after the unregistration completes. Unregistration was
-      /// successful if [runtime.lastError] is not set.
-      JSFunction callback);
+  external JSPromise unregister();
 
   /// Sends a message according to its contents.
-  external void send(
-    /// A message to send to the other party via FCM.
-    SendMessage message,
+  external JSPromise send(
 
-    /// A function called after the message is successfully queued for sending.
-    /// [runtime.lastError] should be checked, to ensure a message was sent
-    /// without problems.
-    JSFunction callback,
-  );
+      /// A message to send to the other party via FCM.
+      SendMessage message);
 
   /// Fired when a message is received through FCM.
   external Event get onMessage;

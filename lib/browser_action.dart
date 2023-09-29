@@ -43,17 +43,8 @@ class ChromeBrowserAction {
   /// path to an image file, as the pixel data from a canvas element, or as a
   /// dictionary of one of those. Either the `path` or the `imageData` property
   /// must be specified.
-  Future<void> setIcon(SetIconDetails details) {
-    var $completer = Completer<void>();
-    $js.chrome.browserAction.setIcon(
-      details.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<void> setIcon(SetIconDetails details) async {
+    await promiseToFuture<void>($js.chrome.browserAction.setIcon(details.toJS));
   }
 
   /// Sets the HTML document to be opened as a popup when the user clicks the
@@ -113,14 +104,10 @@ class ChromeBrowserAction {
 
   /// Opens the extension popup window in the active window but does not grant
   /// tab permissions.
-  Future<Map?> openPopup() {
-    var $completer = Completer<Map?>();
-    $js.chrome.browserAction.openPopup((JSAny? popupView) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(popupView?.toDartMap());
-      }
-    }.toJS);
-    return $completer.future;
+  Future<Map?> openPopup() async {
+    var $res =
+        await promiseToFuture<JSAny?>($js.chrome.browserAction.openPopup());
+    return $res?.toDartMap();
   }
 
   /// Fired when a browser action icon is clicked. Does not fire if the browser

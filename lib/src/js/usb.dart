@@ -37,10 +37,7 @@ class JSUsb {}
 extension JSUsbExtension on JSUsb {
   /// Enumerates connected USB devices.
   /// |options|: The properties to search for on target devices.
-  external void getDevices(
-    EnumerateDevicesOptions options,
-    JSFunction callback,
-  );
+  external JSPromise getDevices(EnumerateDevicesOptions options);
 
   /// Presents a device picker to the user and returns the [Device]s
   /// selected.
@@ -49,17 +46,11 @@ extension JSUsbExtension on JSUsb {
   /// callback will run as though the user cancelled.
   /// |options|: Configuration of the device picker dialog box.
   /// |callback|: Invoked with a list of chosen [Device]s.
-  external void getUserSelectedDevices(
-    DevicePromptOptions options,
-    JSFunction callback,
-  );
+  external JSPromise getUserSelectedDevices(DevicePromptOptions options);
 
   /// Returns the full set of device configuration descriptors.
   /// |device|: The [Device] to fetch descriptors from.
-  external void getConfigurations(
-    Device device,
-    JSFunction callback,
-  );
+  external JSPromise getConfigurations(Device device);
 
   /// Requests access from the permission broker to a device claimed by
   /// Chrome OS if the given interface on the device is not claimed.
@@ -68,18 +59,14 @@ extension JSUsbExtension on JSUsb {
   /// |interfaceId|: The particular interface requested.
   @Deprecated(
       r'This function was Chrome OS specific and calling it on other platforms would fail. This operation is now implicitly performed as part of $(ref:openDevice) and this function will return <code>true</code> on all platforms.')
-  external void requestAccess(
+  external JSPromise requestAccess(
     Device device,
     int interfaceId,
-    JSFunction callback,
   );
 
   /// Opens a USB device returned by [getDevices].
   /// |device|: The [Device] to open.
-  external void openDevice(
-    Device device,
-    JSFunction callback,
-  );
+  external JSPromise openDevice(Device device);
 
   /// Finds USB devices specified by the vendor, product and (optionally)
   /// interface IDs and if permissions allow opens them for use.
@@ -91,18 +78,13 @@ extension JSUsbExtension on JSUsb {
   /// by [openDevice] for each device.
   ///
   /// |options|: The properties to search for on target devices.
-  external void findDevices(
-    EnumerateDevicesAndRequestAccessOptions options,
-    JSFunction callback,
-  );
+  external JSPromise findDevices(
+      EnumerateDevicesAndRequestAccessOptions options);
 
   /// Closes a connection handle. Invoking operations on a handle after it
   /// has been closed is a safe operation but causes no action to be taken.
   /// |handle|: The [ConnectionHandle] to close.
-  external void closeDevice(
-    ConnectionHandle handle,
-    JSFunction? callback,
-  );
+  external JSPromise closeDevice(ConnectionHandle handle);
 
   /// Select a device configuration.
   ///
@@ -111,26 +93,19 @@ extension JSUsbExtension on JSUsb {
   /// than `0` are valid however some buggy devices have a working
   /// configuration `0` and so this value is allowed.
   /// |handle|: An open connection to the device.
-  external void setConfiguration(
+  external JSPromise setConfiguration(
     ConnectionHandle handle,
     int configurationValue,
-    JSFunction callback,
   );
 
   /// Gets the configuration descriptor for the currently selected
   /// configuration.
   /// |handle|: An open connection to the device.
-  external void getConfiguration(
-    ConnectionHandle handle,
-    JSFunction callback,
-  );
+  external JSPromise getConfiguration(ConnectionHandle handle);
 
   /// Lists all interfaces on a USB device.
   /// |handle|: An open connection to the device.
-  external void listInterfaces(
-    ConnectionHandle handle,
-    JSFunction callback,
-  );
+  external JSPromise listInterfaces(ConnectionHandle handle);
 
   /// Claims an interface on a USB device.
   /// Before data can be transfered to an interface or associated endpoints the
@@ -143,19 +118,17 @@ extension JSUsbExtension on JSUsb {
   ///
   /// |handle|: An open connection to the device.
   /// |interfaceNumber|: The interface to be claimed.
-  external void claimInterface(
+  external JSPromise claimInterface(
     ConnectionHandle handle,
     int interfaceNumber,
-    JSFunction callback,
   );
 
   /// Releases a claimed interface.
   /// |handle|: An open connection to the device.
   /// |interfaceNumber|: The interface to be released.
-  external void releaseInterface(
+  external JSPromise releaseInterface(
     ConnectionHandle handle,
     int interfaceNumber,
-    JSFunction callback,
   );
 
   /// Selects an alternate setting on a previously claimed interface.
@@ -163,11 +136,10 @@ extension JSUsbExtension on JSUsb {
   ///     claimed.
   /// |interfaceNumber|: The interface to configure.
   /// |alternateSetting|: The alternate setting to configure.
-  external void setInterfaceAlternateSetting(
+  external JSPromise setInterfaceAlternateSetting(
     ConnectionHandle handle,
     int interfaceNumber,
     int alternateSetting,
-    JSFunction callback,
   );
 
   /// Performs a control transfer on the specified device.
@@ -177,36 +149,32 @@ extension JSUsbExtension on JSUsb {
   /// be claimed.
   ///
   /// |handle|: An open connection to the device.
-  external void controlTransfer(
+  external JSPromise controlTransfer(
     ConnectionHandle handle,
     ControlTransferInfo transferInfo,
-    JSFunction callback,
   );
 
   /// Performs a bulk transfer on the specified device.
   /// |handle|: An open connection to the device.
   /// |transferInfo|: The transfer parameters.
-  external void bulkTransfer(
+  external JSPromise bulkTransfer(
     ConnectionHandle handle,
     GenericTransferInfo transferInfo,
-    JSFunction callback,
   );
 
   /// Performs an interrupt transfer on the specified device.
   /// |handle|: An open connection to the device.
   /// |transferInfo|: The transfer parameters.
-  external void interruptTransfer(
+  external JSPromise interruptTransfer(
     ConnectionHandle handle,
     GenericTransferInfo transferInfo,
-    JSFunction callback,
   );
 
   /// Performs an isochronous transfer on the specific device.
   /// |handle|: An open connection to the device.
-  external void isochronousTransfer(
+  external JSPromise isochronousTransfer(
     ConnectionHandle handle,
     IsochronousTransferInfo transferInfo,
-    JSFunction callback,
   );
 
   /// Tries to reset the USB device.
@@ -216,10 +184,7 @@ extension JSUsbExtension on JSUsb {
   /// to acquire the device.
   ///
   /// |handle|: A connection handle to reset.
-  external void resetDevice(
-    ConnectionHandle handle,
-    JSFunction callback,
-  );
+  external JSPromise resetDevice(ConnectionHandle handle);
 
   /// Event generated when a device is added to the system. Events are only
   /// broadcast to apps and extensions that have permission to access the

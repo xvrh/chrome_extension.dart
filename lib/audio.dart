@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/audio.dart' as $js;
 
@@ -27,20 +28,13 @@ class ChromeAudio {
   ///     audio devices. If the filter is not set or set to `{}`,
   ///     returned device list will contain all available audio devices.
   /// |callback|: Reports the requested list of audio devices.
-  Future<List<AudioDeviceInfo>> getDevices(DeviceFilter? filter) {
-    var $completer = Completer<List<AudioDeviceInfo>>();
-    $js.chrome.audio.getDevices(
-      filter?.toJS,
-      (JSArray devices) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(devices.toDart
-              .cast<$js.AudioDeviceInfo>()
-              .map((e) => AudioDeviceInfo.fromJS(e))
-              .toList());
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<List<AudioDeviceInfo>> getDevices(DeviceFilter? filter) async {
+    var $res = await promiseToFuture<JSArray>(
+        $js.chrome.audio.getDevices(filter?.toJS));
+    return $res.toDart
+        .cast<$js.AudioDeviceInfo>()
+        .map((e) => AudioDeviceInfo.fromJS(e))
+        .toList();
   }
 
   /// Sets lists of active input and/or output devices.
@@ -49,52 +43,29 @@ class ChromeAudio {
   ///     unaffected.
   ///
   ///     It is an error to pass in a non-existent device ID.
-  Future<void> setActiveDevices(DeviceIdLists ids) {
-    var $completer = Completer<void>();
-    $js.chrome.audio.setActiveDevices(
-      ids.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<void> setActiveDevices(DeviceIdLists ids) async {
+    await promiseToFuture<void>($js.chrome.audio.setActiveDevices(ids.toJS));
   }
 
   /// Sets the properties for the input or output device.
   Future<void> setProperties(
     String id,
     DeviceProperties properties,
-  ) {
-    var $completer = Completer<void>();
-    $js.chrome.audio.setProperties(
+  ) async {
+    await promiseToFuture<void>($js.chrome.audio.setProperties(
       id,
       properties.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+    ));
   }
 
   /// Gets the system-wide mute state for the specified stream type.
   /// |streamType|: Stream type for which mute state should be fetched.
   /// |callback|: Callback reporting whether mute is set or not for specified
   /// stream type.
-  Future<bool> getMute(StreamType streamType) {
-    var $completer = Completer<bool>();
-    $js.chrome.audio.getMute(
-      streamType.toJS,
-      (bool value) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(value);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<bool> getMute(StreamType streamType) async {
+    var $res =
+        await promiseToFuture<bool>($js.chrome.audio.getMute(streamType.toJS));
+    return $res;
   }
 
   /// Sets mute state for a stream type. The mute state will apply to all audio
@@ -104,18 +75,11 @@ class ChromeAudio {
   Future<void> setMute(
     StreamType streamType,
     bool isMuted,
-  ) {
-    var $completer = Completer<void>();
-    $js.chrome.audio.setMute(
+  ) async {
+    await promiseToFuture<void>($js.chrome.audio.setMute(
       streamType.toJS,
       isMuted,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+    ));
   }
 
   /// Fired when sound level changes for an active audio device.

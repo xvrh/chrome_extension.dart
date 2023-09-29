@@ -148,6 +148,9 @@ enum PrinterStatus {
   /// The printer is unreachable and doesn't accept print jobs.
   unreachable('UNREACHABLE'),
 
+  /// The SSL certificate is expired. Printer accepts jobs but they fail.
+  expiredCertificate('EXPIRED_CERTIFICATE'),
+
   /// The printer is available.
   available('AVAILABLE');
 

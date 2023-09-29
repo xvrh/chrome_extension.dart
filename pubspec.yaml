@@ -27,6 +27,10 @@ dev_dependencies:
   path:
   petitparser:
   process_runner:
+  project_tools:
+    git:
+      url: https://github.com/xvrh/project_tools.dart.git
+      ref: '76d200c'
   puppeteer:
   shelf:
   shelf_router:

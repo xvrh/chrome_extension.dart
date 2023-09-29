@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/idle.dart' as $js;
 
@@ -25,17 +26,10 @@ class ChromeIdle {
   /// [detectionIntervalInSeconds] The system is considered idle if
   /// detectionIntervalInSeconds seconds have elapsed since the last user
   /// input detected.
-  Future<IdleState> queryState(int detectionIntervalInSeconds) {
-    var $completer = Completer<IdleState>();
-    $js.chrome.idle.queryState(
-      detectionIntervalInSeconds,
-      ($js.IdleState newState) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(IdleState.fromJS(newState));
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<IdleState> queryState(int detectionIntervalInSeconds) async {
+    var $res = await promiseToFuture<$js.IdleState>(
+        $js.chrome.idle.queryState(detectionIntervalInSeconds));
+    return IdleState.fromJS($res);
   }
 
   /// Sets the interval, in seconds, used to determine when the system is in an
@@ -49,14 +43,9 @@ class ChromeIdle {
   /// Gets the time, in seconds, it takes until the screen is locked
   /// automatically while idle. Returns a zero duration if the screen is never
   /// locked automatically. Currently supported on Chrome OS only.
-  Future<int> getAutoLockDelay() {
-    var $completer = Completer<int>();
-    $js.chrome.idle.getAutoLockDelay((int delay) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(delay);
-      }
-    }.toJS);
-    return $completer.future;
+  Future<int> getAutoLockDelay() async {
+    var $res = await promiseToFuture<int>($js.chrome.idle.getAutoLockDelay());
+    return $res;
   }
 
   /// Fired when the system changes to an active, idle or locked state. The

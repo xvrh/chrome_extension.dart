@@ -27,6 +27,7 @@ void defineTests() {
       when(mockClient.getUrl(any)).thenAnswer((_) async => mockRequest);
       when(mockRequest.done).thenAnswer((_) => Future(() => mockResponse));
       when(mockRequest.close()).thenAnswer((_) => Future.value(mockResponse));
+      when(mockResponse.statusCode).thenAnswer((_) => 200);
       when(mockResponse.transform(any)).thenAnswer((_) async* {
         yield html.join('\n');
       });

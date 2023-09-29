@@ -185,7 +185,7 @@ class VisitItem {
   VisitItem.fromJS(this._wrapped);
 
   VisitItem({
-    /// The unique identifier for the item.
+    /// The unique identifier for the corresponding [history.HistoryItem].
     required String id,
 
     /// The unique identifier for this visit.
@@ -200,19 +200,24 @@ class VisitItem {
     /// The [transition type](#transition_types) for this visit from its
     /// referrer.
     required TransitionType transition,
+
+    /// True if the visit originated on this device. False if it was synced from
+    /// a different device.
+    required bool isLocal,
   }) : _wrapped = $js.VisitItem(
           id: id,
           visitId: visitId,
           visitTime: visitTime,
           referringVisitId: referringVisitId,
           transition: transition.toJS,
+          isLocal: isLocal,
         );
 
   final $js.VisitItem _wrapped;
 
   $js.VisitItem get toJS => _wrapped;
 
-  /// The unique identifier for the item.
+  /// The unique identifier for the corresponding [history.HistoryItem].
   String get id => _wrapped.id;
   set id(String v) {
     _wrapped.id = v;
@@ -240,6 +245,13 @@ class VisitItem {
   TransitionType get transition => TransitionType.fromJS(_wrapped.transition);
   set transition(TransitionType v) {
     _wrapped.transition = v.toJS;
+  }
+
+  /// True if the visit originated on this device. False if it was synced from a
+  /// different device.
+  bool get isLocal => _wrapped.isLocal;
+  set isLocal(bool v) {
+    _wrapped.isLocal = v;
   }
 }
 

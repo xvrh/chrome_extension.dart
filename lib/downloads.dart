@@ -350,6 +350,7 @@ enum DangerType {
   sensitiveContentWarning('sensitiveContentWarning'),
   sensitiveContentBlock('sensitiveContentBlock'),
   unsupportedFileType('unsupportedFileType'),
+  deepScannedFailed('deepScannedFailed'),
   deepScannedSafe('deepScannedSafe'),
   deepScannedOpenedDangerous('deepScannedOpenedDangerous'),
   promptForScaning('promptForScaning'),

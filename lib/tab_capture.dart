@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/tab_capture.dart' as $js;
 
@@ -52,17 +53,13 @@ class ChromeTabCapture {
   /// tab capture that would prevent a new tab capture from succeeding (or
   /// to prevent redundant requests for the same tab).
   /// |callback| : Callback invoked with CaptureInfo[] for captured tabs.
-  Future<List<CaptureInfo>> getCapturedTabs() {
-    var $completer = Completer<List<CaptureInfo>>();
-    $js.chrome.tabCapture.getCapturedTabs((JSArray result) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(result.toDart
-            .cast<$js.CaptureInfo>()
-            .map((e) => CaptureInfo.fromJS(e))
-            .toList());
-      }
-    }.toJS);
-    return $completer.future;
+  Future<List<CaptureInfo>> getCapturedTabs() async {
+    var $res =
+        await promiseToFuture<JSArray>($js.chrome.tabCapture.getCapturedTabs());
+    return $res.toDart
+        .cast<$js.CaptureInfo>()
+        .map((e) => CaptureInfo.fromJS(e))
+        .toList();
   }
 
   /// Creates a stream ID to capture the target tab.
@@ -75,17 +72,10 @@ class ChromeTabCapture {
   /// `getUserMedia()` API to generate a media stream that
   /// corresponds to the target tab. The created `streamId` can
   /// only be used once and expires after a few seconds if it is not used.
-  Future<String> getMediaStreamId(GetMediaStreamOptions? options) {
-    var $completer = Completer<String>();
-    $js.chrome.tabCapture.getMediaStreamId(
-      options?.toJS,
-      (String streamId) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(streamId);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<String> getMediaStreamId(GetMediaStreamOptions? options) async {
+    var $res = await promiseToFuture<String>(
+        $js.chrome.tabCapture.getMediaStreamId(options?.toJS));
+    return $res;
   }
 
   /// Event fired when the capture status of a tab changes.

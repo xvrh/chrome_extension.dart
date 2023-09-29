@@ -118,7 +118,7 @@ extension HistoryItemExtension on HistoryItem {
 @anonymous
 class VisitItem {
   external factory VisitItem({
-    /// The unique identifier for the item.
+    /// The unique identifier for the corresponding [history.HistoryItem].
     String id,
 
     /// The unique identifier for this visit.
@@ -132,11 +132,15 @@ class VisitItem {
 
     /// The [transition type](#transition_types) for this visit from its referrer.
     TransitionType transition,
+
+    /// True if the visit originated on this device. False if it was synced from a
+    /// different device.
+    bool isLocal,
   });
 }
 
 extension VisitItemExtension on VisitItem {
-  /// The unique identifier for the item.
+  /// The unique identifier for the corresponding [history.HistoryItem].
   external String id;
 
   /// The unique identifier for this visit.
@@ -150,6 +154,10 @@ extension VisitItemExtension on VisitItem {
 
   /// The [transition type](#transition_types) for this visit from its referrer.
   external TransitionType transition;
+
+  /// True if the visit originated on this device. False if it was synced from a
+  /// different device.
+  external bool isLocal;
 }
 
 @JS()

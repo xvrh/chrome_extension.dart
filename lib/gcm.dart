@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/gcm.dart' as $js;
 
@@ -29,30 +30,17 @@ class ChromeGcm {
   /// sender IDs.
   /// [returns] Function called when registration completes. It should check
   /// [runtime.lastError] for error when `registrationId` is empty.
-  Future<String> register(List<String> senderIds) {
-    var $completer = Completer<String>();
-    $js.chrome.gcm.register(
-      senderIds.toJSArray((e) => e),
-      (String registrationId) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(registrationId);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<String> register(List<String> senderIds) async {
+    var $res = await promiseToFuture<String>(
+        $js.chrome.gcm.register(senderIds.toJSArray((e) => e)));
+    return $res;
   }
 
   /// Unregisters the application from FCM.
   /// [returns] A function called after the unregistration completes.
   /// Unregistration was successful if [runtime.lastError] is not set.
-  Future<void> unregister() {
-    var $completer = Completer<void>();
-    $js.chrome.gcm.unregister(() {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(null);
-      }
-    }.toJS);
-    return $completer.future;
+  Future<void> unregister() async {
+    await promiseToFuture<void>($js.chrome.gcm.unregister());
   }
 
   /// Sends a message according to its contents.
@@ -60,17 +48,9 @@ class ChromeGcm {
   /// [returns] A function called after the message is successfully queued for
   /// sending. [runtime.lastError] should be checked, to ensure a message was
   /// sent without problems.
-  Future<String> send(SendMessage message) {
-    var $completer = Completer<String>();
-    $js.chrome.gcm.send(
-      message.toJS,
-      (String messageId) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(messageId);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<String> send(SendMessage message) async {
+    var $res = await promiseToFuture<String>($js.chrome.gcm.send(message.toJS));
+    return $res;
   }
 
   /// The maximum size (in bytes) of all key/value pairs in a message.

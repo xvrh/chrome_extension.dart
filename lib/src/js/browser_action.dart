@@ -40,10 +40,7 @@ extension JSBrowserActionExtension on JSBrowserAction {
   /// path to an image file, as the pixel data from a canvas element, or as a
   /// dictionary of one of those. Either the `path` or the `imageData` property
   /// must be specified.
-  external void setIcon(
-    SetIconDetails details,
-    JSFunction? callback,
-  );
+  external JSPromise setIcon(SetIconDetails details);
 
   /// Sets the HTML document to be opened as a popup when the user clicks the
   /// browser action icon.
@@ -81,7 +78,7 @@ extension JSBrowserActionExtension on JSBrowserAction {
 
   /// Opens the extension popup window in the active window but does not grant
   /// tab permissions.
-  external void openPopup(JSFunction callback);
+  external JSPromise openPopup();
 
   /// Fired when a browser action icon is clicked. Does not fire if the browser
   /// action has a popup.

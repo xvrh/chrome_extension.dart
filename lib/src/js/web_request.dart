@@ -32,7 +32,7 @@ extension JSWebRequestExtension on JSWebRequest {
   /// Needs to be called when the behavior of the webRequest handlers has
   /// changed to prevent incorrect handling due to caching. This function call
   /// is expensive. Don't call it often.
-  external void handlerBehaviorChanged(JSFunction? callback);
+  external JSPromise handlerBehaviorChanged();
 
   /// Fired when a request is about to occur.
   external Event get onBeforeRequest;

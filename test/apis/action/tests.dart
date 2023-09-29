@@ -187,6 +187,6 @@ void _tests(TestContext context) {
 }
 
 Future<void> _addSmallDelay() async {
-  // On Windows, on some version of chrome we need a small delay between a "Set" and a "Get"
-  await Future.delayed(const Duration(milliseconds: 10));
+  // On some version of chrome we need a small delay between a "Set" and a "Get"
+  await Future.delayed(const Duration(milliseconds: 100));
 }

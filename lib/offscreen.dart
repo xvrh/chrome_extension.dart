@@ -75,7 +75,7 @@ enum Reason {
   userMedia('USER_MEDIA'),
 
   /// The offscreen document needs to interact with media streams from display
-  /// media (e.g. `getDisplayMedia()</code).
+  /// media (e.g. `getDisplayMedia()`).
   displayMedia('DISPLAY_MEDIA'),
 
   /// The offscreen document needs to use WebRTC APIs.
@@ -90,7 +90,11 @@ enum Reason {
   localStorage('LOCAL_STORAGE'),
 
   /// The offscreen document needs to spawn workers.
-  workers('WORKERS');
+  workers('WORKERS'),
+
+  /// The offscreen document needs to use <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/geolocation">navigator.geolocation</a>
+  geolocation('GEOLOCATION');
 
   const Reason(this.value);
 

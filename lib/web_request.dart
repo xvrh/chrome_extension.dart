@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/web_request.dart' as $js;
@@ -24,14 +25,8 @@ class ChromeWebRequest {
   /// Needs to be called when the behavior of the webRequest handlers has
   /// changed to prevent incorrect handling due to caching. This function call
   /// is expensive. Don't call it often.
-  Future<void> handlerBehaviorChanged() {
-    var $completer = Completer<void>();
-    $js.chrome.webRequest.handlerBehaviorChanged(() {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(null);
-      }
-    }.toJS);
-    return $completer.future;
+  Future<void> handlerBehaviorChanged() async {
+    await promiseToFuture<void>($js.chrome.webRequest.handlerBehaviorChanged());
   }
 
   /// The maximum number of times that `handlerBehaviorChanged` can be called

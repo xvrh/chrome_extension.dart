@@ -9,10 +9,10 @@ import 'tag_matcher.dart';
 /// system at chromium.googlesource.com. It knows its own [Uri] and the html
 /// source for the page at that Uri.
 abstract class GoogleSourceEntity {
-  final String _rawHtml;
+  final String rawHtml;
   final String _url;
 
-  GoogleSourceEntity(this._rawHtml, this._url);
+  GoogleSourceEntity(this.rawHtml, this._url);
   String get url => _url;
 }
 
@@ -42,7 +42,7 @@ class GoogleSourceFile extends GoogleSourceEntity {
     return escapedHtml;
   }
 
-  String get _lines => TagMatcher('table').allContents(_rawHtml).single;
+  String get _lines => TagMatcher('table').allContents(rawHtml).single;
 }
 
 /// A [GoogleSourceDirectory] represents a directory and can access the [Uri]s
@@ -50,7 +50,7 @@ class GoogleSourceFile extends GoogleSourceEntity {
 class GoogleSourceDirectory extends GoogleSourceEntity {
   GoogleSourceDirectory(String rawHtml, String url) : super(rawHtml, url);
 
-  String get _lines => TagMatcher.olMatcher.allContents(_rawHtml).single;
+  String get _lines => TagMatcher.olMatcher.allContents(rawHtml).single;
 
   Iterable<String> get listUris => TagMatcher.aMatcher
       .allAttributes(_lines)

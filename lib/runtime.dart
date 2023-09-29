@@ -65,7 +65,7 @@ class ChromeRuntime {
   }
 
   /// Sets the URL to be visited upon uninstallation. This may be used to clean
-  /// up server-side data, do analytics, and implement surveys. Maximum 255
+  /// up server-side data, do analytics, and implement surveys. Maximum 1023
   /// characters.
   /// [url] URL to be opened after the extension is uninstalled. This URL must
   /// have an http: or https: scheme. Set an empty string to not open a new
@@ -309,6 +309,12 @@ class ChromeRuntime {
             return $c(Port.fromJS(port));
           });
 
+  /// Fired when a connection is made from a user script from this extension.
+  EventStream<Port> get onUserScriptConnect =>
+      $js.chrome.runtime.onUserScriptConnect.asStream(($c) => ($js.Port port) {
+            return $c(Port.fromJS(port));
+          });
+
   /// Fired when a connection is made from a native application. Currently only
   /// supported on Chrome OS.
   EventStream<Port> get onConnectNative =>
@@ -344,6 +350,25 @@ class ChromeRuntime {
             Function sendResponse,
           ) {
             return $c(OnMessageExternalEvent(
+              message: message?.dartify(),
+              sender: MessageSender.fromJS(sender),
+              sendResponse: ([Object? p1, Object? p2]) {
+                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
+                        p1?.jsify(), p2?.jsify())
+                    ?.dartify();
+              },
+            ));
+          });
+
+  /// Fired when a message is sent from a user script associated with the same
+  /// extension.
+  EventStream<OnUserScriptMessageEvent> get onUserScriptMessage =>
+      $js.chrome.runtime.onUserScriptMessage.asStream(($c) => (
+            JSAny? message,
+            $js.MessageSender sender,
+            Function sendResponse,
+          ) {
+            return $c(OnUserScriptMessageEvent(
               message: message?.dartify(),
               sender: MessageSender.fromJS(sender),
               sendResponse: ([Object? p1, Object? p2]) {
@@ -475,7 +500,8 @@ enum ContextType {
   tab('TAB'),
   popup('POPUP'),
   background('BACKGROUND'),
-  offscreenDocument('OFFSCREEN_DOCUMENT');
+  offscreenDocument('OFFSCREEN_DOCUMENT'),
+  sidePanel('SIDE_PANEL');
 
   const ContextType(this.value);
 
@@ -1178,6 +1204,28 @@ class OnMessageExternalEvent {
   });
 
   /// The message sent by the calling script.
+  final Object? message;
+
+  final MessageSender sender;
+
+  /// Function to call (at most once) when you have a response. The argument
+  /// should be any JSON-ifiable object. If you have more than one `onMessage`
+  /// listener in the same document, then only one may send a response. This
+  /// function becomes invalid when the event listener returns, *unless you
+  /// return true* from the event listener to indicate you wish to send a
+  /// response asynchronously (this will keep the message channel open to the
+  /// other end until `sendResponse` is called).
+  final Function sendResponse;
+}
+
+class OnUserScriptMessageEvent {
+  OnUserScriptMessageEvent({
+    required this.message,
+    required this.sender,
+    required this.sendResponse,
+  });
+
+  /// The message sent by the user script.
   final Object? message;
 
   final MessageSender sender;
