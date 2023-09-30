@@ -190,6 +190,7 @@ class TtsOptions {
   /// (the default), interrupts any current speech and flushes the speech queue
   /// before speaking this new utterance.
   bool? get enqueue => _wrapped.enqueue;
+
   set enqueue(bool? v) {
     _wrapped.enqueue = v;
   }
@@ -197,12 +198,14 @@ class TtsOptions {
   /// The name of the voice to use for synthesis. If empty, uses any available
   /// voice.
   String? get voiceName => _wrapped.voiceName;
+
   set voiceName(String? v) {
     _wrapped.voiceName = v;
   }
 
   /// The extension ID of the speech engine to use, if known.
   String? get extensionId => _wrapped.extensionId;
+
   set extensionId(String? v) {
     _wrapped.extensionId = v;
   }
@@ -210,12 +213,14 @@ class TtsOptions {
   /// The language to be used for synthesis, in the form _language_-_region_.
   /// Examples: 'en', 'en-US', 'en-GB', 'zh-CN'.
   String? get lang => _wrapped.lang;
+
   set lang(String? v) {
     _wrapped.lang = v;
   }
 
   /// Gender of voice for synthesized speech.
   VoiceGender? get gender => _wrapped.gender?.let(VoiceGender.fromJS);
+
   set gender(VoiceGender? v) {
     _wrapped.gender = v?.toJS;
   }
@@ -227,6 +232,7 @@ class TtsOptions {
   /// further-for example a particular voice may not actually speak faster than
   /// 3 times normal even if you specify a value larger than 3.0.
   double? get rate => _wrapped.rate;
+
   set rate(double? v) {
     _wrapped.rate = v;
   }
@@ -234,6 +240,7 @@ class TtsOptions {
   /// Speaking pitch between 0 and 2 inclusive, with 0 being lowest and 2 being
   /// highest. 1.0 corresponds to a voice's default pitch.
   double? get pitch => _wrapped.pitch;
+
   set pitch(double? v) {
     _wrapped.pitch = v;
   }
@@ -241,6 +248,7 @@ class TtsOptions {
   /// Speaking volume between 0 and 1 inclusive, with 0 being lowest and 1 being
   /// highest, with a default of 1.0.
   double? get volume => _wrapped.volume;
+
   set volume(double? v) {
     _wrapped.volume = v;
   }
@@ -248,6 +256,7 @@ class TtsOptions {
   /// The TTS event types the voice must support.
   List<String>? get requiredEventTypes =>
       _wrapped.requiredEventTypes?.toDart.cast<String>().map((e) => e).toList();
+
   set requiredEventTypes(List<String>? v) {
     _wrapped.requiredEventTypes = v?.toJSArray((e) => e);
   }
@@ -256,6 +265,7 @@ class TtsOptions {
   /// all event types may be sent.
   List<String>? get desiredEventTypes =>
       _wrapped.desiredEventTypes?.toDart.cast<String>().map((e) => e).toList();
+
   set desiredEventTypes(List<String>? v) {
     _wrapped.desiredEventTypes = v?.toJSArray((e) => e);
   }
@@ -267,6 +277,7 @@ class TtsOptions {
             ?.call(p1?.jsify(), p2?.jsify())
             ?.dartify();
       };
+
   set onEvent(Function? v) {
     _wrapped.onEvent = v?.let(allowInterop);
   }
@@ -332,6 +343,7 @@ class TtsEvent {
   /// speech. Note that pause and resume events may not fire if speech is paused
   /// in-between utterances.
   EventType get type => EventType.fromJS(_wrapped.type);
+
   set type(EventType v) {
     _wrapped.type = v.toJS;
   }
@@ -341,12 +353,14 @@ class TtsEvent {
   /// The `charIndex` represents a point in the text at the beginning of the
   /// next word to be spoken.
   int? get charIndex => _wrapped.charIndex;
+
   set charIndex(int? v) {
     _wrapped.charIndex = v;
   }
 
   /// The error description, if the event type is `error`.
   String? get errorMessage => _wrapped.errorMessage;
+
   set errorMessage(String? v) {
     _wrapped.errorMessage = v;
   }
@@ -354,12 +368,14 @@ class TtsEvent {
   /// An ID unique to the calling function's context so that events can get
   /// routed back to the correct tts.speak call.
   double? get srcId => _wrapped.srcId;
+
   set srcId(double? v) {
     _wrapped.srcId = v;
   }
 
   /// True if this is the final event that will be sent to this handler.
   bool? get isFinalEvent => _wrapped.isFinalEvent;
+
   set isFinalEvent(bool? v) {
     _wrapped.isFinalEvent = v;
   }
@@ -368,6 +384,7 @@ class TtsEvent {
   /// event, this is the length of the word which will be spoken next. It will
   /// be set to -1 if not set by the speech engine.
   int? get length => _wrapped.length;
+
   set length(int? v) {
     _wrapped.length = v;
   }
@@ -411,6 +428,7 @@ class TtsVoice {
 
   /// The name of the voice.
   String? get voiceName => _wrapped.voiceName;
+
   set voiceName(String? v) {
     _wrapped.voiceName = v;
   }
@@ -418,12 +436,14 @@ class TtsVoice {
   /// The language that this voice supports, in the form _language_-_region_.
   /// Examples: 'en', 'en-US', 'en-GB', 'zh-CN'.
   String? get lang => _wrapped.lang;
+
   set lang(String? v) {
     _wrapped.lang = v;
   }
 
   /// This voice's gender.
   VoiceGender? get gender => _wrapped.gender?.let(VoiceGender.fromJS);
+
   set gender(VoiceGender? v) {
     _wrapped.gender = v?.toJS;
   }
@@ -431,12 +451,14 @@ class TtsVoice {
   /// If true, the synthesis engine is a remote network resource. It may be
   /// higher latency and may incur bandwidth costs.
   bool? get remote => _wrapped.remote;
+
   set remote(bool? v) {
     _wrapped.remote = v;
   }
 
   /// The ID of the extension providing this voice.
   String? get extensionId => _wrapped.extensionId;
+
   set extensionId(String? v) {
     _wrapped.extensionId = v;
   }
@@ -446,6 +468,7 @@ class TtsVoice {
       .cast<$js.EventType>()
       .map((e) => EventType.fromJS(e))
       .toList();
+
   set eventTypes(List<EventType>? v) {
     _wrapped.eventTypes = v?.toJSArray((e) => e.toJS);
   }

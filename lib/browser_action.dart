@@ -141,6 +141,7 @@ class TabDetails {
   /// The ID of the tab to query state for. If no tab is specified, the
   /// non-tab-specific state is returned.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -167,6 +168,7 @@ class SetTitleDetails {
 
   /// The string the browser action should display when moused over.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
@@ -174,6 +176,7 @@ class SetTitleDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -240,6 +243,7 @@ class SetIconDetails {
         isOther: (v) => (v as $js.ImageDataType),
         isMap: (v) => v.toDartMap(),
       );
+
   set imageData(Object? v) {
     _wrapped.imageData = switch (v) {
       JSObject() => v,
@@ -261,6 +265,7 @@ class SetIconDetails {
         isString: (v) => v,
         isMap: (v) => v.toDartMap(),
       );
+
   set path(Object? v) {
     _wrapped.path = switch (v) {
       String() => v,
@@ -274,6 +279,7 @@ class SetIconDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -302,6 +308,7 @@ class SetPopupDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -309,6 +316,7 @@ class SetPopupDetails {
   /// The relative path to the HTML file to show in a popup. If set to the empty
   /// string (`''`), no popup is shown.
   String get popup => _wrapped.popup;
+
   set popup(String v) {
     _wrapped.popup = v;
   }
@@ -341,6 +349,7 @@ class SetBadgeTextDetails {
   ///  If `tabId` is specified and `text` is null, the text for the specified
   /// tab is cleared and defaults to the global badge text.
   String? get text => _wrapped.text;
+
   set text(String? v) {
     _wrapped.text = v;
   }
@@ -348,6 +357,7 @@ class SetBadgeTextDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -387,6 +397,7 @@ class SetBadgeBackgroundColorDetails {
         isOther: (v) =>
             (v as $js.ColorArray).toDart.cast<int>().map((e) => e).toList(),
       );
+
   set color(Object v) {
     _wrapped.color = switch (v) {
       String() => v,
@@ -399,6 +410,7 @@ class SetBadgeBackgroundColorDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }

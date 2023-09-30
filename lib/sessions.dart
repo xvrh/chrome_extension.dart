@@ -82,6 +82,7 @@ class Filter {
   /// this parameter to fetch the maximum number of entries
   /// ([sessions.MAX_SESSION_RESULTS]).
   int? get maxResults => _wrapped.maxResults;
+
   set maxResults(int? v) {
     _wrapped.maxResults = v;
   }
@@ -115,6 +116,7 @@ class Session {
   /// The time when the window or tab was closed or modified, represented in
   /// milliseconds since the epoch.
   int get lastModified => _wrapped.lastModified;
+
   set lastModified(int v) {
     _wrapped.lastModified = v;
   }
@@ -122,6 +124,7 @@ class Session {
   /// The [tabs.Tab], if this entry describes a tab. Either this or
   /// [sessions.Session.window] will be set.
   Tab? get tab => _wrapped.tab?.let(Tab.fromJS);
+
   set tab(Tab? v) {
     _wrapped.tab = v?.toJS;
   }
@@ -129,6 +132,7 @@ class Session {
   /// The [windows.Window], if this entry describes a window. Either this or
   /// [sessions.Session.tab] will be set.
   Window? get window => _wrapped.window?.let(Window.fromJS);
+
   set window(Window? v) {
     _wrapped.window = v?.toJS;
   }
@@ -157,12 +161,14 @@ class Device {
   $js.Device get toJS => _wrapped;
 
   String get info => _wrapped.info;
+
   set info(String v) {
     _wrapped.info = v;
   }
 
   /// The name of the foreign device.
   String get deviceName => _wrapped.deviceName;
+
   set deviceName(String v) {
     _wrapped.deviceName = v;
   }
@@ -173,6 +179,7 @@ class Device {
       .cast<$js.Session>()
       .map((e) => Session.fromJS(e))
       .toList();
+
   set sessions(List<Session> v) {
     _wrapped.sessions = v.toJSArray((e) => e.toJS);
   }

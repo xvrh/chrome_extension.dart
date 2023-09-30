@@ -299,6 +299,7 @@ class ClientCertificateInfo {
       .cast<JSArrayBuffer>()
       .map((e) => e.toDart)
       .toList();
+
   set certificateChain(List<ByteBuffer> v) {
     _wrapped.certificateChain = v.toJSArray((e) => e.toJS);
   }
@@ -309,6 +310,7 @@ class ClientCertificateInfo {
       .cast<$js.Algorithm>()
       .map((e) => Algorithm.fromJS(e))
       .toList();
+
   set supportedAlgorithms(List<Algorithm> v) {
     _wrapped.supportedAlgorithms = v.toJSArray((e) => e.toJS);
   }
@@ -344,6 +346,7 @@ class SetCertificatesDetails {
   /// contain the received `certificatesRequestId` value. Otherwise,
   /// should be unset.
   int? get certificatesRequestId => _wrapped.certificatesRequestId;
+
   set certificatesRequestId(int? v) {
     _wrapped.certificatesRequestId = v;
   }
@@ -351,6 +354,7 @@ class SetCertificatesDetails {
   /// Error that occurred while extracting the certificates, if any. This error
   /// will be surfaced to the user when appropriate.
   Error? get error => _wrapped.error?.let(Error.fromJS);
+
   set error(Error? v) {
     _wrapped.error = v?.toJS;
   }
@@ -361,6 +365,7 @@ class SetCertificatesDetails {
           .cast<$js.ClientCertificateInfo>()
           .map((e) => ClientCertificateInfo.fromJS(e))
           .toList();
+
   set clientCertificates(List<ClientCertificateInfo> v) {
     _wrapped.clientCertificates = v.toJSArray((e) => e.toJS);
   }
@@ -382,6 +387,7 @@ class CertificatesUpdateRequest {
 
   /// Request identifier to be passed to [setCertificates].
   int get certificatesRequestId => _wrapped.certificatesRequestId;
+
   set certificatesRequestId(int v) {
     _wrapped.certificatesRequestId = v;
   }
@@ -416,18 +422,21 @@ class SignatureRequest {
 
   /// Request identifier to be passed to [reportSignature].
   int get signRequestId => _wrapped.signRequestId;
+
   set signRequestId(int v) {
     _wrapped.signRequestId = v;
   }
 
   /// Data to be signed. Note that the data is not hashed.
   ByteBuffer get input => _wrapped.input.toDart;
+
   set input(ByteBuffer v) {
     _wrapped.input = v.toJS;
   }
 
   /// Signature algorithm to be used.
   Algorithm get algorithm => Algorithm.fromJS(_wrapped.algorithm);
+
   set algorithm(Algorithm v) {
     _wrapped.algorithm = v.toJS;
   }
@@ -435,6 +444,7 @@ class SignatureRequest {
   /// The DER encoding of a X.509 certificate. The extension must sign
   /// `input` using the associated private key.
   ByteBuffer get certificate => _wrapped.certificate.toDart;
+
   set certificate(ByteBuffer v) {
     _wrapped.certificate = v.toJS;
   }
@@ -466,18 +476,21 @@ class ReportSignatureDetails {
   /// Request identifier that was received via the [onSignatureRequested]
   /// event.
   int get signRequestId => _wrapped.signRequestId;
+
   set signRequestId(int v) {
     _wrapped.signRequestId = v;
   }
 
   /// Error that occurred while generating the signature, if any.
   Error? get error => _wrapped.error?.let(Error.fromJS);
+
   set error(Error? v) {
     _wrapped.error = v?.toJS;
   }
 
   /// The signature, if successfully generated.
   ByteBuffer? get signature => _wrapped.signature?.toDart;
+
   set signature(ByteBuffer? v) {
     _wrapped.signature = v?.toJS;
   }
@@ -508,6 +521,7 @@ class CertificateInfo {
   /// Must be the DER encoding of a X.509 certificate. Currently, only
   /// certificates of RSA keys are supported.
   ByteBuffer get certificate => _wrapped.certificate.toDart;
+
   set certificate(ByteBuffer v) {
     _wrapped.certificate = v.toJS;
   }
@@ -519,6 +533,7 @@ class CertificateInfo {
       .cast<$js.Hash>()
       .map((e) => Hash.fromJS(e))
       .toList();
+
   set supportedHashes(List<Hash> v) {
     _wrapped.supportedHashes = v.toJSArray((e) => e.toJS);
   }
@@ -556,18 +571,21 @@ class SignRequest {
   /// The unique ID to be used by the extension should it need to call a method
   /// that requires it, e.g. requestPin.
   int get signRequestId => _wrapped.signRequestId;
+
   set signRequestId(int v) {
     _wrapped.signRequestId = v;
   }
 
   /// The digest that must be signed.
   ByteBuffer get digest => _wrapped.digest.toDart;
+
   set digest(ByteBuffer v) {
     _wrapped.digest = v.toJS;
   }
 
   /// Refers to the hash algorithm that was used to create `digest`.
   Hash get hash => Hash.fromJS(_wrapped.hash);
+
   set hash(Hash v) {
     _wrapped.hash = v.toJS;
   }
@@ -575,6 +593,7 @@ class SignRequest {
   /// The DER encoding of a X.509 certificate. The extension must sign
   /// `digest` using the associated private key.
   ByteBuffer get certificate => _wrapped.certificate.toDart;
+
   set certificate(ByteBuffer v) {
     _wrapped.certificate = v.toJS;
   }
@@ -613,6 +632,7 @@ class RequestPinDetails {
 
   /// The ID given by Chrome in SignRequest.
   int get signRequestId => _wrapped.signRequestId;
+
   set signRequestId(int v) {
     _wrapped.signRequestId = v;
   }
@@ -620,6 +640,7 @@ class RequestPinDetails {
   /// The type of code requested. Default is PIN.
   PinRequestType? get requestType =>
       _wrapped.requestType?.let(PinRequestType.fromJS);
+
   set requestType(PinRequestType? v) {
     _wrapped.requestType = v?.toJS;
   }
@@ -628,6 +649,7 @@ class RequestPinDetails {
   /// previous request failed, to notify the user of the failure reason.
   PinRequestErrorType? get errorType =>
       _wrapped.errorType?.let(PinRequestErrorType.fromJS);
+
   set errorType(PinRequestErrorType? v) {
     _wrapped.errorType = v?.toJS;
   }
@@ -638,6 +660,7 @@ class RequestPinDetails {
   /// errorType = MAX_ATTEMPTS_EXCEEDED when the number of pin requests is
   /// exceeded.
   int? get attemptsLeft => _wrapped.attemptsLeft;
+
   set attemptsLeft(int? v) {
     _wrapped.attemptsLeft = v;
   }
@@ -665,6 +688,7 @@ class StopPinRequestDetails {
 
   /// The ID given by Chrome in SignRequest.
   int get signRequestId => _wrapped.signRequestId;
+
   set signRequestId(int v) {
     _wrapped.signRequestId = v;
   }
@@ -674,6 +698,7 @@ class StopPinRequestDetails {
   /// e.g. MAX_ATTEMPTS_EXCEEDED.
   PinRequestErrorType? get errorType =>
       _wrapped.errorType?.let(PinRequestErrorType.fromJS);
+
   set errorType(PinRequestErrorType? v) {
     _wrapped.errorType = v?.toJS;
   }
@@ -696,6 +721,7 @@ class PinResponseDetails {
   /// The code provided by the user. Empty if user closed the dialog or some
   /// other error occurred.
   String? get userInput => _wrapped.userInput;
+
   set userInput(String? v) {
     _wrapped.userInput = v;
   }

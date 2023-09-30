@@ -78,24 +78,28 @@ class SetWallpaperDetails {
 
   /// The jpeg or png encoded wallpaper image as an ArrayBuffer.
   ByteBuffer? get data => _wrapped.data?.toDart;
+
   set data(ByteBuffer? v) {
     _wrapped.data = v?.toJS;
   }
 
   /// The URL of the wallpaper to be set (can be relative).
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// The supported wallpaper layouts.
   WallpaperLayout get layout => WallpaperLayout.fromJS(_wrapped.layout);
+
   set layout(WallpaperLayout v) {
     _wrapped.layout = v.toJS;
   }
 
   /// The file name of the saved wallpaper.
   String get filename => _wrapped.filename;
+
   set filename(String v) {
     _wrapped.filename = v;
   }
@@ -103,6 +107,7 @@ class SetWallpaperDetails {
   /// True if a 128x60 thumbnail should be generated. Layout and ratio are not
   /// supported yet.
   bool? get thumbnail => _wrapped.thumbnail;
+
   set thumbnail(bool? v) {
     _wrapped.thumbnail = v;
   }

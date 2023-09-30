@@ -483,6 +483,7 @@ class KeyboardEvent {
 
   /// One of keyup or keydown.
   KeyboardEventType get type => KeyboardEventType.fromJS(_wrapped.type);
+
   set type(KeyboardEventType v) {
     _wrapped.type = v.toJS;
   }
@@ -490,18 +491,21 @@ class KeyboardEvent {
   /// (Deprecated) The ID of the request. Use the `requestId` param from the
   /// `onKeyEvent` event instead.
   String? get requestId => _wrapped.requestId;
+
   set requestId(String? v) {
     _wrapped.requestId = v;
   }
 
   /// The extension ID of the sender of this keyevent.
   String? get extensionId => _wrapped.extensionId;
+
   set extensionId(String? v) {
     _wrapped.extensionId = v;
   }
 
   /// Value of the key being pressed
   String get key => _wrapped.key;
+
   set key(String v) {
     _wrapped.key = v;
   }
@@ -509,6 +513,7 @@ class KeyboardEvent {
   /// Value of the physical key being pressed. The value is not affected by
   /// current keyboard layout or modifier state.
   String get code => _wrapped.code;
+
   set code(String v) {
     _wrapped.code = v;
   }
@@ -517,36 +522,42 @@ class KeyboardEvent {
   /// numerical code signifying the unmodified identifier associated with the
   /// key pressed.
   int? get keyCode => _wrapped.keyCode;
+
   set keyCode(int? v) {
     _wrapped.keyCode = v;
   }
 
   /// Whether or not the ALT key is pressed.
   bool? get altKey => _wrapped.altKey;
+
   set altKey(bool? v) {
     _wrapped.altKey = v;
   }
 
   /// Whether or not the ALTGR key is pressed.
   bool? get altgrKey => _wrapped.altgrKey;
+
   set altgrKey(bool? v) {
     _wrapped.altgrKey = v;
   }
 
   /// Whether or not the CTRL key is pressed.
   bool? get ctrlKey => _wrapped.ctrlKey;
+
   set ctrlKey(bool? v) {
     _wrapped.ctrlKey = v;
   }
 
   /// Whether or not the SHIFT key is pressed.
   bool? get shiftKey => _wrapped.shiftKey;
+
   set shiftKey(bool? v) {
     _wrapped.shiftKey = v;
   }
 
   /// Whether or not the CAPS_LOCK is enabled.
   bool? get capsLock => _wrapped.capsLock;
+
   set capsLock(bool? v) {
     _wrapped.capsLock = v;
   }
@@ -595,24 +606,28 @@ class InputContext {
   /// This is used to specify targets of text field operations.  This ID becomes
   /// invalid as soon as onBlur is called.
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
 
   /// Type of value this text field edits, (Text, Number, URL, etc)
   InputContextType get type => InputContextType.fromJS(_wrapped.type);
+
   set type(InputContextType v) {
     _wrapped.type = v.toJS;
   }
 
   /// Whether the text field wants auto-correct.
   bool get autoCorrect => _wrapped.autoCorrect;
+
   set autoCorrect(bool v) {
     _wrapped.autoCorrect = v;
   }
 
   /// Whether the text field wants auto-complete.
   bool get autoComplete => _wrapped.autoComplete;
+
   set autoComplete(bool v) {
     _wrapped.autoComplete = v;
   }
@@ -620,12 +635,14 @@ class InputContext {
   /// The auto-capitalize type of the text field.
   AutoCapitalizeType get autoCapitalize =>
       AutoCapitalizeType.fromJS(_wrapped.autoCapitalize);
+
   set autoCapitalize(AutoCapitalizeType v) {
     _wrapped.autoCapitalize = v.toJS;
   }
 
   /// Whether the text field wants spell-check.
   bool get spellCheck => _wrapped.spellCheck;
+
   set spellCheck(bool v) {
     _wrapped.spellCheck = v;
   }
@@ -633,6 +650,7 @@ class InputContext {
   /// Whether text entered into the text field should be used to improve typing
   /// suggestions for the user.
   bool get shouldDoLearning => _wrapped.shouldDoLearning;
+
   set shouldDoLearning(bool v) {
     _wrapped.shouldDoLearning = v;
   }
@@ -674,36 +692,42 @@ class MenuItem {
 
   /// String that will be passed to callbacks referencing this MenuItem.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// Text displayed in the menu for this item.
   String? get label => _wrapped.label;
+
   set label(String? v) {
     _wrapped.label = v;
   }
 
   /// The type of menu item.
   MenuItemStyle? get style => _wrapped.style?.let(MenuItemStyle.fromJS);
+
   set style(MenuItemStyle? v) {
     _wrapped.style = v?.toJS;
   }
 
   /// Indicates this item is visible.
   bool? get visible => _wrapped.visible;
+
   set visible(bool? v) {
     _wrapped.visible = v;
   }
 
   /// Indicates this item should be drawn with a check.
   bool? get checked => _wrapped.checked;
+
   set checked(bool? v) {
     _wrapped.checked = v;
   }
 
   /// Indicates this item is enabled.
   bool? get enabled => _wrapped.enabled;
+
   set enabled(bool? v) {
     _wrapped.enabled = v;
   }
@@ -731,18 +755,21 @@ class AssistiveWindowProperties {
   $js.AssistiveWindowProperties get toJS => _wrapped;
 
   AssistiveWindowType get type => AssistiveWindowType.fromJS(_wrapped.type);
+
   set type(AssistiveWindowType v) {
     _wrapped.type = v.toJS;
   }
 
   /// Sets true to show AssistiveWindow, sets false to hide.
   bool get visible => _wrapped.visible;
+
   set visible(bool v) {
     _wrapped.visible = v;
   }
 
   /// Strings for ChromeVox to announce.
   String? get announceString => _wrapped.announceString;
+
   set announceString(String? v) {
     _wrapped.announceString = v;
   }
@@ -769,6 +796,7 @@ class MenuParameters {
 
   /// ID of the engine to use.
   String get engineId => _wrapped.engineID;
+
   set engineId(String v) {
     _wrapped.engineID = v;
   }
@@ -779,6 +807,7 @@ class MenuParameters {
       .cast<$js.MenuItem>()
       .map((e) => MenuItem.fromJS(e))
       .toList();
+
   set items(List<MenuItem> v) {
     _wrapped.items = v.toJSArray((e) => e.toJS);
   }
@@ -818,6 +847,7 @@ class OnSurroundingTextChangedSurroundingInfo {
   /// The text around the cursor. This is only a subset of all text in the input
   /// field.
   String get text => _wrapped.text;
+
   set text(String v) {
     _wrapped.text = v;
   }
@@ -825,6 +855,7 @@ class OnSurroundingTextChangedSurroundingInfo {
   /// The ending position of the selection. This value indicates caret position
   /// if there is no selection.
   int get focus => _wrapped.focus;
+
   set focus(int v) {
     _wrapped.focus = v;
   }
@@ -832,6 +863,7 @@ class OnSurroundingTextChangedSurroundingInfo {
   /// The beginning position of the selection. This value indicates caret
   /// position if there is no selection.
   int get anchor => _wrapped.anchor;
+
   set anchor(int v) {
     _wrapped.anchor = v;
   }
@@ -840,6 +872,7 @@ class OnSurroundingTextChangedSurroundingInfo {
   /// around the cursor, offset indicates the absolute position of the first
   /// character of `text`.
   int get offset => _wrapped.offset;
+
   set offset(int v) {
     _wrapped.offset = v;
   }
@@ -866,6 +899,7 @@ class OnAssistiveWindowButtonClickedDetails {
   /// The ID of the button clicked.
   AssistiveWindowButton get buttonId =>
       AssistiveWindowButton.fromJS(_wrapped.buttonID);
+
   set buttonId(AssistiveWindowButton v) {
     _wrapped.buttonID = v.toJS;
   }
@@ -873,6 +907,7 @@ class OnAssistiveWindowButtonClickedDetails {
   /// The type of the assistive window.
   AssistiveWindowType get windowType =>
       AssistiveWindowType.fromJS(_wrapped.windowType);
+
   set windowType(AssistiveWindowType v) {
     _wrapped.windowType = v.toJS;
   }
@@ -914,30 +949,35 @@ class SetCompositionParameters {
 
   /// ID of the context where the composition text will be set
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
 
   /// Text to set
   String get text => _wrapped.text;
+
   set text(String v) {
     _wrapped.text = v;
   }
 
   /// Position in the text that the selection starts at.
   int? get selectionStart => _wrapped.selectionStart;
+
   set selectionStart(int? v) {
     _wrapped.selectionStart = v;
   }
 
   /// Position in the text that the selection ends at.
   int? get selectionEnd => _wrapped.selectionEnd;
+
   set selectionEnd(int? v) {
     _wrapped.selectionEnd = v;
   }
 
   /// Position in the text of the cursor.
   int get cursor => _wrapped.cursor;
+
   set cursor(int v) {
     _wrapped.cursor = v;
   }
@@ -948,6 +988,7 @@ class SetCompositionParameters {
           .cast<$js.SetCompositionParametersSegments>()
           .map((e) => SetCompositionParametersSegments.fromJS(e))
           .toList();
+
   set segments(List<SetCompositionParametersSegments>? v) {
     _wrapped.segments = v?.toJSArray((e) => e.toJS);
   }
@@ -968,6 +1009,7 @@ class ClearCompositionParameters {
 
   /// ID of the context where the composition will be cleared
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
@@ -993,12 +1035,14 @@ class CommitTextParameters {
 
   /// ID of the context where the text will be committed
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
 
   /// The text to commit
   String get text => _wrapped.text;
+
   set text(String v) {
     _wrapped.text = v;
   }
@@ -1026,6 +1070,7 @@ class SendKeyEventsParameters {
   /// ID of the context where the key events will be sent, or zero to send key
   /// events to non-input field.
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
@@ -1035,6 +1080,7 @@ class SendKeyEventsParameters {
       .cast<$js.KeyboardEvent>()
       .map((e) => KeyboardEvent.fromJS(e))
       .toList();
+
   set keyData(List<KeyboardEvent> v) {
     _wrapped.keyData = v.toJSArray((e) => e.toJS);
   }
@@ -1058,6 +1104,7 @@ class SetCandidateWindowPropertiesParameters {
 
   /// ID of the engine to set properties on.
   String get engineId => _wrapped.engineID;
+
   set engineId(String v) {
     _wrapped.engineID = v;
   }
@@ -1065,6 +1112,7 @@ class SetCandidateWindowPropertiesParameters {
   SetCandidateWindowPropertiesParametersProperties get properties =>
       SetCandidateWindowPropertiesParametersProperties.fromJS(
           _wrapped.properties);
+
   set properties(SetCandidateWindowPropertiesParametersProperties v) {
     _wrapped.properties = v.toJS;
   }
@@ -1090,6 +1138,7 @@ class SetCandidatesParameters {
 
   /// ID of the context that owns the candidate window.
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
@@ -1100,6 +1149,7 @@ class SetCandidatesParameters {
           .cast<$js.SetCandidatesParametersCandidates>()
           .map((e) => SetCandidatesParametersCandidates.fromJS(e))
           .toList();
+
   set candidates(List<SetCandidatesParametersCandidates> v) {
     _wrapped.candidates = v.toJSArray((e) => e.toJS);
   }
@@ -1125,12 +1175,14 @@ class SetCursorPositionParameters {
 
   /// ID of the context that owns the candidate window.
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
 
   /// ID of the candidate to select.
   int get candidateId => _wrapped.candidateID;
+
   set candidateId(int v) {
     _wrapped.candidateID = v;
   }
@@ -1156,6 +1208,7 @@ class SetAssistiveWindowPropertiesParameters {
 
   /// ID of the context owning the assistive window.
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
@@ -1163,6 +1216,7 @@ class SetAssistiveWindowPropertiesParameters {
   /// Properties of the assistive window.
   AssistiveWindowProperties get properties =>
       AssistiveWindowProperties.fromJS(_wrapped.properties);
+
   set properties(AssistiveWindowProperties v) {
     _wrapped.properties = v.toJS;
   }
@@ -1200,6 +1254,7 @@ class SetAssistiveWindowButtonHighlightedParameters {
 
   /// ID of the context owning the assistive window.
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
@@ -1207,6 +1262,7 @@ class SetAssistiveWindowButtonHighlightedParameters {
   /// The ID of the button
   AssistiveWindowButton get buttonId =>
       AssistiveWindowButton.fromJS(_wrapped.buttonID);
+
   set buttonId(AssistiveWindowButton v) {
     _wrapped.buttonID = v.toJS;
   }
@@ -1214,18 +1270,21 @@ class SetAssistiveWindowButtonHighlightedParameters {
   /// The window type the button belongs to.
   AssistiveWindowType get windowType =>
       AssistiveWindowType.fromJS(_wrapped.windowType);
+
   set windowType(AssistiveWindowType v) {
     _wrapped.windowType = v.toJS;
   }
 
   /// The text for the screenreader to announce.
   String? get announceString => _wrapped.announceString;
+
   set announceString(String? v) {
     _wrapped.announceString = v;
   }
 
   /// Whether the button should be highlighted.
   bool get highlighted => _wrapped.highlighted;
+
   set highlighted(bool v) {
     _wrapped.highlighted = v;
   }
@@ -1260,12 +1319,14 @@ class DeleteSurroundingTextParameters {
 
   /// ID of the engine receiving the event.
   String get engineId => _wrapped.engineID;
+
   set engineId(String v) {
     _wrapped.engineID = v;
   }
 
   /// ID of the context where the surrounding text will be deleted.
   int get contextId => _wrapped.contextID;
+
   set contextId(int v) {
     _wrapped.contextID = v;
   }
@@ -1273,12 +1334,14 @@ class DeleteSurroundingTextParameters {
   /// The offset from the caret position where deletion will start. This value
   /// can be negative.
   int get offset => _wrapped.offset;
+
   set offset(int v) {
     _wrapped.offset = v;
   }
 
   /// The number of characters to be deleted
   int get length => _wrapped.length;
+
   set length(int v) {
     _wrapped.length = v;
   }
@@ -1308,18 +1371,21 @@ class SetCompositionParametersSegments {
 
   /// Index of the character to start this segment at
   int get start => _wrapped.start;
+
   set start(int v) {
     _wrapped.start = v;
   }
 
   /// Index of the character to end this segment after.
   int get end => _wrapped.end;
+
   set end(int v) {
     _wrapped.end = v;
   }
 
   /// The type of the underline to modify this segment.
   UnderlineStyle get style => UnderlineStyle.fromJS(_wrapped.style);
+
   set style(UnderlineStyle v) {
     _wrapped.style = v.toJS;
   }
@@ -1374,12 +1440,14 @@ class SetCandidateWindowPropertiesParametersProperties {
 
   /// True to show the Candidate window, false to hide it.
   bool? get visible => _wrapped.visible;
+
   set visible(bool? v) {
     _wrapped.visible = v;
   }
 
   /// True to show the cursor, false to hide it.
   bool? get cursorVisible => _wrapped.cursorVisible;
+
   set cursorVisible(bool? v) {
     _wrapped.cursorVisible = v;
   }
@@ -1387,36 +1455,42 @@ class SetCandidateWindowPropertiesParametersProperties {
   /// True if the candidate window should be rendered vertical, false to make it
   /// horizontal.
   bool? get vertical => _wrapped.vertical;
+
   set vertical(bool? v) {
     _wrapped.vertical = v;
   }
 
   /// The number of candidates to display per page.
   int? get pageSize => _wrapped.pageSize;
+
   set pageSize(int? v) {
     _wrapped.pageSize = v;
   }
 
   /// Text that is shown at the bottom of the candidate window.
   String? get auxiliaryText => _wrapped.auxiliaryText;
+
   set auxiliaryText(String? v) {
     _wrapped.auxiliaryText = v;
   }
 
   /// True to display the auxiliary text, false to hide it.
   bool? get auxiliaryTextVisible => _wrapped.auxiliaryTextVisible;
+
   set auxiliaryTextVisible(bool? v) {
     _wrapped.auxiliaryTextVisible = v;
   }
 
   /// The total number of candidates for the candidate window.
   int? get totalCandidates => _wrapped.totalCandidates;
+
   set totalCandidates(int? v) {
     _wrapped.totalCandidates = v;
   }
 
   /// The index of the current chosen candidate out of total candidates.
   int? get currentCandidateIndex => _wrapped.currentCandidateIndex;
+
   set currentCandidateIndex(int? v) {
     _wrapped.currentCandidateIndex = v;
   }
@@ -1424,6 +1498,7 @@ class SetCandidateWindowPropertiesParametersProperties {
   /// Where to display the candidate window.
   WindowPosition? get windowPosition =>
       _wrapped.windowPosition?.let(WindowPosition.fromJS);
+
   set windowPosition(WindowPosition? v) {
     _wrapped.windowPosition = v?.toJS;
   }
@@ -1466,18 +1541,21 @@ class SetCandidatesParametersCandidates {
 
   /// The candidate
   String get candidate => _wrapped.candidate;
+
   set candidate(String v) {
     _wrapped.candidate = v;
   }
 
   /// The candidate's id
   int get id => _wrapped.id;
+
   set id(int v) {
     _wrapped.id = v;
   }
 
   /// The id to add these candidates under
   int? get parentId => _wrapped.parentId;
+
   set parentId(int? v) {
     _wrapped.parentId = v;
   }
@@ -1485,12 +1563,14 @@ class SetCandidatesParametersCandidates {
   /// Short string displayed to next to the candidate, often the shortcut key or
   /// index
   String? get label => _wrapped.label;
+
   set label(String? v) {
     _wrapped.label = v;
   }
 
   /// Additional text describing the candidate
   String? get annotation => _wrapped.annotation;
+
   set annotation(String? v) {
     _wrapped.annotation = v;
   }
@@ -1498,6 +1578,7 @@ class SetCandidatesParametersCandidates {
   /// The usage or detail description of word.
   SetCandidatesParametersCandidatesUsage? get usage =>
       _wrapped.usage?.let(SetCandidatesParametersCandidatesUsage.fromJS);
+
   set usage(SetCandidatesParametersCandidatesUsage? v) {
     _wrapped.usage = v?.toJS;
   }
@@ -1523,12 +1604,14 @@ class SetCandidatesParametersCandidatesUsage {
 
   /// The title string of details description.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
 
   /// The body string of detail description.
   String get body => _wrapped.body;
+
   set body(String v) {
     _wrapped.body = v;
   }

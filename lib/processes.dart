@@ -171,6 +171,7 @@ class TaskInfo {
 
   /// The title of the task.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
@@ -178,6 +179,7 @@ class TaskInfo {
   /// Optional tab ID, if this task represents a tab running on a renderer
   /// process.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -203,12 +205,14 @@ class Cache {
 
   /// The size of the cache, in bytes.
   double get size => _wrapped.size;
+
   set size(double v) {
     _wrapped.size = v;
   }
 
   /// The part of the cache that is utilized, in bytes.
   double get liveSize => _wrapped.liveSize;
+
   set liveSize(double v) {
     _wrapped.liveSize = v;
   }
@@ -308,24 +312,28 @@ class Process {
 
   /// Unique ID of the process provided by the browser.
   int get id => _wrapped.id;
+
   set id(int v) {
     _wrapped.id = v;
   }
 
   /// The ID of the process, as provided by the OS.
   int get osProcessId => _wrapped.osProcessId;
+
   set osProcessId(int v) {
     _wrapped.osProcessId = v;
   }
 
   /// The type of process.
   ProcessType get type => ProcessType.fromJS(_wrapped.type);
+
   set type(ProcessType v) {
     _wrapped.type = v.toJS;
   }
 
   /// The profile which the process is associated with.
   String get profile => _wrapped.profile;
+
   set profile(String v) {
     _wrapped.profile = v;
   }
@@ -333,6 +341,7 @@ class Process {
   /// The debugging port for Native Client processes. Zero for other process
   /// types and for NaCl processes that do not have debugging enabled.
   int get naclDebugPort => _wrapped.naclDebugPort;
+
   set naclDebugPort(int v) {
     _wrapped.naclDebugPort = v;
   }
@@ -342,6 +351,7 @@ class Process {
       .cast<$js.TaskInfo>()
       .map((e) => TaskInfo.fromJS(e))
       .toList();
+
   set tasks(List<TaskInfo> v) {
     _wrapped.tasks = v.toJSArray((e) => e.toJS);
   }
@@ -353,6 +363,7 @@ class Process {
   /// Only available when receiving the object as part of a callback from
   /// onUpdated or onUpdatedWithMemory.
   double? get cpu => _wrapped.cpu;
+
   set cpu(double? v) {
     _wrapped.cpu = v;
   }
@@ -361,6 +372,7 @@ class Process {
   /// second. Only available when receiving the object as part of a callback
   /// from onUpdated or onUpdatedWithMemory.
   double? get network => _wrapped.network;
+
   set network(double? v) {
     _wrapped.network = v;
   }
@@ -369,6 +381,7 @@ class Process {
   /// bytes. Only available when receiving the object as part of a callback
   /// from onUpdatedWithMemory or getProcessInfo with the includeMemory flag.
   double? get privateMemory => _wrapped.privateMemory;
+
   set privateMemory(double? v) {
     _wrapped.privateMemory = v;
   }
@@ -377,6 +390,7 @@ class Process {
   /// in bytes. Only available when receiving the object as part of a callback
   /// from onUpdated or onUpdatedWithMemory.
   double? get jsMemoryAllocated => _wrapped.jsMemoryAllocated;
+
   set jsMemoryAllocated(double? v) {
     _wrapped.jsMemoryAllocated = v;
   }
@@ -385,6 +399,7 @@ class Process {
   /// bytes. Only available when receiving the object as part of a callback
   /// from onUpdated or onUpdatedWithMemory.
   double? get jsMemoryUsed => _wrapped.jsMemoryUsed;
+
   set jsMemoryUsed(double? v) {
     _wrapped.jsMemoryUsed = v;
   }
@@ -393,6 +408,7 @@ class Process {
   /// bytes. Only available when receiving the object as part of a callback
   /// from onUpdated or onUpdatedWithMemory.
   double? get sqliteMemory => _wrapped.sqliteMemory;
+
   set sqliteMemory(double? v) {
     _wrapped.sqliteMemory = v;
   }
@@ -401,6 +417,7 @@ class Process {
   /// available when receiving the object as part of a callback from onUpdated
   /// or onUpdatedWithMemory.
   Cache? get imageCache => _wrapped.imageCache?.let(Cache.fromJS);
+
   set imageCache(Cache? v) {
     _wrapped.imageCache = v?.toJS;
   }
@@ -409,6 +426,7 @@ class Process {
   /// available when receiving the object as part of a callback from onUpdated
   /// or onUpdatedWithMemory.
   Cache? get scriptCache => _wrapped.scriptCache?.let(Cache.fromJS);
+
   set scriptCache(Cache? v) {
     _wrapped.scriptCache = v?.toJS;
   }
@@ -417,6 +435,7 @@ class Process {
   /// available when receiving the object as part of a callback from onUpdated
   /// or onUpdatedWithMemory.
   Cache? get cssCache => _wrapped.cssCache?.let(Cache.fromJS);
+
   set cssCache(Cache? v) {
     _wrapped.cssCache = v?.toJS;
   }

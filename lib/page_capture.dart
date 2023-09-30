@@ -45,6 +45,7 @@ class SaveAsMhtmlDetails {
 
   /// The id of the tab to save as MHTML.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }

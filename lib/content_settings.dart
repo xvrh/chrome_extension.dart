@@ -375,12 +375,14 @@ class ResourceIdentifier {
 
   /// The resource identifier for the given content type.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// A human readable description of the resource.
   String? get description => _wrapped.description;
+
   set description(String? v) {
     _wrapped.description = v;
   }
@@ -437,6 +439,7 @@ class ClearDetails {
 
   /// Where to clear the setting (default: regular).
   Scope? get scope => _wrapped.scope?.let(Scope.fromJS);
+
   set scope(Scope? v) {
     _wrapped.scope = v?.toJS;
   }
@@ -459,6 +462,7 @@ class GetCallbackDetails {
   /// The content setting. See the description of the individual ContentSetting
   /// objects for the possible values.
   Object get setting => _wrapped.setting.dartify()!;
+
   set setting(Object v) {
     _wrapped.setting = v.jsify()!;
   }
@@ -499,6 +503,7 @@ class GetDetails {
   /// The primary URL for which the content setting should be retrieved. Note
   /// that the meaning of a primary URL depends on the content type.
   String get primaryUrl => _wrapped.primaryUrl;
+
   set primaryUrl(String v) {
     _wrapped.primaryUrl = v;
   }
@@ -507,6 +512,7 @@ class GetDetails {
   /// Defaults to the primary URL. Note that the meaning of a secondary URL
   /// depends on the content type, and not all content types use secondary URLs.
   String? get secondaryUrl => _wrapped.secondaryUrl;
+
   set secondaryUrl(String? v) {
     _wrapped.secondaryUrl = v;
   }
@@ -515,6 +521,7 @@ class GetDetails {
   /// should be retrieved.
   ResourceIdentifier? get resourceIdentifier =>
       _wrapped.resourceIdentifier?.let(ResourceIdentifier.fromJS);
+
   set resourceIdentifier(ResourceIdentifier? v) {
     _wrapped.resourceIdentifier = v?.toJS;
   }
@@ -522,6 +529,7 @@ class GetDetails {
   /// Whether to check the content settings for an incognito session. (default
   /// false)
   bool? get incognito => _wrapped.incognito;
+
   set incognito(bool? v) {
     _wrapped.incognito = v;
   }
@@ -564,6 +572,7 @@ class SetDetails {
   /// The pattern for the primary URL. For details on the format of a pattern,
   /// see [Content Setting Patterns](contentSettings#patterns).
   String get primaryPattern => _wrapped.primaryPattern;
+
   set primaryPattern(String v) {
     _wrapped.primaryPattern = v;
   }
@@ -572,6 +581,7 @@ class SetDetails {
   /// details on the format of a pattern, see [Content Setting
   /// Patterns](contentSettings#patterns).
   String? get secondaryPattern => _wrapped.secondaryPattern;
+
   set secondaryPattern(String? v) {
     _wrapped.secondaryPattern = v;
   }
@@ -579,6 +589,7 @@ class SetDetails {
   /// The resource identifier for the content type.
   ResourceIdentifier? get resourceIdentifier =>
       _wrapped.resourceIdentifier?.let(ResourceIdentifier.fromJS);
+
   set resourceIdentifier(ResourceIdentifier? v) {
     _wrapped.resourceIdentifier = v?.toJS;
   }
@@ -586,12 +597,14 @@ class SetDetails {
   /// The setting applied by this rule. See the description of the individual
   /// ContentSetting objects for the possible values.
   Object get setting => _wrapped.setting.dartify()!;
+
   set setting(Object v) {
     _wrapped.setting = v.jsify()!;
   }
 
   /// Where to set the setting (default: regular).
   Scope? get scope => _wrapped.scope?.let(Scope.fromJS);
+
   set scope(Scope? v) {
     _wrapped.scope = v?.toJS;
   }

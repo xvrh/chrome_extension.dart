@@ -52,12 +52,14 @@ class MostVisitedURL {
 
   /// The most visited URL.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// The title of the page
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }

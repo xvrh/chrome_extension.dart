@@ -202,12 +202,14 @@ class GetViewsFetchProperties {
   /// The type of view to get. If omitted, returns all views (including
   /// background pages and tabs).
   ViewType? get type => _wrapped.type?.let(ViewType.fromJS);
+
   set type(ViewType? v) {
     _wrapped.type = v?.toJS;
   }
 
   /// The window to restrict the search to. If omitted, returns all views.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -215,6 +217,7 @@ class GetViewsFetchProperties {
   /// Find a view according to a tab id. If this field is omitted, returns all
   /// views.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -235,6 +238,7 @@ class ExtensionLastError {
 
   /// Description of the error that has taken place.
   String get message => _wrapped.message;
+
   set message(String v) {
     _wrapped.message = v;
   }

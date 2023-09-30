@@ -130,6 +130,7 @@ class GetCallbackDetails {
 
   /// The value of the setting.
   Object get value => _wrapped.value.dartify()!;
+
   set value(Object v) {
     _wrapped.value = v.jsify()!;
   }
@@ -137,6 +138,7 @@ class GetCallbackDetails {
   /// The level of control of the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -145,6 +147,7 @@ class GetCallbackDetails {
   /// property will _only_ be present if the [incognito] property in the
   /// [details] parameter of `get()` was true.
   bool? get incognitoSpecific => _wrapped.incognitoSpecific;
+
   set incognitoSpecific(bool? v) {
     _wrapped.incognitoSpecific = v;
   }
@@ -167,6 +170,7 @@ class GetDetails {
   /// Whether to return the value that applies to the incognito session (default
   /// false).
   bool? get incognito => _wrapped.incognito;
+
   set incognito(bool? v) {
     _wrapped.incognito = v;
   }
@@ -196,6 +200,7 @@ class SetDetails {
   /// value type, which is described together with the setting. An extension
   /// should _not_ set a value of a different type.
   Object get value => _wrapped.value.dartify()!;
+
   set value(Object v) {
     _wrapped.value = v.jsify()!;
   }
@@ -203,6 +208,7 @@ class SetDetails {
   /// Where to set the setting (default: regular).
   ChromeSettingScope? get scope =>
       _wrapped.scope?.let(ChromeSettingScope.fromJS);
+
   set scope(ChromeSettingScope? v) {
     _wrapped.scope = v?.toJS;
   }
@@ -224,6 +230,7 @@ class ClearDetails {
   /// Where to clear the setting (default: regular).
   ChromeSettingScope? get scope =>
       _wrapped.scope?.let(ChromeSettingScope.fromJS);
+
   set scope(ChromeSettingScope? v) {
     _wrapped.scope = v?.toJS;
   }
@@ -255,6 +262,7 @@ class OnChangeDetails {
 
   /// The value of the setting after the change.
   Object get value => _wrapped.value.dartify()!;
+
   set value(Object v) {
     _wrapped.value = v.jsify()!;
   }
@@ -262,6 +270,7 @@ class OnChangeDetails {
   /// The level of control of the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -270,6 +279,7 @@ class OnChangeDetails {
   /// session.<br/>This property will _only_ be present if the user has enabled
   /// the extension in incognito mode.
   bool? get incognitoSpecific => _wrapped.incognitoSpecific;
+
   set incognitoSpecific(bool? v) {
     _wrapped.incognitoSpecific = v;
   }

@@ -1,3 +1,7 @@
+## 0.2.0
+
+- Regenerate the bindings based on Chrome v116
+
 ## 0.1.2
 
 - Update the readme to give some tips on how to build Chrome extensions with Flutter.

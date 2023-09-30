@@ -266,24 +266,28 @@ class Bounds {
 
   /// The x-coordinate of the upper-left corner.
   int get left => _wrapped.left;
+
   set left(int v) {
     _wrapped.left = v;
   }
 
   /// The y-coordinate of the upper-left corner.
   int get top => _wrapped.top;
+
   set top(int v) {
     _wrapped.top = v;
   }
 
   /// The width of the display in pixels.
   int get width => _wrapped.width;
+
   set width(int v) {
     _wrapped.width = v;
   }
 
   /// The height of the display in pixels.
   int get height => _wrapped.height;
+
   set height(int v) {
     _wrapped.height = v;
   }
@@ -317,24 +321,28 @@ class Insets {
 
   /// The x-axis distance from the left bound.
   int get left => _wrapped.left;
+
   set left(int v) {
     _wrapped.left = v;
   }
 
   /// The y-axis distance from the top bound.
   int get top => _wrapped.top;
+
   set top(int v) {
     _wrapped.top = v;
   }
 
   /// The x-axis distance from the right bound.
   int get right => _wrapped.right;
+
   set right(int v) {
     _wrapped.right = v;
   }
 
   /// The y-axis distance from the bottom bound.
   int get bottom => _wrapped.bottom;
+
   set bottom(int v) {
     _wrapped.bottom = v;
   }
@@ -360,12 +368,14 @@ class Point {
 
   /// The x-coordinate of the point.
   int get x => _wrapped.x;
+
   set x(int v) {
     _wrapped.x = v;
   }
 
   /// The y-coordinate of the point.
   int get y => _wrapped.y;
+
   set y(int v) {
     _wrapped.y = v;
   }
@@ -391,12 +401,14 @@ class TouchCalibrationPair {
 
   /// The coordinates of the display point.
   Point get displayPoint => Point.fromJS(_wrapped.displayPoint);
+
   set displayPoint(Point v) {
     _wrapped.displayPoint = v.toJS;
   }
 
   /// The coordinates of the touch point corresponding to the display point.
   Point get touchPoint => Point.fromJS(_wrapped.touchPoint);
+
   set touchPoint(Point v) {
     _wrapped.touchPoint = v.toJS;
   }
@@ -430,24 +442,28 @@ class TouchCalibrationPairQuad {
 
   /// First pair of touch and display point required for touch calibration.
   TouchCalibrationPair get pair1 => TouchCalibrationPair.fromJS(_wrapped.pair1);
+
   set pair1(TouchCalibrationPair v) {
     _wrapped.pair1 = v.toJS;
   }
 
   /// Second pair of touch and display point required for touch calibration.
   TouchCalibrationPair get pair2 => TouchCalibrationPair.fromJS(_wrapped.pair2);
+
   set pair2(TouchCalibrationPair v) {
     _wrapped.pair2 = v.toJS;
   }
 
   /// Third pair of touch and display point required for touch calibration.
   TouchCalibrationPair get pair3 => TouchCalibrationPair.fromJS(_wrapped.pair3);
+
   set pair3(TouchCalibrationPair v) {
     _wrapped.pair3 = v.toJS;
   }
 
   /// Fourth pair of touch and display point required for touch calibration.
   TouchCalibrationPair get pair4 => TouchCalibrationPair.fromJS(_wrapped.pair4);
+
   set pair4(TouchCalibrationPair v) {
     _wrapped.pair4 = v.toJS;
   }
@@ -505,60 +521,70 @@ class DisplayMode {
 
   /// The display mode width in device independent (user visible) pixels.
   int get width => _wrapped.width;
+
   set width(int v) {
     _wrapped.width = v;
   }
 
   /// The display mode height in device independent (user visible) pixels.
   int get height => _wrapped.height;
+
   set height(int v) {
     _wrapped.height = v;
   }
 
   /// The display mode width in native pixels.
   int get widthInNativePixels => _wrapped.widthInNativePixels;
+
   set widthInNativePixels(int v) {
     _wrapped.widthInNativePixels = v;
   }
 
   /// The display mode height in native pixels.
   int get heightInNativePixels => _wrapped.heightInNativePixels;
+
   set heightInNativePixels(int v) {
     _wrapped.heightInNativePixels = v;
   }
 
   /// The display mode UI scale factor.
   double? get uiScale => _wrapped.uiScale;
+
   set uiScale(double? v) {
     _wrapped.uiScale = v;
   }
 
   /// The display mode device scale factor.
   double get deviceScaleFactor => _wrapped.deviceScaleFactor;
+
   set deviceScaleFactor(double v) {
     _wrapped.deviceScaleFactor = v;
   }
 
   /// The display mode refresh rate in hertz.
   double get refreshRate => _wrapped.refreshRate;
+
   set refreshRate(double v) {
     _wrapped.refreshRate = v;
   }
 
   /// True if the mode is the display's native mode.
   bool get isNative => _wrapped.isNative;
+
   set isNative(bool v) {
     _wrapped.isNative = v;
   }
 
   /// True if the display mode is currently selected.
   bool get isSelected => _wrapped.isSelected;
+
   set isSelected(bool v) {
     _wrapped.isSelected = v;
   }
 
   /// True if this mode is interlaced, false if not provided.
   bool? get isInterlaced => _wrapped.isInterlaced;
+
   set isInterlaced(bool? v) {
     _wrapped.isInterlaced = v;
   }
@@ -594,12 +620,14 @@ class DisplayLayout {
 
   /// The unique identifier of the display.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The unique identifier of the parent display. Empty if this is the root.
   String get parentId => _wrapped.parentId;
+
   set parentId(String v) {
     _wrapped.parentId = v;
   }
@@ -607,6 +635,7 @@ class DisplayLayout {
   /// The layout position of this display relative to the parent. This will
   /// be ignored for the root.
   LayoutPosition get position => LayoutPosition.fromJS(_wrapped.position);
+
   set position(LayoutPosition v) {
     _wrapped.position = v.toJS;
   }
@@ -614,6 +643,7 @@ class DisplayLayout {
   /// The offset of the display along the connected edge. 0 indicates that
   /// the topmost or leftmost corners are aligned.
   int get offset => _wrapped.offset;
+
   set offset(int v) {
     _wrapped.offset = v;
   }
@@ -643,18 +673,21 @@ class Edid {
 
   /// 3 character manufacturer code. See Sec. 3.4.1 page 21. Required in v1.4.
   String get manufacturerId => _wrapped.manufacturerId;
+
   set manufacturerId(String v) {
     _wrapped.manufacturerId = v;
   }
 
   /// 2 byte manufacturer-assigned code, Sec. 3.4.2 page 21. Required in v1.4.
   String get productId => _wrapped.productId;
+
   set productId(String v) {
     _wrapped.productId = v;
   }
 
   /// Year of manufacturer, Sec. 3.4.4 page 22. Required in v1.4.
   int get yearOfManufacture => _wrapped.yearOfManufacture;
+
   set yearOfManufacture(int v) {
     _wrapped.yearOfManufacture = v;
   }
@@ -780,18 +813,21 @@ class DisplayUnitInfo {
 
   /// The unique identifier of the display.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The user-friendly name (e.g. "HP LCD monitor").
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
 
   /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
   Edid? get edid => _wrapped.edid?.let(Edid.fromJS);
+
   set edid(Edid? v) {
     _wrapped.edid = v?.toJS;
   }
@@ -800,6 +836,7 @@ class DisplayUnitInfo {
   /// mirroring is enabled, otherwise empty. This will be set for all displays
   /// (including the display being mirrored).
   String get mirroringSourceId => _wrapped.mirroringSourceId;
+
   set mirroringSourceId(String v) {
     _wrapped.mirroringSourceId = v;
   }
@@ -813,24 +850,28 @@ class DisplayUnitInfo {
           .cast<String>()
           .map((e) => e)
           .toList();
+
   set mirroringDestinationIds(List<String> v) {
     _wrapped.mirroringDestinationIds = v.toJSArray((e) => e);
   }
 
   /// True if this is the primary display.
   bool get isPrimary => _wrapped.isPrimary;
+
   set isPrimary(bool v) {
     _wrapped.isPrimary = v;
   }
 
   /// True if this is an internal display.
   bool get isInternal => _wrapped.isInternal;
+
   set isInternal(bool v) {
     _wrapped.isInternal = v;
   }
 
   /// True if this display is enabled.
   bool get isEnabled => _wrapped.isEnabled;
+
   set isEnabled(bool v) {
     _wrapped.isEnabled = v;
   }
@@ -838,6 +879,7 @@ class DisplayUnitInfo {
   /// True for all displays when in unified desktop mode. See documentation
   /// for [enableUnifiedDesktop].
   bool get isUnified => _wrapped.isUnified;
+
   set isUnified(bool v) {
     _wrapped.isUnified = v;
   }
@@ -847,18 +889,21 @@ class DisplayUnitInfo {
   /// Provided for ChromeOS Settings UI only. TODO(stevenjb): Remove when
   /// Settings switches to a mojo API.
   bool? get isAutoRotationAllowed => _wrapped.isAutoRotationAllowed;
+
   set isAutoRotationAllowed(bool? v) {
     _wrapped.isAutoRotationAllowed = v;
   }
 
   /// The number of pixels per inch along the x-axis.
   double get dpiX => _wrapped.dpiX;
+
   set dpiX(double v) {
     _wrapped.dpiX = v;
   }
 
   /// The number of pixels per inch along the y-axis.
   double get dpiY => _wrapped.dpiY;
+
   set dpiY(double v) {
     _wrapped.dpiY = v;
   }
@@ -869,12 +914,14 @@ class DisplayUnitInfo {
   /// A value of -1 will be interpreted as auto-rotate when the device is in
   /// a physical tablet state.
   int get rotation => _wrapped.rotation;
+
   set rotation(int v) {
     _wrapped.rotation = v;
   }
 
   /// The display's logical bounds.
   Bounds get bounds => Bounds.fromJS(_wrapped.bounds);
+
   set bounds(Bounds v) {
     _wrapped.bounds = v.toJS;
   }
@@ -883,6 +930,7 @@ class DisplayUnitInfo {
   /// Currently exposed only on ChromeOS. Will be set to empty insets on
   /// other platforms.
   Insets get overscan => Insets.fromJS(_wrapped.overscan);
+
   set overscan(Insets v) {
     _wrapped.overscan = v.toJS;
   }
@@ -891,6 +939,7 @@ class DisplayUnitInfo {
   /// area excludes areas of the display reserved for OS, for example taskbar
   /// and launcher.
   Bounds get workArea => Bounds.fromJS(_wrapped.workArea);
+
   set workArea(Bounds v) {
     _wrapped.workArea = v.toJS;
   }
@@ -902,12 +951,14 @@ class DisplayUnitInfo {
       .cast<$js.DisplayMode>()
       .map((e) => DisplayMode.fromJS(e))
       .toList();
+
   set modes(List<DisplayMode> v) {
     _wrapped.modes = v.toJSArray((e) => e.toJS);
   }
 
   /// True if this display has a touch input device associated with it.
   bool get hasTouchSupport => _wrapped.hasTouchSupport;
+
   set hasTouchSupport(bool v) {
     _wrapped.hasTouchSupport = v;
   }
@@ -916,6 +967,7 @@ class DisplayUnitInfo {
   /// Provided for ChromeOS Settings UI only. TODO(stevenjb): Remove when
   /// Settings switches to a mojo API. NOTE: The name of this may change.
   bool get hasAccelerometerSupport => _wrapped.hasAccelerometerSupport;
+
   set hasAccelerometerSupport(bool v) {
     _wrapped.hasAccelerometerSupport = v;
   }
@@ -926,6 +978,7 @@ class DisplayUnitInfo {
           .cast<double>()
           .map((e) => e)
           .toList();
+
   set availableDisplayZoomFactors(List<double> v) {
     _wrapped.availableDisplayZoomFactors = v.toJSArray((e) => e);
   }
@@ -934,6 +987,7 @@ class DisplayUnitInfo {
   /// For example, value 1 is equivalent to 100% zoom, and value 1.5 is
   /// equivalent to 150% zoom.
   double get displayZoomFactor => _wrapped.displayZoomFactor;
+
   set displayZoomFactor(double v) {
     _wrapped.displayZoomFactor = v;
   }
@@ -1017,6 +1071,7 @@ class DisplayProperties {
   /// primary display. If provided, mirroringSourceId must not be provided and
   /// other properties will be ignored. This is has no effect if not provided.
   bool? get isUnified => _wrapped.isUnified;
+
   set isUnified(bool? v) {
     _wrapped.isUnified = v;
   }
@@ -1027,6 +1082,7 @@ class DisplayProperties {
   /// same as the id passed to setDisplayProperties. If set, no other property
   /// may be set.
   String? get mirroringSourceId => _wrapped.mirroringSourceId;
+
   set mirroringSourceId(String? v) {
     _wrapped.mirroringSourceId = v;
   }
@@ -1035,6 +1091,7 @@ class DisplayProperties {
   /// Note: If set, the display is considered primary for all other properties
   /// (i.e. [isUnified] may be set and bounds origin may not).
   bool? get isPrimary => _wrapped.isPrimary;
+
   set isPrimary(bool? v) {
     _wrapped.isPrimary = v;
   }
@@ -1043,6 +1100,7 @@ class DisplayProperties {
   /// that overscan values may not be negative or larger than a half of the
   /// screen's size. Overscan cannot be changed on the internal monitor.
   Insets? get overscan => _wrapped.overscan?.let(Insets.fromJS);
+
   set overscan(Insets? v) {
     _wrapped.overscan = v?.toJS;
   }
@@ -1051,6 +1109,7 @@ class DisplayProperties {
   /// Legal values are [0, 90, 180, 270]. The rotation is set clockwise,
   /// relative to the display's vertical position.
   int? get rotation => _wrapped.rotation;
+
   set rotation(int? v) {
     _wrapped.rotation = v;
   }
@@ -1063,6 +1122,7 @@ class DisplayProperties {
   /// retrieved using [getInfo]. The bounds origin cannot be changed on
   /// the primary display.
   int? get boundsOriginx => _wrapped.boundsOriginX;
+
   set boundsOriginx(int? v) {
     _wrapped.boundsOriginX = v;
   }
@@ -1070,6 +1130,7 @@ class DisplayProperties {
   /// If set, updates the display's logical bounds origin along the y-axis.
   /// See documentation for [boundsOriginX] parameter.
   int? get boundsOriginy => _wrapped.boundsOriginY;
+
   set boundsOriginy(int? v) {
     _wrapped.boundsOriginY = v;
   }
@@ -1079,6 +1140,7 @@ class DisplayProperties {
   /// display mode is invalid, it will not be applied and an error will be
   /// set, but other properties will still be applied.
   DisplayMode? get displayMode => _wrapped.displayMode?.let(DisplayMode.fromJS);
+
   set displayMode(DisplayMode? v) {
     _wrapped.displayMode = v?.toJS;
   }
@@ -1087,6 +1149,7 @@ class DisplayProperties {
   /// re-layout and repaint thus resulting in a better quality zoom than just
   /// performing a pixel by pixel stretch enlargement.
   double? get displayZoomFactor => _wrapped.displayZoomFactor;
+
   set displayZoomFactor(double? v) {
     _wrapped.displayZoomFactor = v;
   }
@@ -1111,6 +1174,7 @@ class GetInfoFlags {
   /// by [getInfo] when in unified desktop mode (see
   /// [enableUnifiedDesktop]). Defaults to false.
   bool? get singleUnified => _wrapped.singleUnified;
+
   set singleUnified(bool? v) {
     _wrapped.singleUnified = v;
   }
@@ -1141,12 +1205,14 @@ class MirrorModeInfo {
 
   /// The mirror mode that should be set.
   MirrorMode get mode => MirrorMode.fromJS(_wrapped.mode);
+
   set mode(MirrorMode v) {
     _wrapped.mode = v.toJS;
   }
 
   /// The id of the mirroring source display. This is only valid for 'mixed'.
   String? get mirroringSourceId => _wrapped.mirroringSourceId;
+
   set mirroringSourceId(String? v) {
     _wrapped.mirroringSourceId = v;
   }
@@ -1158,6 +1224,7 @@ class MirrorModeInfo {
           .cast<String>()
           .map((e) => e)
           .toList();
+
   set mirroringDestinationIds(List<String>? v) {
     _wrapped.mirroringDestinationIds = v?.toJSArray((e) => e);
   }

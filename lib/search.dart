@@ -73,6 +73,7 @@ class QueryInfo {
 
   /// String to query with the default search provider.
   String get text => _wrapped.text;
+
   set text(String v) {
     _wrapped.text = v;
   }
@@ -80,6 +81,7 @@ class QueryInfo {
   /// Location where search results should be displayed.
   /// `CURRENT_TAB` is the default.
   Disposition? get disposition => _wrapped.disposition?.let(Disposition.fromJS);
+
   set disposition(Disposition? v) {
     _wrapped.disposition = v?.toJS;
   }
@@ -87,6 +89,7 @@ class QueryInfo {
   /// Location where search results should be displayed.
   /// `tabId` cannot be used with `disposition`.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }

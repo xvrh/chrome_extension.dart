@@ -709,6 +709,7 @@ class EntryMetadata {
   /// True if it is a directory. Must be provided if requested in
   /// `options`.
   bool? get isDirectory => _wrapped.isDirectory;
+
   set isDirectory(bool? v) {
     _wrapped.isDirectory = v;
   }
@@ -716,6 +717,7 @@ class EntryMetadata {
   /// Name of this entry (not full path name). Must not contain '/'. For root
   /// it must be empty. Must be provided if requested in `options`.
   String? get name => _wrapped.name;
+
   set name(String? v) {
     _wrapped.name = v;
   }
@@ -723,6 +725,7 @@ class EntryMetadata {
   /// File size in bytes. Must be provided if requested in
   /// `options`.
   double? get size => _wrapped.size;
+
   set size(double? v) {
     _wrapped.size = v;
   }
@@ -730,6 +733,7 @@ class EntryMetadata {
   /// The last modified time of this entry. Must be provided if requested in
   /// `options`.
   JSAny? get modificationTime => _wrapped.modificationTime;
+
   set modificationTime(JSAny? v) {
     _wrapped.modificationTime = v;
   }
@@ -737,6 +741,7 @@ class EntryMetadata {
   /// Mime type for the entry. Always optional, but should be provided if
   /// requested in `options`.
   String? get mimeType => _wrapped.mimeType;
+
   set mimeType(String? v) {
     _wrapped.mimeType = v;
   }
@@ -745,6 +750,7 @@ class EntryMetadata {
   /// 32 KB in size. Optional, but can be provided only when explicitly
   /// requested by the [onGetMetadataRequested] event.
   String? get thumbnail => _wrapped.thumbnail;
+
   set thumbnail(String? v) {
     _wrapped.thumbnail = v;
   }
@@ -775,6 +781,7 @@ class Watcher {
 
   /// The path of the entry being observed.
   String get entryPath => _wrapped.entryPath;
+
   set entryPath(String v) {
     _wrapped.entryPath = v;
   }
@@ -782,12 +789,14 @@ class Watcher {
   /// Whether watching should include all child entries recursively. It can be
   /// true for directories only.
   bool get recursive => _wrapped.recursive;
+
   set recursive(bool v) {
     _wrapped.recursive = v;
   }
 
   /// Tag used by the last notification for the watcher.
   String? get lastTag => _wrapped.lastTag;
+
   set lastTag(String? v) {
     _wrapped.lastTag = v;
   }
@@ -817,18 +826,21 @@ class OpenedFile {
 
   /// A request ID to be be used by consecutive read/write and close requests.
   int get openRequestId => _wrapped.openRequestId;
+
   set openRequestId(int v) {
     _wrapped.openRequestId = v;
   }
 
   /// The path of the opened file.
   String get filePath => _wrapped.filePath;
+
   set filePath(String v) {
     _wrapped.filePath = v;
   }
 
   /// Whether the file was opened for reading or writing.
   OpenFileMode get mode => OpenFileMode.fromJS(_wrapped.mode);
+
   set mode(OpenFileMode v) {
     _wrapped.mode = v.toJS;
   }
@@ -877,12 +889,14 @@ class FileSystemInfo {
 
   /// The identifier of the file system.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// A human-readable name for the file system.
   String get displayName => _wrapped.displayName;
+
   set displayName(String v) {
     _wrapped.displayName = v;
   }
@@ -890,6 +904,7 @@ class FileSystemInfo {
   /// Whether the file system supports operations which may change contents
   /// of the file system (such as creating, deleting or writing to files).
   bool get writable => _wrapped.writable;
+
   set writable(bool v) {
     _wrapped.writable = v;
   }
@@ -897,6 +912,7 @@ class FileSystemInfo {
   /// The maximum number of files that can be opened at once. If 0, then not
   /// limited.
   int get openedFilesLimit => _wrapped.openedFilesLimit;
+
   set openedFilesLimit(int v) {
     _wrapped.openedFilesLimit = v;
   }
@@ -906,6 +922,7 @@ class FileSystemInfo {
       .cast<$js.OpenedFile>()
       .map((e) => OpenedFile.fromJS(e))
       .toList();
+
   set openedFiles(List<OpenedFile> v) {
     _wrapped.openedFiles = v.toJSArray((e) => e.toJS);
   }
@@ -913,6 +930,7 @@ class FileSystemInfo {
   /// Whether the file system supports the `tag` field for observing
   /// directories.
   bool? get supportsNotifyTag => _wrapped.supportsNotifyTag;
+
   set supportsNotifyTag(bool? v) {
     _wrapped.supportsNotifyTag = v;
   }
@@ -922,6 +940,7 @@ class FileSystemInfo {
       .cast<$js.Watcher>()
       .map((e) => Watcher.fromJS(e))
       .toList();
+
   set watchers(List<Watcher> v) {
     _wrapped.watchers = v.toJSArray((e) => e.toJS);
   }
@@ -970,12 +989,14 @@ class MountOptions {
   /// The string indentifier of the file system. Must be unique per each
   /// extension.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// A human-readable name for the file system.
   String get displayName => _wrapped.displayName;
+
   set displayName(String v) {
     _wrapped.displayName = v;
   }
@@ -983,6 +1004,7 @@ class MountOptions {
   /// Whether the file system supports operations which may change contents
   /// of the file system (such as creating, deleting or writing to files).
   bool? get writable => _wrapped.writable;
+
   set writable(bool? v) {
     _wrapped.writable = v;
   }
@@ -990,6 +1012,7 @@ class MountOptions {
   /// The maximum number of files that can be opened at once. If not specified,
   /// or 0, then not limited.
   int? get openedFilesLimit => _wrapped.openedFilesLimit;
+
   set openedFilesLimit(int? v) {
     _wrapped.openedFilesLimit = v;
   }
@@ -997,6 +1020,7 @@ class MountOptions {
   /// Whether the file system supports the `tag` field for observed
   /// directories.
   bool? get supportsNotifyTag => _wrapped.supportsNotifyTag;
+
   set supportsNotifyTag(bool? v) {
     _wrapped.supportsNotifyTag = v;
   }
@@ -1004,6 +1028,7 @@ class MountOptions {
   /// Whether the framework should resume the file system at the next sign-in
   /// session. True by default.
   bool? get persistent => _wrapped.persistent;
+
   set persistent(bool? v) {
     _wrapped.persistent = v;
   }
@@ -1024,6 +1049,7 @@ class UnmountOptions {
 
   /// The identifier of the file system to be unmounted.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
@@ -1049,12 +1075,14 @@ class UnmountRequestedOptions {
 
   /// The identifier of the file system to be unmounted.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -1109,36 +1137,42 @@ class GetMetadataRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the entry to fetch metadata about.
   String get entryPath => _wrapped.entryPath;
+
   set entryPath(String v) {
     _wrapped.entryPath = v;
   }
 
   /// Set to `true` if `is_directory` value is requested.
   bool get isDirectory => _wrapped.isDirectory;
+
   set isDirectory(bool v) {
     _wrapped.isDirectory = v;
   }
 
   /// Set to `true` if `name` value is requested.
   bool get name => _wrapped.name;
+
   set name(bool v) {
     _wrapped.name = v;
   }
 
   /// Set to `true` if `size` value is requested.
   bool get size => _wrapped.size;
+
   set size(bool v) {
     _wrapped.size = v;
   }
@@ -1146,18 +1180,21 @@ class GetMetadataRequestedOptions {
   /// Set to `true` if `modificationTime` value is
   /// requested.
   bool get modificationTime => _wrapped.modificationTime;
+
   set modificationTime(bool v) {
     _wrapped.modificationTime = v;
   }
 
   /// Set to `true` if `mimeType` value is requested.
   bool get mimeType => _wrapped.mimeType;
+
   set mimeType(bool v) {
     _wrapped.mimeType = v;
   }
 
   /// Set to `true` if the thumbnail is requested.
   bool get thumbnail => _wrapped.thumbnail;
+
   set thumbnail(bool v) {
     _wrapped.thumbnail = v;
   }
@@ -1187,12 +1224,14 @@ class GetActionsRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -1200,6 +1239,7 @@ class GetActionsRequestedOptions {
   /// List of paths of entries for the list of actions.
   List<String> get entryPaths =>
       _wrapped.entryPaths.toDart.cast<String>().map((e) => e).toList();
+
   set entryPaths(List<String> v) {
     _wrapped.entryPaths = v.toJSArray((e) => e);
   }
@@ -1254,36 +1294,42 @@ class ReadDirectoryRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the directory which contents are requested.
   String get directoryPath => _wrapped.directoryPath;
+
   set directoryPath(String v) {
     _wrapped.directoryPath = v;
   }
 
   /// Set to `true` if `is_directory` value is requested.
   bool get isDirectory => _wrapped.isDirectory;
+
   set isDirectory(bool v) {
     _wrapped.isDirectory = v;
   }
 
   /// Set to `true` if `name` value is requested.
   bool get name => _wrapped.name;
+
   set name(bool v) {
     _wrapped.name = v;
   }
 
   /// Set to `true` if `size` value is requested.
   bool get size => _wrapped.size;
+
   set size(bool v) {
     _wrapped.size = v;
   }
@@ -1291,18 +1337,21 @@ class ReadDirectoryRequestedOptions {
   /// Set to `true` if `modificationTime` value is
   /// requested.
   bool get modificationTime => _wrapped.modificationTime;
+
   set modificationTime(bool v) {
     _wrapped.modificationTime = v;
   }
 
   /// Set to `true` if `mimeType` value is requested.
   bool get mimeType => _wrapped.mimeType;
+
   set mimeType(bool v) {
     _wrapped.mimeType = v;
   }
 
   /// Set to `true` if the thumbnail is requested.
   bool get thumbnail => _wrapped.thumbnail;
+
   set thumbnail(bool v) {
     _wrapped.thumbnail = v;
   }
@@ -1337,6 +1386,7 @@ class OpenFileRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
@@ -1344,18 +1394,21 @@ class OpenFileRequestedOptions {
   /// A request ID which will be used by consecutive read/write and close
   /// requests.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the file to be opened.
   String get filePath => _wrapped.filePath;
+
   set filePath(String v) {
     _wrapped.filePath = v;
   }
 
   /// Whether the file will be used for reading or writing.
   OpenFileMode get mode => OpenFileMode.fromJS(_wrapped.mode);
+
   set mode(OpenFileMode v) {
     _wrapped.mode = v.toJS;
   }
@@ -1385,18 +1438,21 @@ class CloseFileRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// A request ID used to open the file.
   int get openRequestId => _wrapped.openRequestId;
+
   set openRequestId(int v) {
     _wrapped.openRequestId = v;
   }
@@ -1434,30 +1490,35 @@ class ReadFileRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// A request ID used to open the file.
   int get openRequestId => _wrapped.openRequestId;
+
   set openRequestId(int v) {
     _wrapped.openRequestId = v;
   }
 
   /// Position in the file (in bytes) to start reading from.
   double get offset => _wrapped.offset;
+
   set offset(double v) {
     _wrapped.offset = v;
   }
 
   /// Number of bytes to be returned.
   double get length => _wrapped.length;
+
   set length(double v) {
     _wrapped.length = v;
   }
@@ -1491,24 +1552,28 @@ class CreateDirectoryRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the directory to be created.
   String get directoryPath => _wrapped.directoryPath;
+
   set directoryPath(String v) {
     _wrapped.directoryPath = v;
   }
 
   /// Whether the operation is recursive (for directories only).
   bool get recursive => _wrapped.recursive;
+
   set recursive(bool v) {
     _wrapped.recursive = v;
   }
@@ -1542,24 +1607,28 @@ class DeleteEntryRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the entry to be deleted.
   String get entryPath => _wrapped.entryPath;
+
   set entryPath(String v) {
     _wrapped.entryPath = v;
   }
 
   /// Whether the operation is recursive (for directories only).
   bool get recursive => _wrapped.recursive;
+
   set recursive(bool v) {
     _wrapped.recursive = v;
   }
@@ -1589,18 +1658,21 @@ class CreateFileRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the file to be created.
   String get filePath => _wrapped.filePath;
+
   set filePath(String v) {
     _wrapped.filePath = v;
   }
@@ -1634,24 +1706,28 @@ class CopyEntryRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The source path of the entry to be copied.
   String get sourcePath => _wrapped.sourcePath;
+
   set sourcePath(String v) {
     _wrapped.sourcePath = v;
   }
 
   /// The destination path for the copy operation.
   String get targetPath => _wrapped.targetPath;
+
   set targetPath(String v) {
     _wrapped.targetPath = v;
   }
@@ -1685,24 +1761,28 @@ class MoveEntryRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The source path of the entry to be moved into a new place.
   String get sourcePath => _wrapped.sourcePath;
+
   set sourcePath(String v) {
     _wrapped.sourcePath = v;
   }
 
   /// The destination path for the copy operation.
   String get targetPath => _wrapped.targetPath;
+
   set targetPath(String v) {
     _wrapped.targetPath = v;
   }
@@ -1736,24 +1816,28 @@ class TruncateRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the file to be truncated.
   String get filePath => _wrapped.filePath;
+
   set filePath(String v) {
     _wrapped.filePath = v;
   }
 
   /// Number of bytes to be retained after the operation completes.
   double get length => _wrapped.length;
+
   set length(double v) {
     _wrapped.length = v;
   }
@@ -1791,30 +1875,35 @@ class WriteFileRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// A request ID used to open the file.
   int get openRequestId => _wrapped.openRequestId;
+
   set openRequestId(int v) {
     _wrapped.openRequestId = v;
   }
 
   /// Position in the file (in bytes) to start writing the bytes from.
   double get offset => _wrapped.offset;
+
   set offset(double v) {
     _wrapped.offset = v;
   }
 
   /// Buffer of bytes to be written to the file.
   ByteBuffer get data => _wrapped.data.toDart;
+
   set data(ByteBuffer v) {
     _wrapped.data = v.toJS;
   }
@@ -1844,18 +1933,21 @@ class AbortRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// An ID of the request to be aborted.
   int get operationRequestId => _wrapped.operationRequestId;
+
   set operationRequestId(int v) {
     _wrapped.operationRequestId = v;
   }
@@ -1891,18 +1983,21 @@ class AddWatcherRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the entry to be observed.
   String get entryPath => _wrapped.entryPath;
+
   set entryPath(String v) {
     _wrapped.entryPath = v;
   }
@@ -1910,6 +2005,7 @@ class AddWatcherRequestedOptions {
   /// Whether observing should include all child entries recursively. It can be
   /// true for directories only.
   bool get recursive => _wrapped.recursive;
+
   set recursive(bool v) {
     _wrapped.recursive = v;
   }
@@ -1943,24 +2039,28 @@ class RemoveWatcherRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   /// The path of the watched entry.
   String get entryPath => _wrapped.entryPath;
+
   set entryPath(String v) {
     _wrapped.entryPath = v;
   }
 
   /// Mode of the watcher.
   bool get recursive => _wrapped.recursive;
+
   set recursive(bool v) {
     _wrapped.recursive = v;
   }
@@ -1988,12 +2088,14 @@ class Action {
   /// The identifier of the action. Any string or [CommonActionId] for
   /// common actions.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The title of the action. It may be ignored for common actions.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -2027,12 +2129,14 @@ class ExecuteActionRequestedOptions {
 
   /// The identifier of the file system related to this operation.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -2040,12 +2144,14 @@ class ExecuteActionRequestedOptions {
   /// The set of paths of the entries to be used for the action.
   List<String> get entryPaths =>
       _wrapped.entryPaths.toDart.cast<String>().map((e) => e).toList();
+
   set entryPaths(List<String> v) {
     _wrapped.entryPaths = v.toJSArray((e) => e);
   }
 
   /// The identifier of the action to be executed.
   String get actionId => _wrapped.actionId;
+
   set actionId(String v) {
     _wrapped.actionId = v;
   }
@@ -2071,12 +2177,14 @@ class Change {
 
   /// The path of the changed entry.
   String get entryPath => _wrapped.entryPath;
+
   set entryPath(String v) {
     _wrapped.entryPath = v;
   }
 
   /// The type of the change which happened to the entry.
   ChangeType get changeType => ChangeType.fromJS(_wrapped.changeType);
+
   set changeType(ChangeType v) {
     _wrapped.changeType = v.toJS;
   }
@@ -2124,18 +2232,21 @@ class NotifyOptions {
 
   /// The identifier of the file system related to this change.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The path of the observed entry.
   String get observedPath => _wrapped.observedPath;
+
   set observedPath(String v) {
     _wrapped.observedPath = v;
   }
 
   /// Mode of the observed entry.
   bool get recursive => _wrapped.recursive;
+
   set recursive(bool v) {
     _wrapped.recursive = v;
   }
@@ -2144,6 +2255,7 @@ class NotifyOptions {
   /// DELETED, then the observed entry will be automatically removed from the
   /// list of observed entries.
   ChangeType get changeType => ChangeType.fromJS(_wrapped.changeType);
+
   set changeType(ChangeType v) {
     _wrapped.changeType = v.toJS;
   }
@@ -2154,6 +2266,7 @@ class NotifyOptions {
       .cast<$js.Change>()
       .map((e) => Change.fromJS(e))
       .toList();
+
   set changes(List<Change>? v) {
     _wrapped.changes = v?.toJSArray((e) => e.toJS);
   }
@@ -2163,6 +2276,7 @@ class NotifyOptions {
   /// necessary to provide notifications about changes which changed even
   /// when the system was shutdown.
   String? get tag => _wrapped.tag;
+
   set tag(String? v) {
     _wrapped.tag = v;
   }
@@ -2188,12 +2302,14 @@ class ConfigureRequestedOptions {
 
   /// The identifier of the file system to be configured.
   String get fileSystemId => _wrapped.fileSystemId;
+
   set fileSystemId(String v) {
     _wrapped.fileSystemId = v;
   }
 
   /// The unique identifier of this request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }

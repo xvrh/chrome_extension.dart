@@ -218,6 +218,7 @@ class SubmitJobRequest {
   /// ReverseOrderTicketItem and VendorTicketItem fields since they are
   /// irrelevant for native printing. All other fields must be present.
   PrintJob get job => PrintJob.fromJS(_wrapped.job);
+
   set job(PrintJob v) {
     _wrapped.job = v.toJS;
   }
@@ -225,6 +226,7 @@ class SubmitJobRequest {
   /// Used internally to store the blob uuid after parameter customization and
   /// shouldn't be populated by the extension.
   String? get documentBlobUuid => _wrapped.documentBlobUuid;
+
   set documentBlobUuid(String? v) {
     _wrapped.documentBlobUuid = v;
   }
@@ -251,6 +253,7 @@ class SubmitJobResponse {
 
   /// The status of the request.
   SubmitJobStatus get status => SubmitJobStatus.fromJS(_wrapped.status);
+
   set status(SubmitJobStatus v) {
     _wrapped.status = v.toJS;
   }
@@ -258,6 +261,7 @@ class SubmitJobResponse {
   /// The id of created print job. This is a unique identifier among all print
   /// jobs on the device. If status is not OK, jobId will be null.
   String? get jobId => _wrapped.jobId;
+
   set jobId(String? v) {
     _wrapped.jobId = v;
   }
@@ -314,18 +318,21 @@ class Printer {
   /// The printer's identifier; guaranteed to be unique among printers on the
   /// device.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The name of the printer.
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
 
   /// The human-readable description of the printer.
   String get description => _wrapped.description;
+
   set description(String v) {
     _wrapped.description = v;
   }
@@ -333,12 +340,14 @@ class Printer {
   /// The printer URI. This can be used by extensions to choose the printer for
   /// the user.
   String get uri => _wrapped.uri;
+
   set uri(String v) {
     _wrapped.uri = v;
   }
 
   /// The source of the printer (user or policy configured).
   PrinterSource get source => PrinterSource.fromJS(_wrapped.source);
+
   set source(PrinterSource v) {
     _wrapped.source = v.toJS;
   }
@@ -349,6 +358,7 @@ class Printer {
   /// DefaultPrinterSelection</a> rules.
   /// Note that several printers could be flagged.
   bool get isDefault => _wrapped.isDefault;
+
   set isDefault(bool v) {
     _wrapped.isDefault = v;
   }
@@ -358,6 +368,7 @@ class Printer {
   /// minimum value is 0. Missing value indicates that the printer wasn't used
   /// recently. This value is guaranteed to be unique amongst printers.
   int? get recentlyUsedRank => _wrapped.recentlyUsedRank;
+
   set recentlyUsedRank(int? v) {
     _wrapped.recentlyUsedRank = v;
   }
@@ -389,12 +400,14 @@ class GetPrinterInfoResponse {
   /// CDD format</a>.
   /// The property may be missing.
   Map? get capabilities => _wrapped.capabilities?.toDartMap();
+
   set capabilities(Map? v) {
     _wrapped.capabilities = v?.jsify();
   }
 
   /// The status of the printer.
   PrinterStatus get status => PrinterStatus.fromJS(_wrapped.status);
+
   set status(PrinterStatus v) {
     _wrapped.status = v.toJS;
   }

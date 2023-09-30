@@ -433,42 +433,49 @@ class Device {
   /// An opaque ID for the USB device. It remains unchanged until the device is
   /// unplugged.
   int get device => _wrapped.device;
+
   set device(int v) {
     _wrapped.device = v;
   }
 
   /// The device vendor ID.
   int get vendorId => _wrapped.vendorId;
+
   set vendorId(int v) {
     _wrapped.vendorId = v;
   }
 
   /// The product ID.
   int get productId => _wrapped.productId;
+
   set productId(int v) {
     _wrapped.productId = v;
   }
 
   /// The device version (bcdDevice field).
   int get version => _wrapped.version;
+
   set version(int v) {
     _wrapped.version = v;
   }
 
   /// The iProduct string read from the device, if available.
   String get productName => _wrapped.productName;
+
   set productName(String v) {
     _wrapped.productName = v;
   }
 
   /// The iManufacturer string read from the device, if available.
   String get manufacturerName => _wrapped.manufacturerName;
+
   set manufacturerName(String v) {
     _wrapped.manufacturerName = v;
   }
 
   /// The iSerialNumber string read from the device, if available.
   String get serialNumber => _wrapped.serialNumber;
+
   set serialNumber(String v) {
     _wrapped.serialNumber = v;
   }
@@ -504,18 +511,21 @@ class ConnectionHandle {
   /// created each time the device is opened. The connection handle is
   /// different from [Device.device].
   int get handle => _wrapped.handle;
+
   set handle(int v) {
     _wrapped.handle = v;
   }
 
   /// The device vendor ID.
   int get vendorId => _wrapped.vendorId;
+
   set vendorId(int v) {
     _wrapped.vendorId = v;
   }
 
   /// The product ID.
   int get productId => _wrapped.productId;
+
   set productId(int v) {
     _wrapped.productId = v;
   }
@@ -565,24 +575,28 @@ class EndpointDescriptor {
 
   /// Endpoint address.
   int get address => _wrapped.address;
+
   set address(int v) {
     _wrapped.address = v;
   }
 
   /// Transfer type.
   TransferType get type => TransferType.fromJS(_wrapped.type);
+
   set type(TransferType v) {
     _wrapped.type = v.toJS;
   }
 
   /// Transfer direction.
   Direction get direction => Direction.fromJS(_wrapped.direction);
+
   set direction(Direction v) {
     _wrapped.direction = v.toJS;
   }
 
   /// Maximum packet size.
   int get maximumPacketSize => _wrapped.maximumPacketSize;
+
   set maximumPacketSize(int v) {
     _wrapped.maximumPacketSize = v;
   }
@@ -590,24 +604,28 @@ class EndpointDescriptor {
   /// Transfer synchronization mode (isochronous only).
   SynchronizationType? get synchronization =>
       _wrapped.synchronization?.let(SynchronizationType.fromJS);
+
   set synchronization(SynchronizationType? v) {
     _wrapped.synchronization = v?.toJS;
   }
 
   /// Endpoint usage hint.
   UsageType? get usage => _wrapped.usage?.let(UsageType.fromJS);
+
   set usage(UsageType? v) {
     _wrapped.usage = v?.toJS;
   }
 
   /// Polling interval (interrupt and isochronous only).
   int? get pollingInterval => _wrapped.pollingInterval;
+
   set pollingInterval(int? v) {
     _wrapped.pollingInterval = v;
   }
 
   /// Extra descriptor data associated with this endpoint.
   ByteBuffer get extraData => _wrapped.extra_data.toDart;
+
   set extraData(ByteBuffer v) {
     _wrapped.extra_data = v.toJS;
   }
@@ -657,36 +675,42 @@ class InterfaceDescriptor {
 
   /// The interface number.
   int get interfaceNumber => _wrapped.interfaceNumber;
+
   set interfaceNumber(int v) {
     _wrapped.interfaceNumber = v;
   }
 
   /// The interface alternate setting number (defaults to `0</code).
   int get alternateSetting => _wrapped.alternateSetting;
+
   set alternateSetting(int v) {
     _wrapped.alternateSetting = v;
   }
 
   /// The USB interface class.
   int get interfaceClass => _wrapped.interfaceClass;
+
   set interfaceClass(int v) {
     _wrapped.interfaceClass = v;
   }
 
   /// The USB interface sub-class.
   int get interfaceSubclass => _wrapped.interfaceSubclass;
+
   set interfaceSubclass(int v) {
     _wrapped.interfaceSubclass = v;
   }
 
   /// The USB interface protocol.
   int get interfaceProtocol => _wrapped.interfaceProtocol;
+
   set interfaceProtocol(int v) {
     _wrapped.interfaceProtocol = v;
   }
 
   /// Description of the interface.
   String? get description => _wrapped.description;
+
   set description(String? v) {
     _wrapped.description = v;
   }
@@ -696,12 +720,14 @@ class InterfaceDescriptor {
       .cast<$js.EndpointDescriptor>()
       .map((e) => EndpointDescriptor.fromJS(e))
       .toList();
+
   set endpoints(List<EndpointDescriptor> v) {
     _wrapped.endpoints = v.toJSArray((e) => e.toJS);
   }
 
   /// Extra descriptor data associated with this interface.
   ByteBuffer get extraData => _wrapped.extra_data.toDart;
+
   set extraData(ByteBuffer v) {
     _wrapped.extra_data = v.toJS;
   }
@@ -751,36 +777,42 @@ class ConfigDescriptor {
 
   /// Is this the active configuration?
   bool get active => _wrapped.active;
+
   set active(bool v) {
     _wrapped.active = v;
   }
 
   /// The configuration number.
   int get configurationValue => _wrapped.configurationValue;
+
   set configurationValue(int v) {
     _wrapped.configurationValue = v;
   }
 
   /// Description of the configuration.
   String? get description => _wrapped.description;
+
   set description(String? v) {
     _wrapped.description = v;
   }
 
   /// The device is self-powered.
   bool get selfPowered => _wrapped.selfPowered;
+
   set selfPowered(bool v) {
     _wrapped.selfPowered = v;
   }
 
   /// The device supports remote wakeup.
   bool get remoteWakeup => _wrapped.remoteWakeup;
+
   set remoteWakeup(bool v) {
     _wrapped.remoteWakeup = v;
   }
 
   /// The maximum power needed by this device in milliamps (mA).
   int get maxPower => _wrapped.maxPower;
+
   set maxPower(int v) {
     _wrapped.maxPower = v;
   }
@@ -790,12 +822,14 @@ class ConfigDescriptor {
       .cast<$js.InterfaceDescriptor>()
       .map((e) => InterfaceDescriptor.fromJS(e))
       .toList();
+
   set interfaces(List<InterfaceDescriptor> v) {
     _wrapped.interfaces = v.toJSArray((e) => e.toJS);
   }
 
   /// Extra descriptor data associated with this configuration.
   ByteBuffer get extraData => _wrapped.extra_data.toDart;
+
   set extraData(ByteBuffer v) {
     _wrapped.extra_data = v.toJS;
   }
@@ -853,6 +887,7 @@ class ControlTransferInfo {
 
   /// The transfer direction (`"in"` or `"out"`).
   Direction get direction => Direction.fromJS(_wrapped.direction);
+
   set direction(Direction v) {
     _wrapped.direction = v.toJS;
   }
@@ -860,12 +895,14 @@ class ControlTransferInfo {
   /// The transfer target. The target given by `index` must be
   /// claimed if `"interface"` or `"endpoint"`.
   Recipient get recipient => Recipient.fromJS(_wrapped.recipient);
+
   set recipient(Recipient v) {
     _wrapped.recipient = v.toJS;
   }
 
   /// The request type.
   RequestType get requestType => RequestType.fromJS(_wrapped.requestType);
+
   set requestType(RequestType v) {
     _wrapped.requestType = v.toJS;
   }
@@ -873,18 +910,21 @@ class ControlTransferInfo {
   /// The `bRequest` field, see <i>Universal Serial Bus
   /// Specification Revision 1.1</i> &sect; 9.3.
   int get request => _wrapped.request;
+
   set request(int v) {
     _wrapped.request = v;
   }
 
   /// The `wValue` field, see <i>Ibid</i>.
   int get value => _wrapped.value;
+
   set value(int v) {
     _wrapped.value = v;
   }
 
   /// The `wIndex` field, see <i>Ibid</i>.
   int get index => _wrapped.index;
+
   set index(int v) {
     _wrapped.index = v;
   }
@@ -892,12 +932,14 @@ class ControlTransferInfo {
   /// The maximum number of bytes to receive (required only by input
   /// transfers).
   int? get length => _wrapped.length;
+
   set length(int? v) {
     _wrapped.length = v;
   }
 
   /// The data to transmit (required only by output transfers).
   ByteBuffer? get data => _wrapped.data?.toDart;
+
   set data(ByteBuffer? v) {
     _wrapped.data = v?.toJS;
   }
@@ -905,6 +947,7 @@ class ControlTransferInfo {
   /// Request timeout (in milliseconds). The default value `0`
   /// indicates no timeout.
   int? get timeout => _wrapped.timeout;
+
   set timeout(int? v) {
     _wrapped.timeout = v;
   }
@@ -945,6 +988,7 @@ class GenericTransferInfo {
 
   /// The transfer direction (`"in"` or `"out"`).
   Direction get direction => Direction.fromJS(_wrapped.direction);
+
   set direction(Direction v) {
     _wrapped.direction = v.toJS;
   }
@@ -952,6 +996,7 @@ class GenericTransferInfo {
   /// The target endpoint address. The interface containing this endpoint must
   /// be claimed.
   int get endpoint => _wrapped.endpoint;
+
   set endpoint(int v) {
     _wrapped.endpoint = v;
   }
@@ -959,12 +1004,14 @@ class GenericTransferInfo {
   /// The maximum number of bytes to receive (required only by input
   /// transfers).
   int? get length => _wrapped.length;
+
   set length(int? v) {
     _wrapped.length = v;
   }
 
   /// The data to transmit (required only by output transfers).
   ByteBuffer? get data => _wrapped.data?.toDart;
+
   set data(ByteBuffer? v) {
     _wrapped.data = v?.toJS;
   }
@@ -972,6 +1019,7 @@ class GenericTransferInfo {
   /// Request timeout (in milliseconds). The default value `0`
   /// indicates no timeout.
   int? get timeout => _wrapped.timeout;
+
   set timeout(int? v) {
     _wrapped.timeout = v;
   }
@@ -1007,18 +1055,21 @@ class IsochronousTransferInfo {
   /// form the individual packets of the transfer.
   GenericTransferInfo get transferInfo =>
       GenericTransferInfo.fromJS(_wrapped.transferInfo);
+
   set transferInfo(GenericTransferInfo v) {
     _wrapped.transferInfo = v.toJS;
   }
 
   /// The total number of packets in this transfer.
   int get packets => _wrapped.packets;
+
   set packets(int v) {
     _wrapped.packets = v;
   }
 
   /// The length of each of the packets in this transfer.
   int get packetLength => _wrapped.packetLength;
+
   set packetLength(int v) {
     _wrapped.packetLength = v;
   }
@@ -1047,6 +1098,7 @@ class TransferResultInfo {
   /// A value of `0` indicates that the transfer was a success.
   /// Other values indicate failure.
   int? get resultCode => _wrapped.resultCode;
+
   set resultCode(int? v) {
     _wrapped.resultCode = v;
   }
@@ -1054,6 +1106,7 @@ class TransferResultInfo {
   /// The data returned by an input transfer. `undefined` for output
   /// transfers.
   ByteBuffer? get data => _wrapped.data?.toDart;
+
   set data(ByteBuffer? v) {
     _wrapped.data = v?.toJS;
   }
@@ -1091,30 +1144,35 @@ class DeviceFilter {
 
   /// Device vendor ID.
   int? get vendorId => _wrapped.vendorId;
+
   set vendorId(int? v) {
     _wrapped.vendorId = v;
   }
 
   /// Device product ID, checked only if the vendor ID matches.
   int? get productId => _wrapped.productId;
+
   set productId(int? v) {
     _wrapped.productId = v;
   }
 
   /// USB interface class, matches any interface on the device.
   int? get interfaceClass => _wrapped.interfaceClass;
+
   set interfaceClass(int? v) {
     _wrapped.interfaceClass = v;
   }
 
   /// USB interface sub-class, checked only if the interface class matches.
   int? get interfaceSubclass => _wrapped.interfaceSubclass;
+
   set interfaceSubclass(int? v) {
     _wrapped.interfaceSubclass = v;
   }
 
   /// USB interface protocol, checked only if the interface sub-class matches.
   int? get interfaceProtocol => _wrapped.interfaceProtocol;
+
   set interfaceProtocol(int? v) {
     _wrapped.interfaceProtocol = v;
   }
@@ -1142,11 +1200,13 @@ class EnumerateDevicesOptions {
   $js.EnumerateDevicesOptions get toJS => _wrapped;
 
   int? get vendorId => _wrapped.vendorId;
+
   set vendorId(int? v) {
     _wrapped.vendorId = v;
   }
 
   int? get productId => _wrapped.productId;
+
   set productId(int? v) {
     _wrapped.productId = v;
   }
@@ -1157,6 +1217,7 @@ class EnumerateDevicesOptions {
       .cast<$js.DeviceFilter>()
       .map((e) => DeviceFilter.fromJS(e))
       .toList();
+
   set filters(List<DeviceFilter>? v) {
     _wrapped.filters = v?.toJSArray((e) => e.toJS);
   }
@@ -1187,12 +1248,14 @@ class EnumerateDevicesAndRequestAccessOptions {
 
   /// The device vendor ID.
   int get vendorId => _wrapped.vendorId;
+
   set vendorId(int v) {
     _wrapped.vendorId = v;
   }
 
   /// The product ID.
   int get productId => _wrapped.productId;
+
   set productId(int v) {
     _wrapped.productId = v;
   }
@@ -1200,6 +1263,7 @@ class EnumerateDevicesAndRequestAccessOptions {
   /// The interface ID to request access to.
   /// Only available on Chrome OS. It has no effect on other platforms.
   int? get interfaceId => _wrapped.interfaceId;
+
   set interfaceId(int? v) {
     _wrapped.interfaceId = v;
   }
@@ -1227,6 +1291,7 @@ class DevicePromptOptions {
 
   /// Allow the user to select multiple devices.
   bool? get multiple => _wrapped.multiple;
+
   set multiple(bool? v) {
     _wrapped.multiple = v;
   }
@@ -1237,6 +1302,7 @@ class DevicePromptOptions {
       .cast<$js.DeviceFilter>()
       .map((e) => DeviceFilter.fromJS(e))
       .toList();
+
   set filters(List<DeviceFilter>? v) {
     _wrapped.filters = v?.toJSArray((e) => e.toJS);
   }

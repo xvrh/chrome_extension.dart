@@ -269,12 +269,14 @@ class Window {
   /// example, when querying windows using the [sessions] API, in which case a
   /// session ID may be present.
   int? get id => _wrapped.id;
+
   set id(int? v) {
     _wrapped.id = v;
   }
 
   /// Whether the window is currently the focused window.
   bool get focused => _wrapped.focused;
+
   set focused(bool v) {
     _wrapped.focused = v;
   }
@@ -283,6 +285,7 @@ class Window {
   /// some circumstances a window may not be assigned a `top` property; for
   /// example, when querying closed windows from the [sessions] API.
   int? get top => _wrapped.top;
+
   set top(int? v) {
     _wrapped.top = v;
   }
@@ -291,6 +294,7 @@ class Window {
   /// some circumstances a window may not be assigned a `left` property; for
   /// example, when querying closed windows from the [sessions] API.
   int? get left => _wrapped.left;
+
   set left(int? v) {
     _wrapped.left = v;
   }
@@ -299,6 +303,7 @@ class Window {
   /// circumstances a window may not be assigned a `width` property; for
   /// example, when querying closed windows from the [sessions] API.
   int? get width => _wrapped.width;
+
   set width(int? v) {
     _wrapped.width = v;
   }
@@ -307,6 +312,7 @@ class Window {
   /// circumstances a window may not be assigned a `height` property; for
   /// example, when querying closed windows from the [sessions] API.
   int? get height => _wrapped.height;
+
   set height(int? v) {
     _wrapped.height = v;
   }
@@ -316,30 +322,35 @@ class Window {
       .cast<$js_tabs.Tab>()
       .map((e) => Tab.fromJS(e))
       .toList();
+
   set tabs(List<Tab>? v) {
     _wrapped.tabs = v?.toJSArray((e) => e.toJS);
   }
 
   /// Whether the window is incognito.
   bool get incognito => _wrapped.incognito;
+
   set incognito(bool v) {
     _wrapped.incognito = v;
   }
 
   /// The type of browser window this is.
   WindowType? get type => _wrapped.type?.let(WindowType.fromJS);
+
   set type(WindowType? v) {
     _wrapped.type = v?.toJS;
   }
 
   /// The state of this browser window.
   WindowState? get state => _wrapped.state?.let(WindowState.fromJS);
+
   set state(WindowState? v) {
     _wrapped.state = v?.toJS;
   }
 
   /// Whether the window is set to be always on top.
   bool get alwaysOnTop => _wrapped.alwaysOnTop;
+
   set alwaysOnTop(bool v) {
     _wrapped.alwaysOnTop = v;
   }
@@ -347,6 +358,7 @@ class Window {
   /// The session ID used to uniquely identify a window, obtained from the
   /// [sessions] API.
   String? get sessionId => _wrapped.sessionId;
+
   set sessionId(String? v) {
     _wrapped.sessionId = v;
   }
@@ -379,6 +391,7 @@ class QueryOptions {
   /// `pendingUrl`, `title`, and `favIconUrl` properties if the extension's
   /// manifest file includes the `"tabs"` permission.
   bool? get populate => _wrapped.populate;
+
   set populate(bool? v) {
     _wrapped.populate = v;
   }
@@ -389,6 +402,7 @@ class QueryOptions {
       .cast<$js.WindowType>()
       .map((e) => WindowType.fromJS(e))
       .toList();
+
   set windowTypes(List<WindowType>? v) {
     _wrapped.windowTypes = v?.toJSArray((e) => e.toJS);
   }
@@ -476,6 +490,7 @@ class CreateData {
         isString: (v) => v,
         isArray: (v) => v.toDart.cast<String>().map((e) => e).toList(),
       );
+
   set url(Object? v) {
     _wrapped.url = switch (v) {
       String() => v,
@@ -488,6 +503,7 @@ class CreateData {
 
   /// The ID of the tab to add to the new window.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -496,6 +512,7 @@ class CreateData {
   /// screen. If not specified, the new window is offset naturally from the last
   /// focused window. This value is ignored for panels.
   int? get left => _wrapped.left;
+
   set left(int? v) {
     _wrapped.left = v;
   }
@@ -504,6 +521,7 @@ class CreateData {
   /// screen. If not specified, the new window is offset naturally from the last
   /// focused window. This value is ignored for panels.
   int? get top => _wrapped.top;
+
   set top(int? v) {
     _wrapped.top = v;
   }
@@ -511,6 +529,7 @@ class CreateData {
   /// The width in pixels of the new window, including the frame. If not
   /// specified, defaults to a natural width.
   int? get width => _wrapped.width;
+
   set width(int? v) {
     _wrapped.width = v;
   }
@@ -518,24 +537,28 @@ class CreateData {
   /// The height in pixels of the new window, including the frame. If not
   /// specified, defaults to a natural height.
   int? get height => _wrapped.height;
+
   set height(int? v) {
     _wrapped.height = v;
   }
 
   /// If `true`, opens an active window. If `false`, opens an inactive window.
   bool? get focused => _wrapped.focused;
+
   set focused(bool? v) {
     _wrapped.focused = v;
   }
 
   /// Whether the new window should be an incognito window.
   bool? get incognito => _wrapped.incognito;
+
   set incognito(bool? v) {
     _wrapped.incognito = v;
   }
 
   /// Specifies what type of browser window to create.
   CreateType? get type => _wrapped.type?.let(CreateType.fromJS);
+
   set type(CreateType? v) {
     _wrapped.type = v?.toJS;
   }
@@ -544,6 +567,7 @@ class CreateData {
   /// `fullscreen` states cannot be combined with `left`, `top`, `width`, or
   /// `height`.
   WindowState? get state => _wrapped.state?.let(WindowState.fromJS);
+
   set state(WindowState? v) {
     _wrapped.state = v?.toJS;
   }
@@ -553,6 +577,7 @@ class CreateData {
   /// contexts](https://www.w3.org/TR/html51/browsers.html#unit-of-related-browsing-contexts)
   /// as the caller.
   bool? get setSelfAsOpener => _wrapped.setSelfAsOpener;
+
   set setSelfAsOpener(bool? v) {
     _wrapped.setSelfAsOpener = v;
   }
@@ -612,6 +637,7 @@ class UpdateInfo {
   /// The offset from the left edge of the screen to move the window to in
   /// pixels. This value is ignored for panels.
   int? get left => _wrapped.left;
+
   set left(int? v) {
     _wrapped.left = v;
   }
@@ -619,6 +645,7 @@ class UpdateInfo {
   /// The offset from the top edge of the screen to move the window to in
   /// pixels. This value is ignored for panels.
   int? get top => _wrapped.top;
+
   set top(int? v) {
     _wrapped.top = v;
   }
@@ -626,6 +653,7 @@ class UpdateInfo {
   /// The width to resize the window to in pixels. This value is ignored for
   /// panels.
   int? get width => _wrapped.width;
+
   set width(int? v) {
     _wrapped.width = v;
   }
@@ -633,6 +661,7 @@ class UpdateInfo {
   /// The height to resize the window to in pixels. This value is ignored for
   /// panels.
   int? get height => _wrapped.height;
+
   set height(int? v) {
     _wrapped.height = v;
   }
@@ -641,6 +670,7 @@ class UpdateInfo {
   /// state 'minimized'. If `false`, brings the next window in the z-order to
   /// the front; cannot be combined with the state 'fullscreen' or 'maximized'.
   bool? get focused => _wrapped.focused;
+
   set focused(bool? v) {
     _wrapped.focused = v;
   }
@@ -651,6 +681,7 @@ class UpdateInfo {
   /// no effect if the window already has focus. Set to `false` to cancel a
   /// previous `drawAttention` request.
   bool? get drawAttention => _wrapped.drawAttention;
+
   set drawAttention(bool? v) {
     _wrapped.drawAttention = v;
   }
@@ -659,6 +690,7 @@ class UpdateInfo {
   /// 'fullscreen' states cannot be combined with 'left', 'top', 'width', or
   /// 'height'.
   WindowState? get state => _wrapped.state?.let(WindowState.fromJS);
+
   set state(WindowState? v) {
     _wrapped.state = v?.toJS;
   }

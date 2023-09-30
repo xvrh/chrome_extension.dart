@@ -56,6 +56,7 @@ class Rule {
 
   /// Optional identifier that allows referencing this rule.
   String? get id => _wrapped.id;
+
   set id(String? v) {
     _wrapped.id = v;
   }
@@ -64,6 +65,7 @@ class Rule {
   /// rules.
   List<String>? get tags =>
       _wrapped.tags?.toDart.cast<String>().map((e) => e).toList();
+
   set tags(List<String>? v) {
     _wrapped.tags = v?.toJSArray((e) => e);
   }
@@ -73,6 +75,7 @@ class Rule {
       .cast<JSAny>()
       .map((e) => e.dartify()!)
       .toList();
+
   set conditions(List<Object> v) {
     _wrapped.conditions = v.toJSArray((e) => e.jsify()!);
   }
@@ -80,12 +83,14 @@ class Rule {
   /// List of actions that are triggered if one of the conditions is fulfilled.
   List<Object> get actions =>
       _wrapped.actions.toDart.cast<JSAny>().map((e) => e.dartify()!).toList();
+
   set actions(List<Object> v) {
     _wrapped.actions = v.toJSArray((e) => e.jsify()!);
   }
 
   /// Optional priority of this rule. Defaults to 100.
   int? get priority => _wrapped.priority;
+
   set priority(int? v) {
     _wrapped.priority = v;
   }
@@ -337,72 +342,84 @@ class UrlFilter {
   /// last components need to be done separately using hostSuffix, because no
   /// implicit dot is added at the end of the host name.
   String? get hostContains => _wrapped.hostContains;
+
   set hostContains(String? v) {
     _wrapped.hostContains = v;
   }
 
   /// Matches if the host name of the URL is equal to a specified string.
   String? get hostEquals => _wrapped.hostEquals;
+
   set hostEquals(String? v) {
     _wrapped.hostEquals = v;
   }
 
   /// Matches if the host name of the URL starts with a specified string.
   String? get hostPrefix => _wrapped.hostPrefix;
+
   set hostPrefix(String? v) {
     _wrapped.hostPrefix = v;
   }
 
   /// Matches if the host name of the URL ends with a specified string.
   String? get hostSuffix => _wrapped.hostSuffix;
+
   set hostSuffix(String? v) {
     _wrapped.hostSuffix = v;
   }
 
   /// Matches if the path segment of the URL contains a specified string.
   String? get pathContains => _wrapped.pathContains;
+
   set pathContains(String? v) {
     _wrapped.pathContains = v;
   }
 
   /// Matches if the path segment of the URL is equal to a specified string.
   String? get pathEquals => _wrapped.pathEquals;
+
   set pathEquals(String? v) {
     _wrapped.pathEquals = v;
   }
 
   /// Matches if the path segment of the URL starts with a specified string.
   String? get pathPrefix => _wrapped.pathPrefix;
+
   set pathPrefix(String? v) {
     _wrapped.pathPrefix = v;
   }
 
   /// Matches if the path segment of the URL ends with a specified string.
   String? get pathSuffix => _wrapped.pathSuffix;
+
   set pathSuffix(String? v) {
     _wrapped.pathSuffix = v;
   }
 
   /// Matches if the query segment of the URL contains a specified string.
   String? get queryContains => _wrapped.queryContains;
+
   set queryContains(String? v) {
     _wrapped.queryContains = v;
   }
 
   /// Matches if the query segment of the URL is equal to a specified string.
   String? get queryEquals => _wrapped.queryEquals;
+
   set queryEquals(String? v) {
     _wrapped.queryEquals = v;
   }
 
   /// Matches if the query segment of the URL starts with a specified string.
   String? get queryPrefix => _wrapped.queryPrefix;
+
   set queryPrefix(String? v) {
     _wrapped.queryPrefix = v;
   }
 
   /// Matches if the query segment of the URL ends with a specified string.
   String? get querySuffix => _wrapped.querySuffix;
+
   set querySuffix(String? v) {
     _wrapped.querySuffix = v;
   }
@@ -411,6 +428,7 @@ class UrlFilter {
   /// string. Port numbers are stripped from the URL if they match the default
   /// port number.
   String? get urlContains => _wrapped.urlContains;
+
   set urlContains(String? v) {
     _wrapped.urlContains = v;
   }
@@ -419,6 +437,7 @@ class UrlFilter {
   /// string. Port numbers are stripped from the URL if they match the default
   /// port number.
   String? get urlEquals => _wrapped.urlEquals;
+
   set urlEquals(String? v) {
     _wrapped.urlEquals = v;
   }
@@ -428,6 +447,7 @@ class UrlFilter {
   /// the default port number. The regular expressions use the [RE2
   /// syntax](https://github.com/google/re2/blob/master/doc/syntax.txt).
   String? get urlMatches => _wrapped.urlMatches;
+
   set urlMatches(String? v) {
     _wrapped.urlMatches = v;
   }
@@ -437,6 +457,7 @@ class UrlFilter {
   /// they match the default port number. The regular expressions use the [RE2
   /// syntax](https://github.com/google/re2/blob/master/doc/syntax.txt).
   String? get originAndPathMatches => _wrapped.originAndPathMatches;
+
   set originAndPathMatches(String? v) {
     _wrapped.originAndPathMatches = v;
   }
@@ -445,6 +466,7 @@ class UrlFilter {
   /// string. Port numbers are stripped from the URL if they match the default
   /// port number.
   String? get urlPrefix => _wrapped.urlPrefix;
+
   set urlPrefix(String? v) {
     _wrapped.urlPrefix = v;
   }
@@ -453,6 +475,7 @@ class UrlFilter {
   /// string. Port numbers are stripped from the URL if they match the default
   /// port number.
   String? get urlSuffix => _wrapped.urlSuffix;
+
   set urlSuffix(String? v) {
     _wrapped.urlSuffix = v;
   }
@@ -461,6 +484,7 @@ class UrlFilter {
   /// in the array.
   List<String>? get schemes =>
       _wrapped.schemes?.toDart.cast<String>().map((e) => e).toList();
+
   set schemes(List<String>? v) {
     _wrapped.schemes = v?.toJSArray((e) => e);
   }
@@ -475,6 +499,7 @@ class UrlFilter {
             isArray: (v) => v.toDart.cast<int>().map((e) => e).toList(),
           ))
       .toList();
+
   set ports(List<Object>? v) {
     _wrapped.ports = v?.toJSArray((e) => switch (e) {
           int() => e,

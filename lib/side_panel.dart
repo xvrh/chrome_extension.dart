@@ -78,6 +78,7 @@ class SidePanel {
 
   /// Developer specified path for side panel display.
   String get defaultPath => _wrapped.default_path;
+
   set defaultPath(String v) {
     _wrapped.default_path = v;
   }
@@ -94,6 +95,7 @@ class ManifestKeys {
   $js.ManifestKeys get toJS => _wrapped;
 
   SidePanel get sidePanel => SidePanel.fromJS(_wrapped.side_panel);
+
   set sidePanel(SidePanel v) {
     _wrapped.side_panel = v.toJS;
   }
@@ -134,6 +136,7 @@ class PanelOptions {
   /// for this tabId and the default tabId, then the panel for this tabId will
   /// be a different instance than the panel for the default tabId.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -141,6 +144,7 @@ class PanelOptions {
   /// The path to the side panel HTML file to use. This must be a local
   /// resource within the extension package.
   String? get path => _wrapped.path;
+
   set path(String? v) {
     _wrapped.path = v;
   }
@@ -148,6 +152,7 @@ class PanelOptions {
   /// Whether the side panel should be enabled. This is optional. The default
   /// value is true.
   bool? get enabled => _wrapped.enabled;
+
   set enabled(bool? v) {
     _wrapped.enabled = v;
   }
@@ -172,6 +177,7 @@ class PanelBehavior {
   /// Whether clicking the extension's icon will toggle showing the extension's
   /// entry in the side panel. Defaults to false.
   bool? get openPanelOnActionClick => _wrapped.openPanelOnActionClick;
+
   set openPanelOnActionClick(bool? v) {
     _wrapped.openPanelOnActionClick = v;
   }
@@ -196,6 +202,7 @@ class GetPanelOptions {
   /// Otherwise, returns the default side panel options (used for any tab that
   /// doesn't have specific settings).
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -235,6 +242,7 @@ class OpenOptions {
   /// currently-active global side panel the user has open in the given
   /// window. At least one of this and `tabId` must be provided.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -247,6 +255,7 @@ class OpenOptions {
   /// (global or tab-specific) in the corresponding tab. At least one of this
   /// and `windowId` must be provided.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }

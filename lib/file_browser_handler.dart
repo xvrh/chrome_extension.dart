@@ -59,6 +59,7 @@ class FileHandlerExecuteEventDetails {
   /// action (selected in ChromeOS file browser).
   List<Object> get entries =>
       _wrapped.entries.toDart.cast<JSAny>().map((e) => e.dartify()!).toList();
+
   set entries(List<Object> v) {
     _wrapped.entries = v.toJSArray((e) => e.jsify()!);
   }
@@ -66,6 +67,7 @@ class FileHandlerExecuteEventDetails {
   /// The ID of the tab that raised this event. Tab IDs are unique within a
   /// browser session.
   int? get tabId => _wrapped.tab_id;
+
   set tabId(int? v) {
     _wrapped.tab_id = v;
   }

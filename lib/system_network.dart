@@ -61,18 +61,21 @@ class NetworkInterface {
   /// The underlying name of the adapter. On *nix, this will typically be
   /// "eth0", "wlan0", etc.
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
 
   /// The available IPv4/6 address.
   String get address => _wrapped.address;
+
   set address(String v) {
     _wrapped.address = v;
   }
 
   /// The prefix length
   int get prefixLength => _wrapped.prefixLength;
+
   set prefixLength(int v) {
     _wrapped.prefixLength = v;
   }

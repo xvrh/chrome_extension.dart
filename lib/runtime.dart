@@ -546,6 +546,7 @@ class Port {
 
   /// The name of the port, as specified in the call to [runtime.connect].
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
@@ -558,6 +559,7 @@ class Port {
                 p1?.jsify(), p2?.jsify())
             ?.dartify();
       };
+
   set disconnect(Function v) {
     _wrapped.disconnect = allowInterop(v);
   }
@@ -569,6 +571,7 @@ class Port {
                 p1?.jsify(), p2?.jsify())
             ?.dartify();
       };
+
   set postMessage(Function v) {
     _wrapped.postMessage = allowInterop(v);
   }
@@ -578,6 +581,7 @@ class Port {
   /// onConnectExternal) / $(ref:runtime.onConnectExternal onConnectNative)
   /// listeners.
   MessageSender? get sender => _wrapped.sender?.let(MessageSender.fromJS);
+
   set sender(MessageSender? v) {
     _wrapped.sender = v?.toJS;
   }
@@ -679,6 +683,7 @@ class MessageSender {
   /// *only* be present when the connection was opened from a tab (including
   /// content scripts), and *only* if the receiver is an extension, not an app.
   Tab? get tab => _wrapped.tab?.let(Tab.fromJS);
+
   set tab(Tab? v) {
     _wrapped.tab = v?.toJS;
   }
@@ -687,6 +692,7 @@ class MessageSender {
   /// top-level frames, positive for child frames. This will only be set when
   /// `tab` is set.
   int? get frameId => _wrapped.frameId;
+
   set frameId(int? v) {
     _wrapped.frameId = v;
   }
@@ -694,6 +700,7 @@ class MessageSender {
   /// The guest process id of the requesting webview, if available. Only
   /// available for component extensions.
   int? get guestProcessId => _wrapped.guestProcessId;
+
   set guestProcessId(int? v) {
     _wrapped.guestProcessId = v;
   }
@@ -701,12 +708,14 @@ class MessageSender {
   /// The guest render frame routing id of the requesting webview, if available.
   /// Only available for component extensions.
   int? get guestRenderFrameRoutingId => _wrapped.guestRenderFrameRoutingId;
+
   set guestRenderFrameRoutingId(int? v) {
     _wrapped.guestRenderFrameRoutingId = v;
   }
 
   /// The ID of the extension or app that opened the connection, if any.
   String? get id => _wrapped.id;
+
   set id(String? v) {
     _wrapped.id = v;
   }
@@ -715,12 +724,14 @@ class MessageSender {
   /// in an iframe, it will be iframe's URL not the URL of the page which hosts
   /// it.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// The name of the native application that opened the connection, if any.
   String? get nativeApplication => _wrapped.nativeApplication;
+
   set nativeApplication(String? v) {
     _wrapped.nativeApplication = v;
   }
@@ -728,6 +739,7 @@ class MessageSender {
   /// The TLS channel ID of the page or frame that opened the connection, if
   /// requested by the extension or app, and if available.
   String? get tlsChannelId => _wrapped.tlsChannelId;
+
   set tlsChannelId(String? v) {
     _wrapped.tlsChannelId = v;
   }
@@ -737,12 +749,14 @@ class MessageSender {
   /// sandboxed iframes). This is useful for identifying if the origin can be
   /// trusted if we can't immediately tell from the URL.
   String? get origin => _wrapped.origin;
+
   set origin(String? v) {
     _wrapped.origin = v;
   }
 
   /// A UUID of the document that opened the connection.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
@@ -751,6 +765,7 @@ class MessageSender {
   /// the port was created. Note that the lifecycle state of the document may
   /// have changed since port creation.
   String? get documentLifecycle => _wrapped.documentLifecycle;
+
   set documentLifecycle(String? v) {
     _wrapped.documentLifecycle = v;
   }
@@ -781,12 +796,14 @@ class PlatformInfo {
 
   /// The operating system Chrome is running on.
   PlatformOs get os => PlatformOs.fromJS(_wrapped.os);
+
   set os(PlatformOs v) {
     _wrapped.os = v.toJS;
   }
 
   /// The machine's processor architecture.
   PlatformArch get arch => PlatformArch.fromJS(_wrapped.arch);
+
   set arch(PlatformArch v) {
     _wrapped.arch = v.toJS;
   }
@@ -794,6 +811,7 @@ class PlatformInfo {
   /// The native client architecture. This may be different from arch on some
   /// platforms.
   PlatformNaclArch get naclArch => PlatformNaclArch.fromJS(_wrapped.nacl_arch);
+
   set naclArch(PlatformNaclArch v) {
     _wrapped.nacl_arch = v.toJS;
   }
@@ -853,12 +871,14 @@ class ExtensionContext {
 
   /// The type of context this corresponds to.
   ContextType get contextType => ContextType.fromJS(_wrapped.contextType);
+
   set contextType(ContextType v) {
     _wrapped.contextType = v.toJS;
   }
 
   /// A unique identifier for this context
   String get contextId => _wrapped.contextId;
+
   set contextId(String v) {
     _wrapped.contextId = v;
   }
@@ -866,6 +886,7 @@ class ExtensionContext {
   /// The ID of the tab for this context, or -1 if this context is not hosted in
   /// a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
@@ -873,6 +894,7 @@ class ExtensionContext {
   /// The ID of the window for this context, or -1 if this context is not hosted
   /// in a window.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -880,6 +902,7 @@ class ExtensionContext {
   /// A UUID for the document associated with this context, or undefined if this
   /// context is hosted not in a document.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
@@ -887,6 +910,7 @@ class ExtensionContext {
   /// The ID of the frame for this context, or -1 if this context is not hosted
   /// in a frame.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -894,6 +918,7 @@ class ExtensionContext {
   /// The URL of the document associated with this context, or undefined if the
   /// context is not hosted in a document.
   String? get documentUrl => _wrapped.documentUrl;
+
   set documentUrl(String? v) {
     _wrapped.documentUrl = v;
   }
@@ -901,12 +926,14 @@ class ExtensionContext {
   /// The origin of the document associated with this context, or undefined if
   /// the context is not hosted in a document.
   String? get documentOrigin => _wrapped.documentOrigin;
+
   set documentOrigin(String? v) {
     _wrapped.documentOrigin = v;
   }
 
   /// Whether the context is associated with an incognito profile.
   bool get incognito => _wrapped.incognito;
+
   set incognito(bool v) {
     _wrapped.incognito = v;
   }
@@ -945,53 +972,62 @@ class ContextFilter {
       .cast<$js.ContextType>()
       .map((e) => ContextType.fromJS(e))
       .toList();
+
   set contextTypes(List<ContextType>? v) {
     _wrapped.contextTypes = v?.toJSArray((e) => e.toJS);
   }
 
   List<String>? get contextIds =>
       _wrapped.contextIds?.toDart.cast<String>().map((e) => e).toList();
+
   set contextIds(List<String>? v) {
     _wrapped.contextIds = v?.toJSArray((e) => e);
   }
 
   List<int>? get tabIds =>
       _wrapped.tabIds?.toDart.cast<int>().map((e) => e).toList();
+
   set tabIds(List<int>? v) {
     _wrapped.tabIds = v?.toJSArray((e) => e);
   }
 
   List<int>? get windowIds =>
       _wrapped.windowIds?.toDart.cast<int>().map((e) => e).toList();
+
   set windowIds(List<int>? v) {
     _wrapped.windowIds = v?.toJSArray((e) => e);
   }
 
   List<String>? get documentIds =>
       _wrapped.documentIds?.toDart.cast<String>().map((e) => e).toList();
+
   set documentIds(List<String>? v) {
     _wrapped.documentIds = v?.toJSArray((e) => e);
   }
 
   List<int>? get frameIds =>
       _wrapped.frameIds?.toDart.cast<int>().map((e) => e).toList();
+
   set frameIds(List<int>? v) {
     _wrapped.frameIds = v?.toJSArray((e) => e);
   }
 
   List<String>? get documentUrls =>
       _wrapped.documentUrls?.toDart.cast<String>().map((e) => e).toList();
+
   set documentUrls(List<String>? v) {
     _wrapped.documentUrls = v?.toJSArray((e) => e);
   }
 
   List<String>? get documentOrigins =>
       _wrapped.documentOrigins?.toDart.cast<String>().map((e) => e).toList();
+
   set documentOrigins(List<String>? v) {
     _wrapped.documentOrigins = v?.toJSArray((e) => e);
   }
 
   bool? get incognito => _wrapped.incognito;
+
   set incognito(bool? v) {
     _wrapped.incognito = v;
   }
@@ -1023,6 +1059,7 @@ class OnInstalledDetails {
 
   /// The reason that this event is being dispatched.
   OnInstalledReason get reason => OnInstalledReason.fromJS(_wrapped.reason);
+
   set reason(OnInstalledReason v) {
     _wrapped.reason = v.toJS;
   }
@@ -1030,6 +1067,7 @@ class OnInstalledDetails {
   /// Indicates the previous version of the extension, which has just been
   /// updated. This is present only if 'reason' is 'update'.
   String? get previousVersion => _wrapped.previousVersion;
+
   set previousVersion(String? v) {
     _wrapped.previousVersion = v;
   }
@@ -1037,6 +1075,7 @@ class OnInstalledDetails {
   /// Indicates the ID of the imported shared module extension which updated.
   /// This is present only if 'reason' is 'shared_module_update'.
   String? get id => _wrapped.id;
+
   set id(String? v) {
     _wrapped.id = v;
   }
@@ -1057,6 +1096,7 @@ class OnUpdateAvailableDetails {
 
   /// The version number of the available update.
   String get version => _wrapped.version;
+
   set version(String v) {
     _wrapped.version = v;
   }
@@ -1084,6 +1124,7 @@ class RequestUpdateCheckCallbackResult {
   /// Result of the update check.
   RequestUpdateCheckStatus get status =>
       RequestUpdateCheckStatus.fromJS(_wrapped.status);
+
   set status(RequestUpdateCheckStatus v) {
     _wrapped.status = v.toJS;
   }
@@ -1091,6 +1132,7 @@ class RequestUpdateCheckCallbackResult {
   /// If an update is available, this contains the version of the available
   /// update.
   String? get version => _wrapped.version;
+
   set version(String? v) {
     _wrapped.version = v;
   }
@@ -1119,6 +1161,7 @@ class ConnectInfo {
   /// Will be passed into onConnect for processes that are listening for the
   /// connection event.
   String? get name => _wrapped.name;
+
   set name(String? v) {
     _wrapped.name = v;
   }
@@ -1126,6 +1169,7 @@ class ConnectInfo {
   /// Whether the TLS channel ID will be passed into onConnectExternal for
   /// processes that are listening for the connection event.
   bool? get includeTlsChannelId => _wrapped.includeTlsChannelId;
+
   set includeTlsChannelId(bool? v) {
     _wrapped.includeTlsChannelId = v;
   }
@@ -1149,6 +1193,7 @@ class SendMessageOptions {
   /// Whether the TLS channel ID will be passed into onMessageExternal for
   /// processes that are listening for the connection event.
   bool? get includeTlsChannelId => _wrapped.includeTlsChannelId;
+
   set includeTlsChannelId(bool? v) {
     _wrapped.includeTlsChannelId = v;
   }
@@ -1169,6 +1214,7 @@ class RuntimeLastError {
 
   /// Details about the error which occurred.
   String? get message => _wrapped.message;
+
   set message(String? v) {
     _wrapped.message = v;
   }

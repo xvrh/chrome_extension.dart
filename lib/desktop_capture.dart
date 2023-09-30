@@ -138,6 +138,7 @@ class ChooseDesktopMediaOptions {
   /// [systemAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-systemaudio).
   SystemAudioPreferenceEnum? get systemAudio =>
       _wrapped.systemAudio?.let(SystemAudioPreferenceEnum.fromJS);
+
   set systemAudio(SystemAudioPreferenceEnum? v) {
     _wrapped.systemAudio = v?.toJS;
   }
@@ -146,6 +147,7 @@ class ChooseDesktopMediaOptions {
   /// [selfBrowserSurface](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-selfbrowsersurface).
   SelfCapturePreferenceEnum? get selfBrowserSurface =>
       _wrapped.selfBrowserSurface?.let(SelfCapturePreferenceEnum.fromJS);
+
   set selfBrowserSurface(SelfCapturePreferenceEnum? v) {
     _wrapped.selfBrowserSurface = v?.toJS;
   }
@@ -155,6 +157,7 @@ class ChooseDesktopMediaOptions {
   /// the appropriate warnings, as it does when getDisplayMedia() is invoked.
   bool? get suppressLocalAudioPlaybackIntended =>
       _wrapped.suppressLocalAudioPlaybackIntended;
+
   set suppressLocalAudioPlaybackIntended(bool? v) {
     _wrapped.suppressLocalAudioPlaybackIntended = v;
   }

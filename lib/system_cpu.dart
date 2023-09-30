@@ -60,18 +60,21 @@ class CpuTime {
 
   /// The cumulative time used by userspace programs on this processor.
   double get user => _wrapped.user;
+
   set user(double v) {
     _wrapped.user = v;
   }
 
   /// The cumulative time used by kernel programs on this processor.
   double get kernel => _wrapped.kernel;
+
   set kernel(double v) {
     _wrapped.kernel = v;
   }
 
   /// The cumulative time spent idle by this processor.
   double get idle => _wrapped.idle;
+
   set idle(double v) {
     _wrapped.idle = v;
   }
@@ -79,6 +82,7 @@ class CpuTime {
   /// The total cumulative time for this processor.  This value is equal to
   /// user + kernel + idle.
   double get total => _wrapped.total;
+
   set total(double v) {
     _wrapped.total = v;
   }
@@ -99,6 +103,7 @@ class ProcessorInfo {
 
   /// Cumulative usage info for this logical processor.
   CpuTime get usage => CpuTime.fromJS(_wrapped.usage);
+
   set usage(CpuTime v) {
     _wrapped.usage = v.toJS;
   }
@@ -145,18 +150,21 @@ class CpuInfo {
 
   /// The number of logical processors.
   int get numOfProcessors => _wrapped.numOfProcessors;
+
   set numOfProcessors(int v) {
     _wrapped.numOfProcessors = v;
   }
 
   /// The architecture name of the processors.
   String get archName => _wrapped.archName;
+
   set archName(String v) {
     _wrapped.archName = v;
   }
 
   /// The model name of the processors.
   String get modelName => _wrapped.modelName;
+
   set modelName(String v) {
     _wrapped.modelName = v;
   }
@@ -166,6 +174,7 @@ class CpuInfo {
   /// "sse4_1", "sse4_2", and "avx".
   List<String> get features =>
       _wrapped.features.toDart.cast<String>().map((e) => e).toList();
+
   set features(List<String> v) {
     _wrapped.features = v.toJSArray((e) => e);
   }
@@ -175,6 +184,7 @@ class CpuInfo {
       .cast<$js.ProcessorInfo>()
       .map((e) => ProcessorInfo.fromJS(e))
       .toList();
+
   set processors(List<ProcessorInfo> v) {
     _wrapped.processors = v.toJSArray((e) => e.toJS);
   }
@@ -185,6 +195,7 @@ class CpuInfo {
   /// **Currently supported on Chrome OS only.**
   List<double> get temperatures =>
       _wrapped.temperatures.toDart.cast<double>().map((e) => e).toList();
+
   set temperatures(List<double> v) {
     _wrapped.temperatures = v.toJSArray((e) => e);
   }

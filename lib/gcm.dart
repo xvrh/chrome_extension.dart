@@ -104,12 +104,14 @@ class OnMessageMessage {
 
   /// The message data.
   Map get data => _wrapped.data.toDartMap();
+
   set data(Map v) {
     _wrapped.data = v.jsify()!;
   }
 
   /// The sender who issued the message.
   String? get from => _wrapped.from;
+
   set from(String? v) {
     _wrapped.from = v;
   }
@@ -118,6 +120,7 @@ class OnMessageMessage {
   /// href='https://firebase.google.com/docs/cloud-messaging/concept-options#collapsible_and_non-collapsible_messages'>Non-collapsible
   /// and collapsible messages</a> for details.
   String? get collapseKey => _wrapped.collapseKey;
+
   set collapseKey(String? v) {
     _wrapped.collapseKey = v;
   }
@@ -148,6 +151,7 @@ class OnSendErrorError {
 
   /// The error message describing the problem.
   String get errorMessage => _wrapped.errorMessage;
+
   set errorMessage(String v) {
     _wrapped.errorMessage = v;
   }
@@ -155,12 +159,14 @@ class OnSendErrorError {
   /// The ID of the message with this error, if error is related to a specific
   /// message.
   String? get messageId => _wrapped.messageId;
+
   set messageId(String? v) {
     _wrapped.messageId = v;
   }
 
   /// Additional details related to the error, when available.
   Map get details => _wrapped.details.toDartMap();
+
   set details(Map v) {
     _wrapped.details = v.jsify()!;
   }
@@ -207,6 +213,7 @@ class SendMessage {
   /// The ID of the server to send the message to as assigned by [Google API
   /// Console](https://console.cloud.google.com/apis/dashboard).
   String get destinationId => _wrapped.destinationId;
+
   set destinationId(String v) {
     _wrapped.destinationId = v;
   }
@@ -216,6 +223,7 @@ class SendMessage {
   /// documentation](https://firebase.google.com/docs/cloud-messaging/js/client)
   /// for advice for picking and handling an ID.
   String get messageId => _wrapped.messageId;
+
   set messageId(String v) {
     _wrapped.messageId = v;
   }
@@ -226,6 +234,7 @@ class SendMessage {
   /// fail if it's not possible. The default value of time-to-live is 86,400
   /// seconds (1 day) and the maximum value is 2,419,200 seconds (28 days).
   int? get timeToLive => _wrapped.timeToLive;
+
   set timeToLive(int? v) {
     _wrapped.timeToLive = v;
   }
@@ -234,6 +243,7 @@ class SendMessage {
   /// as well as case-sensitive `collapse_key` are disallowed as key prefixes.
   /// Sum of all key/value pairs should not exceed [gcm.MAX_MESSAGE_SIZE].
   Map get data => _wrapped.data.toDartMap();
+
   set data(Map v) {
     _wrapped.data = v.jsify()!;
   }

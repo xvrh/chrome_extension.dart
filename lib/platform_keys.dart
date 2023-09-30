@@ -202,6 +202,7 @@ class Match {
 
   /// The DER encoding of a X.509 certificate.
   ByteBuffer get certificate => _wrapped.certificate.toDart;
+
   set certificate(ByteBuffer v) {
     _wrapped.certificate = v.toJS;
   }
@@ -213,6 +214,7 @@ class Match {
   /// length). Other parameters like the hash function used by the sign
   /// function are not included.
   Map get keyAlgorithm => _wrapped.keyAlgorithm.toDartMap();
+
   set keyAlgorithm(Map v) {
     _wrapped.keyAlgorithm = v.jsify()!;
   }
@@ -250,6 +252,7 @@ class ClientCertificateRequest {
           .cast<$js.ClientCertificateType>()
           .map((e) => ClientCertificateType.fromJS(e))
           .toList();
+
   set certificateTypes(List<ClientCertificateType> v) {
     _wrapped.certificateTypes = v.toJSArray((e) => e.toJS);
   }
@@ -261,6 +264,7 @@ class ClientCertificateRequest {
           .cast<JSArrayBuffer>()
           .map((e) => e.toDart)
           .toList();
+
   set certificateAuthorities(List<ByteBuffer> v) {
     _wrapped.certificateAuthorities = v.toJSArray((e) => e.toJS);
   }
@@ -300,6 +304,7 @@ class SelectDetails {
   /// Only certificates that match this request will be returned.
   ClientCertificateRequest get request =>
       ClientCertificateRequest.fromJS(_wrapped.request);
+
   set request(ClientCertificateRequest v) {
     _wrapped.request = v.toJS;
   }
@@ -313,6 +318,7 @@ class SelectDetails {
       .cast<JSArrayBuffer>()
       .map((e) => e.toDart)
       .toList();
+
   set clientCerts(List<ByteBuffer>? v) {
     _wrapped.clientCerts = v?.toJSArray((e) => e.toJS);
   }
@@ -323,6 +329,7 @@ class SelectDetails {
   /// returned. If is false, the list is reduced to all certificates that the
   /// extension has been granted access to (automatically or manually).
   bool get interactive => _wrapped.interactive;
+
   set interactive(bool v) {
     _wrapped.interactive = v;
   }
@@ -359,6 +366,7 @@ class VerificationDetails {
           .cast<JSArrayBuffer>()
           .map((e) => e.toDart)
           .toList();
+
   set serverCertificateChain(List<ByteBuffer> v) {
     _wrapped.serverCertificateChain = v.toJSArray((e) => e.toJS);
   }
@@ -366,6 +374,7 @@ class VerificationDetails {
   /// The hostname of the server to verify the certificate for, e.g. the server
   /// that presented the `serverCertificateChain`.
   String get hostname => _wrapped.hostname;
+
   set hostname(String v) {
     _wrapped.hostname = v;
   }
@@ -403,6 +412,7 @@ class VerificationResult {
   /// verification details could be established and false if trust is rejected
   /// for any reason.
   bool get trusted => _wrapped.trusted;
+
   set trusted(bool v) {
     _wrapped.trusted = v;
   }
@@ -416,6 +426,7 @@ class VerificationResult {
   /// compatible.
   List<String> get debugErrors =>
       _wrapped.debug_errors.toDart.cast<String>().map((e) => e).toList();
+
   set debugErrors(List<String> v) {
     _wrapped.debug_errors = v.toJSArray((e) => e);
   }

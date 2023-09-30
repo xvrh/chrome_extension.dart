@@ -92,6 +92,7 @@ class ProxyServer {
 
   /// The scheme (protocol) of the proxy server itself. Defaults to 'http'.
   Scheme? get scheme => _wrapped.scheme?.let(Scheme.fromJS);
+
   set scheme(Scheme? v) {
     _wrapped.scheme = v?.toJS;
   }
@@ -99,6 +100,7 @@ class ProxyServer {
   /// The hostname or IP address of the proxy server. Hostnames must be in ASCII
   /// (in Punycode format). IDNA is not supported, yet.
   String get host => _wrapped.host;
+
   set host(String v) {
     _wrapped.host = v;
   }
@@ -106,6 +108,7 @@ class ProxyServer {
   /// The port of the proxy server. Defaults to a port that depends on the
   /// scheme.
   int? get port => _wrapped.port;
+
   set port(int? v) {
     _wrapped.port = v;
   }
@@ -150,6 +153,7 @@ class ProxyRules {
   /// The proxy server to be used for all per-URL requests (that is http, https,
   /// and ftp).
   ProxyServer? get singleProxy => _wrapped.singleProxy?.let(ProxyServer.fromJS);
+
   set singleProxy(ProxyServer? v) {
     _wrapped.singleProxy = v?.toJS;
   }
@@ -157,6 +161,7 @@ class ProxyRules {
   /// The proxy server to be used for HTTP requests.
   ProxyServer? get proxyForHttp =>
       _wrapped.proxyForHttp?.let(ProxyServer.fromJS);
+
   set proxyForHttp(ProxyServer? v) {
     _wrapped.proxyForHttp = v?.toJS;
   }
@@ -164,12 +169,14 @@ class ProxyRules {
   /// The proxy server to be used for HTTPS requests.
   ProxyServer? get proxyForHttps =>
       _wrapped.proxyForHttps?.let(ProxyServer.fromJS);
+
   set proxyForHttps(ProxyServer? v) {
     _wrapped.proxyForHttps = v?.toJS;
   }
 
   /// The proxy server to be used for FTP requests.
   ProxyServer? get proxyForFtp => _wrapped.proxyForFtp?.let(ProxyServer.fromJS);
+
   set proxyForFtp(ProxyServer? v) {
     _wrapped.proxyForFtp = v?.toJS;
   }
@@ -178,6 +185,7 @@ class ProxyRules {
   /// proxyFor... is not specified.
   ProxyServer? get fallbackProxy =>
       _wrapped.fallbackProxy?.let(ProxyServer.fromJS);
+
   set fallbackProxy(ProxyServer? v) {
     _wrapped.fallbackProxy = v?.toJS;
   }
@@ -185,6 +193,7 @@ class ProxyRules {
   /// List of servers to connect to without a proxy server.
   List<String>? get bypassList =>
       _wrapped.bypassList?.toDart.cast<String>().map((e) => e).toList();
+
   set bypassList(List<String>? v) {
     _wrapped.bypassList = v?.toJSArray((e) => e);
   }
@@ -215,12 +224,14 @@ class PacScript {
 
   /// URL of the PAC file to be used.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// A PAC script.
   String? get data => _wrapped.data;
+
   set data(String? v) {
     _wrapped.data = v;
   }
@@ -228,6 +239,7 @@ class PacScript {
   /// If true, an invalid PAC script will prevent the network stack from falling
   /// back to direct connections. Defaults to false.
   bool? get mandatory => _wrapped.mandatory;
+
   set mandatory(bool? v) {
     _wrapped.mandatory = v;
   }
@@ -264,6 +276,7 @@ class ProxyConfig {
   /// The proxy rules describing this configuration. Use this for
   /// 'fixed_servers' mode.
   ProxyRules? get rules => _wrapped.rules?.let(ProxyRules.fromJS);
+
   set rules(ProxyRules? v) {
     _wrapped.rules = v?.toJS;
   }
@@ -271,6 +284,7 @@ class ProxyConfig {
   /// The proxy auto-config (PAC) script for this configuration. Use this for
   /// 'pac_script' mode.
   PacScript? get pacScript => _wrapped.pacScript?.let(PacScript.fromJS);
+
   set pacScript(PacScript? v) {
     _wrapped.pacScript = v?.toJS;
   }
@@ -281,6 +295,7 @@ class ProxyConfig {
   /// 'fixed_servers' = Manually specify proxy servers
   /// 'system' = Use system proxy settings
   Mode get mode => Mode.fromJS(_wrapped.mode);
+
   set mode(Mode v) {
     _wrapped.mode = v.toJS;
   }
@@ -312,18 +327,21 @@ class OnProxyErrorDetails {
   /// If true, the error was fatal and the network transaction was aborted.
   /// Otherwise, a direct connection is used instead.
   bool get fatal => _wrapped.fatal;
+
   set fatal(bool v) {
     _wrapped.fatal = v;
   }
 
   /// The error description.
   String get error => _wrapped.error;
+
   set error(String v) {
     _wrapped.error = v;
   }
 
   /// Additional details about the error such as a JavaScript runtime error.
   String get details => _wrapped.details;
+
   set details(String v) {
     _wrapped.details = v;
   }
