@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/context_menus.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
@@ -33,12 +32,12 @@ class ChromeContextMenus {
   /// [returns] The ID of the newly created item.
   Object create(
     CreateProperties createProperties,
-    Function? callback,
+    JSFunction? callback,
   ) {
     return $js.chrome.contextMenus
         .create(
           createProperties.toJS,
-          callback?.let(allowInterop),
+          callback,
         )
         .when(
           isInt: (v) => v,
@@ -58,8 +57,8 @@ class ChromeContextMenus {
     var $completer = Completer<void>();
     $js.chrome.contextMenus.update(
       switch (id) {
-        int() => id,
-        String() => id,
+        int() => id.jsify()!,
+        String() => id.jsify()!,
         _ => throw UnsupportedError(
             'Received type: ${id.runtimeType}. Supported types are: int, String')
       },
@@ -80,8 +79,8 @@ class ChromeContextMenus {
     var $completer = Completer<void>();
     $js.chrome.contextMenus.remove(
       switch (menuItemId) {
-        int() => menuItemId,
-        String() => menuItemId,
+        int() => menuItemId.jsify()!,
+        String() => menuItemId.jsify()!,
         _ => throw UnsupportedError(
             'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
       },
@@ -220,14 +219,14 @@ class OnClickData {
     bool? checked,
   }) : _wrapped = $js.OnClickData(
           menuItemId: switch (menuItemId) {
-            int() => menuItemId,
-            String() => menuItemId,
+            int() => menuItemId.jsify()!,
+            String() => menuItemId.jsify()!,
             _ => throw UnsupportedError(
                 'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
           },
           parentMenuItemId: switch (parentMenuItemId) {
-            int() => parentMenuItemId,
-            String() => parentMenuItemId,
+            int() => parentMenuItemId.jsify()!,
+            String() => parentMenuItemId.jsify()!,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentMenuItemId.runtimeType}. Supported types are: int, String')
@@ -256,8 +255,8 @@ class OnClickData {
 
   set menuItemId(Object v) {
     _wrapped.menuItemId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
     };
@@ -271,8 +270,8 @@ class OnClickData {
 
   set parentMenuItemId(Object? v) {
     _wrapped.parentMenuItemId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -390,7 +389,7 @@ class CreateProperties {
     /// A function that is called back when the menu item is clicked. Event
     /// pages cannot use this; instead, they should register a listener for
     /// [contextMenus.onClicked].
-    Function? onclick,
+    JSFunction? onclick,
 
     /// The ID of a parent menu item; this makes the item a child of a
     /// previously added item.
@@ -416,10 +415,10 @@ class CreateProperties {
           checked: checked,
           contexts: contexts?.toJSArray((e) => e.toJS),
           visible: visible,
-          onclick: onclick?.let(allowInterop),
+          onclick: onclick,
           parentId: switch (parentId) {
-            int() => parentId,
-            String() => parentId,
+            int() => parentId.jsify()!,
+            String() => parentId.jsify()!,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentId.runtimeType}. Supported types are: int, String')
@@ -488,14 +487,10 @@ class CreateProperties {
   /// A function that is called back when the menu item is clicked. Event pages
   /// cannot use this; instead, they should register a listener for
   /// [contextMenus.onClicked].
-  Function? get onclick => ([Object? p1, Object? p2]) {
-        return (_wrapped.onclick as JSAny? Function(JSAny?, JSAny?)?)
-            ?.call(p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
+  JSFunction? get onclick => _wrapped.onclick;
 
-  set onclick(Function? v) {
-    _wrapped.onclick = v?.let(allowInterop);
+  set onclick(JSFunction? v) {
+    _wrapped.onclick = v;
   }
 
   /// The ID of a parent menu item; this makes the item a child of a previously
@@ -507,8 +502,8 @@ class CreateProperties {
 
   set parentId(Object? v) {
     _wrapped.parentId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -555,7 +550,7 @@ class UpdateProperties {
 
     /// Whether the item is visible in the menu.
     bool? visible,
-    Function? onclick,
+    JSFunction? onclick,
 
     /// The ID of the item to be made this item's parent. Note: You cannot set
     /// an item to become a child of its own descendant.
@@ -569,10 +564,10 @@ class UpdateProperties {
           checked: checked,
           contexts: contexts?.toJSArray((e) => e.toJS),
           visible: visible,
-          onclick: onclick?.let(allowInterop),
+          onclick: onclick,
           parentId: switch (parentId) {
-            int() => parentId,
-            String() => parentId,
+            int() => parentId.jsify()!,
+            String() => parentId.jsify()!,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentId.runtimeType}. Supported types are: int, String')
@@ -620,14 +615,10 @@ class UpdateProperties {
     _wrapped.visible = v;
   }
 
-  Function? get onclick => ([Object? p1, Object? p2]) {
-        return (_wrapped.onclick as JSAny? Function(JSAny?, JSAny?)?)
-            ?.call(p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
+  JSFunction? get onclick => _wrapped.onclick;
 
-  set onclick(Function? v) {
-    _wrapped.onclick = v?.let(allowInterop);
+  set onclick(JSFunction? v) {
+    _wrapped.onclick = v;
   }
 
   /// The ID of the item to be made this item's parent. Note: You cannot set an
@@ -639,8 +630,8 @@ class UpdateProperties {
 
   set parentId(Object? v) {
     _wrapped.parentId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')

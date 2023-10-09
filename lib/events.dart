@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/events.dart' as $js;
 
@@ -108,20 +107,20 @@ class Event {
   /// Registers an event listener _callback_ to an event.
   /// [callback] Called when an event occurs. The parameters of this function
   /// depend on the type of event.
-  void addListener(Function callback) {
-    _wrapped.addListener(allowInterop(callback));
+  void addListener(JSFunction callback) {
+    _wrapped.addListener(callback);
   }
 
   /// Deregisters an event listener _callback_ from an event.
   /// [callback] Listener that shall be unregistered.
-  void removeListener(Function callback) {
-    _wrapped.removeListener(allowInterop(callback));
+  void removeListener(JSFunction callback) {
+    _wrapped.removeListener(callback);
   }
 
   /// [callback] Listener whose registration status shall be tested.
   /// [returns] True if _callback_ is registered to the event.
-  bool hasListener(Function callback) {
-    return _wrapped.hasListener(allowInterop(callback));
+  bool hasListener(JSFunction callback) {
+    return _wrapped.hasListener(callback);
   }
 
   /// [returns] True if any event listeners are registered to the event.
@@ -322,7 +321,7 @@ class UrlFilter {
           urlSuffix: urlSuffix,
           schemes: schemes?.toJSArray((e) => e),
           ports: ports?.toJSArray((e) => switch (e) {
-                int() => e,
+                int() => e.jsify()!,
                 List<int>() => e.toJSArray((e) => e),
                 _ => throw UnsupportedError(
                     'Received type: ${e.runtimeType}. Supported types are: int, List<int>')
@@ -493,7 +492,7 @@ class UrlFilter {
   /// lists. For example `[80, 443, [1000, 1200]]` matches all requests on port
   /// 80, 443 and in the range 1000-1200.
   List<Object>? get ports => _wrapped.ports?.toDart
-      .cast<Object>()
+      .cast<JSAny>()
       .map((e) => e.when(
             isInt: (v) => v,
             isArray: (v) => v.toDart.cast<int>().map((e) => e).toList(),
@@ -502,7 +501,7 @@ class UrlFilter {
 
   set ports(List<Object>? v) {
     _wrapped.ports = v?.toJSArray((e) => switch (e) {
-          int() => e,
+          int() => e.jsify()!,
           List<int>() => e.toJSArray((e) => e),
           _ => throw UnsupportedError(
               'Received type: ${e.runtimeType}. Supported types are: int, List<int>')

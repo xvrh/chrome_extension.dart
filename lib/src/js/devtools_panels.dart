@@ -55,7 +55,7 @@ extension JSDevtoolsPanelsExtension on JSDevtoolsPanels {
       /// A function that is called when the user clicks on a valid resource link
       /// in Developer Tools window. Note that if the user clicks an invalid URL
       /// or an XHR, this function is not called.
-      Function? callback);
+      JSFunction? callback);
 
   /// Requests DevTools to open a URL in a Developer Tools panel.
   external void openResource(
@@ -70,7 +70,7 @@ extension JSDevtoolsPanelsExtension on JSDevtoolsPanels {
 
     /// A function that is called when the resource has been successfully
     /// loaded.
-    Function? callback,
+    JSFunction? callback,
   );
 
   /// Elements panel.
@@ -186,7 +186,7 @@ extension ExtensionSidebarPaneExtension on ExtensionSidebarPane {
 
     /// A callback invoked after the sidebar pane is updated with the expression
     /// evaluation results.
-    Function? callback,
+    JSFunction? callback,
   );
 
   /// Sets a JSON-compliant object to be displayed in the sidebar pane.
@@ -199,7 +199,7 @@ extension ExtensionSidebarPaneExtension on ExtensionSidebarPane {
     String? rootTitle,
 
     /// A callback invoked after the sidebar is updated with the object.
-    Function? callback,
+    JSFunction? callback,
   );
 
   /// Sets an HTML page to be displayed in the sidebar pane.

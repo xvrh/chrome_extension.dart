@@ -460,7 +460,7 @@ class CreateData {
     bool? setSelfAsOpener,
   }) : _wrapped = $js.CreateData(
           url: switch (url) {
-            String() => url,
+            String() => url.jsify()!,
             List() => url.toJSArrayString(),
             null => null,
             _ => throw UnsupportedError(
@@ -493,7 +493,7 @@ class CreateData {
 
   set url(Object? v) {
     _wrapped.url = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       List() => v.toJSArrayString(),
       null => null,
       _ => throw UnsupportedError(

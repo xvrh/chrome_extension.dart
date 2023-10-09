@@ -56,15 +56,11 @@ class ChromeOmnibox {
   EventStream<OnInputChangedEvent> get onInputChanged =>
       $js.chrome.omnibox.onInputChanged.asStream(($c) => (
             String text,
-            Function suggest,
+            JSFunction suggest,
           ) {
             return $c(OnInputChangedEvent(
               text: text,
-              suggest: ([Object? p1, Object? p2]) {
-                return (suggest as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              suggest: suggest,
             ));
           });
 
@@ -297,7 +293,7 @@ class OnInputChangedEvent {
 
   /// A callback passed to the onInputChanged event used for sending suggestions
   /// back to the browser.
-  final Function suggest;
+  final JSFunction suggest;
 }
 
 class OnInputEnteredEvent {

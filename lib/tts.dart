@@ -167,7 +167,7 @@ class TtsOptions {
 
     /// This function is called with events that occur in the process of
     /// speaking the utterance.
-    Function? onEvent,
+    JSFunction? onEvent,
   }) : _wrapped = $js.TtsOptions(
           enqueue: enqueue,
           voiceName: voiceName,
@@ -179,7 +179,7 @@ class TtsOptions {
           volume: volume,
           requiredEventTypes: requiredEventTypes?.toJSArray((e) => e),
           desiredEventTypes: desiredEventTypes?.toJSArray((e) => e),
-          onEvent: onEvent?.let(allowInterop),
+          onEvent: onEvent,
         );
 
   final $js.TtsOptions _wrapped;
@@ -272,14 +272,10 @@ class TtsOptions {
 
   /// This function is called with events that occur in the process of speaking
   /// the utterance.
-  Function? get onEvent => ([Object? p1, Object? p2]) {
-        return (_wrapped.onEvent as JSAny? Function(JSAny?, JSAny?)?)
-            ?.call(p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
+  JSFunction? get onEvent => _wrapped.onEvent;
 
-  set onEvent(Function? v) {
-    _wrapped.onEvent = v?.let(allowInterop);
+  set onEvent(JSFunction? v) {
+    _wrapped.onEvent = v;
   }
 }
 

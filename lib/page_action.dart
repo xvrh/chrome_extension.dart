@@ -180,7 +180,7 @@ class SetIconDetails {
                 'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map')
           },
           path: switch (path) {
-            String() => path,
+            String() => path.jsify()!,
             Map() => path.jsify()!,
             null => null,
             _ => throw UnsupportedError(
@@ -237,7 +237,7 @@ class SetIconDetails {
 
   set path(Object? v) {
     _wrapped.path = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       Map() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(

@@ -46,7 +46,7 @@ extension JSProcessesExtension on JSProcesses {
   /// collecting memory usage information incurs extra CPU usage and should
   /// only be queried for when needed.
   external JSPromise getProcessInfo(
-    Object processIds,
+    JSAny processIds,
     bool includeMemory,
   );
 

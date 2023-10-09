@@ -33,7 +33,7 @@ extension JSBookmarksExtension on JSBookmarks {
   external JSPromise get(
 
       /// A single string-valued id, or an array of string-valued ids
-      Object idOrIdList);
+      JSAny idOrIdList);
 
   /// Retrieves the children of the specified BookmarkTreeNode id.
   external JSPromise getChildren(String id);
@@ -62,7 +62,7 @@ extension JSBookmarksExtension on JSBookmarks {
       /// bookmark URLs and titles, or an object. If an object, the properties
       /// `query`, `url`, and `title` may be specified and bookmarks matching all
       /// specified properties will be produced.
-      Object query);
+      JSAny query);
 
   /// Creates a bookmark or folder under the specified parentId.  If url is NULL
   /// or missing, it will be a folder.

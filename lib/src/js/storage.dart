@@ -86,14 +86,14 @@ extension StorageAreaExtension on StorageArea {
       /// default values (see description of the object).  An empty list or object
       /// will return an empty result object.  Pass in `null` to get the entire
       /// contents of storage.
-      Object? keys);
+      JSAny? keys);
 
   /// Gets the amount of space (in bytes) being used by one or more items.
   external JSPromise getBytesInUse(
 
       /// A single key or list of keys to get the total usage for. An empty list
       /// will return 0. Pass in `null` to get the total usage of all of storage.
-      Object? keys);
+      JSAny? keys);
 
   /// Sets multiple items.
   external JSPromise set(
@@ -111,7 +111,7 @@ extension StorageAreaExtension on StorageArea {
   external JSPromise remove(
 
       /// A single key or a list of keys for items to remove.
-      Object keys);
+      JSAny keys);
 
   /// Removes all items from storage.
   external JSPromise clear();

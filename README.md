@@ -13,22 +13,64 @@ The JS interop is build on top of `dart:js_interop` (static interop) which make 
 
 ### Example
 
+#### `chrome.tabs`
+```dart
+import 'package:chrome_extension/tabs.dart';
+
+void main() async {
+  var tabs = await chrome.tabs.query(QueryInfo(
+    active: true,
+    currentWindow: true,
+  ));
+  print(tabs.first.title);
+}
+```
+
+#### `chrome.alarms`
 ```dart
 import 'package:chrome_extension/alarms.dart';
+
+void main() async {
+  await chrome.alarms.create('MyAlarm', AlarmCreateInfo(delayInMinutes: 2));
+
+  var alarm = await chrome.alarms.get('MyAlarm');
+  print(alarm!.name);
+}
+```
+
+#### `chrome.power`
+```dart
 import 'package:chrome_extension/power.dart';
+
+void main() {
+  chrome.power.requestKeepAwake(Level.display);
+}
+```
+
+#### `chrome.runtime`
+```dart
+import 'dart:js_interop';
+import 'package:chrome_extension/runtime.dart';
+
+void main() async {
+  chrome.runtime.onInstalled.listen((e) {
+    print('OnInstalled: ${e.reason}');
+  });
+
+  chrome.runtime.onMessage.listen((e) {
+    e.sendResponse.callAsFunction(null, {'the_response': 1}.jsify());
+  });
+}
+```
+
+#### `chrome.storage`
+```dart
 import 'package:chrome_extension/storage.dart';
 
 void main() async {
-  // Use the chrome.power API
-  chrome.power.requestKeepAwake(Level.display);
-
-  // Use the chrome.storage API
   await chrome.storage.local.set({'mykey': 'value'});
   var values = await chrome.storage.local.get(null /* all */);
   print(values['mykey']);
-
-  // Use the chrome.alarms API
-  await chrome.alarms.create('MyAlarm', AlarmCreateInfo(delayInMinutes: 2));
 }
 ```
 
@@ -124,14 +166,16 @@ void main() async {
 
 ## Tips to build Chrome extensions with Flutter
 
+Here are some personal tips to build Chrome extension using the Flutter UI framework.
+
 #### Develop the app using Flutter Desktop
 
 In order to develop in a comfortable environment with hot-reload,
-most of the app can be developed using Flutter desktop.
+most of the app (the UI part) should be developed using Flutter desktop.
 
-This will require an abstraction layer between the UI and the `chrome_extension` APIs.
+This requires an abstraction layer between the UI and the `chrome_extension` APIs.
 
-A fake implementation of this abstraction layer is used in the Desktop entry point:
+In the Desktop entry point, a fake implementation of this abstraction layer is used, like this:
 
 ```dart
 // lib/main_desktop.dart
@@ -154,7 +198,7 @@ class FakeBookmarkService implements BookmarkService {
 Launch this entry point in desktop with  
 `flutter run -t lib/main_desktop.dart -d macos|windows|linux`
 
-Create the real entry point:
+And the real entry point (the one used in the actual compiled extension) looks like:
 
 ```dart
 // lib/main.dart

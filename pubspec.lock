@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: d4dc11707abb32ef756ab95678c0d6df54003d98277f7c9aeda14c48e7a38c2f
+      sha256: ca12e6c9ac022f33fd89128e7007fb5e97ab6e814d4fa05dd8d4f2db1e3c69cb
       url: "https://pub.dev"
     source: hosted
-    version: "3.4.3"
+    version: "3.4.5"
   args:
     dependency: transitive
     description:
@@ -126,7 +126,7 @@ packages:
     description:
       path: "pkgs/checks"
       ref: HEAD
-      resolved-ref: "566d70a2c009d649ba8e7d599f0f83725d79fd92"
+      resolved-ref: "4341470a2b844cd9a6692647639d652f617dd302"
       url: "https://github.com/dart-lang/test.git"
     source: git
     version: "0.3.0-wip"
@@ -166,10 +166,10 @@ packages:
     dependency: transitive
     description:
       name: coverage
-      sha256: "2fb815080e44a09b85e0f2ca8a820b15053982b2e714b59267719e8a9ff17097"
+      sha256: "595a29b55ce82d53398e1bcc2cba525d7bd7c59faeb2d2540e9d42c390cfeeeb"
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.3"
+    version: "1.6.4"
   crypto:
     dependency: transitive
     description:
@@ -198,10 +198,10 @@ packages:
     dependency: transitive
     description:
       name: fetch_api
-      sha256: "7896632eda5af40c4459d673ad601df21d4c3ae6a45997e300a92ca63ec9fe4c"
+      sha256: b88977a8f369344cbaa13a53752629185ecae0d56c6683f0a2060b652a0cf437
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   fetch_client:
     dependency: "direct dev"
     description:
@@ -392,7 +392,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "097e5635a6c1859e03e9c606c2ab4cfa74618bcc"
+      resolved-ref: "47a5588788d37d7a94da9ceb9b3f3ef86c86f27e"
       url: "https://github.com/dart-lang/mockito.git"
     source: git
     version: "5.4.3-wip"
@@ -625,10 +625,10 @@ packages:
     dependency: "direct dev"
     description:
       name: test
-      sha256: "9b0dd8e36af4a5b1569029949d50a52cb2a2a2fdaa20cebb96e6603b9ae241f9"
+      sha256: a20ddc0723556dc6dd56094e58ec1529196d5d7774156604cb14e8445a5a82ff
       url: "https://pub.dev"
     source: hosted
-    version: "1.24.6"
+    version: "1.24.7"
   test_api:
     dependency: transitive
     description:
@@ -641,10 +641,10 @@ packages:
     dependency: transitive
     description:
       name: test_core
-      sha256: "4bef837e56375537055fdbbbf6dd458b1859881f4c7e6da936158f77d61ab265"
+      sha256: "96382d0bc826e260b077bb496259e58bc82e90b603ab16cd5ae95dfe1dfcba8b"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.6"
+    version: "0.5.7"
   timing:
     dependency: transitive
     description:
@@ -665,10 +665,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: c538be99af830f478718b51630ec1b6bee5e74e52c8a802d328d9e71d35d2583
+      sha256: a13d5503b4facefc515c8c587ce3cf69577a7b064a9f1220e005449cf1f64aad
       url: "https://pub.dev"
     source: hosted
-    version: "11.10.0"
+    version: "12.0.0"
   watcher:
     dependency: transitive
     description:
@@ -681,10 +681,10 @@ packages:
     dependency: "direct dev"
     description:
       name: web
-      sha256: dc8ccd225a2005c1be616fe02951e2e342092edf968cf0844220383757ef8f10
+      sha256: ccbbfbf29732ee1b391c4c6d13e7032d851f675f47365e81904e4c6fd669c854
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.4-beta"
+    version: "0.2.2-beta"
   web_socket_channel:
     dependency: transitive
     description:
@@ -710,4 +710,4 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.1.0 <4.0.0"
+  dart: ">=3.2.0-194.0.dev <4.0.0"

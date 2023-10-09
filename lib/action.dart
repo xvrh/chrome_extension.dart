@@ -286,7 +286,7 @@ class SetIconDetails {
                 'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map')
           },
           path: switch (path) {
-            String() => path,
+            String() => path.jsify()!,
             Map() => path.jsify()!,
             null => null,
             _ => throw UnsupportedError(
@@ -336,7 +336,7 @@ class SetIconDetails {
 
   set path(Object? v) {
     _wrapped.path = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       Map() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
@@ -446,7 +446,7 @@ class SetBadgeBackgroundColorDetails {
     int? tabId,
   }) : _wrapped = $js.SetBadgeBackgroundColorDetails(
           color: switch (color) {
-            String() => color,
+            String() => color.jsify()!,
             List<int>() => color.toJSArray((e) => e),
             _ => throw UnsupportedError(
                 'Received type: ${color.runtimeType}. Supported types are: String, List<int>')
@@ -472,7 +472,7 @@ class SetBadgeBackgroundColorDetails {
 
   set color(Object v) {
     _wrapped.color = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       List<int>() => v.toJSArray((e) => e),
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: String, List<int>')
@@ -506,7 +506,7 @@ class SetBadgeTextColorDetails {
     int? tabId,
   }) : _wrapped = $js.SetBadgeTextColorDetails(
           color: switch (color) {
-            String() => color,
+            String() => color.jsify()!,
             List<int>() => color.toJSArray((e) => e),
             _ => throw UnsupportedError(
                 'Received type: ${color.runtimeType}. Supported types are: String, List<int>')
@@ -536,7 +536,7 @@ class SetBadgeTextColorDetails {
 
   set color(Object v) {
     _wrapped.color = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       List<int>() => v.toJSArray((e) => e),
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: String, List<int>')

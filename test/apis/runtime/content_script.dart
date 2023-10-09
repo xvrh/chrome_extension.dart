@@ -1,10 +1,18 @@
 import 'package:chrome_extension/runtime.dart';
+import 'package:chrome_extension/src/internal_helpers.dart';
 
 void main() {
   chrome.runtime.onMessage.listen((event) {
+    print("Got message ${event.message}");
     void echo() {
-      // ignore: avoid_dynamic_calls
-      event.sendResponse({'response': event.message});
+      print("Will response");
+      try {
+        event.sendResponse
+            .callAsFunction(null, {'response': event.message}.jsify());
+        print("After response");
+      } catch (e) {
+        print("error $e");
+      }
     }
 
     if (event.message == 'async') {

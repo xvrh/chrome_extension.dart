@@ -288,11 +288,11 @@ class Port {
     /// Immediately disconnect the port. Calling `disconnect()` on an
     /// already-disconnected port has no effect. When a port is disconnected, no
     /// new events will be dispatched to this port.
-    Function disconnect,
+    JSFunction disconnect,
 
     /// Send a message to the other end of the port. If the port is disconnected,
     /// an error is thrown.
-    Function postMessage,
+    JSFunction postMessage,
 
     /// This property will **only** be present on ports passed to
     /// $(ref:runtime.onConnect onConnect) / $(ref:runtime.onConnectExternal
@@ -309,11 +309,11 @@ extension PortExtension on Port {
   /// Immediately disconnect the port. Calling `disconnect()` on an
   /// already-disconnected port has no effect. When a port is disconnected, no
   /// new events will be dispatched to this port.
-  external Function disconnect;
+  external JSFunction disconnect;
 
   /// Send a message to the other end of the port. If the port is disconnected,
   /// an error is thrown.
-  external Function postMessage;
+  external JSFunction postMessage;
 
   /// This property will **only** be present on ports passed to
   /// $(ref:runtime.onConnect onConnect) / $(ref:runtime.onConnectExternal

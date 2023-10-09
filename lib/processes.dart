@@ -52,7 +52,7 @@ class ChromeProcesses {
   ) async {
     var $res = await promiseToFuture<JSAny>($js.chrome.processes.getProcessInfo(
       switch (processIds) {
-        int() => processIds,
+        int() => processIds.jsify()!,
         List<int>() => processIds.toJSArray((e) => e),
         _ => throw UnsupportedError(
             'Received type: ${processIds.runtimeType}. Supported types are: int, List<int>')

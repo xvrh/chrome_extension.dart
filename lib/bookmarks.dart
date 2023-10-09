@@ -27,7 +27,7 @@ class ChromeBookmarks {
   Future<List<BookmarkTreeNode>> get(Object idOrIdList) async {
     var $res = await promiseToFuture<JSArray>(
         $js.chrome.bookmarks.get(switch (idOrIdList) {
-      String() => idOrIdList,
+      String() => idOrIdList.jsify()!,
       List() => idOrIdList.toJSArrayString(),
       _ => throw UnsupportedError(
           'Received type: ${idOrIdList.runtimeType}. Supported types are: String, List<String>')
@@ -89,8 +89,8 @@ class ChromeBookmarks {
   Future<List<BookmarkTreeNode>> search(Object query) async {
     var $res = await promiseToFuture<JSArray>(
         $js.chrome.bookmarks.search(switch (query) {
-      String() => query,
-      SearchQuery() => query.toJS,
+      String() => query.jsify()!,
+      SearchQuery() => (query.toJS as JSAny),
       _ => throw UnsupportedError(
           'Received type: ${query.runtimeType}. Supported types are: String, SearchQuery')
     }));

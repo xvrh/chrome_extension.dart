@@ -52,6 +52,8 @@ sealed class ChromeType {
 
   code.Expression toJS(code.Expression accessor);
 
+  code.Expression toJSAny(code.Expression accessor) => toJS(accessor);
+
   code.Expression toDart(code.Expression accessor);
 
   String get questionMark => isNullable ? '?' : '';
@@ -202,6 +204,11 @@ sealed class _PrimitiveType extends ChromeType {
   @override
   code.Expression toJS(code.Expression accessor) {
     return accessor;
+  }
+
+  @override
+  code.Expression toJSAny(code.Expression accessor) {
+    return accessor.property('jsify').call([]).nullChecked;
   }
 }
 
@@ -477,6 +484,11 @@ abstract class _LocalType extends ChromeType {
   code.Expression toJS(code.Expression accessor) {
     return accessor.nullSafePropertyIf('toJS', isNullable);
   }
+
+  @override
+  code.Expression toJSAny(code.Expression accessor) {
+    return toJS(accessor).asA(code.refer('JSAny${isNullable ? '?' : ''}'));
+  }
 }
 
 class DictionaryType extends _LocalType {
@@ -609,49 +621,21 @@ class DynamicFunctionType extends ChromeType {
     return null;
   }
 
-  static final _parameterCount = 2;
-  final _allParameters =
-      List.generate(_parameterCount, (i) => 'Object? p${i + 1}').join(', ');
-
   @override
   code.Reference get dartType => code.TypeReference((b) => b
-    ..symbol = 'Function'
+    ..symbol = 'JSFunction'
     ..isNullable = isNullable);
 
   @override
   code.Reference get jsType => code.TypeReference((b) => b
-    ..symbol = 'Function'
+    ..symbol = 'JSFunction'
     ..isNullable = isNullable);
 
   @override
-  code.Expression toDart(code.Expression accessor) {
-    return code.CodeExpression(code.Code.scope((allocate) {
-      var emit = _createEmit(allocate);
-
-      var jsParameters =
-          List.generate(_parameterCount, (_) => 'JSAny?').join(',');
-      var castedAccessor =
-          '${emit(accessor)} as JSAny? Function($jsParameters)$questionMark';
-      var forwardedParameters =
-          List.generate(_parameterCount, (i) => 'p${i + 1}?.jsify()')
-              .join(', ');
-      return '''
-([$_allParameters]) {
-  return ($castedAccessor)${isNullable ? '?.call' : ''}($forwardedParameters)?.dartify();
-}   
-''';
-    }));
-  }
+  code.Expression toDart(code.Expression accessor) => accessor;
 
   @override
-  code.Expression toJS(code.Expression accessor) {
-    var allowInterop = code.refer('allowInterop', 'dart:js_util');
-    if (!isNullable) {
-      return allowInterop.call([accessor]);
-    } else {
-      return accessor.nullSafeProperty('let').call([allowInterop]);
-    }
-  }
+  code.Expression toJS(code.Expression accessor) => accessor;
 
   @override
   ChromeType copyWith({required bool isNullable}) =>
@@ -785,7 +769,7 @@ class ChoiceType extends ChromeType {
   @override
   code.Reference get jsType {
     return code.TypeReference((b) => b
-      ..symbol = 'Object'
+      ..symbol = 'JSAny'
       ..isNullable = isNullable);
   }
 
@@ -832,7 +816,7 @@ class ChoiceType extends ChromeType {
         if (type == 'List<String>') {
           buffer.writeln('List() => ${emit(accessor)}.toJSArrayString(),');
         } else {
-          buffer.writeln('$type() => ${emit(choice.toJS(accessor))},');
+          buffer.writeln('$type() => ${emit(choice.toJSAny(accessor))},');
         }
       }
       if (isNullable) {

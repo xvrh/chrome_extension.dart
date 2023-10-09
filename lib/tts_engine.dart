@@ -66,16 +66,12 @@ class ChromeTtsEngine {
       $js.chrome.ttsEngine.onSpeak.asStream(($c) => (
             String utterance,
             $js.SpeakOptions options,
-            Function sendTtsEvent,
+            JSFunction sendTtsEvent,
           ) {
             return $c(OnSpeakEvent(
               utterance: utterance,
               options: SpeakOptions.fromJS(options),
-              sendTtsEvent: ([Object? p1, Object? p2]) {
-                return (sendTtsEvent as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendTtsEvent: sendTtsEvent,
             ));
           });
 
@@ -88,23 +84,15 @@ class ChromeTtsEngine {
             String utterance,
             $js.SpeakOptions options,
             $js.AudioStreamOptions audioStreamOptions,
-            Function sendTtsAudio,
-            Function sendError,
+            JSFunction sendTtsAudio,
+            JSFunction sendError,
           ) {
             return $c(OnSpeakWithAudioStreamEvent(
               utterance: utterance,
               options: SpeakOptions.fromJS(options),
               audioStreamOptions: AudioStreamOptions.fromJS(audioStreamOptions),
-              sendTtsAudio: ([Object? p1, Object? p2]) {
-                return (sendTtsAudio as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
-              sendError: ([Object? p1, Object? p2]) {
-                return (sendError as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendTtsAudio: sendTtsAudio,
+              sendError: sendError,
             ));
           });
 
@@ -344,7 +332,7 @@ class OnSpeakEvent {
 
   /// Call this function with events that occur in the process of speaking the
   /// utterance.
-  final Function sendTtsEvent;
+  final JSFunction sendTtsEvent;
 }
 
 class OnSpeakWithAudioStreamEvent {
@@ -373,8 +361,8 @@ class OnSpeakWithAudioStreamEvent {
 
   /// Call this function with audio that occur in the process of speaking the
   /// utterance.
-  final Function sendTtsAudio;
+  final JSFunction sendTtsAudio;
 
   /// Call this function to indicate an error with rendering this utterance.
-  final Function sendError;
+  final JSFunction sendError;
 }

@@ -77,15 +77,11 @@ class ChromeWebRequest {
   EventStream<OnAuthRequiredEvent> get onAuthRequired =>
       $js.chrome.webRequest.onAuthRequired.asStream(($c) => (
             $js.OnAuthRequiredDetails details,
-            Function? asyncCallback,
+            JSFunction? asyncCallback,
           ) {
             return $c(OnAuthRequiredEvent(
               details: OnAuthRequiredDetails.fromJS(details),
-              asyncCallback: ([Object? p1, Object? p2]) {
-                return (asyncCallback as JSAny? Function(JSAny?, JSAny?)?)
-                    ?.call(p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              asyncCallback: asyncCallback,
             ));
           });
 
@@ -2662,5 +2658,5 @@ class OnAuthRequiredEvent {
 
   /// Only valid if `'asyncBlocking'` is specified as one of the
   /// `OnAuthRequiredOptions`.
-  final Function? asyncCallback;
+  final JSFunction? asyncCallback;
 }

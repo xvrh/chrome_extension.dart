@@ -129,16 +129,12 @@ class ChromeExtension {
       $js.chrome.extension.onRequest.asStream(($c) => (
             JSAny? request,
             $js_runtime.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnRequestEvent(
               request: request?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 
@@ -147,16 +143,12 @@ class ChromeExtension {
       $js.chrome.extension.onRequestExternal.asStream(($c) => (
             JSAny? request,
             $js_runtime.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnRequestExternalEvent(
               request: request?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 }
@@ -260,7 +252,7 @@ class OnRequestEvent {
   /// should be any JSON-ifiable object, or undefined if there is no response.
   /// If you have more than one `onRequest` listener in the same document, then
   /// only one may send a response.
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }
 
 class OnRequestExternalEvent {
@@ -277,5 +269,5 @@ class OnRequestExternalEvent {
 
   /// Function to call when you have a response. The argument should be any
   /// JSON-ifiable object, or undefined if there is no response.
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }

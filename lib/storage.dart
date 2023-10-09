@@ -115,7 +115,7 @@ class StorageArea {
   /// [runtime.lastError] will be set).
   Future<Map> get(Object? keys) async {
     var $res = await promiseToFuture<JSAny>(_wrapped.get(switch (keys) {
-      String() => keys,
+      String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
       Map() => keys.jsify()!,
       null => null,
@@ -133,7 +133,7 @@ class StorageArea {
   /// failure (in which case [runtime.lastError] will be set).
   Future<int> getBytesInUse(Object? keys) async {
     var $res = await promiseToFuture<int>(_wrapped.getBytesInUse(switch (keys) {
-      String() => keys,
+      String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
       null => null,
       _ => throw UnsupportedError(
@@ -162,7 +162,7 @@ class StorageArea {
   /// [runtime.lastError] will be set).
   Future<void> remove(Object keys) async {
     await promiseToFuture<void>(_wrapped.remove(switch (keys) {
-      String() => keys,
+      String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
       _ => throw UnsupportedError(
           'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')

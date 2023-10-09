@@ -127,7 +127,7 @@ class SetIconDetails {
     /// size of the icon in the UI. At least one image must be specified. Note
     /// that 'details.imageData = foo' is equivalent to 'details.imageData =
     /// {'16': foo}'
-    Object? imageData,
+    JSAny? imageData,
 
     /// Either a relative image path or a dictionary {size -> relative image path}
     /// pointing to icon to be set. If the icon is specified as a dictionary, the
@@ -136,7 +136,7 @@ class SetIconDetails {
     /// `scale`, then image with size `scale` * n will be selected, where n is the
     /// size of the icon in the UI. At least one image must be specified. Note
     /// that 'details.path = foo' is equivalent to 'details.path = {'16': foo}'
-    Object? path,
+    JSAny? path,
 
     /// **Deprecated.** This argument is ignored.
     int? iconIndex,
@@ -155,7 +155,7 @@ extension SetIconDetailsExtension on SetIconDetails {
   /// size of the icon in the UI. At least one image must be specified. Note
   /// that 'details.imageData = foo' is equivalent to 'details.imageData =
   /// {'16': foo}'
-  external Object? imageData;
+  external JSAny? imageData;
 
   /// Either a relative image path or a dictionary {size -> relative image path}
   /// pointing to icon to be set. If the icon is specified as a dictionary, the
@@ -164,7 +164,7 @@ extension SetIconDetailsExtension on SetIconDetails {
   /// `scale`, then image with size `scale` * n will be selected, where n is the
   /// size of the icon in the UI. At least one image must be specified. Note
   /// that 'details.path = foo' is equivalent to 'details.path = {'16': foo}'
-  external Object? path;
+  external JSAny? path;
 
   /// **Deprecated.** This argument is ignored.
   external int? iconIndex;

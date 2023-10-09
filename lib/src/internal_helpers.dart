@@ -105,11 +105,11 @@ class _EventStreamSubscription<T> implements StreamSubscription<T> {
   int _pauseCount = 0;
   js.Event? _target;
   dynamic Function(T)? _onData;
-  late final Function _callback;
+  late final JSFunction _callback;
 
   _EventStreamSubscription(this._target, this._onData,
       Function Function(dynamic Function(T)) callbackFactory) {
-    _callback = allowInterop(callbackFactory(_wrapZone(_addData)));
+    _callback = allowInterop(callbackFactory(_wrapZone(_addData))).toJS;
     _tryResume();
   }
 

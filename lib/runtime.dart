@@ -328,16 +328,12 @@ class ChromeRuntime {
       $js.chrome.runtime.onMessage.asStream(($c) => (
             JSAny? message,
             $js.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnMessageEvent(
               message: message?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 
@@ -347,16 +343,12 @@ class ChromeRuntime {
       $js.chrome.runtime.onMessageExternal.asStream(($c) => (
             JSAny? message,
             $js.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnMessageExternalEvent(
               message: message?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 
@@ -366,16 +358,12 @@ class ChromeRuntime {
       $js.chrome.runtime.onUserScriptMessage.asStream(($c) => (
             JSAny? message,
             $js.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnUserScriptMessageEvent(
               message: message?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 
@@ -522,11 +510,11 @@ class Port {
     /// Immediately disconnect the port. Calling `disconnect()` on an
     /// already-disconnected port has no effect. When a port is disconnected, no
     /// new events will be dispatched to this port.
-    required Function disconnect,
+    required JSFunction disconnect,
 
     /// Send a message to the other end of the port. If the port is
     /// disconnected, an error is thrown.
-    required Function postMessage,
+    required JSFunction postMessage,
 
     /// This property will **only** be present on ports passed to
     /// $(ref:runtime.onConnect onConnect) / $(ref:runtime.onConnectExternal
@@ -535,8 +523,8 @@ class Port {
     MessageSender? sender,
   }) : _wrapped = $js.Port(
           name: name,
-          disconnect: allowInterop(disconnect),
-          postMessage: allowInterop(postMessage),
+          disconnect: disconnect,
+          postMessage: postMessage,
           sender: sender?.toJS,
         );
 
@@ -554,26 +542,18 @@ class Port {
   /// Immediately disconnect the port. Calling `disconnect()` on an
   /// already-disconnected port has no effect. When a port is disconnected, no
   /// new events will be dispatched to this port.
-  Function get disconnect => ([Object? p1, Object? p2]) {
-        return (_wrapped.disconnect as JSAny? Function(JSAny?, JSAny?))(
-                p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
+  JSFunction get disconnect => _wrapped.disconnect;
 
-  set disconnect(Function v) {
-    _wrapped.disconnect = allowInterop(v);
+  set disconnect(JSFunction v) {
+    _wrapped.disconnect = v;
   }
 
   /// Send a message to the other end of the port. If the port is disconnected,
   /// an error is thrown.
-  Function get postMessage => ([Object? p1, Object? p2]) {
-        return (_wrapped.postMessage as JSAny? Function(JSAny?, JSAny?))(
-                p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
+  JSFunction get postMessage => _wrapped.postMessage;
 
-  set postMessage(Function v) {
-    _wrapped.postMessage = allowInterop(v);
+  set postMessage(JSFunction v) {
+    _wrapped.postMessage = v;
   }
 
   /// This property will **only** be present on ports passed to
@@ -1239,7 +1219,7 @@ class OnMessageEvent {
   /// return true* from the event listener to indicate you wish to send a
   /// response asynchronously (this will keep the message channel open to the
   /// other end until `sendResponse` is called).
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }
 
 class OnMessageExternalEvent {
@@ -1261,7 +1241,7 @@ class OnMessageExternalEvent {
   /// return true* from the event listener to indicate you wish to send a
   /// response asynchronously (this will keep the message channel open to the
   /// other end until `sendResponse` is called).
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }
 
 class OnUserScriptMessageEvent {
@@ -1283,7 +1263,7 @@ class OnUserScriptMessageEvent {
   /// return true* from the event listener to indicate you wish to send a
   /// response asynchronously (this will keep the message channel open to the
   /// other end until `sendResponse` is called).
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }
 
 class PortOnMessageEvent {
