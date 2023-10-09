@@ -53,12 +53,14 @@ class ScanOptions {
   /// The MIME types that are accepted by the caller.
   List<String>? get mimeTypes =>
       _wrapped.mimeTypes?.toDart.cast<String>().map((e) => e).toList();
+
   set mimeTypes(List<String>? v) {
     _wrapped.mimeTypes = v?.toJSArray((e) => e);
   }
 
   /// The number of scanned images allowed (defaults to 1).
   int? get maxImages => _wrapped.maxImages;
+
   set maxImages(int? v) {
     _wrapped.maxImages = v;
   }
@@ -87,12 +89,14 @@ class ScanResults {
   /// an image tag.
   List<String> get dataUrls =>
       _wrapped.dataUrls.toDart.cast<String>().map((e) => e).toList();
+
   set dataUrls(List<String> v) {
     _wrapped.dataUrls = v.toJSArray((e) => e);
   }
 
   /// The MIME type of `dataUrls`.
   String get mimeType => _wrapped.mimeType;
+
   set mimeType(String v) {
     _wrapped.mimeType = v;
   }

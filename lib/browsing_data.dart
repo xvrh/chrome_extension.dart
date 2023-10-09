@@ -191,6 +191,7 @@ class RemovalOptions {
   /// `Date` object). If absent, defaults to 0 (which would remove all browsing
   /// data).
   double? get since => _wrapped.since;
+
   set since(double? v) {
     _wrapped.since = v;
   }
@@ -201,6 +202,7 @@ class RemovalOptions {
   /// before adding 'protectedWeb' or 'extensions'.
   RemovalOptionsOriginTypes? get originTypes =>
       _wrapped.originTypes?.let(RemovalOptionsOriginTypes.fromJS);
+
   set originTypes(RemovalOptionsOriginTypes? v) {
     _wrapped.originTypes = v?.toJS;
   }
@@ -210,6 +212,7 @@ class RemovalOptions {
   /// whole registrable domain.
   List<String>? get origins =>
       _wrapped.origins?.toDart.cast<String>().map((e) => e).toList();
+
   set origins(List<String>? v) {
     _wrapped.origins = v?.toJSArray((e) => e);
   }
@@ -219,6 +222,7 @@ class RemovalOptions {
   /// and cache.  Cookies are excluded for the whole registrable domain.
   List<String>? get excludeOrigins =>
       _wrapped.excludeOrigins?.toDart.cast<String>().map((e) => e).toList();
+
   set excludeOrigins(List<String>? v) {
     _wrapped.excludeOrigins = v?.toJSArray((e) => e);
   }
@@ -296,90 +300,105 @@ class DataTypeSet {
 
   /// Websites' appcaches.
   bool? get appcache => _wrapped.appcache;
+
   set appcache(bool? v) {
     _wrapped.appcache = v;
   }
 
   /// The browser's cache.
   bool? get cache => _wrapped.cache;
+
   set cache(bool? v) {
     _wrapped.cache = v;
   }
 
   /// Cache storage
   bool? get cacheStorage => _wrapped.cacheStorage;
+
   set cacheStorage(bool? v) {
     _wrapped.cacheStorage = v;
   }
 
   /// The browser's cookies.
   bool? get cookies => _wrapped.cookies;
+
   set cookies(bool? v) {
     _wrapped.cookies = v;
   }
 
   /// The browser's download list.
   bool? get downloads => _wrapped.downloads;
+
   set downloads(bool? v) {
     _wrapped.downloads = v;
   }
 
   /// Websites' file systems.
   bool? get fileSystems => _wrapped.fileSystems;
+
   set fileSystems(bool? v) {
     _wrapped.fileSystems = v;
   }
 
   /// The browser's stored form data.
   bool? get formData => _wrapped.formData;
+
   set formData(bool? v) {
     _wrapped.formData = v;
   }
 
   /// The browser's history.
   bool? get history => _wrapped.history;
+
   set history(bool? v) {
     _wrapped.history = v;
   }
 
   /// Websites' IndexedDB data.
   bool? get indexedDb => _wrapped.indexedDB;
+
   set indexedDb(bool? v) {
     _wrapped.indexedDB = v;
   }
 
   /// Websites' local storage data.
   bool? get localStorage => _wrapped.localStorage;
+
   set localStorage(bool? v) {
     _wrapped.localStorage = v;
   }
 
   /// Server-bound certificates.
   bool? get serverBoundCertificates => _wrapped.serverBoundCertificates;
+
   set serverBoundCertificates(bool? v) {
     _wrapped.serverBoundCertificates = v;
   }
 
   /// Stored passwords.
   bool? get passwords => _wrapped.passwords;
+
   set passwords(bool? v) {
     _wrapped.passwords = v;
   }
 
   /// Plugins' data.
   bool? get pluginData => _wrapped.pluginData;
+
   set pluginData(bool? v) {
     _wrapped.pluginData = v;
   }
 
   /// Service Workers.
   bool? get serviceWorkers => _wrapped.serviceWorkers;
+
   set serviceWorkers(bool? v) {
     _wrapped.serviceWorkers = v;
   }
 
   /// Websites' WebSQL data.
   bool? get webSql => _wrapped.webSQL;
+
   set webSql(bool? v) {
     _wrapped.webSQL = v;
   }
@@ -411,6 +430,7 @@ class SettingsCallbackResult {
   $js.SettingsCallbackResult get toJS => _wrapped;
 
   RemovalOptions get options => RemovalOptions.fromJS(_wrapped.options);
+
   set options(RemovalOptions v) {
     _wrapped.options = v.toJS;
   }
@@ -419,6 +439,7 @@ class SettingsCallbackResult {
   /// they are both selected to be removed and permitted to be removed,
   /// otherwise `false`.
   DataTypeSet get dataToRemove => DataTypeSet.fromJS(_wrapped.dataToRemove);
+
   set dataToRemove(DataTypeSet v) {
     _wrapped.dataToRemove = v.toJS;
   }
@@ -428,6 +449,7 @@ class SettingsCallbackResult {
   /// if not.
   DataTypeSet get dataRemovalPermitted =>
       DataTypeSet.fromJS(_wrapped.dataRemovalPermitted);
+
   set dataRemovalPermitted(DataTypeSet v) {
     _wrapped.dataRemovalPermitted = v.toJS;
   }
@@ -458,12 +480,14 @@ class RemovalOptionsOriginTypes {
 
   /// Normal websites.
   bool? get unprotectedWeb => _wrapped.unprotectedWeb;
+
   set unprotectedWeb(bool? v) {
     _wrapped.unprotectedWeb = v;
   }
 
   /// Websites that have been installed as hosted applications (be careful!).
   bool? get protectedWeb => _wrapped.protectedWeb;
+
   set protectedWeb(bool? v) {
     _wrapped.protectedWeb = v;
   }
@@ -471,6 +495,7 @@ class RemovalOptionsOriginTypes {
   /// Extensions and packaged applications a user has installed (be _really_
   /// careful!).
   bool? get extension => _wrapped.extension;
+
   set extension(bool? v) {
     _wrapped.extension = v;
   }

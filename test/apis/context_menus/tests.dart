@@ -1,5 +1,6 @@
 import 'package:chrome_extension/context_menus.dart';
 import 'package:chrome_extension/runtime.dart' as runtime;
+import 'package:chrome_extension/src/internal_helpers.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 
@@ -10,7 +11,7 @@ void _tests(TestContext context) {
 
   setUp(() {
     var createProperties = CreateProperties(id: id, title: 'setup menu item');
-    chrome.contextMenus.create(createProperties, () {});
+    chrome.contextMenus.create(createProperties, () {}.toJS);
   });
 
   tearDown(() async {
@@ -28,7 +29,7 @@ void _tests(TestContext context) {
     var createProperties = CreateProperties(title: 'create -- with listener');
 
     // TODO: figure out a mechanism for selecting menu
-    var newId = chrome.contextMenus.create(createProperties, (_) {}) as int;
+    var newId = chrome.contextMenus.create(createProperties, () {}.toJS) as int;
     expect(newId, greaterThan(0));
   });
 
@@ -44,9 +45,11 @@ void _tests(TestContext context) {
         targetUrlPatterns: ['https://www.google.com/'],
         enabled: false);
 
-    var newId = chrome.contextMenus.create(createProperties, expectAsync0(() {
-      expect(chrome.runtime.lastError, isNull);
-    })) as String;
+    var newId = chrome.contextMenus.create(
+        createProperties,
+        expectAsync0(() {
+          expect(chrome.runtime.lastError, isNull);
+        }).toJS) as String;
     expect(newId, equals("testId"));
   });
 

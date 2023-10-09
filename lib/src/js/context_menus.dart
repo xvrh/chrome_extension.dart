@@ -32,18 +32,18 @@ extension JSContextMenusExtension on JSContextMenus {
   /// Creates a new context menu item. If an error occurs during creation, it
   /// may not be detected until the creation callback fires; details will be in
   /// [runtime.lastError].
-  external Object create(
+  external JSAny create(
     CreateProperties createProperties,
 
     /// Called when the item has been created in the browser. If an error occurs
     /// during creation, details will be available in [runtime.lastError].
-    Function? callback,
+    JSFunction? callback,
   );
 
   /// Updates a previously created context menu item.
   external void update(
     /// The ID of the item to update.
-    Object id,
+    JSAny id,
 
     /// The properties to update. Accepts the same values as the
     /// [contextMenus.create] function.
@@ -56,7 +56,7 @@ extension JSContextMenusExtension on JSContextMenus {
   /// Removes a context menu item.
   external void remove(
     /// The ID of the context menu item to remove.
-    Object menuItemId,
+    JSAny menuItemId,
 
     /// Called when the context menu has been removed.
     JSFunction? callback,
@@ -94,10 +94,10 @@ typedef ItemType = String;
 class OnClickData {
   external factory OnClickData({
     /// The ID of the menu item that was clicked.
-    Object menuItemId,
+    JSAny menuItemId,
 
     /// The parent ID, if any, for the item clicked.
-    Object? parentMenuItemId,
+    JSAny? parentMenuItemId,
 
     /// One of 'image', 'video', or 'audio' if the context menu was activated on
     /// one of these types of elements.
@@ -141,10 +141,10 @@ class OnClickData {
 
 extension OnClickDataExtension on OnClickData {
   /// The ID of the menu item that was clicked.
-  external Object menuItemId;
+  external JSAny menuItemId;
 
   /// The parent ID, if any, for the item clicked.
-  external Object? parentMenuItemId;
+  external JSAny? parentMenuItemId;
 
   /// One of 'image', 'video', or 'audio' if the context menu was activated on
   /// one of these types of elements.
@@ -218,11 +218,11 @@ class CreateProperties {
     /// A function that is called back when the menu item is clicked. Event pages
     /// cannot use this; instead, they should register a listener for
     /// [contextMenus.onClicked].
-    Function? onclick,
+    JSFunction? onclick,
 
     /// The ID of a parent menu item; this makes the item a child of a previously
     /// added item.
-    Object? parentId,
+    JSAny? parentId,
 
     /// Restricts the item to apply only to documents or frames whose URL matches
     /// one of the given patterns. For details on pattern formats, see [Match
@@ -267,11 +267,11 @@ extension CreatePropertiesExtension on CreateProperties {
   /// A function that is called back when the menu item is clicked. Event pages
   /// cannot use this; instead, they should register a listener for
   /// [contextMenus.onClicked].
-  external Function? onclick;
+  external JSFunction? onclick;
 
   /// The ID of a parent menu item; this makes the item a child of a previously
   /// added item.
-  external Object? parentId;
+  external JSAny? parentId;
 
   /// Restricts the item to apply only to documents or frames whose URL matches
   /// one of the given patterns. For details on pattern formats, see [Match
@@ -298,11 +298,11 @@ class UpdateProperties {
 
     /// Whether the item is visible in the menu.
     bool? visible,
-    Function? onclick,
+    JSFunction? onclick,
 
     /// The ID of the item to be made this item's parent. Note: You cannot set an
     /// item to become a child of its own descendant.
-    Object? parentId,
+    JSAny? parentId,
     JSArray? documentUrlPatterns,
     JSArray? targetUrlPatterns,
     bool? enabled,
@@ -321,11 +321,11 @@ extension UpdatePropertiesExtension on UpdateProperties {
   /// Whether the item is visible in the menu.
   external bool? visible;
 
-  external Function? onclick;
+  external JSFunction? onclick;
 
   /// The ID of the item to be made this item's parent. Note: You cannot set an
   /// item to become a child of its own descendant.
-  external Object? parentId;
+  external JSAny? parentId;
 
   external JSArray? documentUrlPatterns;
 

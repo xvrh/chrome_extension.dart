@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/audio.dart' as $js;
 
@@ -27,20 +28,13 @@ class ChromeAudio {
   ///     audio devices. If the filter is not set or set to `{}`,
   ///     returned device list will contain all available audio devices.
   /// |callback|: Reports the requested list of audio devices.
-  Future<List<AudioDeviceInfo>> getDevices(DeviceFilter? filter) {
-    var $completer = Completer<List<AudioDeviceInfo>>();
-    $js.chrome.audio.getDevices(
-      filter?.toJS,
-      (JSArray devices) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(devices.toDart
-              .cast<$js.AudioDeviceInfo>()
-              .map((e) => AudioDeviceInfo.fromJS(e))
-              .toList());
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<List<AudioDeviceInfo>> getDevices(DeviceFilter? filter) async {
+    var $res = await promiseToFuture<JSArray>(
+        $js.chrome.audio.getDevices(filter?.toJS));
+    return $res.toDart
+        .cast<$js.AudioDeviceInfo>()
+        .map((e) => AudioDeviceInfo.fromJS(e))
+        .toList();
   }
 
   /// Sets lists of active input and/or output devices.
@@ -49,52 +43,29 @@ class ChromeAudio {
   ///     unaffected.
   ///
   ///     It is an error to pass in a non-existent device ID.
-  Future<void> setActiveDevices(DeviceIdLists ids) {
-    var $completer = Completer<void>();
-    $js.chrome.audio.setActiveDevices(
-      ids.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<void> setActiveDevices(DeviceIdLists ids) async {
+    await promiseToFuture<void>($js.chrome.audio.setActiveDevices(ids.toJS));
   }
 
   /// Sets the properties for the input or output device.
   Future<void> setProperties(
     String id,
     DeviceProperties properties,
-  ) {
-    var $completer = Completer<void>();
-    $js.chrome.audio.setProperties(
+  ) async {
+    await promiseToFuture<void>($js.chrome.audio.setProperties(
       id,
       properties.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+    ));
   }
 
   /// Gets the system-wide mute state for the specified stream type.
   /// |streamType|: Stream type for which mute state should be fetched.
   /// |callback|: Callback reporting whether mute is set or not for specified
   /// stream type.
-  Future<bool> getMute(StreamType streamType) {
-    var $completer = Completer<bool>();
-    $js.chrome.audio.getMute(
-      streamType.toJS,
-      (bool value) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(value);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<bool> getMute(StreamType streamType) async {
+    var $res =
+        await promiseToFuture<bool>($js.chrome.audio.getMute(streamType.toJS));
+    return $res;
   }
 
   /// Sets mute state for a stream type. The mute state will apply to all audio
@@ -104,18 +75,11 @@ class ChromeAudio {
   Future<void> setMute(
     StreamType streamType,
     bool isMuted,
-  ) {
-    var $completer = Completer<void>();
-    $js.chrome.audio.setMute(
+  ) async {
+    await promiseToFuture<void>($js.chrome.audio.setMute(
       streamType.toJS,
       isMuted,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+    ));
   }
 
   /// Fired when sound level changes for an active audio device.
@@ -232,48 +196,56 @@ class AudioDeviceInfo {
 
   /// The unique identifier of the audio device.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// Stream type associated with this device.
   StreamType get streamType => StreamType.fromJS(_wrapped.streamType);
+
   set streamType(StreamType v) {
     _wrapped.streamType = v.toJS;
   }
 
   /// Type of the device.
   DeviceType get deviceType => DeviceType.fromJS(_wrapped.deviceType);
+
   set deviceType(DeviceType v) {
     _wrapped.deviceType = v.toJS;
   }
 
   /// The user-friendly name (e.g. "USB Microphone").
   String get displayName => _wrapped.displayName;
+
   set displayName(String v) {
     _wrapped.displayName = v;
   }
 
   /// Device name.
   String get deviceName => _wrapped.deviceName;
+
   set deviceName(String v) {
     _wrapped.deviceName = v;
   }
 
   /// True if this is the current active device.
   bool get isActive => _wrapped.isActive;
+
   set isActive(bool v) {
     _wrapped.isActive = v;
   }
 
   /// The sound level of the device, volume for output, gain for input.
   int get level => _wrapped.level;
+
   set level(int v) {
     _wrapped.level = v;
   }
 
   /// The stable/persisted device id string when available.
   String? get stableDeviceId => _wrapped.stableDeviceId;
+
   set stableDeviceId(String? v) {
     _wrapped.stableDeviceId = v;
   }
@@ -305,6 +277,7 @@ class DeviceFilter {
       .cast<$js.StreamType>()
       .map((e) => StreamType.fromJS(e))
       .toList();
+
   set streamTypes(List<StreamType>? v) {
     _wrapped.streamTypes = v?.toJSArray((e) => e.toJS);
   }
@@ -312,6 +285,7 @@ class DeviceFilter {
   /// If set, only audio devices whose active state matches this value will
   /// satisfy the filter.
   bool? get isActive => _wrapped.isActive;
+
   set isActive(bool? v) {
     _wrapped.isActive = v;
   }
@@ -342,6 +316,7 @@ class DeviceProperties {
   /// If used with audio input device, represents audio device gain.
   /// If used with audio output device, represents audio device volume.
   int? get level => _wrapped.level;
+
   set level(int? v) {
     _wrapped.level = v;
   }
@@ -374,6 +349,7 @@ class DeviceIdLists {
   ///   unset.
   List<String>? get input =>
       _wrapped.input?.toDart.cast<String>().map((e) => e).toList();
+
   set input(List<String>? v) {
     _wrapped.input = v?.toJSArray((e) => e);
   }
@@ -383,6 +359,7 @@ class DeviceIdLists {
   ///   unset.
   List<String>? get output =>
       _wrapped.output?.toDart.cast<String>().map((e) => e).toList();
+
   set output(List<String>? v) {
     _wrapped.output = v?.toJSArray((e) => e);
   }
@@ -411,12 +388,14 @@ class MuteChangedEvent {
   /// The type of the stream for which the mute value changed. The updated mute
   /// value applies to all devices with this stream type.
   StreamType get streamType => StreamType.fromJS(_wrapped.streamType);
+
   set streamType(StreamType v) {
     _wrapped.streamType = v.toJS;
   }
 
   /// Whether or not the stream is now muted.
   bool get isMuted => _wrapped.isMuted;
+
   set isMuted(bool v) {
     _wrapped.isMuted = v;
   }
@@ -442,12 +421,14 @@ class LevelChangedEvent {
 
   /// ID of device whose sound level has changed.
   String get deviceId => _wrapped.deviceId;
+
   set deviceId(String v) {
     _wrapped.deviceId = v;
   }
 
   /// The device's new sound level.
   int get level => _wrapped.level;
+
   set level(int v) {
     _wrapped.level = v;
   }

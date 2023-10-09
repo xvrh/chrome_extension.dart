@@ -144,18 +144,21 @@ class HistoryItem {
 
   /// The unique identifier for the item.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The URL navigated to by a user.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// The title of the page when it was last loaded.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -163,12 +166,14 @@ class HistoryItem {
   /// When this page was last loaded, represented in milliseconds since the
   /// epoch.
   double? get lastVisitTime => _wrapped.lastVisitTime;
+
   set lastVisitTime(double? v) {
     _wrapped.lastVisitTime = v;
   }
 
   /// The number of times the user has navigated to this page.
   int? get visitCount => _wrapped.visitCount;
+
   set visitCount(int? v) {
     _wrapped.visitCount = v;
   }
@@ -176,6 +181,7 @@ class HistoryItem {
   /// The number of times the user has navigated to this page by typing in the
   /// address.
   int? get typedCount => _wrapped.typedCount;
+
   set typedCount(int? v) {
     _wrapped.typedCount = v;
   }
@@ -185,7 +191,7 @@ class VisitItem {
   VisitItem.fromJS(this._wrapped);
 
   VisitItem({
-    /// The unique identifier for the item.
+    /// The unique identifier for the corresponding [history.HistoryItem].
     required String id,
 
     /// The unique identifier for this visit.
@@ -200,46 +206,64 @@ class VisitItem {
     /// The [transition type](#transition_types) for this visit from its
     /// referrer.
     required TransitionType transition,
+
+    /// True if the visit originated on this device. False if it was synced from
+    /// a different device.
+    required bool isLocal,
   }) : _wrapped = $js.VisitItem(
           id: id,
           visitId: visitId,
           visitTime: visitTime,
           referringVisitId: referringVisitId,
           transition: transition.toJS,
+          isLocal: isLocal,
         );
 
   final $js.VisitItem _wrapped;
 
   $js.VisitItem get toJS => _wrapped;
 
-  /// The unique identifier for the item.
+  /// The unique identifier for the corresponding [history.HistoryItem].
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The unique identifier for this visit.
   String get visitId => _wrapped.visitId;
+
   set visitId(String v) {
     _wrapped.visitId = v;
   }
 
   /// When this visit occurred, represented in milliseconds since the epoch.
   double? get visitTime => _wrapped.visitTime;
+
   set visitTime(double? v) {
     _wrapped.visitTime = v;
   }
 
   /// The visit ID of the referrer.
   String get referringVisitId => _wrapped.referringVisitId;
+
   set referringVisitId(String v) {
     _wrapped.referringVisitId = v;
   }
 
   /// The [transition type](#transition_types) for this visit from its referrer.
   TransitionType get transition => TransitionType.fromJS(_wrapped.transition);
+
   set transition(TransitionType v) {
     _wrapped.transition = v.toJS;
+  }
+
+  /// True if the visit originated on this device. False if it was synced from a
+  /// different device.
+  bool get isLocal => _wrapped.isLocal;
+
+  set isLocal(bool v) {
+    _wrapped.isLocal = v;
   }
 }
 
@@ -260,6 +284,7 @@ class UrlDetails {
   /// The URL for the operation. It must be in the format as returned from a
   /// call to history.search.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
@@ -283,12 +308,14 @@ class OnVisitRemovedRemoved {
 
   /// True if all history was removed.  If true, then urls will be empty.
   bool get allHistory => _wrapped.allHistory;
+
   set allHistory(bool v) {
     _wrapped.allHistory = v;
   }
 
   List<String>? get urls =>
       _wrapped.urls?.toDart.cast<String>().map((e) => e).toList();
+
   set urls(List<String>? v) {
     _wrapped.urls = v?.toJSArray((e) => e);
   }
@@ -327,6 +354,7 @@ class SearchQuery {
   /// A free-text query to the history service.  Leave empty to retrieve all
   /// pages.
   String get text => _wrapped.text;
+
   set text(String v) {
     _wrapped.text = v;
   }
@@ -335,6 +363,7 @@ class SearchQuery {
   /// milliseconds since the epoch. If not specified, this defaults to 24 hours
   /// in the past.
   double? get startTime => _wrapped.startTime;
+
   set startTime(double? v) {
     _wrapped.startTime = v;
   }
@@ -342,12 +371,14 @@ class SearchQuery {
   /// Limit results to those visited before this date, represented in
   /// milliseconds since the epoch.
   double? get endTime => _wrapped.endTime;
+
   set endTime(double? v) {
     _wrapped.endTime = v;
   }
 
   /// The maximum number of results to retrieve.  Defaults to 100.
   int? get maxResults => _wrapped.maxResults;
+
   set maxResults(int? v) {
     _wrapped.maxResults = v;
   }
@@ -376,6 +407,7 @@ class DeleteRangeRange {
   /// Items added to history after this date, represented in milliseconds since
   /// the epoch.
   double get startTime => _wrapped.startTime;
+
   set startTime(double v) {
     _wrapped.startTime = v;
   }
@@ -383,6 +415,7 @@ class DeleteRangeRange {
   /// Items added to history before this date, represented in milliseconds since
   /// the epoch.
   double get endTime => _wrapped.endTime;
+
   set endTime(double v) {
     _wrapped.endTime = v;
   }

@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/notifications.dart' as $js;
@@ -38,18 +39,12 @@ class ChromeNotifications {
   Future<String> create(
     String? notificationId,
     NotificationOptions options,
-  ) {
-    var $completer = Completer<String>();
-    $js.chrome.notifications.create(
+  ) async {
+    var $res = await promiseToFuture<String>($js.chrome.notifications.create(
       notificationId,
       options.toJS,
-      (String notificationId) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(notificationId);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+    ));
+    return $res;
   }
 
   /// Updates an existing notification.
@@ -62,18 +57,12 @@ class ChromeNotifications {
   Future<bool> update(
     String notificationId,
     NotificationOptions options,
-  ) {
-    var $completer = Completer<bool>();
-    $js.chrome.notifications.update(
+  ) async {
+    var $res = await promiseToFuture<bool>($js.chrome.notifications.update(
       notificationId,
       options.toJS,
-      (bool wasUpdated) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(wasUpdated);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+    ));
+    return $res;
   }
 
   /// Clears the specified notification.
@@ -82,42 +71,26 @@ class ChromeNotifications {
   /// |callback|: Called to indicate whether a matching notification existed.
   ///
   /// The callback is required before Chrome 42.
-  Future<bool> clear(String notificationId) {
-    var $completer = Completer<bool>();
-    $js.chrome.notifications.clear(
-      notificationId,
-      (bool wasCleared) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(wasCleared);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<bool> clear(String notificationId) async {
+    var $res = await promiseToFuture<bool>(
+        $js.chrome.notifications.clear(notificationId));
+    return $res;
   }
 
   /// Retrieves all the notifications of this app or extension.
   /// |callback|: Returns the set of notification_ids currently in the system.
-  Future<Map> getAll() {
-    var $completer = Completer<Map>();
-    $js.chrome.notifications.getAll((JSAny notifications) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(notifications.toDartMap());
-      }
-    }.toJS);
-    return $completer.future;
+  Future<Map> getAll() async {
+    var $res = await promiseToFuture<JSAny>($js.chrome.notifications.getAll());
+    return $res.toDartMap();
   }
 
   /// Retrieves whether the user has enabled notifications from this app
   /// or extension.
   /// |callback|: Returns the current permission level.
-  Future<PermissionLevel> getPermissionLevel() {
-    var $completer = Completer<PermissionLevel>();
-    $js.chrome.notifications.getPermissionLevel(($js.PermissionLevel level) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(PermissionLevel.fromJS(level));
-      }
-    }.toJS);
-    return $completer.future;
+  Future<PermissionLevel> getPermissionLevel() async {
+    var $res = await promiseToFuture<$js.PermissionLevel>(
+        $js.chrome.notifications.getPermissionLevel());
+    return PermissionLevel.fromJS($res);
   }
 
   /// The notification closed, either by the system or by user action.
@@ -227,12 +200,14 @@ class NotificationItem {
 
   /// Title of one item of a list notification.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
 
   /// Additional details about this item.
   String get message => _wrapped.message;
+
   set message(String v) {
     _wrapped.message = v;
   }
@@ -256,16 +231,19 @@ class NotificationBitmap {
   $js.NotificationBitmap get toJS => _wrapped;
 
   int get width => _wrapped.width;
+
   set width(int v) {
     _wrapped.width = v;
   }
 
   int get height => _wrapped.height;
+
   set height(int v) {
     _wrapped.height = v;
   }
 
   ByteBuffer? get data => _wrapped.data?.toDart;
+
   set data(ByteBuffer? v) {
     _wrapped.data = v?.toJS;
   }
@@ -289,17 +267,20 @@ class NotificationButton {
   $js.NotificationButton get toJS => _wrapped;
 
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
 
   String? get iconUrl => _wrapped.iconUrl;
+
   set iconUrl(String? v) {
     _wrapped.iconUrl = v;
   }
 
   NotificationBitmap? get iconBitmap =>
       _wrapped.iconBitmap?.let(NotificationBitmap.fromJS);
+
   set iconBitmap(NotificationBitmap? v) {
     _wrapped.iconBitmap = v?.toJS;
   }
@@ -408,6 +389,7 @@ class NotificationOptions {
   /// Which type of notification to display.
   /// _Required for [notifications.create]_ method.
   TemplateType? get type => _wrapped.type?.let(TemplateType.fromJS);
+
   set type(TemplateType? v) {
     _wrapped.type = v?.toJS;
   }
@@ -419,12 +401,14 @@ class NotificationOptions {
   /// within this extension's .crx file
   /// _Required for [notifications.create]_ method.
   String? get iconUrl => _wrapped.iconUrl;
+
   set iconUrl(String? v) {
     _wrapped.iconUrl = v;
   }
 
   NotificationBitmap? get iconBitmap =>
       _wrapped.iconBitmap?.let(NotificationBitmap.fromJS);
+
   set iconBitmap(NotificationBitmap? v) {
     _wrapped.iconBitmap = v?.toJS;
   }
@@ -435,12 +419,14 @@ class NotificationOptions {
   /// The app icon mask should be in alpha channel, as only the alpha channel
   /// of the image will be considered.
   String? get appIconMaskUrl => _wrapped.appIconMaskUrl;
+
   set appIconMaskUrl(String? v) {
     _wrapped.appIconMaskUrl = v;
   }
 
   NotificationBitmap? get appIconMaskBitmap =>
       _wrapped.appIconMaskBitmap?.let(NotificationBitmap.fromJS);
+
   set appIconMaskBitmap(NotificationBitmap? v) {
     _wrapped.appIconMaskBitmap = v?.toJS;
   }
@@ -448,6 +434,7 @@ class NotificationOptions {
   /// Title of the notification (e.g. sender name for email).
   /// _Required for [notifications.create]_ method.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -455,12 +442,14 @@ class NotificationOptions {
   /// Main notification content.
   /// _Required for [notifications.create]_ method.
   String? get message => _wrapped.message;
+
   set message(String? v) {
     _wrapped.message = v;
   }
 
   /// Alternate notification content with a lower-weight font.
   String? get contextMessage => _wrapped.contextMessage;
+
   set contextMessage(String? v) {
     _wrapped.contextMessage = v;
   }
@@ -470,6 +459,7 @@ class NotificationOptions {
   /// (Windows, Linux & Mac), -2 and -1 result in an error as notifications
   /// with those priorities will not be shown at all.
   int? get priority => _wrapped.priority;
+
   set priority(int? v) {
     _wrapped.priority = v;
   }
@@ -477,6 +467,7 @@ class NotificationOptions {
   /// A timestamp associated with the notification, in milliseconds past the
   /// epoch (e.g. `Date.now() + n`).
   double? get eventTime => _wrapped.eventTime;
+
   set eventTime(double? v) {
     _wrapped.eventTime = v;
   }
@@ -486,12 +477,14 @@ class NotificationOptions {
       .cast<$js.NotificationButton>()
       .map((e) => NotificationButton.fromJS(e))
       .toList();
+
   set buttons(List<NotificationButton>? v) {
     _wrapped.buttons = v?.toJSArray((e) => e.toJS);
   }
 
   /// Secondary notification content.
   String? get expandedMessage => _wrapped.expandedMessage;
+
   set expandedMessage(String? v) {
     _wrapped.expandedMessage = v;
   }
@@ -500,12 +493,14 @@ class NotificationOptions {
   /// URLs have the same restrictions as
   /// $(ref:notifications.NotificationOptions.iconUrl iconUrl).
   String? get imageUrl => _wrapped.imageUrl;
+
   set imageUrl(String? v) {
     _wrapped.imageUrl = v;
   }
 
   NotificationBitmap? get imageBitmap =>
       _wrapped.imageBitmap?.let(NotificationBitmap.fromJS);
+
   set imageBitmap(NotificationBitmap? v) {
     _wrapped.imageBitmap = v?.toJS;
   }
@@ -516,17 +511,20 @@ class NotificationOptions {
       .cast<$js.NotificationItem>()
       .map((e) => NotificationItem.fromJS(e))
       .toList();
+
   set items(List<NotificationItem>? v) {
     _wrapped.items = v?.toJSArray((e) => e.toJS);
   }
 
   /// Current progress ranges from 0 to 100.
   int? get progress => _wrapped.progress;
+
   set progress(int? v) {
     _wrapped.progress = v;
   }
 
   bool? get isClickable => _wrapped.isClickable;
+
   set isClickable(bool? v) {
     _wrapped.isClickable = v;
   }
@@ -534,6 +532,7 @@ class NotificationOptions {
   /// Indicates that the notification should remain visible on screen until the
   /// user activates or dismisses the notification. This defaults to false.
   bool? get requireInteraction => _wrapped.requireInteraction;
+
   set requireInteraction(bool? v) {
     _wrapped.requireInteraction = v;
   }
@@ -541,6 +540,7 @@ class NotificationOptions {
   /// Indicates that no sounds or vibrations should be made when the
   /// notification is being shown. This defaults to false.
   bool? get silent => _wrapped.silent;
+
   set silent(bool? v) {
     _wrapped.silent = v;
   }

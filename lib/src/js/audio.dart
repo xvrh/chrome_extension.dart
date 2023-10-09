@@ -35,10 +35,7 @@ extension JSAudioExtension on JSAudio {
   ///     audio devices. If the filter is not set or set to `{}`,
   ///     returned device list will contain all available audio devices.
   /// |callback|: Reports the requested list of audio devices.
-  external void getDevices(
-    DeviceFilter? filter,
-    JSFunction callback,
-  );
+  external JSPromise getDevices(DeviceFilter? filter);
 
   /// Sets lists of active input and/or output devices.
   /// |ids|: Specifies IDs of devices that should be active. If either the
@@ -46,35 +43,27 @@ extension JSAudioExtension on JSAudio {
   ///     unaffected.
   ///
   ///     It is an error to pass in a non-existent device ID.
-  external void setActiveDevices(
-    DeviceIdLists ids,
-    JSFunction callback,
-  );
+  external JSPromise setActiveDevices(DeviceIdLists ids);
 
   /// Sets the properties for the input or output device.
-  external void setProperties(
+  external JSPromise setProperties(
     String id,
     DeviceProperties properties,
-    JSFunction callback,
   );
 
   /// Gets the system-wide mute state for the specified stream type.
   /// |streamType|: Stream type for which mute state should be fetched.
   /// |callback|: Callback reporting whether mute is set or not for specified
   /// stream type.
-  external void getMute(
-    StreamType streamType,
-    JSFunction callback,
-  );
+  external JSPromise getMute(StreamType streamType);
 
   /// Sets mute state for a stream type. The mute state will apply to all audio
   /// devices with the specified audio stream type.
   /// |streamType|: Stream type for which mute state should be set.
   /// |isMuted|: New mute value.
-  external void setMute(
+  external JSPromise setMute(
     StreamType streamType,
     bool isMuted,
-    JSFunction? callback,
   );
 
   /// Fired when sound level changes for an active audio device.

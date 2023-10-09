@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'devtools.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/devtools_panels.dart' as $js;
@@ -57,9 +56,8 @@ class ChromeDevtoolsPanels {
   /// [callback] A function that is called when the user clicks on a valid
   /// resource link in Developer Tools window. Note that if the user clicks an
   /// invalid URL or an XHR, this function is not called.
-  void setOpenResourceHandler(Function? callback) {
-    $js.chrome.devtools.panels
-        .setOpenResourceHandler(callback?.let(allowInterop));
+  void setOpenResourceHandler(JSFunction? callback) {
+    $js.chrome.devtools.panels.setOpenResourceHandler(callback);
   }
 
   /// Requests DevTools to open a URL in a Developer Tools panel.
@@ -74,13 +72,13 @@ class ChromeDevtoolsPanels {
     String url,
     int lineNumber,
     int? columnNumber,
-    Function? callback,
+    JSFunction? callback,
   ) {
     $js.chrome.devtools.panels.openResource(
       url,
       lineNumber,
       columnNumber,
-      callback?.let(allowInterop),
+      callback,
     );
   }
 
@@ -241,12 +239,12 @@ class ExtensionSidebarPane {
   void setExpression(
     String expression,
     String? rootTitle,
-    Function? callback,
+    JSFunction? callback,
   ) {
     _wrapped.setExpression(
       expression,
       rootTitle,
-      callback?.let(allowInterop),
+      callback,
     );
   }
 
@@ -259,12 +257,12 @@ class ExtensionSidebarPane {
   void setObject(
     String jsonObject,
     String? rootTitle,
-    Function? callback,
+    JSFunction? callback,
   ) {
     _wrapped.setObject(
       jsonObject,
       rootTitle,
-      callback?.let(allowInterop),
+      callback,
     );
   }
 

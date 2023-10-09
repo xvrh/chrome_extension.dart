@@ -191,6 +191,7 @@ class AccountInfo {
   /// A unique identifier for the account. This ID will not change
   /// for the lifetime of the account.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
@@ -216,6 +217,7 @@ class ProfileDetails {
   /// `SYNC` account status.
   AccountStatus? get accountStatus =>
       _wrapped.accountStatus?.let(AccountStatus.fromJS);
+
   set accountStatus(AccountStatus? v) {
     _wrapped.accountStatus = v?.toJS;
   }
@@ -250,6 +252,7 @@ class ProfileUserInfo {
   /// `identity.email` manifest permission is not
   /// specified.
   String get email => _wrapped.email;
+
   set email(String v) {
     _wrapped.email = v;
   }
@@ -259,6 +262,7 @@ class ProfileUserInfo {
   /// signed in or (in M41+) the `identity.email`
   /// manifest permission is not specified.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
@@ -310,6 +314,7 @@ class TokenDetails {
   /// `false` or omitted, `getAuthToken` will
   /// return failure any time a prompt would be required.
   bool? get interactive => _wrapped.interactive;
+
   set interactive(bool? v) {
     _wrapped.interactive = v;
   }
@@ -318,6 +323,7 @@ class TokenDetails {
   /// function will use an account from the Chrome profile: the Sync account if
   /// there is one, or otherwise the first Google web account.
   AccountInfo? get account => _wrapped.account?.let(AccountInfo.fromJS);
+
   set account(AccountInfo? v) {
     _wrapped.account = v?.toJS;
   }
@@ -328,6 +334,7 @@ class TokenDetails {
   /// list of scopes specified in manifest.json.
   List<String>? get scopes =>
       _wrapped.scopes?.toDart.cast<String>().map((e) => e).toList();
+
   set scopes(List<String>? v) {
     _wrapped.scopes = v?.toJSArray((e) => e);
   }
@@ -336,6 +343,7 @@ class TokenDetails {
   /// opt-in early to the granular permissions consent screen, in which
   /// requested permissions are granted or denied individually.
   bool? get enableGranularPermissions => _wrapped.enableGranularPermissions;
+
   set enableGranularPermissions(bool? v) {
     _wrapped.enableGranularPermissions = v;
   }
@@ -356,6 +364,7 @@ class InvalidTokenDetails {
 
   /// The specific token that should be removed from the cache.
   String get token => _wrapped.token;
+
   set token(String v) {
     _wrapped.token = v;
   }
@@ -417,6 +426,7 @@ class WebAuthFlowDetails {
 
   /// The URL that initiates the auth flow.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
@@ -438,6 +448,7 @@ class WebAuthFlowDetails {
   /// in combination with setting `timeoutMsForNonInteractive` to give
   /// the page a chance to perform any redirects.
   bool? get interactive => _wrapped.interactive;
+
   set interactive(bool? v) {
     _wrapped.interactive = v;
   }
@@ -454,6 +465,7 @@ class WebAuthFlowDetails {
   /// page loads.
   bool? get abortOnLoadForNonInteractive =>
       _wrapped.abortOnLoadForNonInteractive;
+
   set abortOnLoadForNonInteractive(bool? v) {
     _wrapped.abortOnLoadForNonInteractive = v;
   }
@@ -463,6 +475,7 @@ class WebAuthFlowDetails {
   /// in total. Only has an effect if `interactive` is
   /// `false`.
   int? get timeoutMsForNonInteractive => _wrapped.timeoutMsForNonInteractive;
+
   set timeoutMsForNonInteractive(int? v) {
     _wrapped.timeoutMsForNonInteractive = v;
   }
@@ -488,6 +501,7 @@ class GetAuthTokenResult {
 
   /// The specific token associated with the request.
   String? get token => _wrapped.token;
+
   set token(String? v) {
     _wrapped.token = v;
   }
@@ -495,6 +509,7 @@ class GetAuthTokenResult {
   /// A list of OAuth2 scopes granted to the extension.
   List<String>? get grantedScopes =>
       _wrapped.grantedScopes?.toDart.cast<String>().map((e) => e).toList();
+
   set grantedScopes(List<String>? v) {
     _wrapped.grantedScopes = v?.toJSArray((e) => e);
   }

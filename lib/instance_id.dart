@@ -105,6 +105,7 @@ class GetTokenParams {
   /// with this Instance ID. It can be a project ID from [Google developer
   /// console](https://code.google.com/apis/console).
   String get authorizedEntity => _wrapped.authorizedEntity;
+
   set authorizedEntity(String v) {
     _wrapped.authorizedEntity = v;
   }
@@ -112,6 +113,7 @@ class GetTokenParams {
   /// Identifies authorized actions that the authorized entity can take. E.g.
   /// for sending GCM messages, `GCM` scope should be used.
   String get scope => _wrapped.scope;
+
   set scope(String v) {
     _wrapped.scope = v;
   }
@@ -119,6 +121,7 @@ class GetTokenParams {
   /// Allows including a small number of string key/value pairs that will be
   /// associated with the token and may be used in processing the request.
   Map? get options => _wrapped.options?.toDartMap();
+
   set options(Map? v) {
     _wrapped.options = v?.jsify();
   }
@@ -144,12 +147,14 @@ class DeleteTokenParams {
 
   /// The authorized entity that is used to obtain the token.
   String get authorizedEntity => _wrapped.authorizedEntity;
+
   set authorizedEntity(String v) {
     _wrapped.authorizedEntity = v;
   }
 
   /// The scope that is used to obtain the token.
   String get scope => _wrapped.scope;
+
   set scope(String v) {
     _wrapped.scope = v;
   }

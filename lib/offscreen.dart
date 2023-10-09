@@ -75,7 +75,7 @@ enum Reason {
   userMedia('USER_MEDIA'),
 
   /// The offscreen document needs to interact with media streams from display
-  /// media (e.g. `getDisplayMedia()</code).
+  /// media (e.g. `getDisplayMedia()`).
   displayMedia('DISPLAY_MEDIA'),
 
   /// The offscreen document needs to use WebRTC APIs.
@@ -90,7 +90,11 @@ enum Reason {
   localStorage('LOCAL_STORAGE'),
 
   /// The offscreen document needs to spawn workers.
-  workers('WORKERS');
+  workers('WORKERS'),
+
+  /// The offscreen document needs to use <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/geolocation">navigator.geolocation</a>
+  geolocation('GEOLOCATION');
 
   const Reason(this.value);
 
@@ -130,12 +134,14 @@ class CreateParameters {
       .cast<$js.Reason>()
       .map((e) => Reason.fromJS(e))
       .toList();
+
   set reasons(List<Reason> v) {
     _wrapped.reasons = v.toJSArray((e) => e.toJS);
   }
 
   /// The (relative) URL to load in the document.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
@@ -144,6 +150,7 @@ class CreateParameters {
   /// the background context. The user agent _may_ use this in display to the
   /// user.
   String get justification => _wrapped.justification;
+
   set justification(String v) {
     _wrapped.justification = v;
   }

@@ -27,7 +27,7 @@ class ChromeBookmarks {
   Future<List<BookmarkTreeNode>> get(Object idOrIdList) async {
     var $res = await promiseToFuture<JSArray>(
         $js.chrome.bookmarks.get(switch (idOrIdList) {
-      String() => idOrIdList,
+      String() => idOrIdList.jsify()!,
       List() => idOrIdList.toJSArrayString(),
       _ => throw UnsupportedError(
           'Received type: ${idOrIdList.runtimeType}. Supported types are: String, List<String>')
@@ -89,8 +89,8 @@ class ChromeBookmarks {
   Future<List<BookmarkTreeNode>> search(Object query) async {
     var $res = await promiseToFuture<JSArray>(
         $js.chrome.bookmarks.search(switch (query) {
-      String() => query,
-      SearchQuery() => query.toJS,
+      String() => query.jsify()!,
+      SearchQuery() => (query.toJS as JSAny),
       _ => throw UnsupportedError(
           'Received type: ${query.runtimeType}. Supported types are: String, SearchQuery')
     }));
@@ -307,30 +307,35 @@ class BookmarkTreeNode {
   /// The unique identifier for the node. IDs are unique within the current
   /// profile, and they remain valid even after the browser is restarted.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The `id` of the parent folder.  Omitted for the root node.
   String? get parentId => _wrapped.parentId;
+
   set parentId(String? v) {
     _wrapped.parentId = v;
   }
 
   /// The 0-based position of this node within its parent folder.
   int? get index => _wrapped.index;
+
   set index(int? v) {
     _wrapped.index = v;
   }
 
   /// The URL navigated to when a user clicks the bookmark. Omitted for folders.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// The text displayed for the node.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
@@ -338,6 +343,7 @@ class BookmarkTreeNode {
   /// When this node was created, in milliseconds since the epoch (`new
   /// Date(dateAdded)`).
   double? get dateAdded => _wrapped.dateAdded;
+
   set dateAdded(double? v) {
     _wrapped.dateAdded = v;
   }
@@ -345,6 +351,7 @@ class BookmarkTreeNode {
   /// When this node was last opened, in milliseconds since the epoch. Not set
   /// for folders.
   double? get dateLastUsed => _wrapped.dateLastUsed;
+
   set dateLastUsed(double? v) {
     _wrapped.dateLastUsed = v;
   }
@@ -352,6 +359,7 @@ class BookmarkTreeNode {
   /// When the contents of this folder last changed, in milliseconds since the
   /// epoch.
   double? get dateGroupModified => _wrapped.dateGroupModified;
+
   set dateGroupModified(double? v) {
     _wrapped.dateGroupModified = v;
   }
@@ -362,6 +370,7 @@ class BookmarkTreeNode {
   /// the user and the extension (default).
   BookmarkTreeNodeUnmodifiable? get unmodifiable =>
       _wrapped.unmodifiable?.let(BookmarkTreeNodeUnmodifiable.fromJS);
+
   set unmodifiable(BookmarkTreeNodeUnmodifiable? v) {
     _wrapped.unmodifiable = v?.toJS;
   }
@@ -371,6 +380,7 @@ class BookmarkTreeNode {
       .cast<$js.BookmarkTreeNode>()
       .map((e) => BookmarkTreeNode.fromJS(e))
       .toList();
+
   set children(List<BookmarkTreeNode>? v) {
     _wrapped.children = v?.toJSArray((e) => e.toJS);
   }
@@ -398,21 +408,25 @@ class CreateDetails {
 
   /// Defaults to the Other Bookmarks folder.
   String? get parentId => _wrapped.parentId;
+
   set parentId(String? v) {
     _wrapped.parentId = v;
   }
 
   int? get index => _wrapped.index;
+
   set index(int? v) {
     _wrapped.index = v;
   }
 
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
 
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
@@ -436,16 +450,19 @@ class OnRemovedRemoveInfo {
   $js.OnRemovedRemoveInfo get toJS => _wrapped;
 
   String get parentId => _wrapped.parentId;
+
   set parentId(String v) {
     _wrapped.parentId = v;
   }
 
   int get index => _wrapped.index;
+
   set index(int v) {
     _wrapped.index = v;
   }
 
   BookmarkTreeNode get node => BookmarkTreeNode.fromJS(_wrapped.node);
+
   set node(BookmarkTreeNode v) {
     _wrapped.node = v.toJS;
   }
@@ -467,11 +484,13 @@ class OnChangedChangeInfo {
   $js.OnChangedChangeInfo get toJS => _wrapped;
 
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
 
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
@@ -497,21 +516,25 @@ class OnMovedMoveInfo {
   $js.OnMovedMoveInfo get toJS => _wrapped;
 
   String get parentId => _wrapped.parentId;
+
   set parentId(String v) {
     _wrapped.parentId = v;
   }
 
   int get index => _wrapped.index;
+
   set index(int v) {
     _wrapped.index = v;
   }
 
   String get oldParentId => _wrapped.oldParentId;
+
   set oldParentId(String v) {
     _wrapped.oldParentId = v;
   }
 
   int get oldIndex => _wrapped.oldIndex;
+
   set oldIndex(int v) {
     _wrapped.oldIndex = v;
   }
@@ -530,6 +553,7 @@ class OnChildrenReorderedReorderInfo {
 
   List<String> get childIds =>
       _wrapped.childIds.toDart.cast<String>().map((e) => e).toList();
+
   set childIds(List<String> v) {
     _wrapped.childIds = v.toJSArray((e) => e);
   }
@@ -562,18 +586,21 @@ class SearchQuery {
   /// A string of words and quoted phrases that are matched against bookmark
   /// URLs and titles.
   String? get query => _wrapped.query;
+
   set query(String? v) {
     _wrapped.query = v;
   }
 
   /// The URL of the bookmark; matches verbatim. Note that folders have no URL.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// The title of the bookmark; matches verbatim.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -595,11 +622,13 @@ class MoveDestination {
   $js.MoveDestination get toJS => _wrapped;
 
   String? get parentId => _wrapped.parentId;
+
   set parentId(String? v) {
     _wrapped.parentId = v;
   }
 
   int? get index => _wrapped.index;
+
   set index(int? v) {
     _wrapped.index = v;
   }
@@ -621,11 +650,13 @@ class UpdateChanges {
   $js.UpdateChanges get toJS => _wrapped;
 
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
 
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }

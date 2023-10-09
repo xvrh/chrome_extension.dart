@@ -11,7 +11,8 @@ export 'src/chrome.dart' show chrome;
 final _sidePanel = ChromeSidePanel._();
 
 extension ChromeSidePanelExtension on Chrome {
-  /// chrome.sidePanel API
+  /// Use the `chrome.sidePanel` API to host content in the browser's side panel
+  /// alongside the main content of a webpage.
   ChromeSidePanel get sidePanel => _sidePanel;
 }
 
@@ -52,6 +53,14 @@ class ChromeSidePanel {
         $js.chrome.sidePanel.getPanelBehavior());
     return PanelBehavior.fromJS($res);
   }
+
+  /// Opens the side panel for the extension.
+  /// This may only be called in response to a user action.
+  /// |options|: Specifies the context in which to open the side panel.
+  /// |callback|: Called when the side panel has been opened.
+  Future<void> open(OpenOptions options) async {
+    await promiseToFuture<void>($js.chrome.sidePanel.open(options.toJS));
+  }
 }
 
 class SidePanel {
@@ -69,6 +78,7 @@ class SidePanel {
 
   /// Developer specified path for side panel display.
   String get defaultPath => _wrapped.default_path;
+
   set defaultPath(String v) {
     _wrapped.default_path = v;
   }
@@ -85,6 +95,7 @@ class ManifestKeys {
   $js.ManifestKeys get toJS => _wrapped;
 
   SidePanel get sidePanel => SidePanel.fromJS(_wrapped.side_panel);
+
   set sidePanel(SidePanel v) {
     _wrapped.side_panel = v.toJS;
   }
@@ -125,6 +136,7 @@ class PanelOptions {
   /// for this tabId and the default tabId, then the panel for this tabId will
   /// be a different instance than the panel for the default tabId.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -132,6 +144,7 @@ class PanelOptions {
   /// The path to the side panel HTML file to use. This must be a local
   /// resource within the extension package.
   String? get path => _wrapped.path;
+
   set path(String? v) {
     _wrapped.path = v;
   }
@@ -139,6 +152,7 @@ class PanelOptions {
   /// Whether the side panel should be enabled. This is optional. The default
   /// value is true.
   bool? get enabled => _wrapped.enabled;
+
   set enabled(bool? v) {
     _wrapped.enabled = v;
   }
@@ -163,6 +177,7 @@ class PanelBehavior {
   /// Whether clicking the extension's icon will toggle showing the extension's
   /// entry in the side panel. Defaults to false.
   bool? get openPanelOnActionClick => _wrapped.openPanelOnActionClick;
+
   set openPanelOnActionClick(bool? v) {
     _wrapped.openPanelOnActionClick = v;
   }
@@ -187,6 +202,60 @@ class GetPanelOptions {
   /// Otherwise, returns the default side panel options (used for any tab that
   /// doesn't have specific settings).
   int? get tabId => _wrapped.tabId;
+
+  set tabId(int? v) {
+    _wrapped.tabId = v;
+  }
+}
+
+class OpenOptions {
+  OpenOptions.fromJS(this._wrapped);
+
+  OpenOptions({
+    /// The window in which to open the side panel. This is only applicable if
+    /// the extension has a global (non-tab-specific) side panel or
+    /// `tabId` is also specified. This will override any
+    /// currently-active global side panel the user has open in the given
+    /// window. At least one of this and `tabId` must be provided.
+    int? windowId,
+
+    /// The tab in which to open the side panel. If the corresponding tab has
+    /// a tab-specific side panel, the panel will only be open for that tab.
+    /// If there is not a tab-specific panel, the global panel will be open in
+    /// the specified tab and any other tabs without a currently-open tab-
+    /// specific panel. This will override any currently-active side panel
+    /// (global or tab-specific) in the corresponding tab. At least one of this
+    /// and `windowId` must be provided.
+    int? tabId,
+  }) : _wrapped = $js.OpenOptions(
+          windowId: windowId,
+          tabId: tabId,
+        );
+
+  final $js.OpenOptions _wrapped;
+
+  $js.OpenOptions get toJS => _wrapped;
+
+  /// The window in which to open the side panel. This is only applicable if
+  /// the extension has a global (non-tab-specific) side panel or
+  /// `tabId` is also specified. This will override any
+  /// currently-active global side panel the user has open in the given
+  /// window. At least one of this and `tabId` must be provided.
+  int? get windowId => _wrapped.windowId;
+
+  set windowId(int? v) {
+    _wrapped.windowId = v;
+  }
+
+  /// The tab in which to open the side panel. If the corresponding tab has
+  /// a tab-specific side panel, the panel will only be open for that tab.
+  /// If there is not a tab-specific panel, the global panel will be open in
+  /// the specified tab and any other tabs without a currently-open tab-
+  /// specific panel. This will override any currently-active side panel
+  /// (global or tab-specific) in the corresponding tab. At least one of this
+  /// and `windowId` must be provided.
+  int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }

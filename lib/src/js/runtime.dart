@@ -62,7 +62,7 @@ extension JSRuntimeExtension on JSRuntime {
       String path);
 
   /// Sets the URL to be visited upon uninstallation. This may be used to clean
-  /// up server-side data, do analytics, and implement surveys. Maximum 255
+  /// up server-side data, do analytics, and implement surveys. Maximum 1023
   /// characters.
   external JSPromise setUninstallURL(
 
@@ -219,6 +219,9 @@ extension JSRuntimeExtension on JSRuntime {
   /// [runtime.connect]).
   external Event get onConnectExternal;
 
+  /// Fired when a connection is made from a user script from this extension.
+  external Event get onUserScriptConnect;
+
   /// Fired when a connection is made from a native application. Currently only
   /// supported on Chrome OS.
   external Event get onConnectNative;
@@ -230,6 +233,10 @@ extension JSRuntimeExtension on JSRuntime {
   /// Fired when a message is sent from another extension/app (by
   /// [runtime.sendMessage]). Cannot be used in a content script.
   external Event get onMessageExternal;
+
+  /// Fired when a message is sent from a user script associated with the same
+  /// extension.
+  external Event get onUserScriptMessage;
 
   /// Fired when an app or the device that it runs on needs to be restarted. The
   /// app should close all its windows at its earliest convenient time to let
@@ -281,11 +288,11 @@ class Port {
     /// Immediately disconnect the port. Calling `disconnect()` on an
     /// already-disconnected port has no effect. When a port is disconnected, no
     /// new events will be dispatched to this port.
-    Function disconnect,
+    JSFunction disconnect,
 
     /// Send a message to the other end of the port. If the port is disconnected,
     /// an error is thrown.
-    Function postMessage,
+    JSFunction postMessage,
 
     /// This property will **only** be present on ports passed to
     /// $(ref:runtime.onConnect onConnect) / $(ref:runtime.onConnectExternal
@@ -302,11 +309,11 @@ extension PortExtension on Port {
   /// Immediately disconnect the port. Calling `disconnect()` on an
   /// already-disconnected port has no effect. When a port is disconnected, no
   /// new events will be dispatched to this port.
-  external Function disconnect;
+  external JSFunction disconnect;
 
   /// Send a message to the other end of the port. If the port is disconnected,
   /// an error is thrown.
-  external Function postMessage;
+  external JSFunction postMessage;
 
   /// This property will **only** be present on ports passed to
   /// $(ref:runtime.onConnect onConnect) / $(ref:runtime.onConnectExternal

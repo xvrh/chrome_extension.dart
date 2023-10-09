@@ -161,6 +161,7 @@ class TabDetails {
   /// The ID of the tab to query state for. If no tab is specified, the
   /// non-tab-specific state is returned.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -185,6 +186,7 @@ class UserSettings {
   /// top-level toolbar (i.e., whether the extension has been 'pinned' by the
   /// user).
   bool get isOnToolbar => _wrapped.isOnToolbar;
+
   set isOnToolbar(bool v) {
     _wrapped.isOnToolbar = v;
   }
@@ -207,6 +209,7 @@ class OpenPopupOptions {
   /// The id of the window to open the action popup in. Defaults to the
   /// currently-active window if unspecified.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -233,6 +236,7 @@ class SetTitleDetails {
 
   /// The string the action should display when moused over.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
@@ -240,6 +244,7 @@ class SetTitleDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -281,7 +286,7 @@ class SetIconDetails {
                 'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map')
           },
           path: switch (path) {
-            String() => path,
+            String() => path.jsify()!,
             Map() => path.jsify()!,
             null => null,
             _ => throw UnsupportedError(
@@ -306,6 +311,7 @@ class SetIconDetails {
         isOther: (v) => (v as $js_browser_action.ImageDataType),
         isMap: (v) => v.toDartMap(),
       );
+
   set imageData(Object? v) {
     _wrapped.imageData = switch (v) {
       JSObject() => v,
@@ -327,9 +333,10 @@ class SetIconDetails {
         isString: (v) => v,
         isMap: (v) => v.toDartMap(),
       );
+
   set path(Object? v) {
     _wrapped.path = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       Map() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
@@ -340,6 +347,7 @@ class SetIconDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -368,6 +376,7 @@ class SetPopupDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -375,6 +384,7 @@ class SetPopupDetails {
   /// The relative path to the HTML file to show in a popup. If set to the empty
   /// string (`''`), no popup is shown.
   String get popup => _wrapped.popup;
+
   set popup(String v) {
     _wrapped.popup = v;
   }
@@ -385,8 +395,10 @@ class SetBadgeTextDetails {
 
   SetBadgeTextDetails({
     /// Any number of characters can be passed, but only about four can fit in
-    /// the space.
-    required String text,
+    /// the space. If an empty string (`''`) is passed, the badge text is
+    /// cleared.  If `tabId` is specified and `text` is null, the text for the
+    /// specified tab is cleared and defaults to the global badge text.
+    String? text,
 
     /// Limits the change to when a particular tab is selected. Automatically
     /// resets when the tab is closed.
@@ -401,15 +413,19 @@ class SetBadgeTextDetails {
   $js.SetBadgeTextDetails get toJS => _wrapped;
 
   /// Any number of characters can be passed, but only about four can fit in the
-  /// space.
-  String get text => _wrapped.text;
-  set text(String v) {
+  /// space. If an empty string (`''`) is passed, the badge text is cleared.  If
+  /// `tabId` is specified and `text` is null, the text for the specified tab is
+  /// cleared and defaults to the global badge text.
+  String? get text => _wrapped.text;
+
+  set text(String? v) {
     _wrapped.text = v;
   }
 
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -430,7 +446,7 @@ class SetBadgeBackgroundColorDetails {
     int? tabId,
   }) : _wrapped = $js.SetBadgeBackgroundColorDetails(
           color: switch (color) {
-            String() => color,
+            String() => color.jsify()!,
             List<int>() => color.toJSArray((e) => e),
             _ => throw UnsupportedError(
                 'Received type: ${color.runtimeType}. Supported types are: String, List<int>')
@@ -453,9 +469,10 @@ class SetBadgeBackgroundColorDetails {
             .map((e) => e)
             .toList(),
       );
+
   set color(Object v) {
     _wrapped.color = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       List<int>() => v.toJSArray((e) => e),
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: String, List<int>')
@@ -465,6 +482,7 @@ class SetBadgeBackgroundColorDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -488,7 +506,7 @@ class SetBadgeTextColorDetails {
     int? tabId,
   }) : _wrapped = $js.SetBadgeTextColorDetails(
           color: switch (color) {
-            String() => color,
+            String() => color.jsify()!,
             List<int>() => color.toJSArray((e) => e),
             _ => throw UnsupportedError(
                 'Received type: ${color.runtimeType}. Supported types are: String, List<int>')
@@ -515,9 +533,10 @@ class SetBadgeTextColorDetails {
             .map((e) => e)
             .toList(),
       );
+
   set color(Object v) {
     _wrapped.color = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       List<int>() => v.toJSArray((e) => e),
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: String, List<int>')
@@ -527,6 +546,7 @@ class SetBadgeTextColorDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }

@@ -374,12 +374,14 @@ class FontName {
 
   /// The font ID.
   String get fontId => _wrapped.fontId;
+
   set fontId(String v) {
     _wrapped.fontId = v;
   }
 
   /// The display name of the font.
   String get displayName => _wrapped.displayName;
+
   set displayName(String v) {
     _wrapped.displayName = v;
   }
@@ -413,12 +415,14 @@ class OnFontChangedDetails {
 
   /// The font ID. See the description in `getFont`.
   String get fontId => _wrapped.fontId;
+
   set fontId(String v) {
     _wrapped.fontId = v;
   }
 
   /// The script code for which the font setting has changed.
   ScriptCode? get script => _wrapped.script?.let(ScriptCode.fromJS);
+
   set script(ScriptCode? v) {
     _wrapped.script = v?.toJS;
   }
@@ -426,6 +430,7 @@ class OnFontChangedDetails {
   /// The generic font family for which the font setting has changed.
   GenericFamily get genericFamily =>
       GenericFamily.fromJS(_wrapped.genericFamily);
+
   set genericFamily(GenericFamily v) {
     _wrapped.genericFamily = v.toJS;
   }
@@ -433,6 +438,7 @@ class OnFontChangedDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -458,6 +464,7 @@ class OnDefaultFontSizeChangedDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -465,6 +472,7 @@ class OnDefaultFontSizeChangedDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -490,6 +498,7 @@ class OnDefaultFixedFontSizeChangedDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -497,6 +506,7 @@ class OnDefaultFixedFontSizeChangedDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -522,6 +532,7 @@ class OnMinimumFontSizeChangedDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -529,6 +540,7 @@ class OnMinimumFontSizeChangedDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -556,6 +568,7 @@ class ClearFontDetails {
   /// The script for which the font should be cleared. If omitted, the global
   /// script font setting is cleared.
   ScriptCode? get script => _wrapped.script?.let(ScriptCode.fromJS);
+
   set script(ScriptCode? v) {
     _wrapped.script = v?.toJS;
   }
@@ -563,6 +576,7 @@ class ClearFontDetails {
   /// The generic font family for which the font should be cleared.
   GenericFamily get genericFamily =>
       GenericFamily.fromJS(_wrapped.genericFamily);
+
   set genericFamily(GenericFamily v) {
     _wrapped.genericFamily = v.toJS;
   }
@@ -596,6 +610,7 @@ class GetFontCallbackDetails {
   /// the font is not available on the system. The empty string signifies
   /// fallback to the global script font setting.
   String get fontId => _wrapped.fontId;
+
   set fontId(String v) {
     _wrapped.fontId = v;
   }
@@ -603,6 +618,7 @@ class GetFontCallbackDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -630,6 +646,7 @@ class GetFontDetails {
   /// The script for which the font should be retrieved. If omitted, the font
   /// setting for the global script (script code "Zyyy") is retrieved.
   ScriptCode? get script => _wrapped.script?.let(ScriptCode.fromJS);
+
   set script(ScriptCode? v) {
     _wrapped.script = v?.toJS;
   }
@@ -637,6 +654,7 @@ class GetFontDetails {
   /// The generic font family for which the font should be retrieved.
   GenericFamily get genericFamily =>
       GenericFamily.fromJS(_wrapped.genericFamily);
+
   set genericFamily(GenericFamily v) {
     _wrapped.genericFamily = v.toJS;
   }
@@ -669,6 +687,7 @@ class SetFontDetails {
   /// The script code which the font should be set. If omitted, the font setting
   /// for the global script (script code "Zyyy") is set.
   ScriptCode? get script => _wrapped.script?.let(ScriptCode.fromJS);
+
   set script(ScriptCode? v) {
     _wrapped.script = v?.toJS;
   }
@@ -676,6 +695,7 @@ class SetFontDetails {
   /// The generic font family for which the font should be set.
   GenericFamily get genericFamily =>
       GenericFamily.fromJS(_wrapped.genericFamily);
+
   set genericFamily(GenericFamily v) {
     _wrapped.genericFamily = v.toJS;
   }
@@ -683,6 +703,7 @@ class SetFontDetails {
   /// The font ID. The empty string means to fallback to the global script font
   /// setting.
   String get fontId => _wrapped.fontId;
+
   set fontId(String v) {
     _wrapped.fontId = v;
   }
@@ -718,6 +739,7 @@ class GetDefaultFontSizeCallbackDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -725,6 +747,7 @@ class GetDefaultFontSizeCallbackDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -755,6 +778,7 @@ class SetDefaultFontSizeDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -791,6 +815,7 @@ class GetDefaultFixedFontSizeCallbackDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -798,6 +823,7 @@ class GetDefaultFixedFontSizeCallbackDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -829,6 +855,7 @@ class SetDefaultFixedFontSizeDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -864,6 +891,7 @@ class GetMinimumFontSizeCallbackDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }
@@ -871,6 +899,7 @@ class GetMinimumFontSizeCallbackDetails {
   /// The level of control this extension has over the setting.
   LevelOfControl get levelOfControl =>
       LevelOfControl.fromJS(_wrapped.levelOfControl);
+
   set levelOfControl(LevelOfControl v) {
     _wrapped.levelOfControl = v.toJS;
   }
@@ -901,6 +930,7 @@ class SetMinimumFontSizeDetails {
 
   /// The font size in pixels.
   int get pixelSize => _wrapped.pixelSize;
+
   set pixelSize(int v) {
     _wrapped.pixelSize = v;
   }

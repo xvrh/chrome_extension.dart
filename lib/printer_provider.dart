@@ -163,18 +163,21 @@ class PrinterInfo {
 
   /// Unique printer ID.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// Printer's human readable name.
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
 
   /// Printer's human readable description.
   String? get description => _wrapped.description;
+
   set description(String? v) {
     _wrapped.description = v;
   }
@@ -216,12 +219,14 @@ class PrintJob {
 
   /// ID of the printer which should handle the job.
   String get printerId => _wrapped.printerId;
+
   set printerId(String v) {
     _wrapped.printerId = v;
   }
 
   /// The print job title.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
@@ -230,6 +235,7 @@ class PrintJob {
   /// <a href="https://developers.google.com/cloud-print/docs/cdd#cjt">
   /// CJT format</a>.
   Map get ticket => _wrapped.ticket.toDartMap();
+
   set ticket(Map v) {
     _wrapped.ticket = v.jsify()!;
   }
@@ -237,6 +243,7 @@ class PrintJob {
   /// The document content type. Supported formats are
   /// `"application/pdf"` and `"image/pwg-raster"`.
   String get contentType => _wrapped.contentType;
+
   set contentType(String v) {
     _wrapped.contentType = v;
   }
@@ -244,6 +251,7 @@ class PrintJob {
   /// Blob containing the document data to print. Format must match
   /// |contentType|.
   JSObject get document => _wrapped.document;
+
   set document(JSObject v) {
     _wrapped.document = v;
   }

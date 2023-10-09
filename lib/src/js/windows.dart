@@ -239,7 +239,7 @@ class CreateData {
     /// must include a scheme, e.g., 'http://www.google.com', not
     /// 'www.google.com'. Non-fully-qualified URLs are considered relative within
     /// the extension. Defaults to the New Tab Page.
-    Object? url,
+    JSAny? url,
 
     /// The ID of the tab to add to the new window.
     int? tabId,
@@ -289,7 +289,7 @@ extension CreateDataExtension on CreateData {
   /// must include a scheme, e.g., 'http://www.google.com', not
   /// 'www.google.com'. Non-fully-qualified URLs are considered relative within
   /// the extension. Defaults to the New Tab Page.
-  external Object? url;
+  external JSAny? url;
 
   /// The ID of the tab to add to the new window.
   external int? tabId;

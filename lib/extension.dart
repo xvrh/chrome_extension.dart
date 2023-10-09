@@ -129,16 +129,12 @@ class ChromeExtension {
       $js.chrome.extension.onRequest.asStream(($c) => (
             JSAny? request,
             $js_runtime.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnRequestEvent(
               request: request?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 
@@ -147,16 +143,12 @@ class ChromeExtension {
       $js.chrome.extension.onRequestExternal.asStream(($c) => (
             JSAny? request,
             $js_runtime.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnRequestExternalEvent(
               request: request?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 }
@@ -202,12 +194,14 @@ class GetViewsFetchProperties {
   /// The type of view to get. If omitted, returns all views (including
   /// background pages and tabs).
   ViewType? get type => _wrapped.type?.let(ViewType.fromJS);
+
   set type(ViewType? v) {
     _wrapped.type = v?.toJS;
   }
 
   /// The window to restrict the search to. If omitted, returns all views.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -215,6 +209,7 @@ class GetViewsFetchProperties {
   /// Find a view according to a tab id. If this field is omitted, returns all
   /// views.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -235,6 +230,7 @@ class ExtensionLastError {
 
   /// Description of the error that has taken place.
   String get message => _wrapped.message;
+
   set message(String v) {
     _wrapped.message = v;
   }
@@ -256,7 +252,7 @@ class OnRequestEvent {
   /// should be any JSON-ifiable object, or undefined if there is no response.
   /// If you have more than one `onRequest` listener in the same document, then
   /// only one may send a response.
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }
 
 class OnRequestExternalEvent {
@@ -273,5 +269,5 @@ class OnRequestExternalEvent {
 
   /// Function to call when you have a response. The argument should be any
   /// JSON-ifiable object, or undefined if there is no response.
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }

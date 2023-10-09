@@ -128,6 +128,7 @@ class PageStateMatcher {
   /// Matches if the conditions of the `UrlFilter` are fulfilled for the
   /// top-level URL of the page.
   UrlFilter? get pageUrl => _wrapped.pageUrl?.let(UrlFilter.fromJS);
+
   set pageUrl(UrlFilter? v) {
     _wrapped.pageUrl = v?.toJS;
   }
@@ -140,6 +141,7 @@ class PageStateMatcher {
   /// that match hundreds of times per page can slow down web sites.
   List<String>? get css =>
       _wrapped.css?.toDart.cast<String>().map((e) => e).toList();
+
   set css(List<String>? v) {
     _wrapped.css = v?.toJSArray((e) => e);
   }
@@ -147,12 +149,14 @@ class PageStateMatcher {
   /// Matches if the bookmarked state of the page is equal to the specified
   /// value. Requres the [bookmarks permission](declare_permissions).
   bool? get isBookmarked => _wrapped.isBookmarked;
+
   set isBookmarked(bool? v) {
     _wrapped.isBookmarked = v;
   }
 
   PageStateMatcherInstanceType get instanceType =>
       PageStateMatcherInstanceType.fromJS(_wrapped.instanceType);
+
   set instanceType(PageStateMatcherInstanceType v) {
     _wrapped.instanceType = v.toJS;
   }
@@ -170,6 +174,7 @@ class ShowPageAction {
 
   ShowPageActionInstanceType get instanceType =>
       ShowPageActionInstanceType.fromJS(_wrapped.instanceType);
+
   set instanceType(ShowPageActionInstanceType v) {
     _wrapped.instanceType = v.toJS;
   }
@@ -187,6 +192,7 @@ class ShowAction {
 
   ShowActionInstanceType get instanceType =>
       ShowActionInstanceType.fromJS(_wrapped.instanceType);
+
   set instanceType(ShowActionInstanceType v) {
     _wrapped.instanceType = v.toJS;
   }
@@ -224,6 +230,7 @@ class SetIcon {
 
   SetIconInstanceType get instanceType =>
       SetIconInstanceType.fromJS(_wrapped.instanceType);
+
   set instanceType(SetIconInstanceType v) {
     _wrapped.instanceType = v.toJS;
   }
@@ -240,6 +247,7 @@ class SetIcon {
         isOther: (v) => (v as $js.ImageDataType),
         isMap: (v) => v.toDartMap(),
       );
+
   set imageData(Object? v) {
     _wrapped.imageData = switch (v) {
       JSObject() => v,
@@ -285,6 +293,7 @@ class RequestContentScript {
   /// Names of CSS files to be injected as a part of the content script.
   List<String>? get css =>
       _wrapped.css?.toDart.cast<String>().map((e) => e).toList();
+
   set css(List<String>? v) {
     _wrapped.css = v?.toJSArray((e) => e);
   }
@@ -292,6 +301,7 @@ class RequestContentScript {
   /// Names of JavaScript files to be injected as a part of the content script.
   List<String>? get js =>
       _wrapped.js?.toDart.cast<String>().map((e) => e).toList();
+
   set js(List<String>? v) {
     _wrapped.js = v?.toJSArray((e) => e);
   }
@@ -299,6 +309,7 @@ class RequestContentScript {
   /// Whether the content script runs in all frames of the matching page, or in
   /// only the top frame. Default is `false`.
   bool? get allFrames => _wrapped.allFrames;
+
   set allFrames(bool? v) {
     _wrapped.allFrames = v;
   }
@@ -306,12 +317,14 @@ class RequestContentScript {
   /// Whether to insert the content script on `about:blank` and `about:srcdoc`.
   /// Default is `false`.
   bool? get matchAboutBlank => _wrapped.matchAboutBlank;
+
   set matchAboutBlank(bool? v) {
     _wrapped.matchAboutBlank = v;
   }
 
   RequestContentScriptInstanceType get instanceType =>
       RequestContentScriptInstanceType.fromJS(_wrapped.instanceType);
+
   set instanceType(RequestContentScriptInstanceType v) {
     _wrapped.instanceType = v.toJS;
   }

@@ -11,7 +11,7 @@ export 'src/chrome.dart' show chrome;
 final _webAuthenticationProxy = ChromeWebAuthenticationProxy._();
 
 extension ChromeWebAuthenticationProxyExtension on Chrome {
-  /// The `chrome.webAuthenticationProxy`. API lets remote desktop
+  /// The `chrome.webAuthenticationProxy` API lets remote desktop
   /// software running on a remote host intercept Web Authentication API
   /// (WebAuthn) requests in order to handle them on a local client.
   ChromeWebAuthenticationProxy get webAuthenticationProxy =>
@@ -175,6 +175,7 @@ class IsUvpaaRequest {
 
   /// An opaque identifier for the request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -204,6 +205,7 @@ class CreateRequest {
 
   /// An opaque identifier for the request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -214,6 +216,7 @@ class CreateRequest {
   /// href="https://w3c.github.io/webauthn/#sctn-parseCreationOptionsFromJSON">
   /// `PublicKeyCredential.parseCreationOptionsFromJSON()`</a>.
   String get requestDetailsJson => _wrapped.requestDetailsJson;
+
   set requestDetailsJson(String v) {
     _wrapped.requestDetailsJson = v;
   }
@@ -243,6 +246,7 @@ class GetRequest {
 
   /// An opaque identifier for the request.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -253,6 +257,7 @@ class GetRequest {
   /// href="https://w3c.github.io/webauthn/#sctn-parseRequestOptionsFromJSON">
   /// `PublicKeyCredential.parseRequestOptionsFromJSON()`</a>.
   String get requestDetailsJson => _wrapped.requestDetailsJson;
+
   set requestDetailsJson(String v) {
     _wrapped.requestDetailsJson = v;
   }
@@ -274,11 +279,13 @@ class DOMExceptionDetails {
   $js.DOMExceptionDetails get toJS => _wrapped;
 
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
 
   String get message => _wrapped.message;
+
   set message(String v) {
     _wrapped.message = v;
   }
@@ -311,6 +318,7 @@ class CreateResponseDetails {
 
   /// The `requestId` of the `CreateRequest`.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -318,6 +326,7 @@ class CreateResponseDetails {
   /// The `DOMException` yielded by the remote request, if any.
   DOMExceptionDetails? get error =>
       _wrapped.error?.let(DOMExceptionDetails.fromJS);
+
   set error(DOMExceptionDetails? v) {
     _wrapped.error = v?.toJS;
   }
@@ -327,6 +336,7 @@ class CreateResponseDetails {
   /// href="https://w3c.github.io/webauthn/#dom-publickeycredential-tojson">
   /// `PublicKeyCredential.toJSON()`</a>.
   String? get responseJson => _wrapped.responseJson;
+
   set responseJson(String? v) {
     _wrapped.responseJson = v;
   }
@@ -359,6 +369,7 @@ class GetResponseDetails {
 
   /// The `requestId` of the `CreateRequest`.
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
@@ -366,6 +377,7 @@ class GetResponseDetails {
   /// The `DOMException` yielded by the remote request, if any.
   DOMExceptionDetails? get error =>
       _wrapped.error?.let(DOMExceptionDetails.fromJS);
+
   set error(DOMExceptionDetails? v) {
     _wrapped.error = v?.toJS;
   }
@@ -375,6 +387,7 @@ class GetResponseDetails {
   /// href="https://w3c.github.io/webauthn/#dom-publickeycredential-tojson">
   /// `PublicKeyCredential.toJSON()`</a>.
   String? get responseJson => _wrapped.responseJson;
+
   set responseJson(String? v) {
     _wrapped.responseJson = v;
   }
@@ -396,11 +409,13 @@ class IsUvpaaResponseDetails {
   $js.IsUvpaaResponseDetails get toJS => _wrapped;
 
   int get requestId => _wrapped.requestId;
+
   set requestId(int v) {
     _wrapped.requestId = v;
   }
 
   bool get isUvpaa => _wrapped.isUvpaa;
+
   set isUvpaa(bool v) {
     _wrapped.isUvpaa = v;
   }

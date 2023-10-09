@@ -171,6 +171,7 @@ class Debuggee {
 
   /// The id of the tab which you intend to debug.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -179,12 +180,14 @@ class Debuggee {
   /// extension background page is only possible when the
   /// `--silent-debugger-extension-api` command-line switch is used.
   String? get extensionId => _wrapped.extensionId;
+
   set extensionId(String? v) {
     _wrapped.extensionId = v;
   }
 
   /// The opaque id of the debug target.
   String? get targetId => _wrapped.targetId;
+
   set targetId(String? v) {
     _wrapped.targetId = v;
   }
@@ -234,48 +237,56 @@ class TargetInfo {
 
   /// Target type.
   TargetInfoType get type => TargetInfoType.fromJS(_wrapped.type);
+
   set type(TargetInfoType v) {
     _wrapped.type = v.toJS;
   }
 
   /// Target id.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The tab id, defined if type == 'page'.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
 
   /// The extension id, defined if type = 'background_page'.
   String? get extensionId => _wrapped.extensionId;
+
   set extensionId(String? v) {
     _wrapped.extensionId = v;
   }
 
   /// True if debugger is already attached.
   bool get attached => _wrapped.attached;
+
   set attached(bool v) {
     _wrapped.attached = v;
   }
 
   /// Target page title.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
 
   /// Target URL.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Target favicon URL.
   String? get faviconUrl => _wrapped.faviconUrl;
+
   set faviconUrl(String? v) {
     _wrapped.faviconUrl = v;
   }

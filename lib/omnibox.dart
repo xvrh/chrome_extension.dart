@@ -56,15 +56,11 @@ class ChromeOmnibox {
   EventStream<OnInputChangedEvent> get onInputChanged =>
       $js.chrome.omnibox.onInputChanged.asStream(($c) => (
             String text,
-            Function suggest,
+            JSFunction suggest,
           ) {
             return $c(OnInputChangedEvent(
               text: text,
-              suggest: ([Object? p1, Object? p2]) {
-                return (suggest as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              suggest: suggest,
             ));
           });
 
@@ -146,17 +142,20 @@ class MatchClassification {
   $js.MatchClassification get toJS => _wrapped;
 
   int get offset => _wrapped.offset;
+
   set offset(int v) {
     _wrapped.offset = v;
   }
 
   /// The style type
   DescriptionStyleType get type => DescriptionStyleType.fromJS(_wrapped.type);
+
   set type(DescriptionStyleType v) {
     _wrapped.type = v.toJS;
   }
 
   int? get length => _wrapped.length;
+
   set length(int? v) {
     _wrapped.length = v;
   }
@@ -199,6 +198,7 @@ class SuggestResult {
   /// The text that is put into the URL bar, and that is sent to the extension
   /// when the user chooses this entry.
   String get content => _wrapped.content;
+
   set content(String v) {
     _wrapped.content = v;
   }
@@ -211,12 +211,14 @@ class SuggestResult {
   /// predefined entities to display them as text:
   /// stackoverflow.com/a/1091953/89484
   String get description => _wrapped.description;
+
   set description(String v) {
     _wrapped.description = v;
   }
 
   /// Whether the suggest result can be deleted by the user.
   bool? get deletable => _wrapped.deletable;
+
   set deletable(bool? v) {
     _wrapped.deletable = v;
   }
@@ -228,6 +230,7 @@ class SuggestResult {
           .cast<$js.MatchClassification>()
           .map((e) => MatchClassification.fromJS(e))
           .toList();
+
   set descriptionStyles(List<MatchClassification>? v) {
     _wrapped.descriptionStyles = v?.toJSArray((e) => e.toJS);
   }
@@ -262,6 +265,7 @@ class DefaultSuggestResult {
   /// 'dim' (for dim helper text). The styles can be nested, eg.
   /// <dim><match>dimmed match</match></dim>.
   String get description => _wrapped.description;
+
   set description(String v) {
     _wrapped.description = v;
   }
@@ -273,6 +277,7 @@ class DefaultSuggestResult {
           .cast<$js.MatchClassification>()
           .map((e) => MatchClassification.fromJS(e))
           .toList();
+
   set descriptionStyles(List<MatchClassification>? v) {
     _wrapped.descriptionStyles = v?.toJSArray((e) => e.toJS);
   }
@@ -288,7 +293,7 @@ class OnInputChangedEvent {
 
   /// A callback passed to the onInputChanged event used for sending suggestions
   /// back to the browser.
-  final Function suggest;
+  final JSFunction suggest;
 }
 
 class OnInputEnteredEvent {

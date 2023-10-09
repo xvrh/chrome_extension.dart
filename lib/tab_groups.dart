@@ -154,6 +154,7 @@ class TabGroup {
 
   /// The ID of the group. Group IDs are unique within a browser session.
   int get id => _wrapped.id;
+
   set id(int v) {
     _wrapped.id = v;
   }
@@ -161,24 +162,28 @@ class TabGroup {
   /// Whether the group is collapsed. A collapsed group is one whose tabs are
   /// hidden.
   bool get collapsed => _wrapped.collapsed;
+
   set collapsed(bool v) {
     _wrapped.collapsed = v;
   }
 
   /// The group's color.
   Color get color => Color.fromJS(_wrapped.color);
+
   set color(Color v) {
     _wrapped.color = v.toJS;
   }
 
   /// The title of the group.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
 
   /// The ID of the window that contains the group.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -213,18 +218,21 @@ class QueryInfo {
 
   /// Whether the groups are collapsed.
   bool? get collapsed => _wrapped.collapsed;
+
   set collapsed(bool? v) {
     _wrapped.collapsed = v;
   }
 
   /// The color of the groups.
   Color? get color => _wrapped.color?.let(Color.fromJS);
+
   set color(Color? v) {
     _wrapped.color = v?.toJS;
   }
 
   /// Match group titles against a pattern.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -232,6 +240,7 @@ class QueryInfo {
   /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
   /// [current window](windows#current-window).
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -261,18 +270,21 @@ class UpdateProperties {
 
   /// Whether the group should be collapsed.
   bool? get collapsed => _wrapped.collapsed;
+
   set collapsed(bool? v) {
     _wrapped.collapsed = v;
   }
 
   /// The color of the group.
   Color? get color => _wrapped.color?.let(Color.fromJS);
+
   set color(Color? v) {
     _wrapped.color = v?.toJS;
   }
 
   /// The title of the group.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -303,6 +315,7 @@ class MoveProperties {
   /// currently in. Note that groups can only be moved to and from windows with
   /// [windows.WindowType] type `"normal"`.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -310,6 +323,7 @@ class MoveProperties {
   /// The position to move the group to. Use `-1` to place the group at the end
   /// of the window.
   int get index => _wrapped.index;
+
   set index(int v) {
     _wrapped.index = v;
   }

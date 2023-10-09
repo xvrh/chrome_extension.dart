@@ -436,18 +436,21 @@ class Ruleset {
   /// A non-empty string uniquely identifying the ruleset. IDs beginning with
   /// '_' are reserved for internal use.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The path of the JSON ruleset relative to the extension directory.
   String get path => _wrapped.path;
+
   set path(String v) {
     _wrapped.path = v;
   }
 
   /// Whether the ruleset is enabled by default.
   bool get enabled => _wrapped.enabled;
+
   set enabled(bool v) {
     _wrapped.enabled = v;
   }
@@ -474,11 +477,13 @@ class QueryKeyValue {
   $js.QueryKeyValue get toJS => _wrapped;
 
   String get key => _wrapped.key;
+
   set key(String v) {
     _wrapped.key = v;
   }
 
   String get value => _wrapped.value;
+
   set value(String v) {
     _wrapped.value = v;
   }
@@ -486,6 +491,7 @@ class QueryKeyValue {
   /// If true, the query key is replaced only if it's already present.
   /// Otherwise, the key is also added if it's missing. Defaults to false.
   bool? get replaceOnly => _wrapped.replaceOnly;
+
   set replaceOnly(bool? v) {
     _wrapped.replaceOnly = v;
   }
@@ -512,6 +518,7 @@ class QueryTransform {
   /// The list of query keys to be removed.
   List<String>? get removeParams =>
       _wrapped.removeParams?.toDart.cast<String>().map((e) => e).toList();
+
   set removeParams(List<String>? v) {
     _wrapped.removeParams = v?.toJSArray((e) => e);
   }
@@ -522,6 +529,7 @@ class QueryTransform {
           .cast<$js.QueryKeyValue>()
           .map((e) => QueryKeyValue.fromJS(e))
           .toList();
+
   set addOrReplaceParams(List<QueryKeyValue>? v) {
     _wrapped.addOrReplaceParams = v?.toJSArray((e) => e.toJS);
   }
@@ -579,24 +587,28 @@ class URLTransform {
   /// The new scheme for the request. Allowed values are "http", "https",
   /// "ftp" and "chrome-extension".
   String? get scheme => _wrapped.scheme;
+
   set scheme(String? v) {
     _wrapped.scheme = v;
   }
 
   /// The new host for the request.
   String? get host => _wrapped.host;
+
   set host(String? v) {
     _wrapped.host = v;
   }
 
   /// The new port for the request. If empty, the existing port is cleared.
   String? get port => _wrapped.port;
+
   set port(String? v) {
     _wrapped.port = v;
   }
 
   /// The new path for the request. If empty, the existing path is cleared.
   String? get path => _wrapped.path;
+
   set path(String? v) {
     _wrapped.path = v;
   }
@@ -604,6 +616,7 @@ class URLTransform {
   /// The new query for the request. Should be either empty, in which case the
   /// existing query is cleared; or should begin with '?'.
   String? get query => _wrapped.query;
+
   set query(String? v) {
     _wrapped.query = v;
   }
@@ -611,6 +624,7 @@ class URLTransform {
   /// Add, remove or replace query key-value pairs.
   QueryTransform? get queryTransform =>
       _wrapped.queryTransform?.let(QueryTransform.fromJS);
+
   set queryTransform(QueryTransform? v) {
     _wrapped.queryTransform = v?.toJS;
   }
@@ -618,18 +632,21 @@ class URLTransform {
   /// The new fragment for the request. Should be either empty, in which case
   /// the existing fragment is cleared; or should begin with '#'.
   String? get fragment => _wrapped.fragment;
+
   set fragment(String? v) {
     _wrapped.fragment = v;
   }
 
   /// The new username for the request.
   String? get username => _wrapped.username;
+
   set username(String? v) {
     _wrapped.username = v;
   }
 
   /// The new password for the request.
   String? get password => _wrapped.password;
+
   set password(String? v) {
     _wrapped.password = v;
   }
@@ -667,18 +684,21 @@ class Redirect {
 
   /// Path relative to the extension directory. Should start with '/'.
   String? get extensionPath => _wrapped.extensionPath;
+
   set extensionPath(String? v) {
     _wrapped.extensionPath = v;
   }
 
   /// Url transformations to perform.
   URLTransform? get transform => _wrapped.transform?.let(URLTransform.fromJS);
+
   set transform(URLTransform? v) {
     _wrapped.transform = v?.toJS;
   }
 
   /// The redirect url. Redirects to JavaScript urls are not allowed.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
@@ -689,6 +709,7 @@ class Redirect {
   /// backslash-escaped digits (\1 to \9) can be used to insert the
   /// corresponding capture groups. \0 refers to the entire matching text.
   String? get regexSubstitution => _wrapped.regexSubstitution;
+
   set regexSubstitution(String? v) {
     _wrapped.regexSubstitution = v;
   }
@@ -927,6 +948,7 @@ class RuleCondition {
   /// `urlFilter` will be matched against the url
   /// http://abc.xn--p1ai/?q=%D1%84.
   String? get urlFilter => _wrapped.urlFilter;
+
   set urlFilter(String? v) {
     _wrapped.urlFilter = v;
   }
@@ -942,6 +964,7 @@ class RuleCondition {
   /// the punycode format (in case of internationalized domains) and any other
   /// non-ascii characters are url encoded in utf-8.
   String? get regexFilter => _wrapped.regexFilter;
+
   set regexFilter(String? v) {
     _wrapped.regexFilter = v;
   }
@@ -949,6 +972,7 @@ class RuleCondition {
   /// Whether the `urlFilter` or `regexFilter`
   /// (whichever is specified) is case sensitive. Default is true.
   bool? get isUrlFilterCaseSensitive => _wrapped.isUrlFilterCaseSensitive;
+
   set isUrlFilterCaseSensitive(bool? v) {
     _wrapped.isUrlFilterCaseSensitive = v;
   }
@@ -969,6 +993,7 @@ class RuleCondition {
   /// </ul>
   List<String>? get initiatorDomains =>
       _wrapped.initiatorDomains?.toDart.cast<String>().map((e) => e).toList();
+
   set initiatorDomains(List<String>? v) {
     _wrapped.initiatorDomains = v?.toJSArray((e) => e);
   }
@@ -993,6 +1018,7 @@ class RuleCondition {
           .cast<String>()
           .map((e) => e)
           .toList();
+
   set excludedInitiatorDomains(List<String>? v) {
     _wrapped.excludedInitiatorDomains = v?.toJSArray((e) => e);
   }
@@ -1011,6 +1037,7 @@ class RuleCondition {
   /// </ul>
   List<String>? get requestDomains =>
       _wrapped.requestDomains?.toDart.cast<String>().map((e) => e).toList();
+
   set requestDomains(List<String>? v) {
     _wrapped.requestDomains = v?.toJSArray((e) => e);
   }
@@ -1032,6 +1059,7 @@ class RuleCondition {
           .cast<String>()
           .map((e) => e)
           .toList();
+
   set excludedRequestDomains(List<String>? v) {
     _wrapped.excludedRequestDomains = v?.toJSArray((e) => e);
   }
@@ -1040,6 +1068,7 @@ class RuleCondition {
   /// `domains`.
   List<String>? get domains =>
       _wrapped.domains?.toDart.cast<String>().map((e) => e).toList();
+
   set domains(List<String>? v) {
     _wrapped.domains = v?.toJSArray((e) => e);
   }
@@ -1048,6 +1077,7 @@ class RuleCondition {
   /// `excludedDomains`.
   List<String>? get excludedDomains =>
       _wrapped.excludedDomains?.toDart.cast<String>().map((e) => e).toList();
+
   set excludedDomains(List<String>? v) {
     _wrapped.excludedDomains = v?.toJSArray((e) => e);
   }
@@ -1062,6 +1092,7 @@ class RuleCondition {
       .cast<$js.ResourceType>()
       .map((e) => ResourceType.fromJS(e))
       .toList();
+
   set resourceTypes(List<ResourceType>? v) {
     _wrapped.resourceTypes = v?.toJSArray((e) => e.toJS);
   }
@@ -1075,6 +1106,7 @@ class RuleCondition {
           .cast<$js.ResourceType>()
           .map((e) => ResourceType.fromJS(e))
           .toList();
+
   set excludedResourceTypes(List<ResourceType>? v) {
     _wrapped.excludedResourceTypes = v?.toJSArray((e) => e.toJS);
   }
@@ -1089,6 +1121,7 @@ class RuleCondition {
       .cast<$js.RequestMethod>()
       .map((e) => RequestMethod.fromJS(e))
       .toList();
+
   set requestMethods(List<RequestMethod>? v) {
     _wrapped.requestMethods = v?.toJSArray((e) => e.toJS);
   }
@@ -1102,6 +1135,7 @@ class RuleCondition {
           .cast<$js.RequestMethod>()
           .map((e) => RequestMethod.fromJS(e))
           .toList();
+
   set excludedRequestMethods(List<RequestMethod>? v) {
     _wrapped.excludedRequestMethods = v?.toJSArray((e) => e.toJS);
   }
@@ -1110,6 +1144,7 @@ class RuleCondition {
   /// the domain from which it originated. If omitted, all requests are
   /// accepted.
   DomainType? get domainType => _wrapped.domainType?.let(DomainType.fromJS);
+
   set domainType(DomainType? v) {
     _wrapped.domainType = v?.toJS;
   }
@@ -1120,6 +1155,7 @@ class RuleCondition {
   /// rules.
   List<int>? get tabIds =>
       _wrapped.tabIds?.toDart.cast<int>().map((e) => e).toList();
+
   set tabIds(List<int>? v) {
     _wrapped.tabIds = v?.toJSArray((e) => e);
   }
@@ -1129,6 +1165,7 @@ class RuleCondition {
   /// tab. Only supported for session-scoped rules.
   List<int>? get excludedTabIds =>
       _wrapped.excludedTabIds?.toDart.cast<int>().map((e) => e).toList();
+
   set excludedTabIds(List<int>? v) {
     _wrapped.excludedTabIds = v?.toJSArray((e) => e);
   }
@@ -1159,12 +1196,14 @@ class ModifyHeaderInfo {
 
   /// The name of the header to be modified.
   String get header => _wrapped.header;
+
   set header(String v) {
     _wrapped.header = v;
   }
 
   /// The operation to be performed on a header.
   HeaderOperation get operation => HeaderOperation.fromJS(_wrapped.operation);
+
   set operation(HeaderOperation v) {
     _wrapped.operation = v.toJS;
   }
@@ -1172,6 +1211,7 @@ class ModifyHeaderInfo {
   /// The new value for the header. Must be specified for `append`
   /// and `set` operations.
   String? get value => _wrapped.value;
+
   set value(String? v) {
     _wrapped.value = v;
   }
@@ -1208,6 +1248,7 @@ class RuleAction {
 
   /// The type of action to perform.
   RuleActionType get type => RuleActionType.fromJS(_wrapped.type);
+
   set type(RuleActionType v) {
     _wrapped.type = v.toJS;
   }
@@ -1215,6 +1256,7 @@ class RuleAction {
   /// Describes how the redirect should be performed. Only valid for redirect
   /// rules.
   Redirect? get redirect => _wrapped.redirect?.let(Redirect.fromJS);
+
   set redirect(Redirect? v) {
     _wrapped.redirect = v?.toJS;
   }
@@ -1225,6 +1267,7 @@ class RuleAction {
       .cast<$js.ModifyHeaderInfo>()
       .map((e) => ModifyHeaderInfo.fromJS(e))
       .toList();
+
   set requestHeaders(List<ModifyHeaderInfo>? v) {
     _wrapped.requestHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -1236,6 +1279,7 @@ class RuleAction {
           .cast<$js.ModifyHeaderInfo>()
           .map((e) => ModifyHeaderInfo.fromJS(e))
           .toList();
+
   set responseHeaders(List<ModifyHeaderInfo>? v) {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -1269,24 +1313,28 @@ class Rule {
 
   /// An id which uniquely identifies a rule. Mandatory and should be >= 1.
   int get id => _wrapped.id;
+
   set id(int v) {
     _wrapped.id = v;
   }
 
   /// Rule priority. Defaults to 1. When specified, should be >= 1.
   int? get priority => _wrapped.priority;
+
   set priority(int? v) {
     _wrapped.priority = v;
   }
 
   /// The condition under which this rule is triggered.
   RuleCondition get condition => RuleCondition.fromJS(_wrapped.condition);
+
   set condition(RuleCondition v) {
     _wrapped.condition = v.toJS;
   }
 
   /// The action to take if this rule is matched.
   RuleAction get action => RuleAction.fromJS(_wrapped.action);
+
   set action(RuleAction v) {
     _wrapped.action = v.toJS;
   }
@@ -1314,6 +1362,7 @@ class MatchedRule {
 
   /// A matching rule's ID.
   int get ruleId => _wrapped.ruleId;
+
   set ruleId(int v) {
     _wrapped.ruleId = v;
   }
@@ -1322,6 +1371,7 @@ class MatchedRule {
   /// from the set of dynamic rules, this will be equal to
   /// [DYNAMIC_RULESET_ID].
   String get rulesetId => _wrapped.rulesetId;
+
   set rulesetId(String v) {
     _wrapped.rulesetId = v;
   }
@@ -1343,6 +1393,7 @@ class GetRulesFilter {
   /// If specified, only rules with matching IDs are included.
   List<int>? get ruleIds =>
       _wrapped.ruleIds?.toDart.cast<int>().map((e) => e).toList();
+
   set ruleIds(List<int>? v) {
     _wrapped.ruleIds = v?.toJSArray((e) => e);
   }
@@ -1373,6 +1424,7 @@ class MatchedRuleInfo {
   $js.MatchedRuleInfo get toJS => _wrapped;
 
   MatchedRule get rule => MatchedRule.fromJS(_wrapped.rule);
+
   set rule(MatchedRule v) {
     _wrapped.rule = v.toJS;
   }
@@ -1381,6 +1433,7 @@ class MatchedRuleInfo {
   /// Javascript convention for times, i.e. number of milliseconds since the
   /// epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -1388,6 +1441,7 @@ class MatchedRuleInfo {
   /// The tabId of the tab from which the request originated if the tab is
   /// still active. Else -1.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
@@ -1415,12 +1469,14 @@ class MatchedRulesFilter {
   /// If specified, only matches rules for the given tab. Matches rules not
   /// associated with any active tab if set to -1.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
 
   /// If specified, only matches rules after the given timestamp.
   double? get minTimeStamp => _wrapped.minTimeStamp;
+
   set minTimeStamp(double? v) {
     _wrapped.minTimeStamp = v;
   }
@@ -1445,6 +1501,7 @@ class RulesMatchedDetails {
       .cast<$js.MatchedRuleInfo>()
       .map((e) => MatchedRuleInfo.fromJS(e))
       .toList();
+
   set rulesMatchedInfo(List<MatchedRuleInfo> v) {
     _wrapped.rulesMatchedInfo = v.toJSArray((e) => e.toJS);
   }
@@ -1521,12 +1578,14 @@ class RequestDetails {
 
   /// The ID of the request. Request IDs are unique within a browser session.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   /// The URL of the request.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
@@ -1534,12 +1593,14 @@ class RequestDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -1551,6 +1612,7 @@ class RequestDetails {
   /// indicates the ID of this frame, not the ID of the outer frame. Frame IDs
   /// are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -1558,12 +1620,14 @@ class RequestDetails {
   /// The unique identifier for the frame's document, if this request is for a
   /// frame.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
   /// The type of the frame, if this request is for a frame.
   FrameType? get frameType => _wrapped.frameType?.let(FrameType.fromJS);
+
   set frameType(FrameType? v) {
     _wrapped.frameType = v?.toJS;
   }
@@ -1572,6 +1636,7 @@ class RequestDetails {
   /// frame.
   DocumentLifecycle? get documentLifecycle =>
       _wrapped.documentLifecycle?.let(DocumentLifecycle.fromJS);
+
   set documentLifecycle(DocumentLifecycle? v) {
     _wrapped.documentLifecycle = v?.toJS;
   }
@@ -1579,6 +1644,7 @@ class RequestDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
@@ -1586,6 +1652,7 @@ class RequestDetails {
   /// The unique identifier for the frame's parent document, if this request
   /// is for a frame and has a parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -1593,12 +1660,14 @@ class RequestDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// The resource type of the request.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -1639,12 +1708,14 @@ class TestMatchRequestDetails {
 
   /// The URL of the hypothetical request.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// The initiator URL (if any) for the hypothetical request.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
@@ -1652,12 +1723,14 @@ class TestMatchRequestDetails {
   /// Standard HTTP method of the hypothetical request. Defaults to "get" for
   /// HTTP requests and is ignored for non-HTTP requests.
   RequestMethod? get method => _wrapped.method?.let(RequestMethod.fromJS);
+
   set method(RequestMethod? v) {
     _wrapped.method = v?.toJS;
   }
 
   /// The resource type of the hypothetical request.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -1666,6 +1739,7 @@ class TestMatchRequestDetails {
   /// not need to correspond to a real tab ID. Default is -1, meaning that
   /// the request isn't related to a tab.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -1689,12 +1763,14 @@ class MatchedRuleInfoDebug {
   $js.MatchedRuleInfoDebug get toJS => _wrapped;
 
   MatchedRule get rule => MatchedRule.fromJS(_wrapped.rule);
+
   set rule(MatchedRule v) {
     _wrapped.rule = v.toJS;
   }
 
   /// Details about the request for which the rule was matched.
   RequestDetails get request => RequestDetails.fromJS(_wrapped.request);
+
   set request(RequestDetails v) {
     _wrapped.request = v.toJS;
   }
@@ -1715,6 +1791,7 @@ class DNRInfo {
       .cast<$js.Ruleset>()
       .map((e) => Ruleset.fromJS(e))
       .toList();
+
   set ruleResources(List<Ruleset> v) {
     _wrapped.rule_resources = v.toJSArray((e) => e.toJS);
   }
@@ -1733,6 +1810,7 @@ class ManifestKeys {
 
   DNRInfo get declarativeNetRequest =>
       DNRInfo.fromJS(_wrapped.declarative_net_request);
+
   set declarativeNetRequest(DNRInfo v) {
     _wrapped.declarative_net_request = v.toJS;
   }
@@ -1765,6 +1843,7 @@ class RegexOptions {
 
   /// The regular expresson to check.
   String get regex => _wrapped.regex;
+
   set regex(String v) {
     _wrapped.regex = v;
   }
@@ -1772,6 +1851,7 @@ class RegexOptions {
   /// Whether the `regex` specified is case sensitive. Default is
   /// true.
   bool? get isCaseSensitive => _wrapped.isCaseSensitive;
+
   set isCaseSensitive(bool? v) {
     _wrapped.isCaseSensitive = v;
   }
@@ -1780,6 +1860,7 @@ class RegexOptions {
   /// only required for redirect rules which specify a
   /// `regexSubstition` action. The default is false.
   bool? get requireCapturing => _wrapped.requireCapturing;
+
   set requireCapturing(bool? v) {
     _wrapped.requireCapturing = v;
   }
@@ -1804,6 +1885,7 @@ class IsRegexSupportedResult {
   $js.IsRegexSupportedResult get toJS => _wrapped;
 
   bool get isSupported => _wrapped.isSupported;
+
   set isSupported(bool v) {
     _wrapped.isSupported = v;
   }
@@ -1812,6 +1894,7 @@ class IsRegexSupportedResult {
   /// provided if `isSupported` is false.
   UnsupportedRegexReason? get reason =>
       _wrapped.reason?.let(UnsupportedRegexReason.fromJS);
+
   set reason(UnsupportedRegexReason? v) {
     _wrapped.reason = v?.toJS;
   }
@@ -1836,6 +1919,7 @@ class TestMatchOutcomeResult {
       .cast<$js.MatchedRule>()
       .map((e) => MatchedRule.fromJS(e))
       .toList();
+
   set matchedRules(List<MatchedRule> v) {
     _wrapped.matchedRules = v.toJSArray((e) => e.toJS);
   }
@@ -1862,6 +1946,7 @@ class UpdateRuleOptions {
   /// IDs of the rules to remove. Any invalid IDs will be ignored.
   List<int>? get removeRuleIds =>
       _wrapped.removeRuleIds?.toDart.cast<int>().map((e) => e).toList();
+
   set removeRuleIds(List<int>? v) {
     _wrapped.removeRuleIds = v?.toJSArray((e) => e);
   }
@@ -1871,6 +1956,7 @@ class UpdateRuleOptions {
       .cast<$js.Rule>()
       .map((e) => Rule.fromJS(e))
       .toList();
+
   set addRules(List<Rule>? v) {
     _wrapped.addRules = v?.toJSArray((e) => e.toJS);
   }
@@ -1900,6 +1986,7 @@ class UpdateRulesetOptions {
   /// disabled.
   List<String>? get disableRulesetIds =>
       _wrapped.disableRulesetIds?.toDart.cast<String>().map((e) => e).toList();
+
   set disableRulesetIds(List<String>? v) {
     _wrapped.disableRulesetIds = v?.toJSArray((e) => e);
   }
@@ -1908,6 +1995,7 @@ class UpdateRulesetOptions {
   /// enabled.
   List<String>? get enableRulesetIds =>
       _wrapped.enableRulesetIds?.toDart.cast<String>().map((e) => e).toList();
+
   set enableRulesetIds(List<String>? v) {
     _wrapped.enableRulesetIds = v?.toJSArray((e) => e);
   }
@@ -1937,6 +2025,7 @@ class UpdateStaticRulesOptions {
 
   /// The id corresponding to a static [Ruleset].
   String get rulesetId => _wrapped.rulesetId;
+
   set rulesetId(String v) {
     _wrapped.rulesetId = v;
   }
@@ -1944,6 +2033,7 @@ class UpdateStaticRulesOptions {
   /// Set of ids corresponding to rules in the [Ruleset] to disable.
   List<int>? get disableRuleIds =>
       _wrapped.disableRuleIds?.toDart.cast<int>().map((e) => e).toList();
+
   set disableRuleIds(List<int>? v) {
     _wrapped.disableRuleIds = v?.toJSArray((e) => e);
   }
@@ -1951,6 +2041,7 @@ class UpdateStaticRulesOptions {
   /// Set of ids corresponding to rules in the [Ruleset] to enable.
   List<int>? get enableRuleIds =>
       _wrapped.enableRuleIds?.toDart.cast<int>().map((e) => e).toList();
+
   set enableRuleIds(List<int>? v) {
     _wrapped.enableRuleIds = v?.toJSArray((e) => e);
   }
@@ -1971,6 +2062,7 @@ class GetDisabledRuleIdsOptions {
 
   /// The id corresponding to a static [Ruleset].
   String get rulesetId => _wrapped.rulesetId;
+
   set rulesetId(String v) {
     _wrapped.rulesetId = v;
   }
@@ -1997,6 +2089,7 @@ class TabActionCountUpdate {
 
   /// The tab for which to update the action count.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
@@ -2004,6 +2097,7 @@ class TabActionCountUpdate {
   /// The amount to increment the tab's action count by. Negative values will
   /// decrement the count.
   int get increment => _wrapped.increment;
+
   set increment(int v) {
     _wrapped.increment = v;
   }
@@ -2032,6 +2126,7 @@ class ExtensionActionOptions {
   /// extension's badge text. This preference is persisted across sessions.
   bool? get displayActionCountAsBadgeText =>
       _wrapped.displayActionCountAsBadgeText;
+
   set displayActionCountAsBadgeText(bool? v) {
     _wrapped.displayActionCountAsBadgeText = v;
   }
@@ -2039,6 +2134,7 @@ class ExtensionActionOptions {
   /// Details of how the tab's action count should be adjusted.
   TabActionCountUpdate? get tabUpdate =>
       _wrapped.tabUpdate?.let(TabActionCountUpdate.fromJS);
+
   set tabUpdate(TabActionCountUpdate? v) {
     _wrapped.tabUpdate = v?.toJS;
   }

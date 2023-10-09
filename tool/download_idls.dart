@@ -30,9 +30,16 @@ class IdlDownloader {
     var googleSourceCrawler = GoogleSourceCrawler(_chromiumBaseUrl);
     for (var dir in _idlDirs) {
       var relativePath = '$_chromiumVersionPrefix$version/$dir';
-      googleSourceCrawler
-          .findAllMatchingFiles(relativePath)
-          .listen(_downloadFile);
+      await for (var file
+          in googleSourceCrawler.findAllMatchingFiles(relativePath)) {
+        try {
+          await _downloadFile(file);
+        } catch (e) {
+          print(
+              'Failed to download file: ${file.url}. ${e.runtimeType} $e.\n${file.rawHtml}');
+          rethrow;
+        }
+      }
     }
   }
 

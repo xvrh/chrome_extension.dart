@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/tab_capture.dart' as $js;
 
@@ -52,17 +53,13 @@ class ChromeTabCapture {
   /// tab capture that would prevent a new tab capture from succeeding (or
   /// to prevent redundant requests for the same tab).
   /// |callback| : Callback invoked with CaptureInfo[] for captured tabs.
-  Future<List<CaptureInfo>> getCapturedTabs() {
-    var $completer = Completer<List<CaptureInfo>>();
-    $js.chrome.tabCapture.getCapturedTabs((JSArray result) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(result.toDart
-            .cast<$js.CaptureInfo>()
-            .map((e) => CaptureInfo.fromJS(e))
-            .toList());
-      }
-    }.toJS);
-    return $completer.future;
+  Future<List<CaptureInfo>> getCapturedTabs() async {
+    var $res =
+        await promiseToFuture<JSArray>($js.chrome.tabCapture.getCapturedTabs());
+    return $res.toDart
+        .cast<$js.CaptureInfo>()
+        .map((e) => CaptureInfo.fromJS(e))
+        .toList();
   }
 
   /// Creates a stream ID to capture the target tab.
@@ -75,17 +72,10 @@ class ChromeTabCapture {
   /// `getUserMedia()` API to generate a media stream that
   /// corresponds to the target tab. The created `streamId` can
   /// only be used once and expires after a few seconds if it is not used.
-  Future<String> getMediaStreamId(GetMediaStreamOptions? options) {
-    var $completer = Completer<String>();
-    $js.chrome.tabCapture.getMediaStreamId(
-      options?.toJS,
-      (String streamId) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(streamId);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<String> getMediaStreamId(GetMediaStreamOptions? options) async {
+    var $res = await promiseToFuture<String>(
+        $js.chrome.tabCapture.getMediaStreamId(options?.toJS));
+    return $res;
   }
 
   /// Event fired when the capture status of a tab changes.
@@ -138,18 +128,21 @@ class CaptureInfo {
 
   /// The id of the tab whose status changed.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// The new capture status of the tab.
   TabCaptureState get status => TabCaptureState.fromJS(_wrapped.status);
+
   set status(TabCaptureState v) {
     _wrapped.status = v.toJS;
   }
 
   /// Whether an element in the tab being captured is in fullscreen mode.
   bool get fullscreen => _wrapped.fullscreen;
+
   set fullscreen(bool v) {
     _wrapped.fullscreen = v;
   }
@@ -166,6 +159,7 @@ class MediaStreamConstraint {
   $js.MediaStreamConstraint get toJS => _wrapped;
 
   Map get mandatory => _wrapped.mandatory.toDartMap();
+
   set mandatory(Map v) {
     _wrapped.mandatory = v.jsify()!;
   }
@@ -193,28 +187,33 @@ class CaptureOptions {
   $js.CaptureOptions get toJS => _wrapped;
 
   bool? get audio => _wrapped.audio;
+
   set audio(bool? v) {
     _wrapped.audio = v;
   }
 
   bool? get video => _wrapped.video;
+
   set video(bool? v) {
     _wrapped.video = v;
   }
 
   MediaStreamConstraint? get audioConstraints =>
       _wrapped.audioConstraints?.let(MediaStreamConstraint.fromJS);
+
   set audioConstraints(MediaStreamConstraint? v) {
     _wrapped.audioConstraints = v?.toJS;
   }
 
   MediaStreamConstraint? get videoConstraints =>
       _wrapped.videoConstraints?.let(MediaStreamConstraint.fromJS);
+
   set videoConstraints(MediaStreamConstraint? v) {
     _wrapped.videoConstraints = v?.toJS;
   }
 
   String? get presentationId => _wrapped.presentationId;
+
   set presentationId(String? v) {
     _wrapped.presentationId = v;
   }
@@ -253,6 +252,7 @@ class GetMediaStreamOptions {
   /// origin matches the consumber tab's origin. The tab's origin must be a
   /// secure origin, e.g. HTTPS.
   int? get consumerTabId => _wrapped.consumerTabId;
+
   set consumerTabId(int? v) {
     _wrapped.consumerTabId = v;
   }
@@ -262,6 +262,7 @@ class GetMediaStreamOptions {
   /// extension has been granted the `activeTab` permission can be
   /// used as the target tab.
   int? get targetTabId => _wrapped.targetTabId;
+
   set targetTabId(int? v) {
     _wrapped.targetTabId = v;
   }

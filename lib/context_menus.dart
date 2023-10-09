@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/context_menus.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
@@ -33,12 +32,12 @@ class ChromeContextMenus {
   /// [returns] The ID of the newly created item.
   Object create(
     CreateProperties createProperties,
-    Function? callback,
+    JSFunction? callback,
   ) {
     return $js.chrome.contextMenus
         .create(
           createProperties.toJS,
-          callback?.let(allowInterop),
+          callback,
         )
         .when(
           isInt: (v) => v,
@@ -58,8 +57,8 @@ class ChromeContextMenus {
     var $completer = Completer<void>();
     $js.chrome.contextMenus.update(
       switch (id) {
-        int() => id,
-        String() => id,
+        int() => id.jsify()!,
+        String() => id.jsify()!,
         _ => throw UnsupportedError(
             'Received type: ${id.runtimeType}. Supported types are: int, String')
       },
@@ -80,8 +79,8 @@ class ChromeContextMenus {
     var $completer = Completer<void>();
     $js.chrome.contextMenus.remove(
       switch (menuItemId) {
-        int() => menuItemId,
-        String() => menuItemId,
+        int() => menuItemId.jsify()!,
+        String() => menuItemId.jsify()!,
         _ => throw UnsupportedError(
             'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
       },
@@ -220,14 +219,14 @@ class OnClickData {
     bool? checked,
   }) : _wrapped = $js.OnClickData(
           menuItemId: switch (menuItemId) {
-            int() => menuItemId,
-            String() => menuItemId,
+            int() => menuItemId.jsify()!,
+            String() => menuItemId.jsify()!,
             _ => throw UnsupportedError(
                 'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
           },
           parentMenuItemId: switch (parentMenuItemId) {
-            int() => parentMenuItemId,
-            String() => parentMenuItemId,
+            int() => parentMenuItemId.jsify()!,
+            String() => parentMenuItemId.jsify()!,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentMenuItemId.runtimeType}. Supported types are: int, String')
@@ -253,10 +252,11 @@ class OnClickData {
         isInt: (v) => v,
         isString: (v) => v,
       );
+
   set menuItemId(Object v) {
     _wrapped.menuItemId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
     };
@@ -267,10 +267,11 @@ class OnClickData {
         isInt: (v) => v,
         isString: (v) => v,
       );
+
   set parentMenuItemId(Object? v) {
     _wrapped.parentMenuItemId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -280,18 +281,21 @@ class OnClickData {
   /// One of 'image', 'video', or 'audio' if the context menu was activated on
   /// one of these types of elements.
   String? get mediaType => _wrapped.mediaType;
+
   set mediaType(String? v) {
     _wrapped.mediaType = v;
   }
 
   /// If the element is a link, the URL it points to.
   String? get linkUrl => _wrapped.linkUrl;
+
   set linkUrl(String? v) {
     _wrapped.linkUrl = v;
   }
 
   /// Will be present for elements with a 'src' URL.
   String? get srcUrl => _wrapped.srcUrl;
+
   set srcUrl(String? v) {
     _wrapped.srcUrl = v;
   }
@@ -300,6 +304,7 @@ class OnClickData {
   /// set if the click occured in a context where there is no current page, such
   /// as in a launcher context menu.
   String? get pageUrl => _wrapped.pageUrl;
+
   set pageUrl(String? v) {
     _wrapped.pageUrl = v;
   }
@@ -307,6 +312,7 @@ class OnClickData {
   ///  The URL of the frame of the element where the context menu was clicked,
   /// if it was in a frame.
   String? get frameUrl => _wrapped.frameUrl;
+
   set frameUrl(String? v) {
     _wrapped.frameUrl = v;
   }
@@ -314,12 +320,14 @@ class OnClickData {
   ///  The [ID of the frame](webNavigation#frame_ids) of the element where the
   /// context menu was clicked, if it was in a frame.
   int? get frameId => _wrapped.frameId;
+
   set frameId(int? v) {
     _wrapped.frameId = v;
   }
 
   /// The text for the context selection, if any.
   String? get selectionText => _wrapped.selectionText;
+
   set selectionText(String? v) {
     _wrapped.selectionText = v;
   }
@@ -327,6 +335,7 @@ class OnClickData {
   /// A flag indicating whether the element is editable (text input, textarea,
   /// etc.).
   bool get editable => _wrapped.editable;
+
   set editable(bool v) {
     _wrapped.editable = v;
   }
@@ -334,6 +343,7 @@ class OnClickData {
   /// A flag indicating the state of a checkbox or radio item before it was
   /// clicked.
   bool? get wasChecked => _wrapped.wasChecked;
+
   set wasChecked(bool? v) {
     _wrapped.wasChecked = v;
   }
@@ -341,6 +351,7 @@ class OnClickData {
   /// A flag indicating the state of a checkbox or radio item after it is
   /// clicked.
   bool? get checked => _wrapped.checked;
+
   set checked(bool? v) {
     _wrapped.checked = v;
   }
@@ -378,7 +389,7 @@ class CreateProperties {
     /// A function that is called back when the menu item is clicked. Event
     /// pages cannot use this; instead, they should register a listener for
     /// [contextMenus.onClicked].
-    Function? onclick,
+    JSFunction? onclick,
 
     /// The ID of a parent menu item; this makes the item a child of a
     /// previously added item.
@@ -404,10 +415,10 @@ class CreateProperties {
           checked: checked,
           contexts: contexts?.toJSArray((e) => e.toJS),
           visible: visible,
-          onclick: onclick?.let(allowInterop),
+          onclick: onclick,
           parentId: switch (parentId) {
-            int() => parentId,
-            String() => parentId,
+            int() => parentId.jsify()!,
+            String() => parentId.jsify()!,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentId.runtimeType}. Supported types are: int, String')
@@ -423,6 +434,7 @@ class CreateProperties {
 
   /// The type of menu item. Defaults to `normal`.
   ItemType? get type => _wrapped.type?.let(ItemType.fromJS);
+
   set type(ItemType? v) {
     _wrapped.type = v?.toJS;
   }
@@ -430,6 +442,7 @@ class CreateProperties {
   /// The unique ID to assign to this item. Mandatory for event pages. Cannot be
   /// the same as another ID for this extension.
   String? get id => _wrapped.id;
+
   set id(String? v) {
     _wrapped.id = v;
   }
@@ -440,6 +453,7 @@ class CreateProperties {
   /// "Translate '%s' to Pig Latin" and the user selects the word "cool", the
   /// context menu item for the selection is "Translate 'cool' to Pig Latin".
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -448,6 +462,7 @@ class CreateProperties {
   /// `false` for unselected. Only one radio button can be selected at a time in
   /// a given group.
   bool? get checked => _wrapped.checked;
+
   set checked(bool? v) {
     _wrapped.checked = v;
   }
@@ -457,12 +472,14 @@ class CreateProperties {
       .cast<$js.ContextType>()
       .map((e) => ContextType.fromJS(e))
       .toList();
+
   set contexts(List<ContextType>? v) {
     _wrapped.contexts = v?.toJSArray((e) => e.toJS);
   }
 
   /// Whether the item is visible in the menu.
   bool? get visible => _wrapped.visible;
+
   set visible(bool? v) {
     _wrapped.visible = v;
   }
@@ -470,13 +487,10 @@ class CreateProperties {
   /// A function that is called back when the menu item is clicked. Event pages
   /// cannot use this; instead, they should register a listener for
   /// [contextMenus.onClicked].
-  Function? get onclick => ([Object? p1, Object? p2]) {
-        return (_wrapped.onclick as JSAny? Function(JSAny?, JSAny?)?)
-            ?.call(p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
-  set onclick(Function? v) {
-    _wrapped.onclick = v?.let(allowInterop);
+  JSFunction? get onclick => _wrapped.onclick;
+
+  set onclick(JSFunction? v) {
+    _wrapped.onclick = v;
   }
 
   /// The ID of a parent menu item; this makes the item a child of a previously
@@ -485,10 +499,11 @@ class CreateProperties {
         isInt: (v) => v,
         isString: (v) => v,
       );
+
   set parentId(Object? v) {
     _wrapped.parentId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -502,6 +517,7 @@ class CreateProperties {
       .cast<String>()
       .map((e) => e)
       .toList();
+
   set documentUrlPatterns(List<String>? v) {
     _wrapped.documentUrlPatterns = v?.toJSArray((e) => e);
   }
@@ -510,12 +526,14 @@ class CreateProperties {
   /// `img`, `audio`, and `video` tags and the `href` attribute of `a` tags.
   List<String>? get targetUrlPatterns =>
       _wrapped.targetUrlPatterns?.toDart.cast<String>().map((e) => e).toList();
+
   set targetUrlPatterns(List<String>? v) {
     _wrapped.targetUrlPatterns = v?.toJSArray((e) => e);
   }
 
   /// Whether this context menu item is enabled or disabled. Defaults to `true`.
   bool? get enabled => _wrapped.enabled;
+
   set enabled(bool? v) {
     _wrapped.enabled = v;
   }
@@ -532,7 +550,7 @@ class UpdateProperties {
 
     /// Whether the item is visible in the menu.
     bool? visible,
-    Function? onclick,
+    JSFunction? onclick,
 
     /// The ID of the item to be made this item's parent. Note: You cannot set
     /// an item to become a child of its own descendant.
@@ -546,10 +564,10 @@ class UpdateProperties {
           checked: checked,
           contexts: contexts?.toJSArray((e) => e.toJS),
           visible: visible,
-          onclick: onclick?.let(allowInterop),
+          onclick: onclick,
           parentId: switch (parentId) {
-            int() => parentId,
-            String() => parentId,
+            int() => parentId.jsify()!,
+            String() => parentId.jsify()!,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentId.runtimeType}. Supported types are: int, String')
@@ -564,16 +582,19 @@ class UpdateProperties {
   $js.UpdateProperties get toJS => _wrapped;
 
   ItemType? get type => _wrapped.type?.let(ItemType.fromJS);
+
   set type(ItemType? v) {
     _wrapped.type = v?.toJS;
   }
 
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
 
   bool? get checked => _wrapped.checked;
+
   set checked(bool? v) {
     _wrapped.checked = v;
   }
@@ -582,23 +603,22 @@ class UpdateProperties {
       .cast<$js.ContextType>()
       .map((e) => ContextType.fromJS(e))
       .toList();
+
   set contexts(List<ContextType>? v) {
     _wrapped.contexts = v?.toJSArray((e) => e.toJS);
   }
 
   /// Whether the item is visible in the menu.
   bool? get visible => _wrapped.visible;
+
   set visible(bool? v) {
     _wrapped.visible = v;
   }
 
-  Function? get onclick => ([Object? p1, Object? p2]) {
-        return (_wrapped.onclick as JSAny? Function(JSAny?, JSAny?)?)
-            ?.call(p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
-  set onclick(Function? v) {
-    _wrapped.onclick = v?.let(allowInterop);
+  JSFunction? get onclick => _wrapped.onclick;
+
+  set onclick(JSFunction? v) {
+    _wrapped.onclick = v;
   }
 
   /// The ID of the item to be made this item's parent. Note: You cannot set an
@@ -607,10 +627,11 @@ class UpdateProperties {
         isInt: (v) => v,
         isString: (v) => v,
       );
+
   set parentId(Object? v) {
     _wrapped.parentId = switch (v) {
-      int() => v,
-      String() => v,
+      int() => v.jsify()!,
+      String() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -621,17 +642,20 @@ class UpdateProperties {
       .cast<String>()
       .map((e) => e)
       .toList();
+
   set documentUrlPatterns(List<String>? v) {
     _wrapped.documentUrlPatterns = v?.toJSArray((e) => e);
   }
 
   List<String>? get targetUrlPatterns =>
       _wrapped.targetUrlPatterns?.toDart.cast<String>().map((e) => e).toList();
+
   set targetUrlPatterns(List<String>? v) {
     _wrapped.targetUrlPatterns = v?.toJSArray((e) => e);
   }
 
   bool? get enabled => _wrapped.enabled;
+
   set enabled(bool? v) {
     _wrapped.enabled = v;
   }

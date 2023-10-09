@@ -164,9 +164,9 @@ class ChromeTabs {
     Object tabIds,
     MoveProperties moveProperties,
   ) async {
-    var $res = await promiseToFuture<Object>($js.chrome.tabs.move(
+    var $res = await promiseToFuture<JSAny>($js.chrome.tabs.move(
       switch (tabIds) {
-        int() => tabIds,
+        int() => tabIds.jsify()!,
         List<int>() => tabIds.toJSArray((e) => e),
         _ => throw UnsupportedError(
             'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
@@ -197,7 +197,7 @@ class ChromeTabs {
   /// [tabIds] The tab ID or list of tab IDs to close.
   Future<void> remove(Object tabIds) async {
     await promiseToFuture<void>($js.chrome.tabs.remove(switch (tabIds) {
-      int() => tabIds,
+      int() => tabIds.jsify()!,
       List<int>() => tabIds.toJSArray((e) => e),
       _ => throw UnsupportedError(
           'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
@@ -217,7 +217,7 @@ class ChromeTabs {
   /// groups.
   Future<void> ungroup(Object tabIds) async {
     await promiseToFuture<void>($js.chrome.tabs.ungroup(switch (tabIds) {
-      int() => tabIds,
+      int() => tabIds.jsify()!,
       List<int>() => tabIds.toJSArray((e) => e),
       _ => throw UnsupportedError(
           'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
@@ -680,6 +680,7 @@ class MutedInfo {
   /// muted even if it has not played or is not currently playing sound.
   /// Equivalent to whether the 'muted' audio indicator is showing.
   bool get muted => _wrapped.muted;
+
   set muted(bool v) {
     _wrapped.muted = v;
   }
@@ -687,6 +688,7 @@ class MutedInfo {
   /// The reason the tab was muted or unmuted. Not set if the tab's mute state
   /// has never been changed.
   MutedInfoReason? get reason => _wrapped.reason?.let(MutedInfoReason.fromJS);
+
   set reason(MutedInfoReason? v) {
     _wrapped.reason = v?.toJS;
   }
@@ -694,6 +696,7 @@ class MutedInfo {
   /// The ID of the extension that changed the muted state. Not set if an
   /// extension was not the reason the muted state last changed.
   String? get extensionId => _wrapped.extensionId;
+
   set extensionId(String? v) {
     _wrapped.extensionId = v;
   }
@@ -823,24 +826,28 @@ class Tab {
   /// present. Tab ID can also be set to `chrome.tabs.TAB_ID_NONE` for apps and
   /// devtools windows.
   int? get id => _wrapped.id;
+
   set id(int? v) {
     _wrapped.id = v;
   }
 
   /// The zero-based index of the tab within its window.
   int get index => _wrapped.index;
+
   set index(int v) {
     _wrapped.index = v;
   }
 
   /// The ID of the group that the tab belongs to.
   int get groupId => _wrapped.groupId;
+
   set groupId(int v) {
     _wrapped.groupId = v;
   }
 
   /// The ID of the window that contains the tab.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -848,18 +855,21 @@ class Tab {
   /// The ID of the tab that opened this tab, if any. This property is only
   /// present if the opener tab still exists.
   int? get openerTabId => _wrapped.openerTabId;
+
   set openerTabId(int? v) {
     _wrapped.openerTabId = v;
   }
 
   /// Whether the tab is selected.
   bool get selected => _wrapped.selected;
+
   set selected(bool v) {
     _wrapped.selected = v;
   }
 
   /// Whether the tab is highlighted.
   bool get highlighted => _wrapped.highlighted;
+
   set highlighted(bool v) {
     _wrapped.highlighted = v;
   }
@@ -867,12 +877,14 @@ class Tab {
   /// Whether the tab is active in its window. Does not necessarily mean the
   /// window is focused.
   bool get active => _wrapped.active;
+
   set active(bool v) {
     _wrapped.active = v;
   }
 
   /// Whether the tab is pinned.
   bool get pinned => _wrapped.pinned;
+
   set pinned(bool v) {
     _wrapped.pinned = v;
   }
@@ -881,6 +893,7 @@ class Tab {
   /// might not be heard if also muted). Equivalent to whether the 'speaker
   /// audio' indicator is showing.
   bool? get audible => _wrapped.audible;
+
   set audible(bool? v) {
     _wrapped.audible = v;
   }
@@ -889,6 +902,7 @@ class Tab {
   /// been unloaded from memory, but is still visible in the tab strip. Its
   /// content is reloaded the next time it is activated.
   bool get discarded => _wrapped.discarded;
+
   set discarded(bool v) {
     _wrapped.discarded = v;
   }
@@ -896,12 +910,14 @@ class Tab {
   /// Whether the tab can be discarded automatically by the browser when
   /// resources are low.
   bool get autoDiscardable => _wrapped.autoDiscardable;
+
   set autoDiscardable(bool v) {
     _wrapped.autoDiscardable = v;
   }
 
   /// The tab's muted state and the reason for the last state change.
   MutedInfo? get mutedInfo => _wrapped.mutedInfo?.let(MutedInfo.fromJS);
+
   set mutedInfo(MutedInfo? v) {
     _wrapped.mutedInfo = v?.toJS;
   }
@@ -911,6 +927,7 @@ class Tab {
   /// may be an empty string if the tab has not yet committed. See also
   /// [Tab.pendingUrl].
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
@@ -919,6 +936,7 @@ class Tab {
   /// is only present if the extension's manifest includes the `"tabs"`
   /// permission and there is a pending navigation.
   String? get pendingUrl => _wrapped.pendingUrl;
+
   set pendingUrl(String? v) {
     _wrapped.pendingUrl = v;
   }
@@ -926,6 +944,7 @@ class Tab {
   /// The title of the tab. This property is only present if the extension's
   /// manifest includes the `"tabs"` permission.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -934,30 +953,35 @@ class Tab {
   /// extension's manifest includes the `"tabs"` permission. It may also be an
   /// empty string if the tab is loading.
   String? get favIconUrl => _wrapped.favIconUrl;
+
   set favIconUrl(String? v) {
     _wrapped.favIconUrl = v;
   }
 
   /// The tab's loading status.
   TabStatus? get status => _wrapped.status?.let(TabStatus.fromJS);
+
   set status(TabStatus? v) {
     _wrapped.status = v?.toJS;
   }
 
   /// Whether the tab is in an incognito window.
   bool get incognito => _wrapped.incognito;
+
   set incognito(bool v) {
     _wrapped.incognito = v;
   }
 
   /// The width of the tab in pixels.
   int? get width => _wrapped.width;
+
   set width(int? v) {
     _wrapped.width = v;
   }
 
   /// The height of the tab in pixels.
   int? get height => _wrapped.height;
+
   set height(int? v) {
     _wrapped.height = v;
   }
@@ -965,6 +989,7 @@ class Tab {
   /// The session ID used to uniquely identify a tab obtained from the
   /// [sessions] API.
   String? get sessionId => _wrapped.sessionId;
+
   set sessionId(String? v) {
     _wrapped.sessionId = v;
   }
@@ -999,6 +1024,7 @@ class ZoomSettings {
   /// Defines how zoom changes are handled, i.e., which entity is responsible
   /// for the actual scaling of the page; defaults to `automatic`.
   ZoomSettingsMode? get mode => _wrapped.mode?.let(ZoomSettingsMode.fromJS);
+
   set mode(ZoomSettingsMode? v) {
     _wrapped.mode = v?.toJS;
   }
@@ -1007,6 +1033,7 @@ class ZoomSettings {
   /// effect in this tab; defaults to `per-origin` when in `automatic` mode, and
   /// `per-tab` otherwise.
   ZoomSettingsScope? get scope => _wrapped.scope?.let(ZoomSettingsScope.fromJS);
+
   set scope(ZoomSettingsScope? v) {
     _wrapped.scope = v?.toJS;
   }
@@ -1014,6 +1041,7 @@ class ZoomSettings {
   /// Used to return the default zoom level for the current tab in calls to
   /// tabs.getZoomSettings.
   double? get defaultZoomFactor => _wrapped.defaultZoomFactor;
+
   set defaultZoomFactor(double? v) {
     _wrapped.defaultZoomFactor = v;
   }
@@ -1071,60 +1099,70 @@ class OnUpdatedChangeInfo {
 
   /// The tab's loading status.
   TabStatus? get status => _wrapped.status?.let(TabStatus.fromJS);
+
   set status(TabStatus? v) {
     _wrapped.status = v?.toJS;
   }
 
   /// The tab's URL if it has changed.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// The tab's new group.
   int? get groupId => _wrapped.groupId;
+
   set groupId(int? v) {
     _wrapped.groupId = v;
   }
 
   /// The tab's new pinned state.
   bool? get pinned => _wrapped.pinned;
+
   set pinned(bool? v) {
     _wrapped.pinned = v;
   }
 
   /// The tab's new audible state.
   bool? get audible => _wrapped.audible;
+
   set audible(bool? v) {
     _wrapped.audible = v;
   }
 
   /// The tab's new discarded state.
   bool? get discarded => _wrapped.discarded;
+
   set discarded(bool? v) {
     _wrapped.discarded = v;
   }
 
   /// The tab's new auto-discardable state.
   bool? get autoDiscardable => _wrapped.autoDiscardable;
+
   set autoDiscardable(bool? v) {
     _wrapped.autoDiscardable = v;
   }
 
   /// The tab's new muted state and the reason for the change.
   MutedInfo? get mutedInfo => _wrapped.mutedInfo?.let(MutedInfo.fromJS);
+
   set mutedInfo(MutedInfo? v) {
     _wrapped.mutedInfo = v?.toJS;
   }
 
   /// The tab's new favicon URL.
   String? get favIconUrl => _wrapped.favIconUrl;
+
   set favIconUrl(String? v) {
     _wrapped.favIconUrl = v;
   }
 
   /// The tab's new title.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -1148,16 +1186,19 @@ class OnMovedMoveInfo {
   $js.OnMovedMoveInfo get toJS => _wrapped;
 
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
 
   int get fromIndex => _wrapped.fromIndex;
+
   set fromIndex(int v) {
     _wrapped.fromIndex = v;
   }
 
   int get toIndex => _wrapped.toIndex;
+
   set toIndex(int v) {
     _wrapped.toIndex = v;
   }
@@ -1178,6 +1219,7 @@ class OnSelectionChangedSelectInfo {
 
   /// The ID of the window the selected tab changed inside of.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -1198,6 +1240,7 @@ class OnActiveChangedSelectInfo {
 
   /// The ID of the window the selected tab changed inside of.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -1223,12 +1266,14 @@ class OnActivatedActiveInfo {
 
   /// The ID of the tab that has become active.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// The ID of the window the active tab changed inside of.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -1254,6 +1299,7 @@ class OnHighlightChangedSelectInfo {
 
   /// The window whose tabs changed.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -1261,6 +1307,7 @@ class OnHighlightChangedSelectInfo {
   /// All highlighted tabs in the window.
   List<int> get tabIds =>
       _wrapped.tabIds.toDart.cast<int>().map((e) => e).toList();
+
   set tabIds(List<int> v) {
     _wrapped.tabIds = v.toJSArray((e) => e);
   }
@@ -1286,6 +1333,7 @@ class OnHighlightedHighlightInfo {
 
   /// The window whose tabs changed.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -1293,6 +1341,7 @@ class OnHighlightedHighlightInfo {
   /// All highlighted tabs in the window.
   List<int> get tabIds =>
       _wrapped.tabIds.toDart.cast<int>().map((e) => e).toList();
+
   set tabIds(List<int> v) {
     _wrapped.tabIds = v.toJSArray((e) => e);
   }
@@ -1314,11 +1363,13 @@ class OnDetachedDetachInfo {
   $js.OnDetachedDetachInfo get toJS => _wrapped;
 
   int get oldWindowId => _wrapped.oldWindowId;
+
   set oldWindowId(int v) {
     _wrapped.oldWindowId = v;
   }
 
   int get oldPosition => _wrapped.oldPosition;
+
   set oldPosition(int v) {
     _wrapped.oldPosition = v;
   }
@@ -1340,11 +1391,13 @@ class OnAttachedAttachInfo {
   $js.OnAttachedAttachInfo get toJS => _wrapped;
 
   int get newWindowId => _wrapped.newWindowId;
+
   set newWindowId(int v) {
     _wrapped.newWindowId = v;
   }
 
   int get newPosition => _wrapped.newPosition;
+
   set newPosition(int v) {
     _wrapped.newPosition = v;
   }
@@ -1370,12 +1423,14 @@ class OnRemovedRemoveInfo {
 
   /// The window whose tab is closed.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
 
   /// True when the tab was closed because its parent window was closed.
   bool get isWindowClosing => _wrapped.isWindowClosing;
+
   set isWindowClosing(bool v) {
     _wrapped.isWindowClosing = v;
   }
@@ -1401,21 +1456,25 @@ class OnZoomChangeZoomChangeInfo {
   $js.OnZoomChangeZoomChangeInfo get toJS => _wrapped;
 
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   double get oldZoomFactor => _wrapped.oldZoomFactor;
+
   set oldZoomFactor(double v) {
     _wrapped.oldZoomFactor = v;
   }
 
   double get newZoomFactor => _wrapped.newZoomFactor;
+
   set newZoomFactor(double v) {
     _wrapped.newZoomFactor = v;
   }
 
   ZoomSettings get zoomSettings => ZoomSettings.fromJS(_wrapped.zoomSettings);
+
   set zoomSettings(ZoomSettings v) {
     _wrapped.zoomSettings = v.toJS;
   }
@@ -1449,6 +1508,7 @@ class ConnectInfo {
   /// Is passed into onConnect for content scripts that are listening for the
   /// connection event.
   String? get name => _wrapped.name;
+
   set name(String? v) {
     _wrapped.name = v;
   }
@@ -1456,6 +1516,7 @@ class ConnectInfo {
   /// Open a port to a specific [frame](webNavigation#frame_ids) identified by
   /// `frameId` instead of all frames in the tab.
   int? get frameId => _wrapped.frameId;
+
   set frameId(int? v) {
     _wrapped.frameId = v;
   }
@@ -1463,6 +1524,7 @@ class ConnectInfo {
   /// Open a port to a specific [document](webNavigation#document_ids)
   /// identified by `documentId` instead of all frames in the tab.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
@@ -1491,6 +1553,7 @@ class SendMessageOptions {
   /// Send a message to a specific [frame](webNavigation#frame_ids) identified
   /// by `frameId` instead of all frames in the tab.
   int? get frameId => _wrapped.frameId;
+
   set frameId(int? v) {
     _wrapped.frameId = v;
   }
@@ -1498,6 +1561,7 @@ class SendMessageOptions {
   /// Send a message to a specific [document](webNavigation#document_ids)
   /// identified by `documentId` instead of all frames in the tab.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
@@ -1553,6 +1617,7 @@ class CreateProperties {
   /// The window in which to create the new tab. Defaults to the [current
   /// window](windows#current-window).
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -1560,6 +1625,7 @@ class CreateProperties {
   /// The position the tab should take in the window. The provided value is
   /// clamped to between zero and the number of tabs in the window.
   int? get index => _wrapped.index;
+
   set index(int? v) {
     _wrapped.index = v;
   }
@@ -1569,6 +1635,7 @@ class CreateProperties {
   /// Relative URLs are relative to the current page within the extension.
   /// Defaults to the New Tab Page.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
@@ -1577,6 +1644,7 @@ class CreateProperties {
   /// affect whether the window is focused (see [windows.update]). Defaults to
   /// [true].
   bool? get active => _wrapped.active;
+
   set active(bool? v) {
     _wrapped.active = v;
   }
@@ -1584,12 +1652,14 @@ class CreateProperties {
   /// Whether the tab should become the selected tab in the window. Defaults to
   /// [true]
   bool? get selected => _wrapped.selected;
+
   set selected(bool? v) {
     _wrapped.selected = v;
   }
 
   /// Whether the tab should be pinned. Defaults to [false]
   bool? get pinned => _wrapped.pinned;
+
   set pinned(bool? v) {
     _wrapped.pinned = v;
   }
@@ -1597,6 +1667,7 @@ class CreateProperties {
   /// The ID of the tab that opened this tab. If specified, the opener tab must
   /// be in the same window as the newly created tab.
   int? get openerTabId => _wrapped.openerTabId;
+
   set openerTabId(int? v) {
     _wrapped.openerTabId = v;
   }
@@ -1674,7 +1745,7 @@ class QueryInfo {
           status: status?.toJS,
           title: title,
           url: switch (url) {
-            String() => url,
+            String() => url.jsify()!,
             List() => url.toJSArrayString(),
             null => null,
             _ => throw UnsupportedError(
@@ -1692,30 +1763,35 @@ class QueryInfo {
 
   /// Whether the tabs are active in their windows.
   bool? get active => _wrapped.active;
+
   set active(bool? v) {
     _wrapped.active = v;
   }
 
   /// Whether the tabs are pinned.
   bool? get pinned => _wrapped.pinned;
+
   set pinned(bool? v) {
     _wrapped.pinned = v;
   }
 
   /// Whether the tabs are audible.
   bool? get audible => _wrapped.audible;
+
   set audible(bool? v) {
     _wrapped.audible = v;
   }
 
   /// Whether the tabs are muted.
   bool? get muted => _wrapped.muted;
+
   set muted(bool? v) {
     _wrapped.muted = v;
   }
 
   /// Whether the tabs are highlighted.
   bool? get highlighted => _wrapped.highlighted;
+
   set highlighted(bool? v) {
     _wrapped.highlighted = v;
   }
@@ -1724,6 +1800,7 @@ class QueryInfo {
   /// been unloaded from memory, but is still visible in the tab strip. Its
   /// content is reloaded the next time it is activated.
   bool? get discarded => _wrapped.discarded;
+
   set discarded(bool? v) {
     _wrapped.discarded = v;
   }
@@ -1731,24 +1808,28 @@ class QueryInfo {
   /// Whether the tabs can be discarded automatically by the browser when
   /// resources are low.
   bool? get autoDiscardable => _wrapped.autoDiscardable;
+
   set autoDiscardable(bool? v) {
     _wrapped.autoDiscardable = v;
   }
 
   /// Whether the tabs are in the [current window](windows#current-window).
   bool? get currentWindow => _wrapped.currentWindow;
+
   set currentWindow(bool? v) {
     _wrapped.currentWindow = v;
   }
 
   /// Whether the tabs are in the last focused window.
   bool? get lastFocusedWindow => _wrapped.lastFocusedWindow;
+
   set lastFocusedWindow(bool? v) {
     _wrapped.lastFocusedWindow = v;
   }
 
   /// The tab loading status.
   TabStatus? get status => _wrapped.status?.let(TabStatus.fromJS);
+
   set status(TabStatus? v) {
     _wrapped.status = v?.toJS;
   }
@@ -1756,6 +1837,7 @@ class QueryInfo {
   /// Match page titles against a pattern. This property is ignored if the
   /// extension does not have the `"tabs"` permission.
   String? get title => _wrapped.title;
+
   set title(String? v) {
     _wrapped.title = v;
   }
@@ -1767,9 +1849,10 @@ class QueryInfo {
         isString: (v) => v,
         isArray: (v) => v.toDart.cast<String>().map((e) => e).toList(),
       );
+
   set url(Object? v) {
     _wrapped.url = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       List() => v.toJSArrayString(),
       null => null,
       _ => throw UnsupportedError(
@@ -1780,6 +1863,7 @@ class QueryInfo {
   /// The ID of the group that the tabs are in, or [tabGroups.TAB_GROUP_ID_NONE]
   /// for ungrouped tabs.
   int? get groupId => _wrapped.groupId;
+
   set groupId(int? v) {
     _wrapped.groupId = v;
   }
@@ -1787,18 +1871,21 @@ class QueryInfo {
   /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
   /// [current window](windows#current-window).
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
 
   /// The type of window the tabs are in.
   WindowType? get windowType => _wrapped.windowType?.let(WindowType.fromJS);
+
   set windowType(WindowType? v) {
     _wrapped.windowType = v?.toJS;
   }
 
   /// The position of the tabs within their windows.
   int? get index => _wrapped.index;
+
   set index(int? v) {
     _wrapped.index = v;
   }
@@ -1817,7 +1904,7 @@ class HighlightInfo {
           windowId: windowId,
           tabs: switch (tabs) {
             List<int>() => tabs.toJSArray((e) => e),
-            int() => tabs,
+            int() => tabs.jsify()!,
             _ => throw UnsupportedError(
                 'Received type: ${tabs.runtimeType}. Supported types are: List<int>, int')
           },
@@ -1829,6 +1916,7 @@ class HighlightInfo {
 
   /// The window that contains the tabs.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -1838,10 +1926,11 @@ class HighlightInfo {
         isArray: (v) => v.toDart.cast<int>().map((e) => e).toList(),
         isInt: (v) => v,
       );
+
   set tabs(Object v) {
     _wrapped.tabs = switch (v) {
       List<int>() => v.toJSArray((e) => e),
-      int() => v,
+      int() => v.jsify()!,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: List<int>, int')
     };
@@ -1897,6 +1986,7 @@ class UpdateProperties {
   /// A URL to navigate the tab to. JavaScript URLs are not supported; use
   /// [scripting.executeScript] instead.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
@@ -1904,30 +1994,35 @@ class UpdateProperties {
   /// Whether the tab should be active. Does not affect whether the window is
   /// focused (see [windows.update]).
   bool? get active => _wrapped.active;
+
   set active(bool? v) {
     _wrapped.active = v;
   }
 
   /// Adds or removes the tab from the current selection.
   bool? get highlighted => _wrapped.highlighted;
+
   set highlighted(bool? v) {
     _wrapped.highlighted = v;
   }
 
   /// Whether the tab should be selected.
   bool? get selected => _wrapped.selected;
+
   set selected(bool? v) {
     _wrapped.selected = v;
   }
 
   /// Whether the tab should be pinned.
   bool? get pinned => _wrapped.pinned;
+
   set pinned(bool? v) {
     _wrapped.pinned = v;
   }
 
   /// Whether the tab should be muted.
   bool? get muted => _wrapped.muted;
+
   set muted(bool? v) {
     _wrapped.muted = v;
   }
@@ -1935,6 +2030,7 @@ class UpdateProperties {
   /// The ID of the tab that opened this tab. If specified, the opener tab must
   /// be in the same window as this tab.
   int? get openerTabId => _wrapped.openerTabId;
+
   set openerTabId(int? v) {
     _wrapped.openerTabId = v;
   }
@@ -1942,6 +2038,7 @@ class UpdateProperties {
   /// Whether the tab should be discarded automatically by the browser when
   /// resources are low.
   bool? get autoDiscardable => _wrapped.autoDiscardable;
+
   set autoDiscardable(bool? v) {
     _wrapped.autoDiscardable = v;
   }
@@ -1968,6 +2065,7 @@ class MoveProperties {
 
   /// Defaults to the window the tab is currently in.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -1975,6 +2073,7 @@ class MoveProperties {
   /// The position to move the window to. Use `-1` to place the tab at the end
   /// of the window.
   int get index => _wrapped.index;
+
   set index(int v) {
     _wrapped.index = v;
   }
@@ -1995,6 +2094,7 @@ class ReloadProperties {
 
   /// Whether to bypass local caching. Defaults to `false`.
   bool? get bypassCache => _wrapped.bypassCache;
+
   set bypassCache(bool? v) {
     _wrapped.bypassCache = v;
   }
@@ -2016,7 +2116,7 @@ class GroupOptions {
     GroupOptionsCreateProperties? createProperties,
   }) : _wrapped = $js.GroupOptions(
           tabIds: switch (tabIds) {
-            int() => tabIds,
+            int() => tabIds.jsify()!,
             List<int>() => tabIds.toJSArray((e) => e),
             _ => throw UnsupportedError(
                 'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
@@ -2034,9 +2134,10 @@ class GroupOptions {
         isInt: (v) => v,
         isArray: (v) => v.toDart.cast<int>().map((e) => e).toList(),
       );
+
   set tabIds(Object v) {
     _wrapped.tabIds = switch (v) {
-      int() => v,
+      int() => v.jsify()!,
       List<int>() => v.toJSArray((e) => e),
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, List<int>')
@@ -2046,6 +2147,7 @@ class GroupOptions {
   /// The ID of the group to add the tabs to. If not specified, a new group will
   /// be created.
   int? get groupId => _wrapped.groupId;
+
   set groupId(int? v) {
     _wrapped.groupId = v;
   }
@@ -2054,6 +2156,7 @@ class GroupOptions {
   /// specified.
   GroupOptionsCreateProperties? get createProperties =>
       _wrapped.createProperties?.let(GroupOptionsCreateProperties.fromJS);
+
   set createProperties(GroupOptionsCreateProperties? v) {
     _wrapped.createProperties = v?.toJS;
   }
@@ -2074,6 +2177,7 @@ class GroupOptionsCreateProperties {
 
   /// The window of the new group. Defaults to the current window.
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }

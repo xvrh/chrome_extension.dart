@@ -296,6 +296,7 @@ class Parameters {
   /// IP address for the VPN interface in CIDR notation.
   /// IPv4 is currently the only supported mode.
   String get address => _wrapped.address;
+
   set address(String v) {
     _wrapped.address = v;
   }
@@ -303,12 +304,14 @@ class Parameters {
   /// Broadcast address for the VPN interface. (default: deduced
   /// from IP address and mask)
   String? get broadcastAddress => _wrapped.broadcastAddress;
+
   set broadcastAddress(String? v) {
     _wrapped.broadcastAddress = v;
   }
 
   /// MTU setting for the VPN interface. (default: 1500 bytes)
   String? get mtu => _wrapped.mtu;
+
   set mtu(String? v) {
     _wrapped.mtu = v;
   }
@@ -324,6 +327,7 @@ class Parameters {
   /// undefined.
   List<String> get exclusionList =>
       _wrapped.exclusionList.toDart.cast<String>().map((e) => e).toList();
+
   set exclusionList(List<String> v) {
     _wrapped.exclusionList = v.toJSArray((e) => e);
   }
@@ -340,6 +344,7 @@ class Parameters {
   /// undefined.
   List<String> get inclusionList =>
       _wrapped.inclusionList.toDart.cast<String>().map((e) => e).toList();
+
   set inclusionList(List<String> v) {
     _wrapped.inclusionList = v.toJSArray((e) => e);
   }
@@ -347,6 +352,7 @@ class Parameters {
   /// A list of search domains. (default: no search domain)
   List<String>? get domainSearch =>
       _wrapped.domainSearch?.toDart.cast<String>().map((e) => e).toList();
+
   set domainSearch(List<String>? v) {
     _wrapped.domainSearch = v?.toJSArray((e) => e);
   }
@@ -354,6 +360,7 @@ class Parameters {
   /// A list of IPs for the DNS servers.
   List<String> get dnsServers =>
       _wrapped.dnsServers.toDart.cast<String>().map((e) => e).toList();
+
   set dnsServers(List<String> v) {
     _wrapped.dnsServers = v.toJSArray((e) => e);
   }
@@ -371,6 +378,7 @@ class Parameters {
   /// earlier versions. try/catch can be used to conditionally enable the
   /// feature based on browser support.
   String? get reconnect => _wrapped.reconnect;
+
   set reconnect(String? v) {
     _wrapped.reconnect = v;
   }

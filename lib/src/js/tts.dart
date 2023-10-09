@@ -119,7 +119,7 @@ class TtsOptions {
 
     /// This function is called with events that occur in the process of speaking
     /// the utterance.
-    Function? onEvent,
+    JSFunction? onEvent,
   });
 }
 
@@ -168,7 +168,7 @@ extension TtsOptionsExtension on TtsOptions {
 
   /// This function is called with events that occur in the process of speaking
   /// the utterance.
-  external Function? onEvent;
+  external JSFunction? onEvent;
 }
 
 @JS()

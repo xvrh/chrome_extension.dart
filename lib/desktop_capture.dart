@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/desktop_capture.dart' as $js;
 import 'tabs.dart';
@@ -42,13 +41,13 @@ class ChromeDesktopCapture {
     List<DesktopCaptureSourceType> sources,
     Tab? targetTab,
     ChooseDesktopMediaOptions? options,
-    Function callback,
+    JSFunction callback,
   ) {
     return $js.chrome.desktopCapture.chooseDesktopMedia(
       sources.toJSArray((e) => e.toJS),
       targetTab?.toJS,
       options?.toJS,
-      allowInterop(callback),
+      callback,
     );
   }
 
@@ -138,6 +137,7 @@ class ChooseDesktopMediaOptions {
   /// [systemAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-systemaudio).
   SystemAudioPreferenceEnum? get systemAudio =>
       _wrapped.systemAudio?.let(SystemAudioPreferenceEnum.fromJS);
+
   set systemAudio(SystemAudioPreferenceEnum? v) {
     _wrapped.systemAudio = v?.toJS;
   }
@@ -146,6 +146,7 @@ class ChooseDesktopMediaOptions {
   /// [selfBrowserSurface](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-selfbrowsersurface).
   SelfCapturePreferenceEnum? get selfBrowserSurface =>
       _wrapped.selfBrowserSurface?.let(SelfCapturePreferenceEnum.fromJS);
+
   set selfBrowserSurface(SelfCapturePreferenceEnum? v) {
     _wrapped.selfBrowserSurface = v?.toJS;
   }
@@ -155,6 +156,7 @@ class ChooseDesktopMediaOptions {
   /// the appropriate warnings, as it does when getDisplayMedia() is invoked.
   bool? get suppressLocalAudioPlaybackIntended =>
       _wrapped.suppressLocalAudioPlaybackIntended;
+
   set suppressLocalAudioPlaybackIntended(bool? v) {
     _wrapped.suppressLocalAudioPlaybackIntended = v;
   }

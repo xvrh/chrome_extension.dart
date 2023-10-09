@@ -84,12 +84,14 @@ class StorageChange {
 
   /// The old value of the item, if there was an old value.
   Object? get oldValue => _wrapped.oldValue?.dartify();
+
   set oldValue(Object? v) {
     _wrapped.oldValue = v?.jsify();
   }
 
   /// The new value of the item, if there is a new value.
   Object? get newValue => _wrapped.newValue?.dartify();
+
   set newValue(Object? v) {
     _wrapped.newValue = v?.jsify();
   }
@@ -113,7 +115,7 @@ class StorageArea {
   /// [runtime.lastError] will be set).
   Future<Map> get(Object? keys) async {
     var $res = await promiseToFuture<JSAny>(_wrapped.get(switch (keys) {
-      String() => keys,
+      String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
       Map() => keys.jsify()!,
       null => null,
@@ -131,7 +133,7 @@ class StorageArea {
   /// failure (in which case [runtime.lastError] will be set).
   Future<int> getBytesInUse(Object? keys) async {
     var $res = await promiseToFuture<int>(_wrapped.getBytesInUse(switch (keys) {
-      String() => keys,
+      String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
       null => null,
       _ => throw UnsupportedError(
@@ -160,7 +162,7 @@ class StorageArea {
   /// [runtime.lastError] will be set).
   Future<void> remove(Object keys) async {
     await promiseToFuture<void>(_wrapped.remove(switch (keys) {
-      String() => keys,
+      String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
       _ => throw UnsupportedError(
           'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')
@@ -200,6 +202,7 @@ class StorageSync extends StorageArea {
   /// key's length. Updates that would cause this limit to be exceeded fail
   /// immediately and set [runtime.lastError].
   int get quotaBytes => _wrapped.QUOTA_BYTES;
+
   set quotaBytes(int v) {
     _wrapped.QUOTA_BYTES = v;
   }
@@ -209,6 +212,7 @@ class StorageSync extends StorageArea {
   /// Updates containing items larger than this limit will fail immediately and
   /// set [runtime.lastError].
   int get quotaBytesPerItem => _wrapped.QUOTA_BYTES_PER_ITEM;
+
   set quotaBytesPerItem(int v) {
     _wrapped.QUOTA_BYTES_PER_ITEM = v;
   }
@@ -217,6 +221,7 @@ class StorageSync extends StorageArea {
   /// that would cause this limit to be exceeded will fail immediately and set
   /// [runtime.lastError].
   int get maxItems => _wrapped.MAX_ITEMS;
+
   set maxItems(int v) {
     _wrapped.MAX_ITEMS = v;
   }
@@ -228,6 +233,7 @@ class StorageSync extends StorageArea {
   /// Updates that would cause this limit to be exceeded fail immediately and
   /// set [runtime.lastError].
   int get maxWriteOperationsPerHour => _wrapped.MAX_WRITE_OPERATIONS_PER_HOUR;
+
   set maxWriteOperationsPerHour(int v) {
     _wrapped.MAX_WRITE_OPERATIONS_PER_HOUR = v;
   }
@@ -240,12 +246,14 @@ class StorageSync extends StorageArea {
   /// set [runtime.lastError].
   int get maxWriteOperationsPerMinute =>
       _wrapped.MAX_WRITE_OPERATIONS_PER_MINUTE;
+
   set maxWriteOperationsPerMinute(int v) {
     _wrapped.MAX_WRITE_OPERATIONS_PER_MINUTE = v;
   }
 
   int get maxSustainedWriteOperationsPerMinute =>
       _wrapped.MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE;
+
   set maxSustainedWriteOperationsPerMinute(int v) {
     _wrapped.MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE = v;
   }
@@ -263,6 +271,7 @@ class StorageLocal extends StorageArea {
   /// `unlimitedStorage` permission. Updates that would cause this limit to be
   /// exceeded fail immediately and set [runtime.lastError].
   int get quotaBytes => _wrapped.QUOTA_BYTES;
+
   set quotaBytes(int v) {
     _wrapped.QUOTA_BYTES = v;
   }
@@ -279,6 +288,7 @@ class StorageSession extends StorageArea {
   /// value and key. Updates that would cause this limit to be exceeded fail
   /// immediately and set [runtime.lastError].
   int get quotaBytes => _wrapped.QUOTA_BYTES;
+
   set quotaBytes(int v) {
     _wrapped.QUOTA_BYTES = v;
   }
@@ -300,6 +310,7 @@ class SetAccessLevelAccessOptions {
 
   /// The access level of the storage area.
   AccessLevel get accessLevel => AccessLevel.fromJS(_wrapped.accessLevel);
+
   set accessLevel(AccessLevel v) {
     _wrapped.accessLevel = v.toJS;
   }

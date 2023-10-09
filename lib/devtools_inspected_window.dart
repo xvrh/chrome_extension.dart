@@ -123,6 +123,7 @@ class Resource {
 
   /// The URL of the resource.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
@@ -214,6 +215,7 @@ class EvalExceptionInfo {
   /// Set if the error occurred on the DevTools side before the expression is
   /// evaluated.
   bool get isError => _wrapped.isError;
+
   set isError(bool v) {
     _wrapped.isError = v;
   }
@@ -221,6 +223,7 @@ class EvalExceptionInfo {
   /// Set if the error occurred on the DevTools side before the expression is
   /// evaluated.
   String get code => _wrapped.code;
+
   set code(String v) {
     _wrapped.code = v;
   }
@@ -228,6 +231,7 @@ class EvalExceptionInfo {
   /// Set if the error occurred on the DevTools side before the expression is
   /// evaluated.
   String get description => _wrapped.description;
+
   set description(String v) {
     _wrapped.description = v;
   }
@@ -238,18 +242,21 @@ class EvalExceptionInfo {
   /// error.
   List<Object> get details =>
       _wrapped.details.toDart.cast<JSAny>().map((e) => e.dartify()!).toList();
+
   set details(List<Object> v) {
     _wrapped.details = v.toJSArray((e) => e.jsify()!);
   }
 
   /// Set if the evaluated code produces an unhandled exception.
   bool get isException => _wrapped.isException;
+
   set isException(bool v) {
     _wrapped.isException = v;
   }
 
   /// Set if the evaluated code produces an unhandled exception.
   String get value => _wrapped.value;
+
   set value(String v) {
     _wrapped.value = v;
   }
@@ -291,6 +298,7 @@ class EvalOptions {
   /// the one specified. By default, the expression is evaluated in the top
   /// frame of the inspected page.
   String? get frameUrl => _wrapped.frameURL;
+
   set frameUrl(String? v) {
     _wrapped.frameURL = v;
   }
@@ -301,6 +309,7 @@ class EvalOptions {
   /// callback is invoked with the exception parameter set to an object that has
   /// the `isError` field set to true and the `code` field set to `E_NOTFOUND`.
   bool? get useContentScriptContext => _wrapped.useContentScriptContext;
+
   set useContentScriptContext(bool? v) {
     _wrapped.useContentScriptContext = v;
   }
@@ -309,6 +318,7 @@ class EvalOptions {
   /// that matches the specified origin. If given, scriptExecutionContext
   /// overrides the 'true' setting on useContentScriptContext.
   String? get scriptExecutionContext => _wrapped.scriptExecutionContext;
+
   set scriptExecutionContext(String? v) {
     _wrapped.scriptExecutionContext = v;
   }
@@ -351,6 +361,7 @@ class ReloadOptions {
   /// to pressing Ctrl+Shift+R in the inspected window or within the Developer
   /// Tools window.
   bool? get ignoreCache => _wrapped.ignoreCache;
+
   set ignoreCache(bool? v) {
     _wrapped.ignoreCache = v;
   }
@@ -360,6 +371,7 @@ class ReloadOptions {
   /// string will also override the value of the `navigator.userAgent` property
   /// that's returned to any scripts that are running within the inspected page.
   String? get userAgent => _wrapped.userAgent;
+
   set userAgent(String? v) {
     _wrapped.userAgent = v;
   }
@@ -369,6 +381,7 @@ class ReloadOptions {
   /// The script will not be injected after subsequent reloads-for example, if
   /// the user presses Ctrl+R.
   String? get injectedScript => _wrapped.injectedScript;
+
   set injectedScript(String? v) {
     _wrapped.injectedScript = v;
   }

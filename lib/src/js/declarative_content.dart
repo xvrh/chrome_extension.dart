@@ -128,7 +128,7 @@ class SetIcon {
     /// size of the icon in the UI. At least one image must be specified. Note
     /// that `details.imageData = foo` is equivalent to `details.imageData =
     /// {'16': foo}`.
-    Object? imageData,
+    JSAny? imageData,
   });
 }
 
@@ -143,7 +143,7 @@ extension SetIconExtension on SetIcon {
   /// size of the icon in the UI. At least one image must be specified. Note
   /// that `details.imageData = foo` is equivalent to `details.imageData =
   /// {'16': foo}`.
-  external Object? imageData;
+  external JSAny? imageData;
 }
 
 @JS()

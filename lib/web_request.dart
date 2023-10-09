@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:js_util';
 import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/web_request.dart' as $js;
@@ -24,14 +25,8 @@ class ChromeWebRequest {
   /// Needs to be called when the behavior of the webRequest handlers has
   /// changed to prevent incorrect handling due to caching. This function call
   /// is expensive. Don't call it often.
-  Future<void> handlerBehaviorChanged() {
-    var $completer = Completer<void>();
-    $js.chrome.webRequest.handlerBehaviorChanged(() {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(null);
-      }
-    }.toJS);
-    return $completer.future;
+  Future<void> handlerBehaviorChanged() async {
+    await promiseToFuture<void>($js.chrome.webRequest.handlerBehaviorChanged());
   }
 
   /// The maximum number of times that `handlerBehaviorChanged` can be called
@@ -82,15 +77,11 @@ class ChromeWebRequest {
   EventStream<OnAuthRequiredEvent> get onAuthRequired =>
       $js.chrome.webRequest.onAuthRequired.asStream(($c) => (
             $js.OnAuthRequiredDetails details,
-            Function? asyncCallback,
+            JSFunction? asyncCallback,
           ) {
             return $c(OnAuthRequiredEvent(
               details: OnAuthRequiredDetails.fromJS(details),
-              asyncCallback: ([Object? p1, Object? p2]) {
-                return (asyncCallback as JSAny? Function(JSAny?, JSAny?)?)
-                    ?.call(p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              asyncCallback: asyncCallback,
             ));
           });
 
@@ -326,6 +317,7 @@ class RequestFilter {
   /// will be filtered out.
   List<String> get urls =>
       _wrapped.urls.toDart.cast<String>().map((e) => e).toList();
+
   set urls(List<String> v) {
     _wrapped.urls = v.toJSArray((e) => e);
   }
@@ -336,16 +328,19 @@ class RequestFilter {
       .cast<$js.ResourceType>()
       .map((e) => ResourceType.fromJS(e))
       .toList();
+
   set types(List<ResourceType>? v) {
     _wrapped.types = v?.toJSArray((e) => e.toJS);
   }
 
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
 
   int? get windowId => _wrapped.windowId;
+
   set windowId(int? v) {
     _wrapped.windowId = v;
   }
@@ -400,6 +395,7 @@ class BlockingResponse {
   /// sent. This can be used as a response to the onBeforeRequest,
   /// onBeforeSendHeaders, onHeadersReceived and onAuthRequired events.
   bool? get cancel => _wrapped.cancel;
+
   set cancel(bool? v) {
     _wrapped.cancel = v;
   }
@@ -413,6 +409,7 @@ class BlockingResponse {
   /// then the redirect will be issued using the GET method. Redirects from URLs
   /// with `ws://` and `wss://` schemes are **ignored**.
   String? get redirectUrl => _wrapped.redirectUrl;
+
   set redirectUrl(String? v) {
     _wrapped.redirectUrl = v;
   }
@@ -423,6 +420,7 @@ class BlockingResponse {
       .cast<$js.HttpHeadersItems>()
       .map((e) => HttpHeadersItems.fromJS(e))
       .toList();
+
   set requestHeaders(List<HttpHeadersItems>? v) {
     _wrapped.requestHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -437,6 +435,7 @@ class BlockingResponse {
           .cast<$js.HttpHeadersItems>()
           .map((e) => HttpHeadersItems.fromJS(e))
           .toList();
+
   set responseHeaders(List<HttpHeadersItems>? v) {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -445,6 +444,7 @@ class BlockingResponse {
   /// is made using the supplied credentials.
   BlockingResponseAuthCredentials? get authCredentials =>
       _wrapped.authCredentials?.let(BlockingResponseAuthCredentials.fromJS);
+
   set authCredentials(BlockingResponseAuthCredentials? v) {
     _wrapped.authCredentials = v?.toJS;
   }
@@ -470,12 +470,14 @@ class UploadData {
 
   /// An ArrayBuffer with a copy of the data.
   Object? get bytes => _wrapped.bytes?.dartify();
+
   set bytes(Object? v) {
     _wrapped.bytes = v?.jsify();
   }
 
   /// A string with the file's path and name.
   String? get file => _wrapped.file;
+
   set file(String? v) {
     _wrapped.file = v;
   }
@@ -560,17 +562,20 @@ class OnBeforeRequestDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -581,6 +586,7 @@ class OnBeforeRequestDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -588,12 +594,14 @@ class OnBeforeRequestDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
@@ -601,6 +609,7 @@ class OnBeforeRequestDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -608,12 +617,14 @@ class OnBeforeRequestDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle? get documentLifecycle =>
       _wrapped.documentLifecycle?.let(DocumentLifecycle.fromJS);
+
   set documentLifecycle(DocumentLifecycle? v) {
     _wrapped.documentLifecycle = v?.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType? get frameType => _wrapped.frameType?.let(FrameType.fromJS);
+
   set frameType(FrameType? v) {
     _wrapped.frameType = v?.toJS;
   }
@@ -622,6 +633,7 @@ class OnBeforeRequestDetails {
   /// contains 'requestBody'.
   OnBeforeRequestDetailsRequestBody? get requestBody =>
       _wrapped.requestBody?.let(OnBeforeRequestDetailsRequestBody.fromJS);
+
   set requestBody(OnBeforeRequestDetailsRequestBody? v) {
     _wrapped.requestBody = v?.toJS;
   }
@@ -629,12 +641,14 @@ class OnBeforeRequestDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -642,12 +656,14 @@ class OnBeforeRequestDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -732,17 +748,20 @@ class OnBeforeSendHeadersDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -753,6 +772,7 @@ class OnBeforeSendHeadersDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -760,12 +780,14 @@ class OnBeforeSendHeadersDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -773,6 +795,7 @@ class OnBeforeSendHeadersDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -780,12 +803,14 @@ class OnBeforeSendHeadersDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -793,6 +818,7 @@ class OnBeforeSendHeadersDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
@@ -800,18 +826,21 @@ class OnBeforeSendHeadersDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -821,6 +850,7 @@ class OnBeforeSendHeadersDetails {
       .cast<$js.HttpHeadersItems>()
       .map((e) => HttpHeadersItems.fromJS(e))
       .toList();
+
   set requestHeaders(List<HttpHeadersItems>? v) {
     _wrapped.requestHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -904,17 +934,20 @@ class OnSendHeadersDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -925,6 +958,7 @@ class OnSendHeadersDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -932,12 +966,14 @@ class OnSendHeadersDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -945,6 +981,7 @@ class OnSendHeadersDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -952,12 +989,14 @@ class OnSendHeadersDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -965,12 +1004,14 @@ class OnSendHeadersDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -978,12 +1019,14 @@ class OnSendHeadersDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -993,6 +1036,7 @@ class OnSendHeadersDetails {
       .cast<$js.HttpHeadersItems>()
       .map((e) => HttpHeadersItems.fromJS(e))
       .toList();
+
   set requestHeaders(List<HttpHeadersItems>? v) {
     _wrapped.requestHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -1085,17 +1129,20 @@ class OnHeadersReceivedDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -1106,6 +1153,7 @@ class OnHeadersReceivedDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -1113,12 +1161,14 @@ class OnHeadersReceivedDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -1126,6 +1176,7 @@ class OnHeadersReceivedDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -1133,12 +1184,14 @@ class OnHeadersReceivedDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -1146,12 +1199,14 @@ class OnHeadersReceivedDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -1159,12 +1214,14 @@ class OnHeadersReceivedDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -1172,6 +1229,7 @@ class OnHeadersReceivedDetails {
   /// HTTP status line of the response or the 'HTTP/0.9 200 OK' string for
   /// HTTP/0.9 responses (i.e., responses that lack a status line).
   String get statusLine => _wrapped.statusLine;
+
   set statusLine(String v) {
     _wrapped.statusLine = v;
   }
@@ -1182,12 +1240,14 @@ class OnHeadersReceivedDetails {
           .cast<$js.HttpHeadersItems>()
           .map((e) => HttpHeadersItems.fromJS(e))
           .toList();
+
   set responseHeaders(List<HttpHeadersItems>? v) {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
 
   /// Standard HTTP status code returned by the server.
   int get statusCode => _wrapped.statusCode;
+
   set statusCode(int v) {
     _wrapped.statusCode = v;
   }
@@ -1297,17 +1357,20 @@ class OnAuthRequiredDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -1318,6 +1381,7 @@ class OnAuthRequiredDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -1325,12 +1389,14 @@ class OnAuthRequiredDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -1338,6 +1404,7 @@ class OnAuthRequiredDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -1345,12 +1412,14 @@ class OnAuthRequiredDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -1358,12 +1427,14 @@ class OnAuthRequiredDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -1371,24 +1442,28 @@ class OnAuthRequiredDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
 
   /// The authentication scheme, e.g. Basic or Digest.
   String get scheme => _wrapped.scheme;
+
   set scheme(String v) {
     _wrapped.scheme = v;
   }
 
   /// The authentication realm provided by the server, if there is one.
   String? get realm => _wrapped.realm;
+
   set realm(String? v) {
     _wrapped.realm = v;
   }
@@ -1396,12 +1471,14 @@ class OnAuthRequiredDetails {
   /// The server requesting authentication.
   OnAuthRequiredDetailsChallenger get challenger =>
       OnAuthRequiredDetailsChallenger.fromJS(_wrapped.challenger);
+
   set challenger(OnAuthRequiredDetailsChallenger v) {
     _wrapped.challenger = v.toJS;
   }
 
   /// True for Proxy-Authenticate, false for WWW-Authenticate.
   bool get isProxy => _wrapped.isProxy;
+
   set isProxy(bool v) {
     _wrapped.isProxy = v;
   }
@@ -1412,6 +1489,7 @@ class OnAuthRequiredDetails {
           .cast<$js.HttpHeadersItems>()
           .map((e) => HttpHeadersItems.fromJS(e))
           .toList();
+
   set responseHeaders(List<HttpHeadersItems>? v) {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -1420,12 +1498,14 @@ class OnAuthRequiredDetails {
   /// HTTP/0.9 responses (i.e., responses that lack a status line) or an empty
   /// string if there are no headers.
   String get statusLine => _wrapped.statusLine;
+
   set statusLine(String v) {
     _wrapped.statusLine = v;
   }
 
   /// Standard HTTP status code returned by the server.
   int get statusCode => _wrapped.statusCode;
+
   set statusCode(int v) {
     _wrapped.statusCode = v;
   }
@@ -1528,17 +1608,20 @@ class OnResponseStartedDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -1549,6 +1632,7 @@ class OnResponseStartedDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -1556,12 +1640,14 @@ class OnResponseStartedDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -1569,6 +1655,7 @@ class OnResponseStartedDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -1576,12 +1663,14 @@ class OnResponseStartedDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -1589,12 +1678,14 @@ class OnResponseStartedDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -1602,12 +1693,14 @@ class OnResponseStartedDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -1615,18 +1708,21 @@ class OnResponseStartedDetails {
   /// The server IP address that the request was actually sent to. Note that it
   /// may be a literal IPv6 address.
   String? get ip => _wrapped.ip;
+
   set ip(String? v) {
     _wrapped.ip = v;
   }
 
   /// Indicates if this response was fetched from disk cache.
   bool get fromCache => _wrapped.fromCache;
+
   set fromCache(bool v) {
     _wrapped.fromCache = v;
   }
 
   /// Standard HTTP status code returned by the server.
   int get statusCode => _wrapped.statusCode;
+
   set statusCode(int v) {
     _wrapped.statusCode = v;
   }
@@ -1637,6 +1733,7 @@ class OnResponseStartedDetails {
           .cast<$js.HttpHeadersItems>()
           .map((e) => HttpHeadersItems.fromJS(e))
           .toList();
+
   set responseHeaders(List<HttpHeadersItems>? v) {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -1645,6 +1742,7 @@ class OnResponseStartedDetails {
   /// HTTP/0.9 responses (i.e., responses that lack a status line) or an empty
   /// string if there are no headers.
   String get statusLine => _wrapped.statusLine;
+
   set statusLine(String v) {
     _wrapped.statusLine = v;
   }
@@ -1751,17 +1849,20 @@ class OnBeforeRedirectDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -1772,6 +1873,7 @@ class OnBeforeRedirectDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -1779,12 +1881,14 @@ class OnBeforeRedirectDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -1792,6 +1896,7 @@ class OnBeforeRedirectDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -1799,12 +1904,14 @@ class OnBeforeRedirectDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -1812,12 +1919,14 @@ class OnBeforeRedirectDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -1825,12 +1934,14 @@ class OnBeforeRedirectDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -1838,24 +1949,28 @@ class OnBeforeRedirectDetails {
   /// The server IP address that the request was actually sent to. Note that it
   /// may be a literal IPv6 address.
   String? get ip => _wrapped.ip;
+
   set ip(String? v) {
     _wrapped.ip = v;
   }
 
   /// Indicates if this response was fetched from disk cache.
   bool get fromCache => _wrapped.fromCache;
+
   set fromCache(bool v) {
     _wrapped.fromCache = v;
   }
 
   /// Standard HTTP status code returned by the server.
   int get statusCode => _wrapped.statusCode;
+
   set statusCode(int v) {
     _wrapped.statusCode = v;
   }
 
   /// The new URL.
   String get redirectUrl => _wrapped.redirectUrl;
+
   set redirectUrl(String v) {
     _wrapped.redirectUrl = v;
   }
@@ -1866,6 +1981,7 @@ class OnBeforeRedirectDetails {
           .cast<$js.HttpHeadersItems>()
           .map((e) => HttpHeadersItems.fromJS(e))
           .toList();
+
   set responseHeaders(List<HttpHeadersItems>? v) {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -1874,6 +1990,7 @@ class OnBeforeRedirectDetails {
   /// HTTP/0.9 responses (i.e., responses that lack a status line) or an empty
   /// string if there are no headers.
   String get statusLine => _wrapped.statusLine;
+
   set statusLine(String v) {
     _wrapped.statusLine = v;
   }
@@ -1976,17 +2093,20 @@ class OnCompletedDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -1997,6 +2117,7 @@ class OnCompletedDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -2004,12 +2125,14 @@ class OnCompletedDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
 
   /// The UUID of the document making the request.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -2017,6 +2140,7 @@ class OnCompletedDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -2024,12 +2148,14 @@ class OnCompletedDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -2037,12 +2163,14 @@ class OnCompletedDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -2050,12 +2178,14 @@ class OnCompletedDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -2063,18 +2193,21 @@ class OnCompletedDetails {
   /// The server IP address that the request was actually sent to. Note that it
   /// may be a literal IPv6 address.
   String? get ip => _wrapped.ip;
+
   set ip(String? v) {
     _wrapped.ip = v;
   }
 
   /// Indicates if this response was fetched from disk cache.
   bool get fromCache => _wrapped.fromCache;
+
   set fromCache(bool v) {
     _wrapped.fromCache = v;
   }
 
   /// Standard HTTP status code returned by the server.
   int get statusCode => _wrapped.statusCode;
+
   set statusCode(int v) {
     _wrapped.statusCode = v;
   }
@@ -2085,6 +2218,7 @@ class OnCompletedDetails {
           .cast<$js.HttpHeadersItems>()
           .map((e) => HttpHeadersItems.fromJS(e))
           .toList();
+
   set responseHeaders(List<HttpHeadersItems>? v) {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
@@ -2093,6 +2227,7 @@ class OnCompletedDetails {
   /// HTTP/0.9 responses (i.e., responses that lack a status line) or an empty
   /// string if there are no headers.
   String get statusLine => _wrapped.statusLine;
+
   set statusLine(String v) {
     _wrapped.statusLine = v;
   }
@@ -2188,17 +2323,20 @@ class OnErrorOccurredDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
 
   /// Standard HTTP method.
   String get method => _wrapped.method;
+
   set method(String v) {
     _wrapped.method = v;
   }
@@ -2209,6 +2347,7 @@ class OnErrorOccurredDetails {
   /// `main_frame` or `sub_frame`), `frameId` indicates the ID of this frame,
   /// not the ID of the outer frame. Frame IDs are unique within a tab.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -2216,6 +2355,7 @@ class OnErrorOccurredDetails {
   /// ID of frame that wraps the frame which sent the request. Set to -1 if no
   /// parent frame exists.
   int get parentFrameId => _wrapped.parentFrameId;
+
   set parentFrameId(int v) {
     _wrapped.parentFrameId = v;
   }
@@ -2223,6 +2363,7 @@ class OnErrorOccurredDetails {
   /// The UUID of the document making the request. This value is not present if
   /// the request is a navigation of a frame.
   String get documentId => _wrapped.documentId;
+
   set documentId(String v) {
     _wrapped.documentId = v;
   }
@@ -2230,6 +2371,7 @@ class OnErrorOccurredDetails {
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
   String? get parentDocumentId => _wrapped.parentDocumentId;
+
   set parentDocumentId(String? v) {
     _wrapped.parentDocumentId = v;
   }
@@ -2237,12 +2379,14 @@ class OnErrorOccurredDetails {
   /// The lifecycle the document is in.
   DocumentLifecycle get documentLifecycle =>
       DocumentLifecycle.fromJS(_wrapped.documentLifecycle);
+
   set documentLifecycle(DocumentLifecycle v) {
     _wrapped.documentLifecycle = v.toJS;
   }
 
   /// The type of frame the request occurred in.
   FrameType get frameType => FrameType.fromJS(_wrapped.frameType);
+
   set frameType(FrameType v) {
     _wrapped.frameType = v.toJS;
   }
@@ -2250,12 +2394,14 @@ class OnErrorOccurredDetails {
   /// The ID of the tab in which the request takes place. Set to -1 if the
   /// request isn't related to a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// How the requested resource will be used.
   ResourceType get type => ResourceType.fromJS(_wrapped.type);
+
   set type(ResourceType v) {
     _wrapped.type = v.toJS;
   }
@@ -2263,12 +2409,14 @@ class OnErrorOccurredDetails {
   /// The origin where the request was initiated. This does not change through
   /// redirects. If this is an opaque origin, the string 'null' will be used.
   String? get initiator => _wrapped.initiator;
+
   set initiator(String? v) {
     _wrapped.initiator = v;
   }
 
   /// The time when this signal is triggered, in milliseconds since the epoch.
   double get timeStamp => _wrapped.timeStamp;
+
   set timeStamp(double v) {
     _wrapped.timeStamp = v;
   }
@@ -2276,12 +2424,14 @@ class OnErrorOccurredDetails {
   /// The server IP address that the request was actually sent to. Note that it
   /// may be a literal IPv6 address.
   String? get ip => _wrapped.ip;
+
   set ip(String? v) {
     _wrapped.ip = v;
   }
 
   /// Indicates if this response was fetched from disk cache.
   bool get fromCache => _wrapped.fromCache;
+
   set fromCache(bool v) {
     _wrapped.fromCache = v;
   }
@@ -2290,6 +2440,7 @@ class OnErrorOccurredDetails {
   /// compatible between releases. You must not parse and act based upon its
   /// content.
   String get error => _wrapped.error;
+
   set error(String v) {
     _wrapped.error = v;
   }
@@ -2319,12 +2470,14 @@ class OnActionIgnoredDetails {
   /// a result, they could be used to relate different events of the same
   /// request.
   String get requestId => _wrapped.requestId;
+
   set requestId(String v) {
     _wrapped.requestId = v;
   }
 
   /// The proposed action which was ignored.
   IgnoredActionType get action => IgnoredActionType.fromJS(_wrapped.action);
+
   set action(IgnoredActionType v) {
     _wrapped.action = v.toJS;
   }
@@ -2355,12 +2508,14 @@ class HttpHeadersItems {
 
   /// Name of the HTTP header.
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
 
   /// Value of the HTTP header if it can be represented by UTF-8.
   String? get value => _wrapped.value;
+
   set value(String? v) {
     _wrapped.value = v;
   }
@@ -2369,6 +2524,7 @@ class HttpHeadersItems {
   /// individual byte values (0..255).
   List<int>? get binaryValue =>
       _wrapped.binaryValue?.toDart.cast<int>().map((e) => e).toList();
+
   set binaryValue(List<int>? v) {
     _wrapped.binaryValue = v?.toJSArray((e) => e);
   }
@@ -2390,11 +2546,13 @@ class BlockingResponseAuthCredentials {
   $js.BlockingResponseAuthCredentials get toJS => _wrapped;
 
   String get username => _wrapped.username;
+
   set username(String v) {
     _wrapped.username = v;
   }
 
   String get password => _wrapped.password;
+
   set password(String v) {
     _wrapped.password = v;
   }
@@ -2432,6 +2590,7 @@ class OnBeforeRequestDetailsRequestBody {
 
   /// Errors when obtaining request body data.
   String? get error => _wrapped.error;
+
   set error(String? v) {
     _wrapped.error = v;
   }
@@ -2443,6 +2602,7 @@ class OnBeforeRequestDetailsRequestBody {
   /// another media type, or if it is malformed, the dictionary is not present.
   /// An example value of this dictionary is {'key': ['value1', 'value2']}.
   Map? get formData => _wrapped.formData?.toDartMap();
+
   set formData(Map? v) {
     _wrapped.formData = v?.jsify();
   }
@@ -2454,6 +2614,7 @@ class OnBeforeRequestDetailsRequestBody {
       .cast<$js.UploadData>()
       .map((e) => UploadData.fromJS(e))
       .toList();
+
   set raw(List<UploadData>? v) {
     _wrapped.raw = v?.toJSArray((e) => e.toJS);
   }
@@ -2475,11 +2636,13 @@ class OnAuthRequiredDetailsChallenger {
   $js.OnAuthRequiredDetailsChallenger get toJS => _wrapped;
 
   String get host => _wrapped.host;
+
   set host(String v) {
     _wrapped.host = v;
   }
 
   int get port => _wrapped.port;
+
   set port(int v) {
     _wrapped.port = v;
   }
@@ -2495,5 +2658,5 @@ class OnAuthRequiredEvent {
 
   /// Only valid if `'asyncBlocking'` is specified as one of the
   /// `OnAuthRequiredOptions`.
-  final Function? asyncCallback;
+  final JSFunction? asyncCallback;
 }

@@ -1,5 +1,6 @@
 import 'package:checks/checks.dart';
 import 'package:chrome_extension/devtools_panels.dart';
+import 'package:chrome_extension/src/internal_helpers.dart';
 import 'package:test/test.dart';
 import '../../runner/runner_client.dart';
 
@@ -32,7 +33,7 @@ void _tests(TestContext context) {
   });
 
   test('setOpenResourceHandler', () async {
-    chrome.devtools.panels.setOpenResourceHandler(() {});
+    chrome.devtools.panels.setOpenResourceHandler(() {}.toJS);
     chrome.devtools.panels.setOpenResourceHandler(null);
   });
 }

@@ -95,6 +95,7 @@ class Permissions {
   /// List of named permissions (does not include hosts or origins).
   List<String>? get permissions =>
       _wrapped.permissions?.toDart.cast<String>().map((e) => e).toList();
+
   set permissions(List<String>? v) {
     _wrapped.permissions = v?.toJSArray((e) => e);
   }
@@ -104,6 +105,7 @@ class Permissions {
   /// associated with [Content Scripts](content_scripts).
   List<String>? get origins =>
       _wrapped.origins?.toDart.cast<String>().map((e) => e).toList();
+
   set origins(List<String>? v) {
     _wrapped.origins = v?.toJSArray((e) => e);
   }

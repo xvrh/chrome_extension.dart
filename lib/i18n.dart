@@ -95,6 +95,7 @@ class GetMessageOptions {
   /// translation is used in an HTML context. Closure Templates used with
   /// Closure Compiler generate this automatically.
   bool? get escapeLt => _wrapped.escapeLt;
+
   set escapeLt(bool? v) {
     _wrapped.escapeLt = v;
   }
@@ -120,6 +121,7 @@ class DetectLanguageCallbackResult {
 
   /// CLD detected language reliability
   bool get isReliable => _wrapped.isReliable;
+
   set isReliable(bool v) {
     _wrapped.isReliable = v;
   }
@@ -130,6 +132,7 @@ class DetectLanguageCallbackResult {
           .cast<$js.DetectLanguageCallbackResultLanguages>()
           .map((e) => DetectLanguageCallbackResultLanguages.fromJS(e))
           .toList();
+
   set languages(List<DetectLanguageCallbackResultLanguages> v) {
     _wrapped.languages = v.toJSArray((e) => e.toJS);
   }
@@ -153,12 +156,14 @@ class DetectLanguageCallbackResultLanguages {
   $js.DetectLanguageCallbackResultLanguages get toJS => _wrapped;
 
   String get language => _wrapped.language;
+
   set language(String v) {
     _wrapped.language = v;
   }
 
   /// The percentage of the detected language
   int get percentage => _wrapped.percentage;
+
   set percentage(int v) {
     _wrapped.percentage = v;
   }

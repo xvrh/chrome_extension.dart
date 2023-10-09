@@ -40,10 +40,7 @@ extension JSBrowserActionExtension on JSBrowserAction {
   /// path to an image file, as the pixel data from a canvas element, or as a
   /// dictionary of one of those. Either the `path` or the `imageData` property
   /// must be specified.
-  external void setIcon(
-    SetIconDetails details,
-    JSFunction? callback,
-  );
+  external JSPromise setIcon(SetIconDetails details);
 
   /// Sets the HTML document to be opened as a popup when the user clicks the
   /// browser action icon.
@@ -81,7 +78,7 @@ extension JSBrowserActionExtension on JSBrowserAction {
 
   /// Opens the extension popup window in the active window but does not grant
   /// tab permissions.
-  external void openPopup(JSFunction callback);
+  external JSPromise openPopup();
 
   /// Fired when a browser action icon is clicked. Does not fire if the browser
   /// action has a popup.
@@ -147,7 +144,7 @@ class SetIconDetails {
     /// size of the icon in the UI. At least one image must be specified. Note
     /// that 'details.imageData = foo' is equivalent to 'details.imageData =
     /// {'16': foo}'
-    Object? imageData,
+    JSAny? imageData,
 
     /// Either a relative image path or a dictionary {size -> relative image path}
     /// pointing to an icon to be set. If the icon is specified as a dictionary,
@@ -156,7 +153,7 @@ class SetIconDetails {
     /// then an image with size `scale` * n is selected, where <i>n</i> is the
     /// size of the icon in the UI. At least one image must be specified. Note
     /// that 'details.path = foo' is equivalent to 'details.path = {'16': foo}'
-    Object? path,
+    JSAny? path,
 
     /// Limits the change to when a particular tab is selected. Automatically
     /// resets when the tab is closed.
@@ -173,7 +170,7 @@ extension SetIconDetailsExtension on SetIconDetails {
   /// size of the icon in the UI. At least one image must be specified. Note
   /// that 'details.imageData = foo' is equivalent to 'details.imageData =
   /// {'16': foo}'
-  external Object? imageData;
+  external JSAny? imageData;
 
   /// Either a relative image path or a dictionary {size -> relative image path}
   /// pointing to an icon to be set. If the icon is specified as a dictionary,
@@ -182,7 +179,7 @@ extension SetIconDetailsExtension on SetIconDetails {
   /// then an image with size `scale` * n is selected, where <i>n</i> is the
   /// size of the icon in the UI. At least one image must be specified. Note
   /// that 'details.path = foo' is equivalent to 'details.path = {'16': foo}'
-  external Object? path;
+  external JSAny? path;
 
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
@@ -251,7 +248,7 @@ class SetBadgeBackgroundColorDetails {
     /// An array of four integers in the range 0-255 that make up the RGBA color
     /// of the badge. Can also be a string with a CSS hex color value; for
     /// example, `#FF0000` or `#F00` (red). Renders colors at full opacity.
-    Object color,
+    JSAny color,
 
     /// Limits the change to when a particular tab is selected. Automatically
     /// resets when the tab is closed.
@@ -264,7 +261,7 @@ extension SetBadgeBackgroundColorDetailsExtension
   /// An array of four integers in the range 0-255 that make up the RGBA color
   /// of the badge. Can also be a string with a CSS hex color value; for
   /// example, `#FF0000` or `#F00` (red). Renders colors at full opacity.
-  external Object color;
+  external JSAny color;
 
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.

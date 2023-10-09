@@ -13,8 +13,29 @@ The JS interop is build on top of `dart:js_interop` (static interop) which make 
 
 ### Example
 
+#### `chrome.tabs`
 ```dart
-import 'example/example.dart';
+import 'example/chrome_tabs.dart';
+```
+
+#### `chrome.alarms`
+```dart
+import 'example/chrome_alarms.dart';
+```
+
+#### `chrome.power`
+```dart
+import 'example/chrome_power.dart';
+```
+
+#### `chrome.runtime`
+```dart
+import 'example/chrome_runtime.dart';
+```
+
+#### `chrome.storage`
+```dart
+import 'example/chrome_storage.dart';
 ```
 
 ### Available APIs
@@ -28,14 +49,16 @@ import 'example/example.dart';
 
 ## Tips to build Chrome extensions with Flutter
 
+Here are some personal tips to build Chrome extension using the Flutter UI framework.
+
 #### Develop the app using Flutter Desktop
 
 In order to develop in a comfortable environment with hot-reload,
-most of the app can be developed using Flutter desktop.
+most of the app (the UI part) should be developed using Flutter desktop.
 
-This will require an abstraction layer between the UI and the `chrome_extension` APIs.
+This requires an abstraction layer between the UI and the `chrome_extension` APIs.
 
-A fake implementation of this abstraction layer is used in the Desktop entry point:
+In the Desktop entry point, a fake implementation of this abstraction layer is used, like this:
 
 ```dart
 import 'example/desktop_entry_point.dart#example';
@@ -44,7 +67,7 @@ import 'example/desktop_entry_point.dart#example';
 Launch this entry point in desktop with  
 `flutter run -t lib/main_desktop.dart -d macos|windows|linux`
 
-Create the real entry point:
+And the real entry point (the one used in the actual compiled extension) looks like:
 
 ```dart
 import 'example/real_entry_point.dart#example';

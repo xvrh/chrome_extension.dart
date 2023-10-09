@@ -12,7 +12,8 @@ extension JSChromeJSSidePanelExtension on JSChrome {
   @JS('sidePanel')
   external JSSidePanel? get sidePanelNullable;
 
-  /// chrome.sidePanel API
+  /// Use the `chrome.sidePanel` API to host content in the browser's side panel
+  /// alongside the main content of a webpage.
   JSSidePanel get sidePanel {
     var sidePanelNullable = this.sidePanelNullable;
     if (sidePanelNullable == null) {
@@ -46,6 +47,12 @@ extension JSSidePanelExtension on JSSidePanel {
   /// Returns the extension's current side panel behavior.
   /// |callback|: Called with the extension's side panel behavior.
   external JSPromise getPanelBehavior();
+
+  /// Opens the side panel for the extension.
+  /// This may only be called in response to a user action.
+  /// |options|: Specifies the context in which to open the side panel.
+  /// |callback|: Called when the side panel has been opened.
+  external JSPromise open(OpenOptions options);
 }
 
 @JS()
@@ -146,5 +153,46 @@ extension GetPanelOptionsExtension on GetPanelOptions {
   /// If specified, the side panel options for the given tab will be returned.
   /// Otherwise, returns the default side panel options (used for any tab that
   /// doesn't have specific settings).
+  external int? tabId;
+}
+
+@JS()
+@staticInterop
+@anonymous
+class OpenOptions {
+  external factory OpenOptions({
+    /// The window in which to open the side panel. This is only applicable if
+    /// the extension has a global (non-tab-specific) side panel or
+    /// `tabId` is also specified. This will override any
+    /// currently-active global side panel the user has open in the given
+    /// window. At least one of this and `tabId` must be provided.
+    int? windowId,
+
+    /// The tab in which to open the side panel. If the corresponding tab has
+    /// a tab-specific side panel, the panel will only be open for that tab.
+    /// If there is not a tab-specific panel, the global panel will be open in
+    /// the specified tab and any other tabs without a currently-open tab-
+    /// specific panel. This will override any currently-active side panel
+    /// (global or tab-specific) in the corresponding tab. At least one of this
+    /// and `windowId` must be provided.
+    int? tabId,
+  });
+}
+
+extension OpenOptionsExtension on OpenOptions {
+  /// The window in which to open the side panel. This is only applicable if
+  /// the extension has a global (non-tab-specific) side panel or
+  /// `tabId` is also specified. This will override any
+  /// currently-active global side panel the user has open in the given
+  /// window. At least one of this and `tabId` must be provided.
+  external int? windowId;
+
+  /// The tab in which to open the side panel. If the corresponding tab has
+  /// a tab-specific side panel, the panel will only be open for that tab.
+  /// If there is not a tab-specific panel, the global panel will be open in
+  /// the specified tab and any other tabs without a currently-open tab-
+  /// specific panel. This will override any currently-active side panel
+  /// (global or tab-specific) in the corresponding tab. At least one of this
+  /// and `windowId` must be provided.
   external int? tabId;
 }

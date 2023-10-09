@@ -12,7 +12,7 @@ extension JSChromeJSWebAuthenticationProxyExtension on JSChrome {
   @JS('webAuthenticationProxy')
   external JSWebAuthenticationProxy? get webAuthenticationProxyNullable;
 
-  /// The `chrome.webAuthenticationProxy`. API lets remote desktop
+  /// The `chrome.webAuthenticationProxy` API lets remote desktop
   /// software running on a remote host intercept Web Authentication API
   /// (WebAuthn) requests in order to handle them on a local client.
   JSWebAuthenticationProxy get webAuthenticationProxy {

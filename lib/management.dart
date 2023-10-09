@@ -300,6 +300,7 @@ class IconInfo {
   /// A number representing the width and height of the icon. Likely values
   /// include (but are not limited to) 128, 48, 24, and 16.
   int get size => _wrapped.size;
+
   set size(int v) {
     _wrapped.size = v;
   }
@@ -308,6 +309,7 @@ class IconInfo {
   /// (to indicate that an extension is disabled, for example), append
   /// `?grayscale=true` to the URL.
   String get url => _wrapped.url;
+
   set url(String v) {
     _wrapped.url = v;
   }
@@ -423,30 +425,35 @@ class ExtensionInfo {
 
   /// The extension's unique identifier.
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
 
   /// The name of this extension, app, or theme.
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
 
   /// A short version of the name of this extension, app, or theme.
   String get shortName => _wrapped.shortName;
+
   set shortName(String v) {
     _wrapped.shortName = v;
   }
 
   /// The description of this extension, app, or theme.
   String get description => _wrapped.description;
+
   set description(String v) {
     _wrapped.description = v;
   }
 
   /// The [version](manifest/version) of this extension, app, or theme.
   String get version => _wrapped.version;
+
   set version(String v) {
     _wrapped.version = v;
   }
@@ -454,12 +461,14 @@ class ExtensionInfo {
   /// The [version name](manifest/version#version_name) of this extension, app,
   /// or theme if the manifest specified one.
   String? get versionName => _wrapped.versionName;
+
   set versionName(String? v) {
     _wrapped.versionName = v;
   }
 
   /// Whether this extension can be disabled or uninstalled by the user.
   bool get mayDisable => _wrapped.mayDisable;
+
   set mayDisable(bool v) {
     _wrapped.mayDisable = v;
   }
@@ -467,12 +476,14 @@ class ExtensionInfo {
   /// Whether this extension can be enabled by the user. This is only returned
   /// for extensions which are not enabled.
   bool? get mayEnable => _wrapped.mayEnable;
+
   set mayEnable(bool? v) {
     _wrapped.mayEnable = v;
   }
 
   /// Whether it is currently enabled or disabled.
   bool get enabled => _wrapped.enabled;
+
   set enabled(bool v) {
     _wrapped.enabled = v;
   }
@@ -480,48 +491,56 @@ class ExtensionInfo {
   /// A reason the item is disabled.
   ExtensionDisabledReason? get disabledReason =>
       _wrapped.disabledReason?.let(ExtensionDisabledReason.fromJS);
+
   set disabledReason(ExtensionDisabledReason? v) {
     _wrapped.disabledReason = v?.toJS;
   }
 
   /// True if this is an app.
   bool get isApp => _wrapped.isApp;
+
   set isApp(bool v) {
     _wrapped.isApp = v;
   }
 
   /// The type of this extension, app, or theme.
   ExtensionType get type => ExtensionType.fromJS(_wrapped.type);
+
   set type(ExtensionType v) {
     _wrapped.type = v.toJS;
   }
 
   /// The launch url (only present for apps).
   String? get appLaunchUrl => _wrapped.appLaunchUrl;
+
   set appLaunchUrl(String? v) {
     _wrapped.appLaunchUrl = v;
   }
 
   /// The URL of the homepage of this extension, app, or theme.
   String? get homepageUrl => _wrapped.homepageUrl;
+
   set homepageUrl(String? v) {
     _wrapped.homepageUrl = v;
   }
 
   /// The update URL of this extension, app, or theme.
   String? get updateUrl => _wrapped.updateUrl;
+
   set updateUrl(String? v) {
     _wrapped.updateUrl = v;
   }
 
   /// Whether the extension, app, or theme declares that it supports offline.
   bool get offlineEnabled => _wrapped.offlineEnabled;
+
   set offlineEnabled(bool v) {
     _wrapped.offlineEnabled = v;
   }
 
   /// The url for the item's options page, if it has one.
   String get optionsUrl => _wrapped.optionsUrl;
+
   set optionsUrl(String v) {
     _wrapped.optionsUrl = v;
   }
@@ -535,6 +554,7 @@ class ExtensionInfo {
       .cast<$js.IconInfo>()
       .map((e) => IconInfo.fromJS(e))
       .toList();
+
   set icons(List<IconInfo>? v) {
     _wrapped.icons = v?.toJSArray((e) => e.toJS);
   }
@@ -542,6 +562,7 @@ class ExtensionInfo {
   /// Returns a list of API based permissions.
   List<String> get permissions =>
       _wrapped.permissions.toDart.cast<String>().map((e) => e).toList();
+
   set permissions(List<String> v) {
     _wrapped.permissions = v.toJSArray((e) => e);
   }
@@ -549,6 +570,7 @@ class ExtensionInfo {
   /// Returns a list of host based permissions.
   List<String> get hostPermissions =>
       _wrapped.hostPermissions.toDart.cast<String>().map((e) => e).toList();
+
   set hostPermissions(List<String> v) {
     _wrapped.hostPermissions = v.toJSArray((e) => e);
   }
@@ -556,12 +578,14 @@ class ExtensionInfo {
   /// How the extension was installed.
   ExtensionInstallType get installType =>
       ExtensionInstallType.fromJS(_wrapped.installType);
+
   set installType(ExtensionInstallType v) {
     _wrapped.installType = v.toJS;
   }
 
   /// The app launch type (only present for apps).
   LaunchType? get launchType => _wrapped.launchType?.let(LaunchType.fromJS);
+
   set launchType(LaunchType? v) {
     _wrapped.launchType = v?.toJS;
   }
@@ -572,6 +596,7 @@ class ExtensionInfo {
           .cast<$js.LaunchType>()
           .map((e) => LaunchType.fromJS(e))
           .toList();
+
   set availableLaunchTypes(List<LaunchType>? v) {
     _wrapped.availableLaunchTypes = v?.toJSArray((e) => e.toJS);
   }
@@ -597,6 +622,7 @@ class UninstallOptions {
   /// to false for self uninstalls. If an extension uninstalls another
   /// extension, this parameter is ignored and the dialog is always shown.
   bool? get showConfirmDialog => _wrapped.showConfirmDialog;
+
   set showConfirmDialog(bool? v) {
     _wrapped.showConfirmDialog = v;
   }

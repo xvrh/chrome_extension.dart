@@ -335,6 +335,7 @@ class Token {
   /// token, respectively. Any other tokens (with other identifiers) might be
   /// returned by [enterprise.platformKeys.getTokens].
   String get id => _wrapped.id;
+
   set id(String v) {
     _wrapped.id = v;
   }
@@ -353,6 +354,7 @@ class Token {
   /// created with `window.crypto.subtle` cannot be used with this
   /// interface.
   JSObject get subtleCrypto => _wrapped.subtleCrypto;
+
   set subtleCrypto(JSObject v) {
     _wrapped.subtleCrypto = v;
   }
@@ -373,6 +375,7 @@ class Token {
   /// interface.
   JSObject get softwareBackedSubtleCrypto =>
       _wrapped.softwareBackedSubtleCrypto;
+
   set softwareBackedSubtleCrypto(JSObject v) {
     _wrapped.softwareBackedSubtleCrypto = v;
   }
@@ -393,6 +396,7 @@ class RegisterKeyOptions {
 
   /// Which algorithm the registered key should use.
   Algorithm get algorithm => Algorithm.fromJS(_wrapped.algorithm);
+
   set algorithm(Algorithm v) {
     _wrapped.algorithm = v.toJS;
   }
@@ -426,6 +430,7 @@ class ChallengeKeyOptions {
 
   /// A challenge as emitted by the Verified Access Web API.
   ByteBuffer get challenge => _wrapped.challenge.toDart;
+
   set challenge(ByteBuffer v) {
     _wrapped.challenge = v.toJS;
   }
@@ -437,12 +442,14 @@ class ChallengeKeyOptions {
   /// `scope`.
   RegisterKeyOptions? get registerKey =>
       _wrapped.registerKey?.let(RegisterKeyOptions.fromJS);
+
   set registerKey(RegisterKeyOptions? v) {
     _wrapped.registerKey = v?.toJS;
   }
 
   /// Which Enterprise Key to challenge.
   Scope get scope => Scope.fromJS(_wrapped.scope);
+
   set scope(Scope v) {
     _wrapped.scope = v.toJS;
   }

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
+import 'package:project_tools/src/dart_format/fix_import_order.dart';
 import 'apis.dart';
-import 'code_style/fix_import_order.dart';
 import 'generator/chrome_model.dart';
 import 'generator/code_generator.dart';
 import 'generator/idl_convert.dart' as idl;
@@ -64,7 +64,7 @@ void _generateCode(ChromeApi model) {
 }
 
 void _writeFile(String path, String code) {
-  code = reorderImports(code);
+  code = sortImports(code);
   File(path).writeAsStringSync(code);
 }
 

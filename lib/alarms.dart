@@ -118,6 +118,7 @@ class Alarm {
 
   /// Name of this alarm.
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
@@ -126,6 +127,7 @@ class Alarm {
   /// epoch (e.g. `Date.now() + n`).  For performance reasons, the
   /// alarm may have been delayed an arbitrary amount beyond this.
   double get scheduledTime => _wrapped.scheduledTime;
+
   set scheduledTime(double v) {
     _wrapped.scheduledTime = v;
   }
@@ -133,6 +135,7 @@ class Alarm {
   /// If not null, the alarm is a repeating alarm and will fire again in
   /// [periodInMinutes] minutes.
   double? get periodInMinutes => _wrapped.periodInMinutes;
+
   set periodInMinutes(double? v) {
     _wrapped.periodInMinutes = v;
   }
@@ -171,6 +174,7 @@ class AlarmCreateInfo {
   /// Time at which the alarm should fire, in milliseconds past the epoch
   /// (e.g. `Date.now() + n`).
   double? get when => _wrapped.when;
+
   set when(double? v) {
     _wrapped.when = v;
   }
@@ -180,6 +184,7 @@ class AlarmCreateInfo {
   ///
   /// <!-- TODO: need minimum=0 -->
   double? get delayInMinutes => _wrapped.delayInMinutes;
+
   set delayInMinutes(double? v) {
     _wrapped.delayInMinutes = v;
   }
@@ -190,6 +195,7 @@ class AlarmCreateInfo {
   ///
   /// <!-- TODO: need minimum=0 -->
   double? get periodInMinutes => _wrapped.periodInMinutes;
+
   set periodInMinutes(double? v) {
     _wrapped.periodInMinutes = v;
   }

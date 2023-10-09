@@ -41,10 +41,9 @@ extension JSNotificationsExtension on JSNotifications {
   /// that represents the created notification.
   ///
   /// The callback is required before Chrome 42.
-  external void create(
+  external JSPromise create(
     String? notificationId,
     NotificationOptions options,
-    JSFunction? callback,
   );
 
   /// Updates an existing notification.
@@ -54,10 +53,9 @@ extension JSNotificationsExtension on JSNotifications {
   /// |callback|: Called to indicate whether a matching notification existed.
   ///
   /// The callback is required before Chrome 42.
-  external void update(
+  external JSPromise update(
     String notificationId,
     NotificationOptions options,
-    JSFunction? callback,
   );
 
   /// Clears the specified notification.
@@ -66,19 +64,16 @@ extension JSNotificationsExtension on JSNotifications {
   /// |callback|: Called to indicate whether a matching notification existed.
   ///
   /// The callback is required before Chrome 42.
-  external void clear(
-    String notificationId,
-    JSFunction? callback,
-  );
+  external JSPromise clear(String notificationId);
 
   /// Retrieves all the notifications of this app or extension.
   /// |callback|: Returns the set of notification_ids currently in the system.
-  external void getAll(JSFunction callback);
+  external JSPromise getAll();
 
   /// Retrieves whether the user has enabled notifications from this app
   /// or extension.
   /// |callback|: Returns the current permission level.
-  external void getPermissionLevel(JSFunction callback);
+  external JSPromise getPermissionLevel();
 
   /// The notification closed, either by the system or by user action.
   external Event get onClosed;

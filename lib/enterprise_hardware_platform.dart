@@ -54,11 +54,13 @@ class HardwarePlatformInfo {
   $js.HardwarePlatformInfo get toJS => _wrapped;
 
   String get model => _wrapped.model;
+
   set model(String v) {
     _wrapped.model = v;
   }
 
   String get manufacturer => _wrapped.manufacturer;
+
   set manufacturer(String v) {
     _wrapped.manufacturer = v;
   }

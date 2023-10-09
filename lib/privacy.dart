@@ -89,6 +89,7 @@ class PrivacyNetwork {
   /// defaulting to `true`.
   ChromeSetting get networkPredictionEnabled =>
       ChromeSetting.fromJS(_wrapped.networkPredictionEnabled);
+
   set networkPredictionEnabled(ChromeSetting v) {
     _wrapped.networkPredictionEnabled = v.toJS;
   }
@@ -99,6 +100,7 @@ class PrivacyNetwork {
   /// IPHandlingPolicy, defaulting to `default`.
   ChromeSetting get webRtcipHandlingPolicy =>
       ChromeSetting.fromJS(_wrapped.webRTCIPHandlingPolicy);
+
   set webRtcipHandlingPolicy(ChromeSetting v) {
     _wrapped.webRTCIPHandlingPolicy = v.toJS;
   }
@@ -172,6 +174,7 @@ class PrivacyServices {
   /// This preference's value is a boolean, defaulting to `true`.
   ChromeSetting get alternateErrorPagesEnabled =>
       ChromeSetting.fromJS(_wrapped.alternateErrorPagesEnabled);
+
   set alternateErrorPagesEnabled(ChromeSetting v) {
     _wrapped.alternateErrorPagesEnabled = v.toJS;
   }
@@ -180,6 +183,7 @@ class PrivacyServices {
   /// preference's value is a boolean, defaulting to `true`.
   ChromeSetting get autofillEnabled =>
       ChromeSetting.fromJS(_wrapped.autofillEnabled);
+
   set autofillEnabled(ChromeSetting v) {
     _wrapped.autofillEnabled = v.toJS;
   }
@@ -188,6 +192,7 @@ class PrivacyServices {
   /// form data. This preference's value is a boolean, defaulting to `true`.
   ChromeSetting get autofillAddressEnabled =>
       ChromeSetting.fromJS(_wrapped.autofillAddressEnabled);
+
   set autofillAddressEnabled(ChromeSetting v) {
     _wrapped.autofillAddressEnabled = v.toJS;
   }
@@ -196,6 +201,7 @@ class PrivacyServices {
   /// preference's value is a boolean, defaulting to `true`.
   ChromeSetting get autofillCreditCardEnabled =>
       ChromeSetting.fromJS(_wrapped.autofillCreditCardEnabled);
+
   set autofillCreditCardEnabled(ChromeSetting v) {
     _wrapped.autofillCreditCardEnabled = v.toJS;
   }
@@ -204,6 +210,7 @@ class PrivacyServices {
   /// This preference's value is a boolean, defaulting to `true`.
   ChromeSetting get passwordSavingEnabled =>
       ChromeSetting.fromJS(_wrapped.passwordSavingEnabled);
+
   set passwordSavingEnabled(ChromeSetting v) {
     _wrapped.passwordSavingEnabled = v.toJS;
   }
@@ -212,6 +219,7 @@ class PrivacyServices {
   /// This preference's value is a boolean, defaulting to `true`.
   ChromeSetting get safeBrowsingEnabled =>
       ChromeSetting.fromJS(_wrapped.safeBrowsingEnabled);
+
   set safeBrowsingEnabled(ChromeSetting v) {
     _wrapped.safeBrowsingEnabled = v.toJS;
   }
@@ -221,6 +229,7 @@ class PrivacyServices {
   /// preference's value is a boolean, defaulting to `false`.
   ChromeSetting get safeBrowsingExtendedReportingEnabled =>
       ChromeSetting.fromJS(_wrapped.safeBrowsingExtendedReportingEnabled);
+
   set safeBrowsingExtendedReportingEnabled(ChromeSetting v) {
     _wrapped.safeBrowsingExtendedReportingEnabled = v.toJS;
   }
@@ -231,6 +240,7 @@ class PrivacyServices {
   /// value is a boolean, defaulting to `true`.
   ChromeSetting get searchSuggestEnabled =>
       ChromeSetting.fromJS(_wrapped.searchSuggestEnabled);
+
   set searchSuggestEnabled(ChromeSetting v) {
     _wrapped.searchSuggestEnabled = v.toJS;
   }
@@ -239,6 +249,7 @@ class PrivacyServices {
   /// This preference's value is a boolean, defaulting to `false`.
   ChromeSetting get spellingServiceEnabled =>
       ChromeSetting.fromJS(_wrapped.spellingServiceEnabled);
+
   set spellingServiceEnabled(ChromeSetting v) {
     _wrapped.spellingServiceEnabled = v.toJS;
   }
@@ -247,6 +258,7 @@ class PrivacyServices {
   /// read. This preference's value is a boolean, defaulting to `true`.
   ChromeSetting get translationServiceEnabled =>
       ChromeSetting.fromJS(_wrapped.translationServiceEnabled);
+
   set translationServiceEnabled(ChromeSetting v) {
     _wrapped.translationServiceEnabled = v.toJS;
   }
@@ -334,6 +346,7 @@ class PrivacyWebsites {
   /// `true`.
   ChromeSetting get thirdPartyCookiesAllowed =>
       ChromeSetting.fromJS(_wrapped.thirdPartyCookiesAllowed);
+
   set thirdPartyCookiesAllowed(ChromeSetting v) {
     _wrapped.thirdPartyCookiesAllowed = v.toJS;
   }
@@ -344,6 +357,7 @@ class PrivacyWebsites {
   /// the default value is `true`.
   ChromeSetting get privacySandboxEnabled =>
       ChromeSetting.fromJS(_wrapped.privacySandboxEnabled);
+
   set privacySandboxEnabled(ChromeSetting v) {
     _wrapped.privacySandboxEnabled = v.toJS;
   }
@@ -356,6 +370,7 @@ class PrivacyWebsites {
   /// an error.
   ChromeSetting get topicsEnabled =>
       ChromeSetting.fromJS(_wrapped.topicsEnabled);
+
   set topicsEnabled(ChromeSetting v) {
     _wrapped.topicsEnabled = v.toJS;
   }
@@ -368,6 +383,7 @@ class PrivacyWebsites {
   /// an error.
   ChromeSetting get fledgeEnabled =>
       ChromeSetting.fromJS(_wrapped.fledgeEnabled);
+
   set fledgeEnabled(ChromeSetting v) {
     _wrapped.fledgeEnabled = v.toJS;
   }
@@ -382,6 +398,7 @@ class PrivacyWebsites {
   /// throw an error.
   ChromeSetting get adMeasurementEnabled =>
       ChromeSetting.fromJS(_wrapped.adMeasurementEnabled);
+
   set adMeasurementEnabled(ChromeSetting v) {
     _wrapped.adMeasurementEnabled = v.toJS;
   }
@@ -391,6 +408,7 @@ class PrivacyWebsites {
   /// value is `true`.
   ChromeSetting get hyperlinkAuditingEnabled =>
       ChromeSetting.fromJS(_wrapped.hyperlinkAuditingEnabled);
+
   set hyperlinkAuditingEnabled(ChromeSetting v) {
     _wrapped.hyperlinkAuditingEnabled = v.toJS;
   }
@@ -401,6 +419,7 @@ class PrivacyWebsites {
   /// the default value is `true`.
   ChromeSetting get referrersEnabled =>
       ChromeSetting.fromJS(_wrapped.referrersEnabled);
+
   set referrersEnabled(ChromeSetting v) {
     _wrapped.referrersEnabled = v.toJS;
   }
@@ -410,6 +429,7 @@ class PrivacyWebsites {
   /// value is `false`.
   ChromeSetting get doNotTrackEnabled =>
       ChromeSetting.fromJS(_wrapped.doNotTrackEnabled);
+
   set doNotTrackEnabled(ChromeSetting v) {
     _wrapped.doNotTrackEnabled = v.toJS;
   }
@@ -419,6 +439,7 @@ class PrivacyWebsites {
   /// preference is of type boolean, and the default value is `true`.
   ChromeSetting? get protectedContentEnabled =>
       _wrapped.protectedContentEnabled?.let(ChromeSetting.fromJS);
+
   set protectedContentEnabled(ChromeSetting? v) {
     _wrapped.protectedContentEnabled = v?.toJS;
   }

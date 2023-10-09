@@ -102,6 +102,7 @@ class TabDetails {
   /// The ID of the tab to query state for. If no tab is specified, the
   /// non-tab-specific state is returned.
   int? get tabId => _wrapped.tabId;
+
   set tabId(int? v) {
     _wrapped.tabId = v;
   }
@@ -127,12 +128,14 @@ class SetTitleDetails {
 
   /// The id of the tab for which you want to modify the page action.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
 
   /// The tooltip string.
   String get title => _wrapped.title;
+
   set title(String v) {
     _wrapped.title = v;
   }
@@ -177,7 +180,7 @@ class SetIconDetails {
                 'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map')
           },
           path: switch (path) {
-            String() => path,
+            String() => path.jsify()!,
             Map() => path.jsify()!,
             null => null,
             _ => throw UnsupportedError(
@@ -192,6 +195,7 @@ class SetIconDetails {
 
   /// The id of the tab for which you want to modify the page action.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
@@ -208,6 +212,7 @@ class SetIconDetails {
         isOther: (v) => (v as $js.ImageDataType),
         isMap: (v) => v.toDartMap(),
       );
+
   set imageData(Object? v) {
     _wrapped.imageData = switch (v) {
       JSObject() => v,
@@ -229,9 +234,10 @@ class SetIconDetails {
         isString: (v) => v,
         isMap: (v) => v.toDartMap(),
       );
+
   set path(Object? v) {
     _wrapped.path = switch (v) {
-      String() => v,
+      String() => v.jsify()!,
       Map() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
@@ -241,6 +247,7 @@ class SetIconDetails {
 
   /// **Deprecated.** This argument is ignored.
   int? get iconIndex => _wrapped.iconIndex;
+
   set iconIndex(int? v) {
     _wrapped.iconIndex = v;
   }
@@ -267,6 +274,7 @@ class SetPopupDetails {
 
   /// The id of the tab for which you want to modify the page action.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
@@ -274,6 +282,7 @@ class SetPopupDetails {
   /// The relative path to the HTML file to show in a popup. If set to the empty
   /// string (`''`), no popup is shown.
   String get popup => _wrapped.popup;
+
   set popup(String v) {
     _wrapped.popup = v;
   }

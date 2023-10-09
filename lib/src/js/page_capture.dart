@@ -28,12 +28,7 @@ class JSPageCapture {}
 
 extension JSPageCaptureExtension on JSPageCapture {
   /// Saves the content of the tab with given id as MHTML.
-  external void saveAsMHTML(
-    SaveAsMhtmlDetails details,
-
-    /// Called when the MHTML has been generated.
-    JSFunction callback,
-  );
+  external JSPromise saveAsMHTML(SaveAsMhtmlDetails details);
 }
 
 @JS()

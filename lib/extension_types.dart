@@ -136,6 +136,7 @@ class ImageDetails {
 
   /// The format of the resulting image.  Default is `"jpeg"`.
   ImageFormat? get format => _wrapped.format?.let(ImageFormat.fromJS);
+
   set format(ImageFormat? v) {
     _wrapped.format = v?.toJS;
   }
@@ -145,6 +146,7 @@ class ImageDetails {
   /// resulting image will have more visual artifacts, and the number of bytes
   /// needed to store it will decrease.
   int? get quality => _wrapped.quality;
+
   set quality(int? v) {
     _wrapped.quality = v;
   }
@@ -211,12 +213,14 @@ class InjectDetails {
   /// extension to [cross site
   /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
   String? get code => _wrapped.code;
+
   set code(String? v) {
     _wrapped.code = v;
   }
 
   /// JavaScript or CSS file to inject.
   String? get file => _wrapped.file;
+
   set file(String? v) {
     _wrapped.file = v;
   }
@@ -226,6 +230,7 @@ class InjectDetails {
   /// only injected into the top frame. If `true` and `frameId` is set, then the
   /// code is inserted in the selected frame and all of its child frames.
   bool? get allFrames => _wrapped.allFrames;
+
   set allFrames(bool? v) {
     _wrapped.allFrames = v;
   }
@@ -233,6 +238,7 @@ class InjectDetails {
   /// The [frame](webNavigation#frame_ids) where the script or CSS should be
   /// injected. Defaults to 0 (the top-level frame).
   int? get frameId => _wrapped.frameId;
+
   set frameId(int? v) {
     _wrapped.frameId = v;
   }
@@ -242,6 +248,7 @@ class InjectDetails {
   /// document. Code cannot be inserted in top-level about:-frames. By default
   /// it is `false`.
   bool? get matchAboutBlank => _wrapped.matchAboutBlank;
+
   set matchAboutBlank(bool? v) {
     _wrapped.matchAboutBlank = v;
   }
@@ -249,6 +256,7 @@ class InjectDetails {
   /// The soonest that the JavaScript or CSS will be injected into the tab.
   /// Defaults to "document_idle".
   RunAt? get runAt => _wrapped.runAt?.let(RunAt.fromJS);
+
   set runAt(RunAt? v) {
     _wrapped.runAt = v?.toJS;
   }
@@ -257,6 +265,7 @@ class InjectDetails {
   /// CSS to inject. This may only be specified for CSS, not JavaScript.
   /// Defaults to `"author"`.
   CSSOrigin? get cssOrigin => _wrapped.cssOrigin?.let(CSSOrigin.fromJS);
+
   set cssOrigin(CSSOrigin? v) {
     _wrapped.cssOrigin = v?.toJS;
   }
@@ -305,12 +314,14 @@ class DeleteInjectionDetails {
 
   /// CSS code to remove.
   String? get code => _wrapped.code;
+
   set code(String? v) {
     _wrapped.code = v;
   }
 
   /// CSS file to remove.
   String? get file => _wrapped.file;
+
   set file(String? v) {
     _wrapped.file = v;
   }
@@ -320,6 +331,7 @@ class DeleteInjectionDetails {
   /// the top frame. If `true` and `frameId` is set, then the code is removed
   /// from the selected frame and all of its child frames.
   bool? get allFrames => _wrapped.allFrames;
+
   set allFrames(bool? v) {
     _wrapped.allFrames = v;
   }
@@ -327,6 +339,7 @@ class DeleteInjectionDetails {
   /// The [frame](webNavigation#frame_ids) from where the CSS should be removed.
   /// Defaults to 0 (the top-level frame).
   int? get frameId => _wrapped.frameId;
+
   set frameId(int? v) {
     _wrapped.frameId = v;
   }
@@ -335,6 +348,7 @@ class DeleteInjectionDetails {
   /// and about:srcdoc frames if your extension has access to its parent
   /// document. By default it is `false`.
   bool? get matchAboutBlank => _wrapped.matchAboutBlank;
+
   set matchAboutBlank(bool? v) {
     _wrapped.matchAboutBlank = v;
   }
@@ -342,6 +356,7 @@ class DeleteInjectionDetails {
   /// The [origin](https://www.w3.org/TR/css3-cascade/#cascading-origins) of the
   /// CSS to remove. Defaults to `"author"`.
   CSSOrigin? get cssOrigin => _wrapped.cssOrigin?.let(CSSOrigin.fromJS);
+
   set cssOrigin(CSSOrigin? v) {
     _wrapped.cssOrigin = v?.toJS;
   }

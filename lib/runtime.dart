@@ -65,7 +65,7 @@ class ChromeRuntime {
   }
 
   /// Sets the URL to be visited upon uninstallation. This may be used to clean
-  /// up server-side data, do analytics, and implement surveys. Maximum 255
+  /// up server-side data, do analytics, and implement surveys. Maximum 1023
   /// characters.
   /// [url] URL to be opened after the extension is uninstalled. This URL must
   /// have an http: or https: scheme. Set an empty string to not open a new
@@ -309,6 +309,12 @@ class ChromeRuntime {
             return $c(Port.fromJS(port));
           });
 
+  /// Fired when a connection is made from a user script from this extension.
+  EventStream<Port> get onUserScriptConnect =>
+      $js.chrome.runtime.onUserScriptConnect.asStream(($c) => ($js.Port port) {
+            return $c(Port.fromJS(port));
+          });
+
   /// Fired when a connection is made from a native application. Currently only
   /// supported on Chrome OS.
   EventStream<Port> get onConnectNative =>
@@ -322,16 +328,12 @@ class ChromeRuntime {
       $js.chrome.runtime.onMessage.asStream(($c) => (
             JSAny? message,
             $js.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnMessageEvent(
               message: message?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
             ));
           });
 
@@ -341,16 +343,27 @@ class ChromeRuntime {
       $js.chrome.runtime.onMessageExternal.asStream(($c) => (
             JSAny? message,
             $js.MessageSender sender,
-            Function sendResponse,
+            JSFunction sendResponse,
           ) {
             return $c(OnMessageExternalEvent(
               message: message?.dartify(),
               sender: MessageSender.fromJS(sender),
-              sendResponse: ([Object? p1, Object? p2]) {
-                return (sendResponse as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendResponse: sendResponse,
+            ));
+          });
+
+  /// Fired when a message is sent from a user script associated with the same
+  /// extension.
+  EventStream<OnUserScriptMessageEvent> get onUserScriptMessage =>
+      $js.chrome.runtime.onUserScriptMessage.asStream(($c) => (
+            JSAny? message,
+            $js.MessageSender sender,
+            JSFunction sendResponse,
+          ) {
+            return $c(OnUserScriptMessageEvent(
+              message: message?.dartify(),
+              sender: MessageSender.fromJS(sender),
+              sendResponse: sendResponse,
             ));
           });
 
@@ -475,7 +488,8 @@ enum ContextType {
   tab('TAB'),
   popup('POPUP'),
   background('BACKGROUND'),
-  offscreenDocument('OFFSCREEN_DOCUMENT');
+  offscreenDocument('OFFSCREEN_DOCUMENT'),
+  sidePanel('SIDE_PANEL');
 
   const ContextType(this.value);
 
@@ -496,11 +510,11 @@ class Port {
     /// Immediately disconnect the port. Calling `disconnect()` on an
     /// already-disconnected port has no effect. When a port is disconnected, no
     /// new events will be dispatched to this port.
-    required Function disconnect,
+    required JSFunction disconnect,
 
     /// Send a message to the other end of the port. If the port is
     /// disconnected, an error is thrown.
-    required Function postMessage,
+    required JSFunction postMessage,
 
     /// This property will **only** be present on ports passed to
     /// $(ref:runtime.onConnect onConnect) / $(ref:runtime.onConnectExternal
@@ -509,8 +523,8 @@ class Port {
     MessageSender? sender,
   }) : _wrapped = $js.Port(
           name: name,
-          disconnect: allowInterop(disconnect),
-          postMessage: allowInterop(postMessage),
+          disconnect: disconnect,
+          postMessage: postMessage,
           sender: sender?.toJS,
         );
 
@@ -520,6 +534,7 @@ class Port {
 
   /// The name of the port, as specified in the call to [runtime.connect].
   String get name => _wrapped.name;
+
   set name(String v) {
     _wrapped.name = v;
   }
@@ -527,24 +542,18 @@ class Port {
   /// Immediately disconnect the port. Calling `disconnect()` on an
   /// already-disconnected port has no effect. When a port is disconnected, no
   /// new events will be dispatched to this port.
-  Function get disconnect => ([Object? p1, Object? p2]) {
-        return (_wrapped.disconnect as JSAny? Function(JSAny?, JSAny?))(
-                p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
-  set disconnect(Function v) {
-    _wrapped.disconnect = allowInterop(v);
+  JSFunction get disconnect => _wrapped.disconnect;
+
+  set disconnect(JSFunction v) {
+    _wrapped.disconnect = v;
   }
 
   /// Send a message to the other end of the port. If the port is disconnected,
   /// an error is thrown.
-  Function get postMessage => ([Object? p1, Object? p2]) {
-        return (_wrapped.postMessage as JSAny? Function(JSAny?, JSAny?))(
-                p1?.jsify(), p2?.jsify())
-            ?.dartify();
-      };
-  set postMessage(Function v) {
-    _wrapped.postMessage = allowInterop(v);
+  JSFunction get postMessage => _wrapped.postMessage;
+
+  set postMessage(JSFunction v) {
+    _wrapped.postMessage = v;
   }
 
   /// This property will **only** be present on ports passed to
@@ -552,6 +561,7 @@ class Port {
   /// onConnectExternal) / $(ref:runtime.onConnectExternal onConnectNative)
   /// listeners.
   MessageSender? get sender => _wrapped.sender?.let(MessageSender.fromJS);
+
   set sender(MessageSender? v) {
     _wrapped.sender = v?.toJS;
   }
@@ -653,6 +663,7 @@ class MessageSender {
   /// *only* be present when the connection was opened from a tab (including
   /// content scripts), and *only* if the receiver is an extension, not an app.
   Tab? get tab => _wrapped.tab?.let(Tab.fromJS);
+
   set tab(Tab? v) {
     _wrapped.tab = v?.toJS;
   }
@@ -661,6 +672,7 @@ class MessageSender {
   /// top-level frames, positive for child frames. This will only be set when
   /// `tab` is set.
   int? get frameId => _wrapped.frameId;
+
   set frameId(int? v) {
     _wrapped.frameId = v;
   }
@@ -668,6 +680,7 @@ class MessageSender {
   /// The guest process id of the requesting webview, if available. Only
   /// available for component extensions.
   int? get guestProcessId => _wrapped.guestProcessId;
+
   set guestProcessId(int? v) {
     _wrapped.guestProcessId = v;
   }
@@ -675,12 +688,14 @@ class MessageSender {
   /// The guest render frame routing id of the requesting webview, if available.
   /// Only available for component extensions.
   int? get guestRenderFrameRoutingId => _wrapped.guestRenderFrameRoutingId;
+
   set guestRenderFrameRoutingId(int? v) {
     _wrapped.guestRenderFrameRoutingId = v;
   }
 
   /// The ID of the extension or app that opened the connection, if any.
   String? get id => _wrapped.id;
+
   set id(String? v) {
     _wrapped.id = v;
   }
@@ -689,12 +704,14 @@ class MessageSender {
   /// in an iframe, it will be iframe's URL not the URL of the page which hosts
   /// it.
   String? get url => _wrapped.url;
+
   set url(String? v) {
     _wrapped.url = v;
   }
 
   /// The name of the native application that opened the connection, if any.
   String? get nativeApplication => _wrapped.nativeApplication;
+
   set nativeApplication(String? v) {
     _wrapped.nativeApplication = v;
   }
@@ -702,6 +719,7 @@ class MessageSender {
   /// The TLS channel ID of the page or frame that opened the connection, if
   /// requested by the extension or app, and if available.
   String? get tlsChannelId => _wrapped.tlsChannelId;
+
   set tlsChannelId(String? v) {
     _wrapped.tlsChannelId = v;
   }
@@ -711,12 +729,14 @@ class MessageSender {
   /// sandboxed iframes). This is useful for identifying if the origin can be
   /// trusted if we can't immediately tell from the URL.
   String? get origin => _wrapped.origin;
+
   set origin(String? v) {
     _wrapped.origin = v;
   }
 
   /// A UUID of the document that opened the connection.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
@@ -725,6 +745,7 @@ class MessageSender {
   /// the port was created. Note that the lifecycle state of the document may
   /// have changed since port creation.
   String? get documentLifecycle => _wrapped.documentLifecycle;
+
   set documentLifecycle(String? v) {
     _wrapped.documentLifecycle = v;
   }
@@ -755,12 +776,14 @@ class PlatformInfo {
 
   /// The operating system Chrome is running on.
   PlatformOs get os => PlatformOs.fromJS(_wrapped.os);
+
   set os(PlatformOs v) {
     _wrapped.os = v.toJS;
   }
 
   /// The machine's processor architecture.
   PlatformArch get arch => PlatformArch.fromJS(_wrapped.arch);
+
   set arch(PlatformArch v) {
     _wrapped.arch = v.toJS;
   }
@@ -768,6 +791,7 @@ class PlatformInfo {
   /// The native client architecture. This may be different from arch on some
   /// platforms.
   PlatformNaclArch get naclArch => PlatformNaclArch.fromJS(_wrapped.nacl_arch);
+
   set naclArch(PlatformNaclArch v) {
     _wrapped.nacl_arch = v.toJS;
   }
@@ -827,12 +851,14 @@ class ExtensionContext {
 
   /// The type of context this corresponds to.
   ContextType get contextType => ContextType.fromJS(_wrapped.contextType);
+
   set contextType(ContextType v) {
     _wrapped.contextType = v.toJS;
   }
 
   /// A unique identifier for this context
   String get contextId => _wrapped.contextId;
+
   set contextId(String v) {
     _wrapped.contextId = v;
   }
@@ -840,6 +866,7 @@ class ExtensionContext {
   /// The ID of the tab for this context, or -1 if this context is not hosted in
   /// a tab.
   int get tabId => _wrapped.tabId;
+
   set tabId(int v) {
     _wrapped.tabId = v;
   }
@@ -847,6 +874,7 @@ class ExtensionContext {
   /// The ID of the window for this context, or -1 if this context is not hosted
   /// in a window.
   int get windowId => _wrapped.windowId;
+
   set windowId(int v) {
     _wrapped.windowId = v;
   }
@@ -854,6 +882,7 @@ class ExtensionContext {
   /// A UUID for the document associated with this context, or undefined if this
   /// context is hosted not in a document.
   String? get documentId => _wrapped.documentId;
+
   set documentId(String? v) {
     _wrapped.documentId = v;
   }
@@ -861,6 +890,7 @@ class ExtensionContext {
   /// The ID of the frame for this context, or -1 if this context is not hosted
   /// in a frame.
   int get frameId => _wrapped.frameId;
+
   set frameId(int v) {
     _wrapped.frameId = v;
   }
@@ -868,6 +898,7 @@ class ExtensionContext {
   /// The URL of the document associated with this context, or undefined if the
   /// context is not hosted in a document.
   String? get documentUrl => _wrapped.documentUrl;
+
   set documentUrl(String? v) {
     _wrapped.documentUrl = v;
   }
@@ -875,12 +906,14 @@ class ExtensionContext {
   /// The origin of the document associated with this context, or undefined if
   /// the context is not hosted in a document.
   String? get documentOrigin => _wrapped.documentOrigin;
+
   set documentOrigin(String? v) {
     _wrapped.documentOrigin = v;
   }
 
   /// Whether the context is associated with an incognito profile.
   bool get incognito => _wrapped.incognito;
+
   set incognito(bool v) {
     _wrapped.incognito = v;
   }
@@ -919,53 +952,62 @@ class ContextFilter {
       .cast<$js.ContextType>()
       .map((e) => ContextType.fromJS(e))
       .toList();
+
   set contextTypes(List<ContextType>? v) {
     _wrapped.contextTypes = v?.toJSArray((e) => e.toJS);
   }
 
   List<String>? get contextIds =>
       _wrapped.contextIds?.toDart.cast<String>().map((e) => e).toList();
+
   set contextIds(List<String>? v) {
     _wrapped.contextIds = v?.toJSArray((e) => e);
   }
 
   List<int>? get tabIds =>
       _wrapped.tabIds?.toDart.cast<int>().map((e) => e).toList();
+
   set tabIds(List<int>? v) {
     _wrapped.tabIds = v?.toJSArray((e) => e);
   }
 
   List<int>? get windowIds =>
       _wrapped.windowIds?.toDart.cast<int>().map((e) => e).toList();
+
   set windowIds(List<int>? v) {
     _wrapped.windowIds = v?.toJSArray((e) => e);
   }
 
   List<String>? get documentIds =>
       _wrapped.documentIds?.toDart.cast<String>().map((e) => e).toList();
+
   set documentIds(List<String>? v) {
     _wrapped.documentIds = v?.toJSArray((e) => e);
   }
 
   List<int>? get frameIds =>
       _wrapped.frameIds?.toDart.cast<int>().map((e) => e).toList();
+
   set frameIds(List<int>? v) {
     _wrapped.frameIds = v?.toJSArray((e) => e);
   }
 
   List<String>? get documentUrls =>
       _wrapped.documentUrls?.toDart.cast<String>().map((e) => e).toList();
+
   set documentUrls(List<String>? v) {
     _wrapped.documentUrls = v?.toJSArray((e) => e);
   }
 
   List<String>? get documentOrigins =>
       _wrapped.documentOrigins?.toDart.cast<String>().map((e) => e).toList();
+
   set documentOrigins(List<String>? v) {
     _wrapped.documentOrigins = v?.toJSArray((e) => e);
   }
 
   bool? get incognito => _wrapped.incognito;
+
   set incognito(bool? v) {
     _wrapped.incognito = v;
   }
@@ -997,6 +1039,7 @@ class OnInstalledDetails {
 
   /// The reason that this event is being dispatched.
   OnInstalledReason get reason => OnInstalledReason.fromJS(_wrapped.reason);
+
   set reason(OnInstalledReason v) {
     _wrapped.reason = v.toJS;
   }
@@ -1004,6 +1047,7 @@ class OnInstalledDetails {
   /// Indicates the previous version of the extension, which has just been
   /// updated. This is present only if 'reason' is 'update'.
   String? get previousVersion => _wrapped.previousVersion;
+
   set previousVersion(String? v) {
     _wrapped.previousVersion = v;
   }
@@ -1011,6 +1055,7 @@ class OnInstalledDetails {
   /// Indicates the ID of the imported shared module extension which updated.
   /// This is present only if 'reason' is 'shared_module_update'.
   String? get id => _wrapped.id;
+
   set id(String? v) {
     _wrapped.id = v;
   }
@@ -1031,6 +1076,7 @@ class OnUpdateAvailableDetails {
 
   /// The version number of the available update.
   String get version => _wrapped.version;
+
   set version(String v) {
     _wrapped.version = v;
   }
@@ -1058,6 +1104,7 @@ class RequestUpdateCheckCallbackResult {
   /// Result of the update check.
   RequestUpdateCheckStatus get status =>
       RequestUpdateCheckStatus.fromJS(_wrapped.status);
+
   set status(RequestUpdateCheckStatus v) {
     _wrapped.status = v.toJS;
   }
@@ -1065,6 +1112,7 @@ class RequestUpdateCheckCallbackResult {
   /// If an update is available, this contains the version of the available
   /// update.
   String? get version => _wrapped.version;
+
   set version(String? v) {
     _wrapped.version = v;
   }
@@ -1093,6 +1141,7 @@ class ConnectInfo {
   /// Will be passed into onConnect for processes that are listening for the
   /// connection event.
   String? get name => _wrapped.name;
+
   set name(String? v) {
     _wrapped.name = v;
   }
@@ -1100,6 +1149,7 @@ class ConnectInfo {
   /// Whether the TLS channel ID will be passed into onConnectExternal for
   /// processes that are listening for the connection event.
   bool? get includeTlsChannelId => _wrapped.includeTlsChannelId;
+
   set includeTlsChannelId(bool? v) {
     _wrapped.includeTlsChannelId = v;
   }
@@ -1123,6 +1173,7 @@ class SendMessageOptions {
   /// Whether the TLS channel ID will be passed into onMessageExternal for
   /// processes that are listening for the connection event.
   bool? get includeTlsChannelId => _wrapped.includeTlsChannelId;
+
   set includeTlsChannelId(bool? v) {
     _wrapped.includeTlsChannelId = v;
   }
@@ -1143,6 +1194,7 @@ class RuntimeLastError {
 
   /// Details about the error which occurred.
   String? get message => _wrapped.message;
+
   set message(String? v) {
     _wrapped.message = v;
   }
@@ -1167,7 +1219,7 @@ class OnMessageEvent {
   /// return true* from the event listener to indicate you wish to send a
   /// response asynchronously (this will keep the message channel open to the
   /// other end until `sendResponse` is called).
-  final Function sendResponse;
+  final JSFunction sendResponse;
 }
 
 class OnMessageExternalEvent {
@@ -1189,7 +1241,29 @@ class OnMessageExternalEvent {
   /// return true* from the event listener to indicate you wish to send a
   /// response asynchronously (this will keep the message channel open to the
   /// other end until `sendResponse` is called).
-  final Function sendResponse;
+  final JSFunction sendResponse;
+}
+
+class OnUserScriptMessageEvent {
+  OnUserScriptMessageEvent({
+    required this.message,
+    required this.sender,
+    required this.sendResponse,
+  });
+
+  /// The message sent by the user script.
+  final Object? message;
+
+  final MessageSender sender;
+
+  /// Function to call (at most once) when you have a response. The argument
+  /// should be any JSON-ifiable object. If you have more than one `onMessage`
+  /// listener in the same document, then only one may send a response. This
+  /// function becomes invalid when the event listener returns, *unless you
+  /// return true* from the event listener to indicate you wish to send a
+  /// response asynchronously (this will keep the message channel open to the
+  /// other end until `sendResponse` is called).
+  final JSFunction sendResponse;
 }
 
 class PortOnMessageEvent {

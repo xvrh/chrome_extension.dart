@@ -66,16 +66,12 @@ class ChromeTtsEngine {
       $js.chrome.ttsEngine.onSpeak.asStream(($c) => (
             String utterance,
             $js.SpeakOptions options,
-            Function sendTtsEvent,
+            JSFunction sendTtsEvent,
           ) {
             return $c(OnSpeakEvent(
               utterance: utterance,
               options: SpeakOptions.fromJS(options),
-              sendTtsEvent: ([Object? p1, Object? p2]) {
-                return (sendTtsEvent as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendTtsEvent: sendTtsEvent,
             ));
           });
 
@@ -88,23 +84,15 @@ class ChromeTtsEngine {
             String utterance,
             $js.SpeakOptions options,
             $js.AudioStreamOptions audioStreamOptions,
-            Function sendTtsAudio,
-            Function sendError,
+            JSFunction sendTtsAudio,
+            JSFunction sendError,
           ) {
             return $c(OnSpeakWithAudioStreamEvent(
               utterance: utterance,
               options: SpeakOptions.fromJS(options),
               audioStreamOptions: AudioStreamOptions.fromJS(audioStreamOptions),
-              sendTtsAudio: ([Object? p1, Object? p2]) {
-                return (sendTtsAudio as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
-              sendError: ([Object? p1, Object? p2]) {
-                return (sendError as JSAny? Function(JSAny?, JSAny?))(
-                        p1?.jsify(), p2?.jsify())
-                    ?.dartify();
-              },
+              sendTtsAudio: sendTtsAudio,
+              sendError: sendError,
             ));
           });
 
@@ -191,6 +179,7 @@ class SpeakOptions {
 
   /// The name of the voice to use for synthesis.
   String? get voiceName => _wrapped.voiceName;
+
   set voiceName(String? v) {
     _wrapped.voiceName = v;
   }
@@ -198,12 +187,14 @@ class SpeakOptions {
   /// The language to be used for synthesis, in the form _language_-_region_.
   /// Examples: 'en', 'en-US', 'en-GB', 'zh-CN'.
   String? get lang => _wrapped.lang;
+
   set lang(String? v) {
     _wrapped.lang = v;
   }
 
   /// Gender of voice for synthesized speech.
   VoiceGender? get gender => _wrapped.gender?.let(VoiceGender.fromJS);
+
   set gender(VoiceGender? v) {
     _wrapped.gender = v?.toJS;
   }
@@ -215,6 +206,7 @@ class SpeakOptions {
   /// rates, don't return an error. Instead, clip the rate to the range the
   /// voice supports.
   double? get rate => _wrapped.rate;
+
   set rate(double? v) {
     _wrapped.rate = v;
   }
@@ -222,6 +214,7 @@ class SpeakOptions {
   /// Speaking pitch between 0 and 2 inclusive, with 0 being lowest and 2 being
   /// highest. 1.0 corresponds to this voice's default pitch.
   double? get pitch => _wrapped.pitch;
+
   set pitch(double? v) {
     _wrapped.pitch = v;
   }
@@ -229,6 +222,7 @@ class SpeakOptions {
   /// Speaking volume between 0 and 1 inclusive, with 0 being lowest and 1 being
   /// highest, with a default of 1.0.
   double? get volume => _wrapped.volume;
+
   set volume(double? v) {
     _wrapped.volume = v;
   }
@@ -254,12 +248,14 @@ class AudioStreamOptions {
 
   /// The sample rate expected in an audio buffer.
   int get sampleRate => _wrapped.sampleRate;
+
   set sampleRate(int v) {
     _wrapped.sampleRate = v;
   }
 
   /// The number of samples within an audio buffer.
   int get bufferSize => _wrapped.bufferSize;
+
   set bufferSize(int v) {
     _wrapped.bufferSize = v;
   }
@@ -295,18 +291,21 @@ class AudioBuffer {
   /// audioStreamOptions.sampleRate, and as linear pcm, 32-bit signed float i.e.
   /// the Float32Array type in javascript.
   ByteBuffer get audioBuffer => _wrapped.audioBuffer.toDart;
+
   set audioBuffer(ByteBuffer v) {
     _wrapped.audioBuffer = v.toJS;
   }
 
   /// The character index associated with this audio buffer.
   int? get charIndex => _wrapped.charIndex;
+
   set charIndex(int? v) {
     _wrapped.charIndex = v;
   }
 
   /// True if this audio buffer is the last for the text being spoken.
   bool? get isLastBuffer => _wrapped.isLastBuffer;
+
   set isLastBuffer(bool? v) {
     _wrapped.isLastBuffer = v;
   }
@@ -333,7 +332,7 @@ class OnSpeakEvent {
 
   /// Call this function with events that occur in the process of speaking the
   /// utterance.
-  final Function sendTtsEvent;
+  final JSFunction sendTtsEvent;
 }
 
 class OnSpeakWithAudioStreamEvent {
@@ -362,8 +361,8 @@ class OnSpeakWithAudioStreamEvent {
 
   /// Call this function with audio that occur in the process of speaking the
   /// utterance.
-  final Function sendTtsAudio;
+  final JSFunction sendTtsAudio;
 
   /// Call this function to indicate an error with rendering this utterance.
-  final Function sendError;
+  final JSFunction sendError;
 }

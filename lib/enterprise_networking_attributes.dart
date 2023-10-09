@@ -66,18 +66,21 @@ class NetworkDetails {
 
   /// The device's MAC address.
   String get macAddress => _wrapped.macAddress;
+
   set macAddress(String v) {
     _wrapped.macAddress = v;
   }
 
   /// The device's local IPv4 address (undefined if not configured).
   String? get ipv4 => _wrapped.ipv4;
+
   set ipv4(String? v) {
     _wrapped.ipv4 = v;
   }
 
   /// The device's local IPv6 address (undefined if not configured).
   String? get ipv6 => _wrapped.ipv6;
+
   set ipv6(String? v) {
     _wrapped.ipv6 = v;
   }
