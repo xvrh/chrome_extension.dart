@@ -31,7 +31,7 @@ packages:
       path: "../.."
       relative: true
     source: path
-    version: "0.3.0"
+    version: "0.2.0"
   clock:
     dependency: transitive
     description:
@@ -187,9 +187,9 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: ccbbfbf29732ee1b391c4c6d13e7032d851f675f47365e81904e4c6fd669c854
+      sha256: afe077240a270dcfd2aafe77602b4113645af95d0ad31128cc02bce5ac5d5152
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.2-beta"
+    version: "0.3.0"
 sdks:
-  dart: ">=3.2.0-194.0.dev <4.0.0"
+  dart: ">=3.2.0 <4.0.0"

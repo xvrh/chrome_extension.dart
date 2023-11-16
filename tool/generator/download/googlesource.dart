@@ -24,7 +24,7 @@ class GoogleSourceFile extends GoogleSourceEntity {
     for (var c in _encodedCharacters) htmlEscape.convert(c): c
   };
 
-  GoogleSourceFile(String rawHtml, String url) : super(rawHtml, url);
+  GoogleSourceFile(super.rawHtml, super.url);
 
   /// Parse this file's raw html and return its contents.
   String get fileContents {
@@ -48,7 +48,7 @@ class GoogleSourceFile extends GoogleSourceEntity {
 /// A [GoogleSourceDirectory] represents a directory and can access the [Uri]s
 /// of its child [GoogleSourceEntity]s.
 class GoogleSourceDirectory extends GoogleSourceEntity {
-  GoogleSourceDirectory(String rawHtml, String url) : super(rawHtml, url);
+  GoogleSourceDirectory(super.rawHtml, super.url);
 
   String get _lines => TagMatcher.olMatcher.allContents(rawHtml).single;
 

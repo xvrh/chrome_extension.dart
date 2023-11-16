@@ -37,7 +37,7 @@ Future<void> runTests(String source,
           .addMiddleware(shelf.createMiddleware(responseHandler: (r) {
         return r.change(
             headers: {...r.headers, 'Access-Control-Allow-Origin': '*'});
-      })).addHandler(server.router),
+      })).addHandler(server.router.call),
       InternetAddress.loopbackIPv4,
       0);
 
