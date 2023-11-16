@@ -192,7 +192,7 @@ class StorageArea {
 }
 
 class StorageSync extends StorageArea {
-  StorageSync.fromJS($js.StorageSync wrapped) : super.fromJS(wrapped);
+  StorageSync.fromJS(super.wrapped) : super.fromJS();
 
   @override
   $js.StorageSync get _wrapped => super._wrapped as $js.StorageSync;
@@ -260,7 +260,7 @@ class StorageSync extends StorageArea {
 }
 
 class StorageLocal extends StorageArea {
-  StorageLocal.fromJS($js.StorageLocal wrapped) : super.fromJS(wrapped);
+  StorageLocal.fromJS(super.wrapped) : super.fromJS();
 
   @override
   $js.StorageLocal get _wrapped => super._wrapped as $js.StorageLocal;
@@ -278,7 +278,7 @@ class StorageLocal extends StorageArea {
 }
 
 class StorageSession extends StorageArea {
-  StorageSession.fromJS($js.StorageSession wrapped) : super.fromJS(wrapped);
+  StorageSession.fromJS(super.wrapped) : super.fromJS();
 
   @override
   $js.StorageSession get _wrapped => super._wrapped as $js.StorageSession;

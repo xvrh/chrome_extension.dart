@@ -540,8 +540,8 @@ class DartApiGenerator extends _GeneratorBase {
             ..name = 'fromJS'
             ..requiredParameters.add(Parameter((b) => b
               ..name = 'wrapped'
-              ..type = refer(dictionary.name, _jsFile)))
-            ..initializers.add(Code('super.fromJS(wrapped)'))));
+              ..toSuper = true))
+            ..initializers.add(Code('super.fromJS()'))));
         } else {
           b
             ..fields.add(Field((b) => b

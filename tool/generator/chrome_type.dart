@@ -73,8 +73,8 @@ class LazyType extends ChromeType {
     required this.name,
     required this.prefix,
     required this.locationFile,
-    required bool isNullable,
-  }) : super(isNullable: isNullable) {
+    required super.isNullable,
+  }) {
     context._lazyTypes.add(this);
   }
 
@@ -570,9 +570,8 @@ class AliasedType extends ChromeType {
   final String? url;
 
   AliasedType(this.alias, ChromeType original,
-      {this.url, required this.locationFile, required bool isNullable})
-      : original = original.copyWith(isNullable: isNullable),
-        super(isNullable: isNullable);
+      {this.url, required this.locationFile, required super.isNullable})
+      : original = original.copyWith(isNullable: isNullable);
 
   @override
   ChromeType copyWith({required bool isNullable}) =>
