@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ElevatedButton(
                 onPressed: () async {
                   var info = await chrome.system.memory.getInfo();
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                             'Memory ${info.capacity} / ${info.availableCapacity}')));
@@ -87,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
             onPressed: () async {
               var newTab =
                   await chrome.tabs.create(CreateProperties(active: false));
-              if (mounted) {
+              if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('New tab ${newTab.id}')));
               }
@@ -119,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           icon: Icon(Icons.delete),
                           onPressed: () async {
                             await chrome.tabs.remove([tab.id!]);
-                            if (mounted) {
+                            if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Tab deleted')));
                             }
