@@ -9,6 +9,8 @@ This allows to build [Chrome extension](https://developer.chrome.com/docs/extens
 
 The JS interop is build on top of `dart:js_interop` (static interop) which make it ready for future WASM compilation.
 
+<a href="https://www.buymeacoffee.com/xvrh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60" width="217"></a>
+
 ## Using the library
 
 ### Example
