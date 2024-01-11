@@ -1,13 +1,15 @@
 # chrome_extension.dart
 
 [![pub package](https://img.shields.io/pub/v/chrome_extension.svg)](https://pub.dartlang.org/packages/chrome_extension)
-[![Build Status](https://github.com/xvrh/chrome_extension.dart/workflows/Build/badge.svg)](https://github.com/xvrh/chrome_extension.dart)
+[![Build Status](https://github.com/xvrh/chrome_extension.dart/workflows/Build/badge.svg?branch=main)](https://github.com/xvrh/chrome_extension.dart)
 
 A library for accessing the `chrome.*` [APIs](https://developer.chrome.com/docs/extensions/reference/) available in Chrome extensions.
 
 This allows to build [Chrome extension](https://developer.chrome.com/docs/extensions/) with [Dart](https://dart.dev) & [Flutter](https://flutter.dev) and to interop with the native APIs easily with a high-level type-safe interface.
 
 The JS interop is build on top of `dart:js_interop` (static interop) which make it ready for future WASM compilation.
+
+<a href="https://www.buymeacoffee.com/xvrh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60" width="217"></a>
 
 ## Using the library
 
