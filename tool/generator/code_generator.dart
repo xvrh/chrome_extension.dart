@@ -765,7 +765,6 @@ String _emitCode(Spec spec, {Allocator? allocator}) {
 Expression _staticInteropAnnotation() =>
     refer('staticInterop', _dartInteropUrl);
 
-Expression _anonymousAnnotation() => refer('anonymous', _dartInteropUrl);
 Expression _jsAnnotation([String? name]) =>
     refer('JS', _dartInteropUrl).call([if (name != null) literalString(name)]);
 
