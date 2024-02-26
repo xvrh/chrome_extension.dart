@@ -23,12 +23,16 @@ Future<void> runTests(String source,
   var testCompleter = Completer<TerminateRequest>();
 
   late Browser browser;
+  var futureBrowser = Completer<Browser>();
   final puppeteerPort = await _getUnusedPort();
 
   var server = Server(
-    onInfo: () => ServerInfo(
-        puppeteerUrl: browser.wsEndpoint,
-        operatingSystem: Platform.operatingSystem),
+    onInfo: () async {
+      var browser = await futureBrowser.future;
+      return ServerInfo(
+          puppeteerUrl: browser.wsEndpoint,
+          operatingSystem: Platform.operatingSystem);
+    },
     onLog: (log) => print(log.log.trim()),
     onTerminate: testCompleter.complete,
   );
@@ -83,6 +87,7 @@ Future<void> runTests(String source,
     ],
     devTools: devtools,
   );
+  futureBrowser.complete(browser);
   await afterBrowserOpen
       ?.call(RunnerTestContext(browser: browser, serverUrl: serverUrl));
 
