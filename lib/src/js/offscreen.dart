@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSOffscreenExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSOffscreen {}
-
-extension JSOffscreenExtension on JSOffscreen {
+extension type JSOffscreen._(JSObject _) {
   /// Creates a new offscreen document for the extension.
   /// |parameters|: The parameters describing the offscreen document to create.
   /// |callback|: Invoked when the offscreen document is created and has
@@ -48,11 +45,7 @@ extension JSOffscreenExtension on JSOffscreen {
 }
 
 typedef Reason = String;
-
-@JS()
-@staticInterop
-@anonymous
-class CreateParameters {
+extension type CreateParameters._(JSObject _) implements JSObject {
   external factory CreateParameters({
     /// The reason(s) the extension is creating the offscreen document.
     JSArray reasons,
@@ -65,9 +58,7 @@ class CreateParameters {
     /// user.
     String justification,
   });
-}
 
-extension CreateParametersExtension on CreateParameters {
   /// The reason(s) the extension is creating the offscreen document.
   external JSArray reasons;
 

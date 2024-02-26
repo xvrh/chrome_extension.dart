@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -29,12 +30,7 @@ extension JSChromeJSEnterpriseNetworkingAttributesExtension
   }
 }
 
-@JS()
-@staticInterop
-class JSEnterpriseNetworkingAttributes {}
-
-extension JSEnterpriseNetworkingAttributesExtension
-    on JSEnterpriseNetworkingAttributes {
+extension type JSEnterpriseNetworkingAttributes._(JSObject _) {
   /// Retrieves the network details of the device's default network.
   /// If the user is not affiliated or the device is not connected to a
   /// network, [runtime.lastError] will be set with a failure reason.
@@ -42,11 +38,7 @@ extension JSEnterpriseNetworkingAttributesExtension
   /// [NetworkDetails].
   external JSPromise getNetworkDetails();
 }
-
-@JS()
-@staticInterop
-@anonymous
-class NetworkDetails {
+extension type NetworkDetails._(JSObject _) implements JSObject {
   external factory NetworkDetails({
     /// The device's MAC address.
     String macAddress,
@@ -57,9 +49,7 @@ class NetworkDetails {
     /// The device's local IPv6 address (undefined if not configured).
     String? ipv6,
   });
-}
 
-extension NetworkDetailsExtension on NetworkDetails {
   /// The device's MAC address.
   external String macAddress;
 

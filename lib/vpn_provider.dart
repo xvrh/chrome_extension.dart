@@ -144,32 +144,36 @@ class ChromeVpnProvider {
 /// The enum is used by the platform to notify the client of the VPN session
 /// status.
 enum PlatformMessage {
-  /// VPN configuration connected.
+  /// Indicates that the VPN configuration connected.
   connected('connected'),
 
-  /// VPN configuration disconnected.
+  /// Indicates that the VPN configuration disconnected.
   disconnected('disconnected'),
 
-  /// An error occurred in VPN connection, for example a timeout. A description
+  /// Indicates that an error occurred in VPN connection, for example a timeout.
+  /// A description
   /// of the error is given as the <a href="#property-onPlatformMessage-error">
   /// error argument to onPlatformMessage</a>.
   error('error'),
 
-  /// The default physical network connection is down.
+  /// Indicates that the default physical network connection is down.
   linkDown('linkDown'),
 
-  /// The default physical network connection is back up.
+  /// Indicates that the default physical network connection is back up.
   linkUp('linkUp'),
 
-  /// The default physical network connection changed, e.g. wifi->mobile.
+  /// Indicates that the default physical network connection changed, e.g.
+  /// wifi->mobile.
   linkChanged('linkChanged'),
 
-  /// The OS is preparing to suspend, so the VPN should drop its connection.
+  /// Indicates that the OS is preparing to suspend, so the VPN should drop its
+  /// connection.
   /// The extension is not guaranteed to receive this event prior to
   /// suspending.
   suspend('suspend'),
 
-  /// The OS has resumed and the user has logged back in, so the VPN should
+  /// Indicates that the OS has resumed and the user has logged back in, so the
+  /// VPN should
   /// try to reconnect.
   resume('resume');
 
@@ -186,10 +190,10 @@ enum PlatformMessage {
 /// of its current state. This helps provide meaningful messages
 /// to the user.
 enum VpnConnectionState {
-  /// VPN connection was successful.
+  /// Specifies that VPN connection was successful.
   connected('connected'),
 
-  /// VPN connection failed.
+  /// Specifies that VPN connection has failed.
   failure('failure');
 
   const VpnConnectionState(this.value);
@@ -204,10 +208,12 @@ enum VpnConnectionState {
 /// The enum is used by the platform to indicate the event that triggered
 /// `onUIEvent`.
 enum UIEvent {
-  /// Request the VPN client to show add configuration dialog to the user.
+  /// Requests that the VPN client show the add configuration dialog box to
+  /// the user.
   showAddDialog('showAddDialog'),
 
-  /// Request the VPN client to show configuration settings dialog to the user.
+  /// Requests that the VPN client show the configuration settings dialog box
+  /// to the user.
   showConfigureDialog('showConfigureDialog');
 
   const UIEvent(this.value);

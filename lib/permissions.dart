@@ -12,9 +12,9 @@ final _permissions = ChromePermissions._();
 
 extension ChromePermissionsExtension on Chrome {
   /// Use the `chrome.permissions` API to request [declared optional
-  /// permissions](permissions#manifest) at run time rather than install time,
-  /// so users understand why the permissions are needed and grant only those
-  /// that are necessary.
+  /// permissions](/docs/extensions/mv3/declare_permissions/) at run time rather
+  /// than install time, so users understand why the permissions are needed and
+  /// grant only those that are necessary.
   ChromePermissions get permissions => _permissions;
 }
 

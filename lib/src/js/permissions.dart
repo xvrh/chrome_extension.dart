@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -13,9 +14,9 @@ extension JSChromeJSPermissionsExtension on JSChrome {
   external JSPermissions? get permissionsNullable;
 
   /// Use the `chrome.permissions` API to request [declared optional
-  /// permissions](permissions#manifest) at run time rather than install time,
-  /// so users understand why the permissions are needed and grant only those
-  /// that are necessary.
+  /// permissions](/docs/extensions/mv3/declare_permissions/) at run time rather
+  /// than install time, so users understand why the permissions are needed and
+  /// grant only those that are necessary.
   JSPermissions get permissions {
     var permissionsNullable = this.permissionsNullable;
     if (permissionsNullable == null) {
@@ -25,11 +26,7 @@ extension JSChromeJSPermissionsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPermissions {}
-
-extension JSPermissionsExtension on JSPermissions {
+extension type JSPermissions._(JSObject _) {
   /// Gets the extension's current set of permissions.
   external JSPromise getAll();
 
@@ -56,11 +53,7 @@ extension JSPermissionsExtension on JSPermissions {
   /// Fired when access to permissions has been removed from the extension.
   external Event get onRemoved;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Permissions {
+extension type Permissions._(JSObject _) implements JSObject {
   external factory Permissions({
     /// List of named permissions (does not include hosts or origins).
     JSArray? permissions,
@@ -70,9 +63,7 @@ class Permissions {
     /// associated with [Content Scripts](content_scripts).
     JSArray? origins,
   });
-}
 
-extension PermissionsExtension on Permissions {
   /// List of named permissions (does not include hosts or origins).
   external JSArray? permissions;
 

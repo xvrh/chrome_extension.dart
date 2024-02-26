@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -27,11 +28,7 @@ extension JSChromeJSDevtoolsInspectedWindowExtension on JSChromeDevtools {
   }
 }
 
-@JS()
-@staticInterop
-class JSDevtoolsInspectedWindow {}
-
-extension JSDevtoolsInspectedWindowExtension on JSDevtoolsInspectedWindow {
+extension type JSDevtoolsInspectedWindow._(JSObject _) {
   /// Evaluates a JavaScript expression in the context of the main frame of the
   /// inspected page. The expression must evaluate to a JSON-compliant object,
   /// otherwise an exception is thrown. The eval function can report either a
@@ -73,18 +70,12 @@ extension JSDevtoolsInspectedWindowExtension on JSDevtoolsInspectedWindow {
   /// API.
   external int get tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Resource {
+extension type Resource._(JSObject _) implements JSObject {
   external factory Resource(
       {
       /// The URL of the resource.
       String url});
-}
 
-extension ResourceExtension on Resource {
   /// The URL of the resource.
   external String url;
 
@@ -109,11 +100,7 @@ extension ResourceExtension on Resource {
     JSFunction? callback,
   );
 }
-
-@JS()
-@staticInterop
-@anonymous
-class EvalExceptionInfo {
+extension type EvalExceptionInfo._(JSObject _) implements JSObject {
   external factory EvalExceptionInfo({
     /// Set if the error occurred on the DevTools side before the expression is
     /// evaluated.
@@ -139,9 +126,7 @@ class EvalExceptionInfo {
     /// Set if the evaluated code produces an unhandled exception.
     String value,
   });
-}
 
-extension EvalExceptionInfoExtension on EvalExceptionInfo {
   /// Set if the error occurred on the DevTools side before the expression is
   /// evaluated.
   external bool isError;
@@ -166,11 +151,7 @@ extension EvalExceptionInfoExtension on EvalExceptionInfo {
   /// Set if the evaluated code produces an unhandled exception.
   external String value;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class EvalOptions {
+extension type EvalOptions._(JSObject _) implements JSObject {
   external factory EvalOptions({
     /// If specified, the expression is evaluated on the iframe whose URL matches
     /// the one specified. By default, the expression is evaluated in the top
@@ -189,9 +170,7 @@ class EvalOptions {
     /// overrides the 'true' setting on useContentScriptContext.
     String? scriptExecutionContext,
   });
-}
 
-extension EvalOptionsExtension on EvalOptions {
   /// If specified, the expression is evaluated on the iframe whose URL matches
   /// the one specified. By default, the expression is evaluated in the top
   /// frame of the inspected page.
@@ -209,11 +188,7 @@ extension EvalOptionsExtension on EvalOptions {
   /// overrides the 'true' setting on useContentScriptContext.
   external String? scriptExecutionContext;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ReloadOptions {
+extension type ReloadOptions._(JSObject _) implements JSObject {
   external factory ReloadOptions({
     /// When true, the loader will bypass the cache for all inspected page
     /// resources loaded before the `load` event is fired. The effect is similar
@@ -233,9 +208,7 @@ class ReloadOptions {
     /// the user presses Ctrl+R.
     String? injectedScript,
   });
-}
 
-extension ReloadOptionsExtension on ReloadOptions {
   /// When true, the loader will bypass the cache for all inspected page
   /// resources loaded before the `load` event is fired. The effect is similar
   /// to pressing Ctrl+Shift+R in the inspected window or within the Developer

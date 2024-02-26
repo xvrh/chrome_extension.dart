@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -29,11 +30,7 @@ extension JSChromeJSEnterprisePlatformKeysExtension on JSChromeEnterprise {
   }
 }
 
-@JS()
-@staticInterop
-class JSEnterprisePlatformKeys {}
-
-extension JSEnterprisePlatformKeysExtension on JSEnterprisePlatformKeys {
+extension type JSEnterprisePlatformKeys._(JSObject _) {
   /// Returns the available Tokens. In a regular user's session the list will
   /// always contain the user's token with `id` `"user"`.
   /// If a system-wide TPM token is available, the returned list will also
@@ -187,11 +184,7 @@ typedef Scope = String;
 
 /// Type of key to generate.
 typedef Algorithm = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Token {
+extension type Token._(JSObject _) implements JSObject {
   external factory Token({
     /// Uniquely identifies this `Token`.
     /// Static IDs are `"user"` and `"system"`,
@@ -231,9 +224,7 @@ class Token {
     /// interface.
     JSObject softwareBackedSubtleCrypto,
   });
-}
 
-extension TokenExtension on Token {
   /// Uniquely identifies this `Token`.
   /// Static IDs are `"user"` and `"system"`,
   /// referring to the platform's user-specific and the system-wide hardware
@@ -272,26 +263,16 @@ extension TokenExtension on Token {
   /// interface.
   external JSObject softwareBackedSubtleCrypto;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RegisterKeyOptions {
+extension type RegisterKeyOptions._(JSObject _) implements JSObject {
   external factory RegisterKeyOptions(
       {
       /// Which algorithm the registered key should use.
       Algorithm algorithm});
-}
 
-extension RegisterKeyOptionsExtension on RegisterKeyOptions {
   /// Which algorithm the registered key should use.
   external Algorithm algorithm;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ChallengeKeyOptions {
+extension type ChallengeKeyOptions._(JSObject _) implements JSObject {
   external factory ChallengeKeyOptions({
     /// A challenge as emitted by the Verified Access Web API.
     JSArrayBuffer challenge,
@@ -306,9 +287,7 @@ class ChallengeKeyOptions {
     /// Which Enterprise Key to challenge.
     Scope scope,
   });
-}
 
-extension ChallengeKeyOptionsExtension on ChallengeKeyOptions {
   /// A challenge as emitted by the Verified Access Web API.
   external JSArrayBuffer challenge;
 

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSWindowsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSWindows {}
-
-extension JSWindowsExtension on JSWindows {
+extension type JSWindows._(JSObject _) {
   /// Gets details about a window.
   external JSPromise get(
     int windowId,
@@ -78,7 +75,7 @@ extension JSWindowsExtension on JSWindows {
   external int get WINDOW_ID_NONE;
 
   /// The windowId value that represents the [current
-  /// window](windows#current-window).
+  /// window](#the_current_window).
   external int get WINDOW_ID_CURRENT;
 }
 
@@ -95,11 +92,7 @@ typedef WindowState = String;
 /// Specifies what type of browser window to create. 'panel' is deprecated and
 /// is available only to existing allowlisted extensions on Chrome OS.
 typedef CreateType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Window {
+extension type Window._(JSObject _) implements JSObject {
   external factory Window({
     /// The ID of the window. Window IDs are unique within a browser session. In
     /// some circumstances a window may not be assigned an `ID` property; for
@@ -149,9 +142,7 @@ class Window {
     /// [sessions] API.
     String? sessionId,
   });
-}
 
-extension WindowExtension on Window {
   /// The ID of the window. Window IDs are unique within a browser session. In
   /// some circumstances a window may not be assigned an `ID` property; for
   /// example, when querying windows using the [sessions] API, in which case a
@@ -200,11 +191,7 @@ extension WindowExtension on Window {
   /// [sessions] API.
   external String? sessionId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class QueryOptions {
+extension type QueryOptions._(JSObject _) implements JSObject {
   external factory QueryOptions({
     /// If true, the [windows.Window] object has a [tabs] property that contains a
     /// list of the [tabs.Tab] objects. The `Tab` objects only contain the `url`,
@@ -216,9 +203,7 @@ class QueryOptions {
     /// unset, the default filter is set to `['normal', 'popup']`.
     JSArray? windowTypes,
   });
-}
 
-extension QueryOptionsExtension on QueryOptions {
   /// If true, the [windows.Window] object has a [tabs] property that contains a
   /// list of the [tabs.Tab] objects. The `Tab` objects only contain the `url`,
   /// `pendingUrl`, `title`, and `favIconUrl` properties if the extension's
@@ -229,11 +214,7 @@ extension QueryOptionsExtension on QueryOptions {
   /// unset, the default filter is set to `['normal', 'popup']`.
   external JSArray? windowTypes;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateData {
+extension type CreateData._(JSObject _) implements JSObject {
   external factory CreateData({
     /// A URL or array of URLs to open as tabs in the window. Fully-qualified URLs
     /// must include a scheme, e.g., 'http://www.google.com', not
@@ -282,9 +263,7 @@ class CreateData {
     /// as the caller.
     bool? setSelfAsOpener,
   });
-}
 
-extension CreateDataExtension on CreateData {
   /// A URL or array of URLs to open as tabs in the window. Fully-qualified URLs
   /// must include a scheme, e.g., 'http://www.google.com', not
   /// 'www.google.com'. Non-fully-qualified URLs are considered relative within
@@ -332,11 +311,7 @@ extension CreateDataExtension on CreateData {
   /// as the caller.
   external bool? setSelfAsOpener;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateInfo {
+extension type UpdateInfo._(JSObject _) implements JSObject {
   external factory UpdateInfo({
     /// The offset from the left edge of the screen to move the window to in
     /// pixels. This value is ignored for panels.
@@ -371,9 +346,7 @@ class UpdateInfo {
     /// 'height'.
     WindowState? state,
   });
-}
 
-extension UpdateInfoExtension on UpdateInfo {
   /// The offset from the left edge of the screen to move the window to in
   /// pixels. This value is ignored for panels.
   external int? left;

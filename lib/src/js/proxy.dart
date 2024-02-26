@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -15,7 +16,8 @@ extension JSChromeJSProxyExtension on JSChrome {
 
   /// Use the `chrome.proxy` API to manage Chrome's proxy settings. This API
   /// relies on the [ChromeSetting prototype of the type
-  /// API](types#ChromeSetting) for getting and setting the proxy configuration.
+  /// API](reference/api/types#type-ChromeSetting) for getting and setting the
+  /// proxy configuration.
   JSProxy get proxy {
     var proxyNullable = this.proxyNullable;
     if (proxyNullable == null) {
@@ -25,11 +27,7 @@ extension JSChromeJSProxyExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSProxy {}
-
-extension JSProxyExtension on JSProxy {
+extension type JSProxy._(JSObject _) {
   /// Notifies about proxy errors.
   external Event get onProxyError;
 
@@ -41,11 +39,7 @@ extension JSProxyExtension on JSProxy {
 typedef Scheme = String;
 
 typedef Mode = String;
-
-@JS()
-@staticInterop
-@anonymous
-class ProxyServer {
+extension type ProxyServer._(JSObject _) implements JSObject {
   external factory ProxyServer({
     /// The scheme (protocol) of the proxy server itself. Defaults to 'http'.
     Scheme? scheme,
@@ -58,9 +52,7 @@ class ProxyServer {
     /// scheme.
     int? port,
   });
-}
 
-extension ProxyServerExtension on ProxyServer {
   /// The scheme (protocol) of the proxy server itself. Defaults to 'http'.
   external Scheme? scheme;
 
@@ -72,11 +64,7 @@ extension ProxyServerExtension on ProxyServer {
   /// scheme.
   external int? port;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ProxyRules {
+extension type ProxyRules._(JSObject _) implements JSObject {
   external factory ProxyRules({
     /// The proxy server to be used for all per-URL requests (that is http, https,
     /// and ftp).
@@ -98,9 +86,7 @@ class ProxyRules {
     /// List of servers to connect to without a proxy server.
     JSArray? bypassList,
   });
-}
 
-extension ProxyRulesExtension on ProxyRules {
   /// The proxy server to be used for all per-URL requests (that is http, https,
   /// and ftp).
   external ProxyServer? singleProxy;
@@ -121,11 +107,7 @@ extension ProxyRulesExtension on ProxyRules {
   /// List of servers to connect to without a proxy server.
   external JSArray? bypassList;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PacScript {
+extension type PacScript._(JSObject _) implements JSObject {
   external factory PacScript({
     /// URL of the PAC file to be used.
     String? url,
@@ -137,9 +119,7 @@ class PacScript {
     /// back to direct connections. Defaults to false.
     bool? mandatory,
   });
-}
 
-extension PacScriptExtension on PacScript {
   /// URL of the PAC file to be used.
   external String? url;
 
@@ -150,11 +130,7 @@ extension PacScriptExtension on PacScript {
   /// back to direct connections. Defaults to false.
   external bool? mandatory;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ProxyConfig {
+extension type ProxyConfig._(JSObject _) implements JSObject {
   external factory ProxyConfig({
     /// The proxy rules describing this configuration. Use this for
     /// 'fixed_servers' mode.
@@ -171,9 +147,7 @@ class ProxyConfig {
     /// 'system' = Use system proxy settings
     Mode mode,
   });
-}
 
-extension ProxyConfigExtension on ProxyConfig {
   /// The proxy rules describing this configuration. Use this for
   /// 'fixed_servers' mode.
   external ProxyRules? rules;
@@ -189,11 +163,7 @@ extension ProxyConfigExtension on ProxyConfig {
   /// 'system' = Use system proxy settings
   external Mode mode;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnProxyErrorDetails {
+extension type OnProxyErrorDetails._(JSObject _) implements JSObject {
   external factory OnProxyErrorDetails({
     /// If true, the error was fatal and the network transaction was aborted.
     /// Otherwise, a direct connection is used instead.
@@ -205,9 +175,7 @@ class OnProxyErrorDetails {
     /// Additional details about the error such as a JavaScript runtime error.
     String details,
   });
-}
 
-extension OnProxyErrorDetailsExtension on OnProxyErrorDetails {
   /// If true, the error was fatal and the network transaction was aborted.
   /// Otherwise, a direct connection is used instead.
   external bool fatal;

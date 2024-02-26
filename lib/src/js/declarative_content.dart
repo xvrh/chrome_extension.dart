@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSDeclarativeContentExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSDeclarativeContent {}
-
-extension JSDeclarativeContentExtension on JSDeclarativeContent {
+extension type JSDeclarativeContent._(JSObject _) {
   external Event get onPageChanged;
 }
 
@@ -46,11 +43,7 @@ typedef RequestContentScriptInstanceType = String;
 /// See <a
 /// href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">https://developer.mozilla.org/en-US/docs/Web/API/ImageData</a>.
 typedef ImageDataType = JSObject;
-
-@JS()
-@staticInterop
-@anonymous
-class PageStateMatcher {
+extension type PageStateMatcher._(JSObject _) implements JSObject {
   external factory PageStateMatcher({
     /// Matches if the conditions of the `UrlFilter` are fulfilled for the
     /// top-level URL of the page.
@@ -65,13 +58,12 @@ class PageStateMatcher {
     JSArray? css,
 
     /// Matches if the bookmarked state of the page is equal to the specified
-    /// value. Requres the [bookmarks permission](declare_permissions).
+    /// value. Requres the [bookmarks
+    /// permission](/docs/extensions/develop/concepts/declare-permissions).
     bool? isBookmarked,
     PageStateMatcherInstanceType instanceType,
   });
-}
 
-extension PageStateMatcherExtension on PageStateMatcher {
   /// Matches if the conditions of the `UrlFilter` are fulfilled for the
   /// top-level URL of the page.
   external UrlFilter? pageUrl;
@@ -85,38 +77,23 @@ extension PageStateMatcherExtension on PageStateMatcher {
   external JSArray? css;
 
   /// Matches if the bookmarked state of the page is equal to the specified
-  /// value. Requres the [bookmarks permission](declare_permissions).
+  /// value. Requres the [bookmarks
+  /// permission](/docs/extensions/develop/concepts/declare-permissions).
   external bool? isBookmarked;
 
   external PageStateMatcherInstanceType instanceType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ShowPageAction {
+extension type ShowPageAction._(JSObject _) implements JSObject {
   external factory ShowPageAction({ShowPageActionInstanceType instanceType});
-}
 
-extension ShowPageActionExtension on ShowPageAction {
   external ShowPageActionInstanceType instanceType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ShowAction {
+extension type ShowAction._(JSObject _) implements JSObject {
   external factory ShowAction({ShowActionInstanceType instanceType});
-}
 
-extension ShowActionExtension on ShowAction {
   external ShowActionInstanceType instanceType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetIcon {
+extension type SetIcon._(JSObject _) implements JSObject {
   external factory SetIcon({
     SetIconInstanceType instanceType,
 
@@ -130,9 +107,7 @@ class SetIcon {
     /// {'16': foo}`.
     JSAny? imageData,
   });
-}
 
-extension SetIconExtension on SetIcon {
   external SetIconInstanceType instanceType;
 
   /// Either an `ImageData` object or a dictionary {size -> ImageData}
@@ -145,11 +120,7 @@ extension SetIconExtension on SetIcon {
   /// {'16': foo}`.
   external JSAny? imageData;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RequestContentScript {
+extension type RequestContentScript._(JSObject _) implements JSObject {
   external factory RequestContentScript({
     /// Names of CSS files to be injected as a part of the content script.
     JSArray? css,
@@ -166,9 +137,7 @@ class RequestContentScript {
     bool? matchAboutBlank,
     RequestContentScriptInstanceType instanceType,
   });
-}
 
-extension RequestContentScriptExtension on RequestContentScript {
   /// Names of CSS files to be injected as a part of the content script.
   external JSArray? css;
 

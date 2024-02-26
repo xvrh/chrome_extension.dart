@@ -12,7 +12,7 @@ export 'src/chrome.dart' show chrome;
 final _runtime = ChromeRuntime._();
 
 extension ChromeRuntimeExtension on Chrome {
-  /// Use the `chrome.runtime` API to retrieve the background page, return
+  /// Use the `chrome.runtime` API to retrieve the service worker, return
   /// details about the manifest, and listen for and respond to events in the
   /// app or extension lifecycle. You can also use this API to convert the
   /// relative path of URLs to fully-qualified URLs.
@@ -49,7 +49,8 @@ class ChromeRuntime {
   }
 
   /// Returns details about the app or extension from the manifest. The object
-  /// returned is a serialization of the full [manifest file](manifest.html).
+  /// returned is a serialization of the full [manifest
+  /// file](reference/manifest).
   /// [returns] The manifest details.
   Map getManifest() {
     return $js.chrome.runtime.getManifest().toDartMap();
@@ -127,14 +128,14 @@ class ChromeRuntime {
   /// Attempts to connect listeners within an extension/app (such as the
   /// background page), or other extensions/apps. This is useful for content
   /// scripts connecting to their extension processes, inter-app/extension
-  /// communication, and [web messaging](manifest/externally_connectable.html).
-  /// Note that this does not connect to any listeners in a content script.
-  /// Extensions may connect to content scripts embedded in tabs via
-  /// [tabs.connect].
+  /// communication, and [web
+  /// messaging](/docs/extensions/manifest/externally_connectable). Note that
+  /// this does not connect to any listeners in a content script. Extensions may
+  /// connect to content scripts embedded in tabs via [tabs.connect].
   /// [extensionId] The ID of the extension or app to connect to. If omitted,
   /// a connection will be attempted with your own extension. Required if
   /// sending messages from a web page for [web
-  /// messaging](manifest/externally_connectable.html).
+  /// messaging](/docs/extensions/reference/manifest/externally-connectable).
   /// [returns] Port through which messages can be sent and received. The
   /// port's $(ref:Port onDisconnect) event is fired if the extension/app does
   /// not exist.
@@ -149,7 +150,7 @@ class ChromeRuntime {
   }
 
   /// Connects to a native application in the host machine. See [Native
-  /// Messaging](nativeMessaging) for more information.
+  /// Messaging](develop/concepts/native-messaging) for more information.
   /// [application] The name of the registered application to connect to.
   /// [returns] Port through which messages can be sent and received with the
   /// application
@@ -168,7 +169,7 @@ class ChromeRuntime {
   /// [extensionId] The ID of the extension/app to send the message to. If
   /// omitted, the message will be sent to your own extension/app. Required if
   /// sending messages from a web page for [web
-  /// messaging](manifest/externally_connectable.html).
+  /// messaging](/docs/extensions/manifest/externally_connectable).
   /// [message] The message to send. This message should be a JSON-ifiable
   /// object.
   Future<Object> sendMessage(
@@ -208,14 +209,10 @@ class ChromeRuntime {
   }
 
   /// Returns a DirectoryEntry for the package directory.
-  Future<JSObject> getPackageDirectoryEntry() {
-    var $completer = Completer<JSObject>();
-    $js.chrome.runtime.getPackageDirectoryEntry((JSObject directoryEntry) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(directoryEntry);
-      }
-    }.toJS);
-    return $completer.future;
+  Future<JSObject> getPackageDirectoryEntry() async {
+    var $res = await promiseToFuture<JSObject>(
+        $js.chrome.runtime.getPackageDirectoryEntry());
+    return $res;
   }
 
   /// Fetches information about active contexts associated with this extension
@@ -232,7 +229,12 @@ class ChromeRuntime {
         .toList();
   }
 
-  /// This will be defined during an API method callback if there was an error
+  /// Populated with an error message if calling an API function fails;
+  /// otherwise undefined. This is only defined within the scope of that
+  /// function's callback. If an error is produced, but `runtime.lastError` is
+  /// not accessed within the callback, a message is logged to the console
+  /// listing the API function that produced the error. API functions that
+  /// return promises do not set this property.
   RuntimeLastError? get lastError =>
       $js.chrome.runtime.lastError?.let(RuntimeLastError.fromJS);
 
@@ -303,7 +305,7 @@ class ChromeRuntime {
           });
 
   /// Fired when a connection is made from another extension (by
-  /// [runtime.connect]).
+  /// [runtime.connect]), or from an externally connectable web site.
   EventStream<Port> get onConnectExternal =>
       $js.chrome.runtime.onConnectExternal.asStream(($c) => ($js.Port port) {
             return $c(Port.fromJS(port));
@@ -381,12 +383,25 @@ class ChromeRuntime {
 
 /// The operating system Chrome is running on.
 enum PlatformOs {
+  /// Specifies the MacOS operating system.
   mac('mac'),
+
+  /// Specifies the Windows operating system.
   win('win'),
+
+  /// Specifies the Android operating system.
   android('android'),
+
+  /// Specifies the Chrome operating system.
   cros('cros'),
+
+  /// Specifies the Linux operating system.
   linux('linux'),
+
+  /// Specifies the OpenBSD operating system.
   openbsd('openbsd'),
+
+  /// Specifies the Fuchsia operating system.
   fuchsia('fuchsia');
 
   const PlatformOs(this.value);
@@ -400,11 +415,22 @@ enum PlatformOs {
 
 /// The machine's processor architecture.
 enum PlatformArch {
+  /// Specifies the processer architecture as arm.
   arm('arm'),
+
+  /// Specifies the processer architecture as arm64.
   arm64('arm64'),
+
+  /// Specifies the processer architecture as x86-32.
   x8632('x86-32'),
+
+  /// Specifies the processer architecture as x86-64.
   x8664('x86-64'),
+
+  /// Specifies the processer architecture as mips.
   mips('mips'),
+
+  /// Specifies the processer architecture as mips64.
   mips64('mips64');
 
   const PlatformArch(this.value);
@@ -419,10 +445,19 @@ enum PlatformArch {
 /// The native client architecture. This may be different from arch on some
 /// platforms.
 enum PlatformNaclArch {
+  /// Specifies the native client architecture as arm.
   arm('arm'),
+
+  /// Specifies the native client architecture as x86-32.
   x8632('x86-32'),
+
+  /// Specifies the native client architecture as x86-64.
   x8664('x86-64'),
+
+  /// Specifies the native client architecture as mips.
   mips('mips'),
+
+  /// Specifies the native client architecture as mips64.
   mips64('mips64');
 
   const PlatformNaclArch(this.value);
@@ -436,8 +471,14 @@ enum PlatformNaclArch {
 
 /// Result of the update check.
 enum RequestUpdateCheckStatus {
+  /// Specifies that the status check has been throttled. This can occur after
+  /// repeated checks within a short amount of time.
   throttled('throttled'),
+
+  /// Specifies that there are no available updates to install.
   noUpdate('no_update'),
+
+  /// Specifies that there is an available update to install.
   updateAvailable('update_available');
 
   const RequestUpdateCheckStatus(this.value);
@@ -451,9 +492,16 @@ enum RequestUpdateCheckStatus {
 
 /// The reason that this event is being dispatched.
 enum OnInstalledReason {
+  /// Specifies the event reason as an installation.
   install('install'),
+
+  /// Specifies the event reason as an extension update.
   update('update'),
+
+  /// Specifies the event reason as a Chrome update.
   chromeUpdate('chrome_update'),
+
+  /// Specifies the event reason as an update to a shared module.
   sharedModuleUpdate('shared_module_update');
 
   const OnInstalledReason(this.value);
@@ -471,8 +519,13 @@ enum OnInstalledReason {
 /// updated to a newer version. 'periodic' is used when the system runs for more
 /// than the permitted uptime set in the enterprise policy.
 enum OnRestartRequiredReason {
+  /// Specifies the event reason as an update to the app.
   appUpdate('app_update'),
+
+  /// Specifies the event reason as an update to the operating system.
   osUpdate('os_update'),
+
+  /// Specifies the event reason as a periodic restart of the app.
   periodic('periodic');
 
   const OnRestartRequiredReason(this.value);
@@ -485,10 +538,19 @@ enum OnRestartRequiredReason {
 }
 
 enum ContextType {
+  /// Specifies the context type as a tab
   tab('TAB'),
+
+  /// Specifies the context type as an extension popup window
   popup('POPUP'),
+
+  /// Specifies the context type as a service worker.
   background('BACKGROUND'),
+
+  /// Specifies the context type as an offscreen document.
   offscreenDocument('OFFSCREEN_DOCUMENT'),
+
+  /// Specifies the context type as a side panel.
   sidePanel('SIDE_PANEL');
 
   const ContextType(this.value);

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -27,11 +28,7 @@ extension JSChromeJSSystemStorageExtension on JSChromeSystem {
   }
 }
 
-@JS()
-@staticInterop
-class JSSystemStorage {}
-
-extension JSSystemStorageExtension on JSSystemStorage {
+extension type JSSystemStorage._(JSObject _) {
   /// Get the storage information from the system. The argument passed to the
   /// callback is an array of StorageUnitInfo objects.
   external JSPromise getInfo();
@@ -53,11 +50,7 @@ extension JSSystemStorageExtension on JSSystemStorage {
 typedef StorageUnitType = String;
 
 typedef EjectDeviceResultCode = String;
-
-@JS()
-@staticInterop
-@anonymous
-class StorageUnitInfo {
+extension type StorageUnitInfo._(JSObject _) implements JSObject {
   external factory StorageUnitInfo({
     /// The transient ID that uniquely identifies the storage device.
     /// This ID will be persistent within the same run of a single application.
@@ -74,9 +67,7 @@ class StorageUnitInfo {
     /// The total amount of the storage space, in bytes.
     double capacity,
   });
-}
 
-extension StorageUnitInfoExtension on StorageUnitInfo {
   /// The transient ID that uniquely identifies the storage device.
   /// This ID will be persistent within the same run of a single application.
   /// It will not be a persistent identifier between different runs of an
@@ -92,11 +83,7 @@ extension StorageUnitInfoExtension on StorageUnitInfo {
   /// The total amount of the storage space, in bytes.
   external double capacity;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class StorageAvailableCapacityInfo {
+extension type StorageAvailableCapacityInfo._(JSObject _) implements JSObject {
   external factory StorageAvailableCapacityInfo({
     /// A copied |id| of getAvailableCapacity function parameter |id|.
     String id,
@@ -104,10 +91,7 @@ class StorageAvailableCapacityInfo {
     /// The available capacity of the storage device, in bytes.
     double availableCapacity,
   });
-}
 
-extension StorageAvailableCapacityInfoExtension
-    on StorageAvailableCapacityInfo {
   /// A copied |id| of getAvailableCapacity function parameter |id|.
   external String id;
 

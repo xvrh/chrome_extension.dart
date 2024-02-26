@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,19 +25,11 @@ extension JSChromeJSTopSitesExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSTopSites {}
-
-extension JSTopSitesExtension on JSTopSites {
+extension type JSTopSites._(JSObject _) {
   /// Gets a list of top sites.
   external JSPromise get();
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MostVisitedURL {
+extension type MostVisitedURL._(JSObject _) implements JSObject {
   external factory MostVisitedURL({
     /// The most visited URL.
     String url,
@@ -44,9 +37,7 @@ class MostVisitedURL {
     /// The title of the page
     String title,
   });
-}
 
-extension MostVisitedURLExtension on MostVisitedURL {
   /// The most visited URL.
   external String url;
 

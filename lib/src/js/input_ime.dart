@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -26,11 +27,7 @@ extension JSChromeJSInputImeExtension on JSChromeInput {
   }
 }
 
-@JS()
-@staticInterop
-class JSInputIme {}
-
-extension JSInputImeExtension on JSInputIme {
+extension type JSInputIme._(JSObject _) {
   /// Set the current composition. If this extension does not own the active
   /// IME, this fails.
   external JSPromise setComposition(SetCompositionParameters parameters);
@@ -171,11 +168,7 @@ typedef AssistiveWindowType = String;
 
 /// ID of buttons in assistive window.
 typedef AssistiveWindowButton = String;
-
-@JS()
-@staticInterop
-@anonymous
-class KeyboardEvent {
+extension type KeyboardEvent._(JSObject _) implements JSObject {
   external factory KeyboardEvent({
     /// One of keyup or keydown.
     KeyboardEventType type,
@@ -214,9 +207,7 @@ class KeyboardEvent {
     /// Whether or not the CAPS_LOCK is enabled.
     bool? capsLock,
   });
-}
 
-extension KeyboardEventExtension on KeyboardEvent {
   /// One of keyup or keydown.
   external KeyboardEventType type;
 
@@ -254,11 +245,7 @@ extension KeyboardEventExtension on KeyboardEvent {
   /// Whether or not the CAPS_LOCK is enabled.
   external bool? capsLock;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class InputContext {
+extension type InputContext._(JSObject _) implements JSObject {
   external factory InputContext({
     /// This is used to specify targets of text field operations.  This ID becomes
     /// invalid as soon as onBlur is called.
@@ -283,9 +270,7 @@ class InputContext {
     /// suggestions for the user.
     bool shouldDoLearning,
   });
-}
 
-extension InputContextExtension on InputContext {
   /// This is used to specify targets of text field operations.  This ID becomes
   /// invalid as soon as onBlur is called.
   external int contextID;
@@ -309,11 +294,7 @@ extension InputContextExtension on InputContext {
   /// suggestions for the user.
   external bool shouldDoLearning;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MenuItem {
+extension type MenuItem._(JSObject _) implements JSObject {
   external factory MenuItem({
     /// String that will be passed to callbacks referencing this MenuItem.
     String id,
@@ -333,9 +314,7 @@ class MenuItem {
     /// Indicates this item is enabled.
     bool? enabled,
   });
-}
 
-extension MenuItemExtension on MenuItem {
   /// String that will be passed to callbacks referencing this MenuItem.
   external String id;
 
@@ -354,11 +333,7 @@ extension MenuItemExtension on MenuItem {
   /// Indicates this item is enabled.
   external bool? enabled;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class AssistiveWindowProperties {
+extension type AssistiveWindowProperties._(JSObject _) implements JSObject {
   external factory AssistiveWindowProperties({
     AssistiveWindowType type,
 
@@ -368,9 +343,7 @@ class AssistiveWindowProperties {
     /// Strings for ChromeVox to announce.
     String? announceString,
   });
-}
 
-extension AssistiveWindowPropertiesExtension on AssistiveWindowProperties {
   external AssistiveWindowType type;
 
   /// Sets true to show AssistiveWindow, sets false to hide.
@@ -379,11 +352,7 @@ extension AssistiveWindowPropertiesExtension on AssistiveWindowProperties {
   /// Strings for ChromeVox to announce.
   external String? announceString;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MenuParameters {
+extension type MenuParameters._(JSObject _) implements JSObject {
   external factory MenuParameters({
     /// ID of the engine to use.
     String engineID,
@@ -392,9 +361,7 @@ class MenuParameters {
     /// the array.
     JSArray items,
   });
-}
 
-extension MenuParametersExtension on MenuParameters {
   /// ID of the engine to use.
   external String engineID;
 
@@ -402,11 +369,8 @@ extension MenuParametersExtension on MenuParameters {
   /// the array.
   external JSArray items;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnSurroundingTextChangedSurroundingInfo {
+extension type OnSurroundingTextChangedSurroundingInfo._(JSObject _)
+    implements JSObject {
   external factory OnSurroundingTextChangedSurroundingInfo({
     /// The text around the cursor. This is only a subset of all text in the input
     /// field.
@@ -425,10 +389,7 @@ class OnSurroundingTextChangedSurroundingInfo {
     /// character of `text`.
     int offset,
   });
-}
 
-extension OnSurroundingTextChangedSurroundingInfoExtension
-    on OnSurroundingTextChangedSurroundingInfo {
   /// The text around the cursor. This is only a subset of all text in the input
   /// field.
   external String text;
@@ -446,11 +407,8 @@ extension OnSurroundingTextChangedSurroundingInfoExtension
   /// character of `text`.
   external int offset;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnAssistiveWindowButtonClickedDetails {
+extension type OnAssistiveWindowButtonClickedDetails._(JSObject _)
+    implements JSObject {
   external factory OnAssistiveWindowButtonClickedDetails({
     /// The ID of the button clicked.
     AssistiveWindowButton buttonID,
@@ -458,21 +416,14 @@ class OnAssistiveWindowButtonClickedDetails {
     /// The type of the assistive window.
     AssistiveWindowType windowType,
   });
-}
 
-extension OnAssistiveWindowButtonClickedDetailsExtension
-    on OnAssistiveWindowButtonClickedDetails {
   /// The ID of the button clicked.
   external AssistiveWindowButton buttonID;
 
   /// The type of the assistive window.
   external AssistiveWindowType windowType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCompositionParameters {
+extension type SetCompositionParameters._(JSObject _) implements JSObject {
   external factory SetCompositionParameters({
     /// ID of the context where the composition text will be set
     int contextID,
@@ -492,9 +443,7 @@ class SetCompositionParameters {
     /// List of segments and their associated types.
     JSArray? segments,
   });
-}
 
-extension SetCompositionParametersExtension on SetCompositionParameters {
   /// ID of the context where the composition text will be set
   external int contextID;
 
@@ -513,26 +462,16 @@ extension SetCompositionParametersExtension on SetCompositionParameters {
   /// List of segments and their associated types.
   external JSArray? segments;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClearCompositionParameters {
+extension type ClearCompositionParameters._(JSObject _) implements JSObject {
   external factory ClearCompositionParameters(
       {
       /// ID of the context where the composition will be cleared
       int contextID});
-}
 
-extension ClearCompositionParametersExtension on ClearCompositionParameters {
   /// ID of the context where the composition will be cleared
   external int contextID;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CommitTextParameters {
+extension type CommitTextParameters._(JSObject _) implements JSObject {
   external factory CommitTextParameters({
     /// ID of the context where the text will be committed
     int contextID,
@@ -540,20 +479,14 @@ class CommitTextParameters {
     /// The text to commit
     String text,
   });
-}
 
-extension CommitTextParametersExtension on CommitTextParameters {
   /// ID of the context where the text will be committed
   external int contextID;
 
   /// The text to commit
   external String text;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SendKeyEventsParameters {
+extension type SendKeyEventsParameters._(JSObject _) implements JSObject {
   external factory SendKeyEventsParameters({
     /// ID of the context where the key events will be sent, or zero to send key
     /// events to non-input field.
@@ -562,9 +495,7 @@ class SendKeyEventsParameters {
     /// Data on the key event.
     JSArray keyData,
   });
-}
 
-extension SendKeyEventsParametersExtension on SendKeyEventsParameters {
   /// ID of the context where the key events will be sent, or zero to send key
   /// events to non-input field.
   external int contextID;
@@ -572,30 +503,20 @@ extension SendKeyEventsParametersExtension on SendKeyEventsParameters {
   /// Data on the key event.
   external JSArray keyData;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCandidateWindowPropertiesParameters {
+extension type SetCandidateWindowPropertiesParameters._(JSObject _)
+    implements JSObject {
   external factory SetCandidateWindowPropertiesParameters({
     /// ID of the engine to set properties on.
     String engineID,
     SetCandidateWindowPropertiesParametersProperties properties,
   });
-}
 
-extension SetCandidateWindowPropertiesParametersExtension
-    on SetCandidateWindowPropertiesParameters {
   /// ID of the engine to set properties on.
   external String engineID;
 
   external SetCandidateWindowPropertiesParametersProperties properties;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCandidatesParameters {
+extension type SetCandidatesParameters._(JSObject _) implements JSObject {
   external factory SetCandidatesParameters({
     /// ID of the context that owns the candidate window.
     int contextID,
@@ -603,20 +524,14 @@ class SetCandidatesParameters {
     /// List of candidates to show in the candidate window
     JSArray candidates,
   });
-}
 
-extension SetCandidatesParametersExtension on SetCandidatesParameters {
   /// ID of the context that owns the candidate window.
   external int contextID;
 
   /// List of candidates to show in the candidate window
   external JSArray candidates;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCursorPositionParameters {
+extension type SetCursorPositionParameters._(JSObject _) implements JSObject {
   external factory SetCursorPositionParameters({
     /// ID of the context that owns the candidate window.
     int contextID,
@@ -624,20 +539,15 @@ class SetCursorPositionParameters {
     /// ID of the candidate to select.
     int candidateID,
   });
-}
 
-extension SetCursorPositionParametersExtension on SetCursorPositionParameters {
   /// ID of the context that owns the candidate window.
   external int contextID;
 
   /// ID of the candidate to select.
   external int candidateID;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetAssistiveWindowPropertiesParameters {
+extension type SetAssistiveWindowPropertiesParameters._(JSObject _)
+    implements JSObject {
   external factory SetAssistiveWindowPropertiesParameters({
     /// ID of the context owning the assistive window.
     int contextID,
@@ -645,21 +555,15 @@ class SetAssistiveWindowPropertiesParameters {
     /// Properties of the assistive window.
     AssistiveWindowProperties properties,
   });
-}
 
-extension SetAssistiveWindowPropertiesParametersExtension
-    on SetAssistiveWindowPropertiesParameters {
   /// ID of the context owning the assistive window.
   external int contextID;
 
   /// Properties of the assistive window.
   external AssistiveWindowProperties properties;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetAssistiveWindowButtonHighlightedParameters {
+extension type SetAssistiveWindowButtonHighlightedParameters._(JSObject _)
+    implements JSObject {
   external factory SetAssistiveWindowButtonHighlightedParameters({
     /// ID of the context owning the assistive window.
     int contextID,
@@ -676,10 +580,7 @@ class SetAssistiveWindowButtonHighlightedParameters {
     /// Whether the button should be highlighted.
     bool highlighted,
   });
-}
 
-extension SetAssistiveWindowButtonHighlightedParametersExtension
-    on SetAssistiveWindowButtonHighlightedParameters {
   /// ID of the context owning the assistive window.
   external int contextID;
 
@@ -695,11 +596,8 @@ extension SetAssistiveWindowButtonHighlightedParametersExtension
   /// Whether the button should be highlighted.
   external bool highlighted;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeleteSurroundingTextParameters {
+extension type DeleteSurroundingTextParameters._(JSObject _)
+    implements JSObject {
   external factory DeleteSurroundingTextParameters({
     /// ID of the engine receiving the event.
     String engineID,
@@ -714,10 +612,7 @@ class DeleteSurroundingTextParameters {
     /// The number of characters to be deleted
     int length,
   });
-}
 
-extension DeleteSurroundingTextParametersExtension
-    on DeleteSurroundingTextParameters {
   /// ID of the engine receiving the event.
   external String engineID;
 
@@ -731,11 +626,8 @@ extension DeleteSurroundingTextParametersExtension
   /// The number of characters to be deleted
   external int length;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCompositionParametersSegments {
+extension type SetCompositionParametersSegments._(JSObject _)
+    implements JSObject {
   external factory SetCompositionParametersSegments({
     /// Index of the character to start this segment at
     int start,
@@ -746,10 +638,7 @@ class SetCompositionParametersSegments {
     /// The type of the underline to modify this segment.
     UnderlineStyle style,
   });
-}
 
-extension SetCompositionParametersSegmentsExtension
-    on SetCompositionParametersSegments {
   /// Index of the character to start this segment at
   external int start;
 
@@ -759,11 +648,8 @@ extension SetCompositionParametersSegmentsExtension
   /// The type of the underline to modify this segment.
   external UnderlineStyle style;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCandidateWindowPropertiesParametersProperties {
+extension type SetCandidateWindowPropertiesParametersProperties._(JSObject _)
+    implements JSObject {
   external factory SetCandidateWindowPropertiesParametersProperties({
     /// True to show the Candidate window, false to hide it.
     bool? visible,
@@ -793,10 +679,7 @@ class SetCandidateWindowPropertiesParametersProperties {
     /// Where to display the candidate window.
     WindowPosition? windowPosition,
   });
-}
 
-extension SetCandidateWindowPropertiesParametersPropertiesExtension
-    on SetCandidateWindowPropertiesParametersProperties {
   /// True to show the Candidate window, false to hide it.
   external bool? visible;
 
@@ -825,11 +708,8 @@ extension SetCandidateWindowPropertiesParametersPropertiesExtension
   /// Where to display the candidate window.
   external WindowPosition? windowPosition;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCandidatesParametersCandidates {
+extension type SetCandidatesParametersCandidates._(JSObject _)
+    implements JSObject {
   external factory SetCandidatesParametersCandidates({
     /// The candidate
     String candidate,
@@ -850,10 +730,7 @@ class SetCandidatesParametersCandidates {
     /// The usage or detail description of word.
     SetCandidatesParametersCandidatesUsage? usage,
   });
-}
 
-extension SetCandidatesParametersCandidatesExtension
-    on SetCandidatesParametersCandidates {
   /// The candidate
   external String candidate;
 
@@ -873,11 +750,8 @@ extension SetCandidatesParametersCandidatesExtension
   /// The usage or detail description of word.
   external SetCandidatesParametersCandidatesUsage? usage;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCandidatesParametersCandidatesUsage {
+extension type SetCandidatesParametersCandidatesUsage._(JSObject _)
+    implements JSObject {
   external factory SetCandidatesParametersCandidatesUsage({
     /// The title string of details description.
     String title,
@@ -885,10 +759,7 @@ class SetCandidatesParametersCandidatesUsage {
     /// The body string of detail description.
     String body,
   });
-}
 
-extension SetCandidatesParametersCandidatesUsageExtension
-    on SetCandidatesParametersCandidatesUsage {
   /// The title string of details description.
   external String title;
 

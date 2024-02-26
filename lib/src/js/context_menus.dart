@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSContextMenusExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSContextMenus {}
-
-extension JSContextMenusExtension on JSContextMenus {
+extension type JSContextMenus._(JSObject _) {
   /// Creates a new context menu item. If an error occurs during creation, it
   /// may not be detected until the creation callback fires; details will be in
   /// [runtime.lastError].
@@ -87,11 +84,7 @@ typedef ContextType = String;
 
 /// The type of menu item.
 typedef ItemType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class OnClickData {
+extension type OnClickData._(JSObject _) implements JSObject {
   external factory OnClickData({
     /// The ID of the menu item that was clicked.
     JSAny menuItemId,
@@ -137,9 +130,7 @@ class OnClickData {
     /// clicked.
     bool? checked,
   });
-}
 
-extension OnClickDataExtension on OnClickData {
   /// The ID of the menu item that was clicked.
   external JSAny menuItemId;
 
@@ -184,11 +175,7 @@ extension OnClickDataExtension on OnClickData {
   /// clicked.
   external bool? checked;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateProperties {
+extension type CreateProperties._(JSObject _) implements JSObject {
   external factory CreateProperties({
     /// The type of menu item. Defaults to `normal`.
     ItemType? type,
@@ -215,9 +202,9 @@ class CreateProperties {
     /// Whether the item is visible in the menu.
     bool? visible,
 
-    /// A function that is called back when the menu item is clicked. Event pages
-    /// cannot use this; instead, they should register a listener for
-    /// [contextMenus.onClicked].
+    /// A function that is called back when the menu item is clicked. This is not
+    /// available inside of a service worker; instead, they should register a
+    /// listener for [contextMenus.onClicked].
     JSFunction? onclick,
 
     /// The ID of a parent menu item; this makes the item a child of a previously
@@ -226,7 +213,7 @@ class CreateProperties {
 
     /// Restricts the item to apply only to documents or frames whose URL matches
     /// one of the given patterns. For details on pattern formats, see [Match
-    /// Patterns](match_patterns).
+    /// Patterns](/docs/extensions/develop/concepts/match-patterns).
     JSArray? documentUrlPatterns,
 
     /// Similar to `documentUrlPatterns`, filters based on the `src` attribute of
@@ -236,9 +223,7 @@ class CreateProperties {
     /// Whether this context menu item is enabled or disabled. Defaults to `true`.
     bool? enabled,
   });
-}
 
-extension CreatePropertiesExtension on CreateProperties {
   /// The type of menu item. Defaults to `normal`.
   external ItemType? type;
 
@@ -264,9 +249,9 @@ extension CreatePropertiesExtension on CreateProperties {
   /// Whether the item is visible in the menu.
   external bool? visible;
 
-  /// A function that is called back when the menu item is clicked. Event pages
-  /// cannot use this; instead, they should register a listener for
-  /// [contextMenus.onClicked].
+  /// A function that is called back when the menu item is clicked. This is not
+  /// available inside of a service worker; instead, they should register a
+  /// listener for [contextMenus.onClicked].
   external JSFunction? onclick;
 
   /// The ID of a parent menu item; this makes the item a child of a previously
@@ -275,7 +260,7 @@ extension CreatePropertiesExtension on CreateProperties {
 
   /// Restricts the item to apply only to documents or frames whose URL matches
   /// one of the given patterns. For details on pattern formats, see [Match
-  /// Patterns](match_patterns).
+  /// Patterns](/docs/extensions/develop/concepts/match-patterns).
   external JSArray? documentUrlPatterns;
 
   /// Similar to `documentUrlPatterns`, filters based on the `src` attribute of
@@ -285,11 +270,7 @@ extension CreatePropertiesExtension on CreateProperties {
   /// Whether this context menu item is enabled or disabled. Defaults to `true`.
   external bool? enabled;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateProperties {
+extension type UpdateProperties._(JSObject _) implements JSObject {
   external factory UpdateProperties({
     ItemType? type,
     String? title,
@@ -307,9 +288,7 @@ class UpdateProperties {
     JSArray? targetUrlPatterns,
     bool? enabled,
   });
-}
 
-extension UpdatePropertiesExtension on UpdateProperties {
   external ItemType? type;
 
   external String? title;

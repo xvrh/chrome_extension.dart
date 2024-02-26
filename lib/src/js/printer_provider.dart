@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSPrinterProviderExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPrinterProvider {}
-
-extension JSPrinterProviderExtension on JSPrinterProvider {
+extension type JSPrinterProvider._(JSObject _) {
   /// Event fired when print manager requests printers provided by extensions.
   /// |resultCallback|: Callback to return printer list. Every listener must
   /// call callback exactly once.
@@ -74,11 +71,7 @@ typedef PrinterInfoCallback = JSFunction;
 typedef CapabilitiesCallback = JSFunction;
 
 typedef PrintCallback = JSFunction;
-
-@JS()
-@staticInterop
-@anonymous
-class PrinterInfo {
+extension type PrinterInfo._(JSObject _) implements JSObject {
   external factory PrinterInfo({
     /// Unique printer ID.
     String id,
@@ -89,9 +82,7 @@ class PrinterInfo {
     /// Printer's human readable description.
     String? description,
   });
-}
 
-extension PrinterInfoExtension on PrinterInfo {
   /// Unique printer ID.
   external String id;
 
@@ -101,11 +92,7 @@ extension PrinterInfoExtension on PrinterInfo {
   /// Printer's human readable description.
   external String? description;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PrintJob {
+extension type PrintJob._(JSObject _) implements JSObject {
   external factory PrintJob({
     /// ID of the printer which should handle the job.
     String printerId,
@@ -116,6 +103,12 @@ class PrintJob {
     /// Print ticket in
     /// <a href="https://developers.google.com/cloud-print/docs/cdd#cjt">
     /// CJT format</a>.
+    /// <aside class="aside flow bg-state-info-bg color-state-info-text">
+    /// <div class="flow">The CJT reference is marked as deprecated. It is
+    /// deprecated for Google Cloud Print only. is not deprecated for
+    /// ChromeOS printing.
+    /// </div>
+    /// </aside>
     JSAny ticket,
 
     /// The document content type. Supported formats are
@@ -126,9 +119,7 @@ class PrintJob {
     /// |contentType|.
     JSObject document,
   });
-}
 
-extension PrintJobExtension on PrintJob {
   /// ID of the printer which should handle the job.
   external String printerId;
 
@@ -138,6 +129,12 @@ extension PrintJobExtension on PrintJob {
   /// Print ticket in
   /// <a href="https://developers.google.com/cloud-print/docs/cdd#cjt">
   /// CJT format</a>.
+  /// <aside class="aside flow bg-state-info-bg color-state-info-text">
+  /// <div class="flow">The CJT reference is marked as deprecated. It is
+  /// deprecated for Google Cloud Print only. is not deprecated for
+  /// ChromeOS printing.
+  /// </div>
+  /// </aside>
   external JSAny ticket;
 
   /// The document content type. Supported formats are

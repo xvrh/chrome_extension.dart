@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,19 +25,12 @@ extension JSChromeJSFileBrowserHandlerExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSFileBrowserHandler {}
-
-extension JSFileBrowserHandlerExtension on JSFileBrowserHandler {
+extension type JSFileBrowserHandler._(JSObject _) {
   /// Fired when file system action is executed from ChromeOS file browser.
   external Event get onExecute;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class FileHandlerExecuteEventDetails {
+extension type FileHandlerExecuteEventDetails._(JSObject _)
+    implements JSObject {
   external factory FileHandlerExecuteEventDetails({
     /// Array of Entry instances representing files that are targets of this
     /// action (selected in ChromeOS file browser).
@@ -46,10 +40,7 @@ class FileHandlerExecuteEventDetails {
     /// browser session.
     int? tab_id,
   });
-}
 
-extension FileHandlerExecuteEventDetailsExtension
-    on FileHandlerExecuteEventDetails {
   /// Array of Entry instances representing files that are targets of this
   /// action (selected in ChromeOS file browser).
   external JSArray entries;

@@ -25,7 +25,8 @@ class ChromeCommands {
   bool get isAvailable => $js.chrome.commandsNullable != null && alwaysTrue;
 
   /// Returns all the registered extension commands for this extension and their
-  /// shortcut (if active).
+  /// shortcut (if active). Before Chrome 110, this command did not return
+  /// `_execute_action`.
   /// [returns] Called to return the registered commands.
   Future<List<Command>> getAll() async {
     var $res = await promiseToFuture<JSArray>($js.chrome.commands.getAll());

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSProcessesExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSProcesses {}
-
-extension JSProcessesExtension on JSProcesses {
+extension type JSProcesses._(JSObject _) {
   /// Returns the ID of the renderer process for the specified tab.
   /// |tabId|: The ID of the tab for which the renderer process ID is to be
   /// returned.
@@ -93,11 +90,7 @@ extension JSProcessesExtension on JSProcesses {
 
 /// The types of the browser processes.
 typedef ProcessType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class TaskInfo {
+extension type TaskInfo._(JSObject _) implements JSObject {
   external factory TaskInfo({
     /// The title of the task.
     String title,
@@ -106,9 +99,7 @@ class TaskInfo {
     /// process.
     int? tabId,
   });
-}
 
-extension TaskInfoExtension on TaskInfo {
   /// The title of the task.
   external String title;
 
@@ -116,11 +107,7 @@ extension TaskInfoExtension on TaskInfo {
   /// process.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Cache {
+extension type Cache._(JSObject _) implements JSObject {
   external factory Cache({
     /// The size of the cache, in bytes.
     double size,
@@ -128,20 +115,14 @@ class Cache {
     /// The part of the cache that is utilized, in bytes.
     double liveSize,
   });
-}
 
-extension CacheExtension on Cache {
   /// The size of the cache, in bytes.
   external double size;
 
   /// The part of the cache that is utilized, in bytes.
   external double liveSize;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Process {
+extension type Process._(JSObject _) implements JSObject {
   external factory Process({
     /// Unique ID of the process provided by the browser.
     int id,
@@ -210,9 +191,7 @@ class Process {
     /// or onUpdatedWithMemory.
     Cache? cssCache,
   });
-}
 
-extension ProcessExtension on Process {
   /// Unique ID of the process provided by the browser.
   external int id;
 

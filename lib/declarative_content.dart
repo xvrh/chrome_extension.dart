@@ -111,7 +111,8 @@ class PageStateMatcher {
     List<String>? css,
 
     /// Matches if the bookmarked state of the page is equal to the specified
-    /// value. Requres the [bookmarks permission](declare_permissions).
+    /// value. Requres the [bookmarks
+    /// permission](/docs/extensions/develop/concepts/declare-permissions).
     bool? isBookmarked,
     required PageStateMatcherInstanceType instanceType,
   }) : _wrapped = $js.PageStateMatcher(
@@ -147,7 +148,8 @@ class PageStateMatcher {
   }
 
   /// Matches if the bookmarked state of the page is equal to the specified
-  /// value. Requres the [bookmarks permission](declare_permissions).
+  /// value. Requres the [bookmarks
+  /// permission](/docs/extensions/develop/concepts/declare-permissions).
   bool? get isBookmarked => _wrapped.isBookmarked;
 
   set isBookmarked(bool? v) {

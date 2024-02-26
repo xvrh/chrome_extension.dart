@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSLoginStateExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSLoginState {}
-
-extension JSLoginStateExtension on JSLoginState {
+extension type JSLoginState._(JSObject _) {
   /// Gets the type of the profile the extension is in.
   external JSPromise getProfileType();
 

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -29,11 +30,7 @@ extension JSChromeJSTtsEngineExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSTtsEngine {}
-
-extension JSTtsEngineExtension on JSTtsEngine {
+extension type JSTtsEngine._(JSObject _) {
   /// Called by an engine to update its list of voices. This list overrides any
   /// voices declared in this extension's manifest.
   external void updateVoices(
@@ -87,11 +84,7 @@ extension JSTtsEngineExtension on JSTtsEngine {
 }
 
 typedef VoiceGender = String;
-
-@JS()
-@staticInterop
-@anonymous
-class SpeakOptions {
+extension type SpeakOptions._(JSObject _) implements JSObject {
   external factory SpeakOptions({
     /// The name of the voice to use for synthesis.
     String? voiceName,
@@ -119,9 +112,7 @@ class SpeakOptions {
     /// highest, with a default of 1.0.
     double? volume,
   });
-}
 
-extension SpeakOptionsExtension on SpeakOptions {
   /// The name of the voice to use for synthesis.
   external String? voiceName;
 
@@ -148,11 +139,7 @@ extension SpeakOptionsExtension on SpeakOptions {
   /// highest, with a default of 1.0.
   external double? volume;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class AudioStreamOptions {
+extension type AudioStreamOptions._(JSObject _) implements JSObject {
   external factory AudioStreamOptions({
     /// The sample rate expected in an audio buffer.
     int sampleRate,
@@ -160,20 +147,14 @@ class AudioStreamOptions {
     /// The number of samples within an audio buffer.
     int bufferSize,
   });
-}
 
-extension AudioStreamOptionsExtension on AudioStreamOptions {
   /// The sample rate expected in an audio buffer.
   external int sampleRate;
 
   /// The number of samples within an audio buffer.
   external int bufferSize;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class AudioBuffer {
+extension type AudioBuffer._(JSObject _) implements JSObject {
   external factory AudioBuffer({
     /// The audio buffer from the text-to-speech engine. It should have length
     /// exactly audioStreamOptions.bufferSize and encoded as mono, at
@@ -187,9 +168,7 @@ class AudioBuffer {
     /// True if this audio buffer is the last for the text being spoken.
     bool? isLastBuffer,
   });
-}
 
-extension AudioBufferExtension on AudioBuffer {
   /// The audio buffer from the text-to-speech engine. It should have length
   /// exactly audioStreamOptions.bufferSize and encoded as mono, at
   /// audioStreamOptions.sampleRate, and as linear pcm, 32-bit signed float i.e.

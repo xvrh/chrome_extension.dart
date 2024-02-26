@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSIdleExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSIdle {}
-
-extension JSIdleExtension on JSIdle {
+extension type JSIdle._(JSObject _) {
   /// Returns "locked" if the system is locked, "idle" if the user has not
   /// generated any input for a specified number of seconds, or "active"
   /// otherwise.

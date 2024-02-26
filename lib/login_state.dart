@@ -45,10 +45,10 @@ class ChromeLoginState {
 }
 
 enum ProfileType {
-  /// The extension is in the signin profile.
+  /// Specifies that the extension is in the signin profile.
   signinProfile('SIGNIN_PROFILE'),
 
-  /// The extension is in the user profile.
+  /// Specifies that the extension is in the user profile.
   userProfile('USER_PROFILE');
 
   const ProfileType(this.value);
@@ -61,22 +61,22 @@ enum ProfileType {
 }
 
 enum SessionState {
-  /// The session state is unknown.
+  /// Specifies that the session state is unknown.
   unknown('UNKNOWN'),
 
-  /// The user is in the out-of-box-experience screen.
+  /// Specifies that the user is in the out-of-box-experience screen.
   inOobeScreen('IN_OOBE_SCREEN'),
 
-  /// The user is in the login screen.
+  /// Specifies that the user is in the login screen.
   inLoginScreen('IN_LOGIN_SCREEN'),
 
-  /// The user is in the session.
+  /// Specifies that the user is in the session.
   inSession('IN_SESSION'),
 
-  /// The user is in the lock screen.
+  /// Specifies that the user is in the lock screen.
   inLockScreen('IN_LOCK_SCREEN'),
 
-  /// The device is in RMA mode, finalizing repairs.
+  /// Specifies that the device is in RMA mode, finalizing repairs.
   inRmaScreen('IN_RMA_SCREEN');
 
   const SessionState(this.value);

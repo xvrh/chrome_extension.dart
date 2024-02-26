@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSTtsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSTts {}
-
-extension JSTtsExtension on JSTts {
+extension type JSTts._(JSObject _) {
   /// Speaks text using a text-to-speech engine.
   external JSPromise speak(
     /// The text to speak, either plain text or a complete, well-formed SSML
@@ -69,11 +66,7 @@ extension JSTtsExtension on JSTts {
 typedef EventType = String;
 
 typedef VoiceGender = String;
-
-@JS()
-@staticInterop
-@anonymous
-class TtsOptions {
+extension type TtsOptions._(JSObject _) implements JSObject {
   external factory TtsOptions({
     /// If true, enqueues this utterance if TTS is already in progress. If false
     /// (the default), interrupts any current speech and flushes the speech queue
@@ -121,9 +114,7 @@ class TtsOptions {
     /// the utterance.
     JSFunction? onEvent,
   });
-}
 
-extension TtsOptionsExtension on TtsOptions {
   /// If true, enqueues this utterance if TTS is already in progress. If false
   /// (the default), interrupts any current speech and flushes the speech queue
   /// before speaking this new utterance.
@@ -170,11 +161,7 @@ extension TtsOptionsExtension on TtsOptions {
   /// the utterance.
   external JSFunction? onEvent;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TtsEvent {
+extension type TtsEvent._(JSObject _) implements JSObject {
   external factory TtsEvent({
     /// The type can be `start` as soon as speech has started, `word` when a word
     /// boundary is reached, `sentence` when a sentence boundary is reached,
@@ -209,9 +196,7 @@ class TtsEvent {
     /// be set to -1 if not set by the speech engine.
     int? length,
   });
-}
 
-extension TtsEventExtension on TtsEvent {
   /// The type can be `start` as soon as speech has started, `word` when a word
   /// boundary is reached, `sentence` when a sentence boundary is reached,
   /// `marker` when an SSML mark element is reached, `end` when the end of the
@@ -245,11 +230,7 @@ extension TtsEventExtension on TtsEvent {
   /// be set to -1 if not set by the speech engine.
   external int? length;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TtsVoice {
+extension type TtsVoice._(JSObject _) implements JSObject {
   external factory TtsVoice({
     /// The name of the voice.
     String? voiceName,
@@ -271,9 +252,7 @@ class TtsVoice {
     /// All of the callback event types that this voice is capable of sending.
     JSArray? eventTypes,
   });
-}
 
-extension TtsVoiceExtension on TtsVoice {
   /// The name of the voice.
   external String? voiceName;
 

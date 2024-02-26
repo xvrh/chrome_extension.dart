@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -27,29 +28,18 @@ extension JSChromeJSEnterpriseHardwarePlatformExtension on JSChromeEnterprise {
   }
 }
 
-@JS()
-@staticInterop
-class JSEnterpriseHardwarePlatform {}
-
-extension JSEnterpriseHardwarePlatformExtension
-    on JSEnterpriseHardwarePlatform {
+extension type JSEnterpriseHardwarePlatform._(JSObject _) {
   /// Obtains the manufacturer and model for the hardware platform and, if
   /// the extension is authorized, returns it via |callback|.
   /// |callback|: Called with the hardware platform info.
   external JSPromise getHardwarePlatformInfo();
 }
-
-@JS()
-@staticInterop
-@anonymous
-class HardwarePlatformInfo {
+extension type HardwarePlatformInfo._(JSObject _) implements JSObject {
   external factory HardwarePlatformInfo({
     String model,
     String manufacturer,
   });
-}
 
-extension HardwarePlatformInfoExtension on HardwarePlatformInfo {
   external String model;
 
   external String manufacturer;

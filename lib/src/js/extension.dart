@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSExtensionExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSExtension {}
-
-extension JSExtensionExtension on JSExtension {
+extension type JSExtension._(JSObject _) {
   /// Sends a single request to other listeners within the extension. Similar to
   /// [runtime.connect], but only sends a single request with an optional
   /// response. The [extension.onRequest] event is fired in each page of the
@@ -102,11 +99,7 @@ extension JSExtensionExtension on JSExtension {
 
 /// The type of extension view.
 typedef ViewType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class GetViewsFetchProperties {
+extension type GetViewsFetchProperties._(JSObject _) implements JSObject {
   external factory GetViewsFetchProperties({
     /// The type of view to get. If omitted, returns all views (including
     /// background pages and tabs).
@@ -119,9 +112,7 @@ class GetViewsFetchProperties {
     /// views.
     int? tabId,
   });
-}
 
-extension GetViewsFetchPropertiesExtension on GetViewsFetchProperties {
   /// The type of view to get. If omitted, returns all views (including
   /// background pages and tabs).
   external ViewType? type;
@@ -133,18 +124,12 @@ extension GetViewsFetchPropertiesExtension on GetViewsFetchProperties {
   /// views.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ExtensionLastError {
+extension type ExtensionLastError._(JSObject _) implements JSObject {
   external factory ExtensionLastError(
       {
       /// Description of the error that has taken place.
       String message});
-}
 
-extension ExtensionLastErrorExtension on ExtensionLastError {
   /// Description of the error that has taken place.
   external String message;
 }

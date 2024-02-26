@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,20 +25,12 @@ extension JSChromeJSSystemNetworkExtension on JSChromeSystem {
   }
 }
 
-@JS()
-@staticInterop
-class JSSystemNetwork {}
-
-extension JSSystemNetworkExtension on JSSystemNetwork {
+extension type JSSystemNetwork._(JSObject _) {
   /// Retrieves information about local adapters on this system.
   /// |callback| : Called when local adapter information is available.
   external JSPromise getNetworkInterfaces();
 }
-
-@JS()
-@staticInterop
-@anonymous
-class NetworkInterface {
+extension type NetworkInterface._(JSObject _) implements JSObject {
   external factory NetworkInterface({
     /// The underlying name of the adapter. On *nix, this will typically be
     /// "eth0", "wlan0", etc.
@@ -49,9 +42,7 @@ class NetworkInterface {
     /// The prefix length
     int prefixLength,
   });
-}
 
-extension NetworkInterfaceExtension on NetworkInterface {
   /// The underlying name of the adapter. On *nix, this will typically be
   /// "eth0", "wlan0", etc.
   external String name;

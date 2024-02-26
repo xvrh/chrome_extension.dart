@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -13,7 +14,7 @@ extension JSChromeJSRuntimeExtension on JSChrome {
   @JS('runtime')
   external JSRuntime? get runtimeNullable;
 
-  /// Use the `chrome.runtime` API to retrieve the background page, return
+  /// Use the `chrome.runtime` API to retrieve the service worker, return
   /// details about the manifest, and listen for and respond to events in the
   /// app or extension lifecycle. You can also use this API to convert the
   /// relative path of URLs to fully-qualified URLs.
@@ -26,11 +27,7 @@ extension JSChromeJSRuntimeExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSRuntime {}
-
-extension JSRuntimeExtension on JSRuntime {
+extension type JSRuntime._(JSObject _) {
   /// Retrieves the JavaScript 'window' object for the background page running
   /// inside the current extension/app. If the background page is an event page,
   /// the system will ensure it is loaded before calling the callback. If there
@@ -50,7 +47,8 @@ extension JSRuntimeExtension on JSRuntime {
   external JSPromise openOptionsPage();
 
   /// Returns details about the app or extension from the manifest. The object
-  /// returned is a serialization of the full [manifest file](manifest.html).
+  /// returned is a serialization of the full [manifest
+  /// file](reference/manifest).
   external JSAny getManifest();
 
   /// Converts a relative path within an app/extension install directory to a
@@ -112,21 +110,21 @@ extension JSRuntimeExtension on JSRuntime {
   /// Attempts to connect listeners within an extension/app (such as the
   /// background page), or other extensions/apps. This is useful for content
   /// scripts connecting to their extension processes, inter-app/extension
-  /// communication, and [web messaging](manifest/externally_connectable.html).
-  /// Note that this does not connect to any listeners in a content script.
-  /// Extensions may connect to content scripts embedded in tabs via
-  /// [tabs.connect].
+  /// communication, and [web
+  /// messaging](/docs/extensions/manifest/externally_connectable). Note that
+  /// this does not connect to any listeners in a content script. Extensions may
+  /// connect to content scripts embedded in tabs via [tabs.connect].
   external Port connect(
     /// The ID of the extension or app to connect to. If omitted, a connection
     /// will be attempted with your own extension. Required if sending messages
     /// from a web page for [web
-    /// messaging](manifest/externally_connectable.html).
+    /// messaging](/docs/extensions/reference/manifest/externally-connectable).
     String? extensionId,
     ConnectInfo? connectInfo,
   );
 
   /// Connects to a native application in the host machine. See [Native
-  /// Messaging](nativeMessaging) for more information.
+  /// Messaging](develop/concepts/native-messaging) for more information.
   external Port connectNative(
 
       /// The name of the registered application to connect to.
@@ -144,7 +142,7 @@ extension JSRuntimeExtension on JSRuntime {
     /// The ID of the extension/app to send the message to. If omitted, the
     /// message will be sent to your own extension/app. Required if sending
     /// messages from a web page for [web
-    /// messaging](manifest/externally_connectable.html).
+    /// messaging](/docs/extensions/manifest/externally_connectable).
     String? extensionId,
 
     /// The message to send. This message should be a JSON-ifiable object.
@@ -165,7 +163,7 @@ extension JSRuntimeExtension on JSRuntime {
   external JSPromise getPlatformInfo();
 
   /// Returns a DirectoryEntry for the package directory.
-  external void getPackageDirectoryEntry(JSFunction callback);
+  external JSPromise getPackageDirectoryEntry();
 
   /// Fetches information about active contexts associated with this extension
   external JSPromise getContexts(
@@ -216,7 +214,7 @@ extension JSRuntimeExtension on JSRuntime {
   external Event get onConnect;
 
   /// Fired when a connection is made from another extension (by
-  /// [runtime.connect]).
+  /// [runtime.connect]), or from an externally connectable web site.
   external Event get onConnectExternal;
 
   /// Fired when a connection is made from a user script from this extension.
@@ -245,7 +243,12 @@ extension JSRuntimeExtension on JSRuntime {
   /// fired for Chrome OS kiosk apps.
   external Event get onRestartRequired;
 
-  /// This will be defined during an API method callback if there was an error
+  /// Populated with an error message if calling an API function fails;
+  /// otherwise undefined. This is only defined within the scope of that
+  /// function's callback. If an error is produced, but `runtime.lastError` is
+  /// not accessed within the callback, a message is logged to the console
+  /// listing the API function that produced the error. API functions that
+  /// return promises do not set this property.
   external RuntimeLastError? get lastError;
 
   /// The ID of the extension/app.
@@ -276,11 +279,7 @@ typedef OnInstalledReason = String;
 typedef OnRestartRequiredReason = String;
 
 typedef ContextType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Port {
+extension type Port._(JSObject _) implements JSObject {
   external factory Port({
     /// The name of the port, as specified in the call to [runtime.connect].
     String name,
@@ -300,9 +299,7 @@ class Port {
     /// listeners.
     MessageSender? sender,
   });
-}
 
-extension PortExtension on Port {
   /// The name of the port, as specified in the call to [runtime.connect].
   external String name;
 
@@ -332,11 +329,7 @@ extension PortExtension on Port {
   /// the other end of the port.
   external Event get onMessage;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MessageSender {
+extension type MessageSender._(JSObject _) implements JSObject {
   external factory MessageSender({
     /// The [tabs.Tab] which opened the connection, if any. This property will
     /// *only* be present when the connection was opened from a tab (including
@@ -385,9 +378,7 @@ class MessageSender {
     /// have changed since port creation.
     String? documentLifecycle,
   });
-}
 
-extension MessageSenderExtension on MessageSender {
   /// The [tabs.Tab] which opened the connection, if any. This property will
   /// *only* be present when the connection was opened from a tab (including
   /// content scripts), and *only* if the receiver is an extension, not an app.
@@ -435,11 +426,7 @@ extension MessageSenderExtension on MessageSender {
   /// have changed since port creation.
   external String? documentLifecycle;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PlatformInfo {
+extension type PlatformInfo._(JSObject _) implements JSObject {
   external factory PlatformInfo({
     /// The operating system Chrome is running on.
     PlatformOs os,
@@ -451,9 +438,7 @@ class PlatformInfo {
     /// platforms.
     PlatformNaclArch nacl_arch,
   });
-}
 
-extension PlatformInfoExtension on PlatformInfo {
   /// The operating system Chrome is running on.
   external PlatformOs os;
 
@@ -464,11 +449,7 @@ extension PlatformInfoExtension on PlatformInfo {
   /// platforms.
   external PlatformNaclArch nacl_arch;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ExtensionContext {
+extension type ExtensionContext._(JSObject _) implements JSObject {
   external factory ExtensionContext({
     /// The type of context this corresponds to.
     ContextType contextType,
@@ -503,9 +484,7 @@ class ExtensionContext {
     /// Whether the context is associated with an incognito profile.
     bool incognito,
   });
-}
 
-extension ExtensionContextExtension on ExtensionContext {
   /// The type of context this corresponds to.
   external ContextType contextType;
 
@@ -539,11 +518,7 @@ extension ExtensionContextExtension on ExtensionContext {
   /// Whether the context is associated with an incognito profile.
   external bool incognito;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ContextFilter {
+extension type ContextFilter._(JSObject _) implements JSObject {
   external factory ContextFilter({
     JSArray? contextTypes,
     JSArray? contextIds,
@@ -555,9 +530,7 @@ class ContextFilter {
     JSArray? documentOrigins,
     bool? incognito,
   });
-}
 
-extension ContextFilterExtension on ContextFilter {
   external JSArray? contextTypes;
 
   external JSArray? contextIds;
@@ -576,11 +549,7 @@ extension ContextFilterExtension on ContextFilter {
 
   external bool? incognito;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnInstalledDetails {
+extension type OnInstalledDetails._(JSObject _) implements JSObject {
   external factory OnInstalledDetails({
     /// The reason that this event is being dispatched.
     OnInstalledReason reason,
@@ -593,9 +562,7 @@ class OnInstalledDetails {
     /// This is present only if 'reason' is 'shared_module_update'.
     String? id,
   });
-}
 
-extension OnInstalledDetailsExtension on OnInstalledDetails {
   /// The reason that this event is being dispatched.
   external OnInstalledReason reason;
 
@@ -607,26 +574,17 @@ extension OnInstalledDetailsExtension on OnInstalledDetails {
   /// This is present only if 'reason' is 'shared_module_update'.
   external String? id;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnUpdateAvailableDetails {
+extension type OnUpdateAvailableDetails._(JSObject _) implements JSObject {
   external factory OnUpdateAvailableDetails(
       {
       /// The version number of the available update.
       String version});
-}
 
-extension OnUpdateAvailableDetailsExtension on OnUpdateAvailableDetails {
   /// The version number of the available update.
   external String version;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RequestUpdateCheckCallbackResult {
+extension type RequestUpdateCheckCallbackResult._(JSObject _)
+    implements JSObject {
   external factory RequestUpdateCheckCallbackResult({
     /// Result of the update check.
     RequestUpdateCheckStatus status,
@@ -635,10 +593,7 @@ class RequestUpdateCheckCallbackResult {
     /// update.
     String? version,
   });
-}
 
-extension RequestUpdateCheckCallbackResultExtension
-    on RequestUpdateCheckCallbackResult {
   /// Result of the update check.
   external RequestUpdateCheckStatus status;
 
@@ -646,11 +601,7 @@ extension RequestUpdateCheckCallbackResultExtension
   /// update.
   external String? version;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ConnectInfo {
+extension type ConnectInfo._(JSObject _) implements JSObject {
   external factory ConnectInfo({
     /// Will be passed into onConnect for processes that are listening for the
     /// connection event.
@@ -660,9 +611,7 @@ class ConnectInfo {
     /// processes that are listening for the connection event.
     bool? includeTlsChannelId,
   });
-}
 
-extension ConnectInfoExtension on ConnectInfo {
   /// Will be passed into onConnect for processes that are listening for the
   /// connection event.
   external String? name;
@@ -671,35 +620,23 @@ extension ConnectInfoExtension on ConnectInfo {
   /// processes that are listening for the connection event.
   external bool? includeTlsChannelId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SendMessageOptions {
+extension type SendMessageOptions._(JSObject _) implements JSObject {
   external factory SendMessageOptions(
       {
       /// Whether the TLS channel ID will be passed into onMessageExternal for
       /// processes that are listening for the connection event.
       bool? includeTlsChannelId});
-}
 
-extension SendMessageOptionsExtension on SendMessageOptions {
   /// Whether the TLS channel ID will be passed into onMessageExternal for
   /// processes that are listening for the connection event.
   external bool? includeTlsChannelId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RuntimeLastError {
+extension type RuntimeLastError._(JSObject _) implements JSObject {
   external factory RuntimeLastError(
       {
       /// Details about the error which occurred.
       String? message});
-}
 
-extension RuntimeLastErrorExtension on RuntimeLastError {
   /// Details about the error which occurred.
   external String? message;
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSAudioExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSAudio {}
-
-extension JSAudioExtension on JSAudio {
+extension type JSAudio._(JSObject _) {
   /// Gets a list of audio devices filtered based on |filter|.
   /// |filter|: Device properties by which to filter the list of returned
   ///     audio devices. If the filter is not set or set to `{}`,
@@ -85,11 +82,7 @@ typedef StreamType = String;
 
 /// Available audio device types.
 typedef DeviceType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class AudioDeviceInfo {
+extension type AudioDeviceInfo._(JSObject _) implements JSObject {
   external factory AudioDeviceInfo({
     /// The unique identifier of the audio device.
     String id,
@@ -115,9 +108,7 @@ class AudioDeviceInfo {
     /// The stable/persisted device id string when available.
     String? stableDeviceId,
   });
-}
 
-extension AudioDeviceInfoExtension on AudioDeviceInfo {
   /// The unique identifier of the audio device.
   external String id;
 
@@ -142,11 +133,7 @@ extension AudioDeviceInfoExtension on AudioDeviceInfo {
   /// The stable/persisted device id string when available.
   external String? stableDeviceId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeviceFilter {
+extension type DeviceFilter._(JSObject _) implements JSObject {
   external factory DeviceFilter({
     /// If set, only audio devices whose stream type is included in this list
     /// will satisfy the filter.
@@ -156,9 +143,7 @@ class DeviceFilter {
     /// satisfy the filter.
     bool? isActive,
   });
-}
 
-extension DeviceFilterExtension on DeviceFilter {
   /// If set, only audio devices whose stream type is included in this list
   /// will satisfy the filter.
   external JSArray? streamTypes;
@@ -167,11 +152,7 @@ extension DeviceFilterExtension on DeviceFilter {
   /// satisfy the filter.
   external bool? isActive;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeviceProperties {
+extension type DeviceProperties._(JSObject _) implements JSObject {
   external factory DeviceProperties(
       {
       ///
@@ -181,9 +162,7 @@ class DeviceProperties {
       /// If used with audio input device, represents audio device gain.
       /// If used with audio output device, represents audio device volume.
       int? level});
-}
 
-extension DevicePropertiesExtension on DeviceProperties {
   ///
   ///   The audio device's desired sound level. Defaults to the device's
   ///   current sound level.
@@ -192,11 +171,7 @@ extension DevicePropertiesExtension on DeviceProperties {
   /// If used with audio output device, represents audio device volume.
   external int? level;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeviceIdLists {
+extension type DeviceIdLists._(JSObject _) implements JSObject {
   external factory DeviceIdLists({
     /// List of input devices specified by their ID.
     /// To indicate input devices should be unaffected, leave this property
@@ -208,9 +183,7 @@ class DeviceIdLists {
     ///   unset.
     JSArray? output,
   });
-}
 
-extension DeviceIdListsExtension on DeviceIdLists {
   /// List of input devices specified by their ID.
   /// To indicate input devices should be unaffected, leave this property
   ///   unset.
@@ -221,11 +194,7 @@ extension DeviceIdListsExtension on DeviceIdLists {
   ///   unset.
   external JSArray? output;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MuteChangedEvent {
+extension type MuteChangedEvent._(JSObject _) implements JSObject {
   external factory MuteChangedEvent({
     /// The type of the stream for which the mute value changed. The updated mute
     /// value applies to all devices with this stream type.
@@ -234,9 +203,7 @@ class MuteChangedEvent {
     /// Whether or not the stream is now muted.
     bool isMuted,
   });
-}
 
-extension MuteChangedEventExtension on MuteChangedEvent {
   /// The type of the stream for which the mute value changed. The updated mute
   /// value applies to all devices with this stream type.
   external StreamType streamType;
@@ -244,11 +211,7 @@ extension MuteChangedEventExtension on MuteChangedEvent {
   /// Whether or not the stream is now muted.
   external bool isMuted;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class LevelChangedEvent {
+extension type LevelChangedEvent._(JSObject _) implements JSObject {
   external factory LevelChangedEvent({
     /// ID of device whose sound level has changed.
     String deviceId,
@@ -256,9 +219,7 @@ class LevelChangedEvent {
     /// The device's new sound level.
     int level,
   });
-}
 
-extension LevelChangedEventExtension on LevelChangedEvent {
   /// ID of device whose sound level has changed.
   external String deviceId;
 

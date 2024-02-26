@@ -122,6 +122,20 @@ class ChromeContentSettings {
   ContentSetting get microphone =>
       ContentSetting.fromJS($js.chrome.contentSettings.microphone);
 
+  /// Whether to allow sites to access the clipboard via advanced capabilities
+  /// of the Async Clipboard API. "Advanced" capabilities include anything
+  /// besides writing built-in formats after a user gesture, i.e. the ability to
+  /// read, the ability to write custom formats, and the ability to write
+  /// without a user gesture. One of
+  /// [allow]: Allow sites to use advanced clipboard capabilities,
+  /// [block]: Don't allow sites to use advanced clipboard capabilties,
+  /// [ask]: Ask when a site wants to use advanced clipboard capabilities.
+  /// Default is [ask].
+  /// The primary URL is the URL of the document which requested clipboard
+  /// access. The secondary URL is not used.
+  ContentSetting get clipboard =>
+      ContentSetting.fromJS($js.chrome.contentSettings.clipboard);
+
   /// Whether to allow sites to access the camera. One of
   /// [allow]: Allow sites to access the camera,
   /// [block]: Don't allow sites to access the camera,
@@ -181,6 +195,20 @@ enum AutoVerifyContentSetting {
 
   String get toJS => value;
   static AutoVerifyContentSetting fromJS(String value) =>
+      values.firstWhere((e) => e.value == value);
+}
+
+enum ClipboardContentSetting {
+  allow('allow'),
+  block('block'),
+  ask('ask');
+
+  const ClipboardContentSetting(this.value);
+
+  final String value;
+
+  String get toJS => value;
+  static ClipboardContentSetting fromJS(String value) =>
       values.firstWhere((e) => e.value == value);
 }
 

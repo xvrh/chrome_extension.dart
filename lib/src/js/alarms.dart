@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,23 +24,19 @@ extension JSChromeJSAlarmsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSAlarms {}
-
-extension JSAlarmsExtension on JSAlarms {
+extension type JSAlarms._(JSObject _) {
   /// Creates an alarm.  Near the time(s) specified by [alarmInfo],
   /// the `onAlarm` event is fired. If there is another alarm with
   /// the same name (or no name if none is specified), it will be cancelled and
   /// replaced by this alarm.
   ///
   /// In order to reduce the load on the user's machine, Chrome limits alarms
-  /// to at most once every 1 minute but may delay them an arbitrary amount
+  /// to at most once every 30 seconds but may delay them an arbitrary amount
   /// more.  That is, setting `delayInMinutes` or
-  /// `periodInMinutes` to less than `1` will not be
+  /// `periodInMinutes` to less than `0.5` will not be
   /// honored and will cause a warning.  `when` can be set to less
-  /// than 1 minute after "now" without warning but won't actually cause the
-  /// alarm to fire for at least 1 minute.
+  /// than 30 seconds after "now" without warning but won't actually cause the
+  /// alarm to fire for at least 30 seconds.
   ///
   /// To help you debug your app or extension, when you've loaded it unpacked,
   /// there's no limit to how often the alarm can fire.
@@ -77,11 +74,7 @@ extension JSAlarmsExtension on JSAlarms {
   /// |alarm|: The alarm that has elapsed.
   external Event get onAlarm;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Alarm {
+extension type Alarm._(JSObject _) implements JSObject {
   external factory Alarm({
     /// Name of this alarm.
     String name,
@@ -95,9 +88,7 @@ class Alarm {
     /// [periodInMinutes] minutes.
     double? periodInMinutes,
   });
-}
 
-extension AlarmExtension on Alarm {
   /// Name of this alarm.
   external String name;
 
@@ -110,11 +101,7 @@ extension AlarmExtension on Alarm {
   /// [periodInMinutes] minutes.
   external double? periodInMinutes;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class AlarmCreateInfo {
+extension type AlarmCreateInfo._(JSObject _) implements JSObject {
   external factory AlarmCreateInfo({
     /// Time at which the alarm should fire, in milliseconds past the epoch
     /// (e.g. `Date.now() + n`).
@@ -133,9 +120,7 @@ class AlarmCreateInfo {
     /// <!-- TODO: need minimum=0 -->
     double? periodInMinutes,
   });
-}
 
-extension AlarmCreateInfoExtension on AlarmCreateInfo {
   /// Time at which the alarm should fire, in milliseconds past the epoch
   /// (e.g. `Date.now() + n`).
   external double? when;

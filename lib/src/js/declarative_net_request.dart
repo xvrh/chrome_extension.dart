@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -27,11 +28,7 @@ extension JSChromeJSDeclarativeNetRequestExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSDeclarativeNetRequest {}
-
-extension JSDeclarativeNetRequestExtension on JSDeclarativeNetRequest {
+extension type JSDeclarativeNetRequest._(JSObject _) {
   /// Modifies the current set of dynamic rules for the extension.
   /// The rules with IDs listed in `options.removeRuleIds` are first
   /// removed, and then the rules given in `options.addRules` are
@@ -172,12 +169,22 @@ extension JSDeclarativeNetRequestExtension on JSDeclarativeNetRequest {
   /// the [global static rule limit](#global-static-rule-limit).
   external int get GUARANTEED_MINIMUM_STATIC_RULES;
 
-  /// The maximum number of dynamic rules that an extension can add.
-  external int get MAX_NUMBER_OF_DYNAMIC_RULES;
-
   /// The maximum number of combined dynamic and session scoped rules an
   /// extension can add.
   external int get MAX_NUMBER_OF_DYNAMIC_AND_SESSION_RULES;
+
+  /// The maximum number of dynamic rules that an extension can add.
+  external int get MAX_NUMBER_OF_DYNAMIC_RULES;
+
+  /// The maximum number of "unsafe" dynamic rules that an extension can add.
+  external int get MAX_NUMBER_OF_UNSAFE_DYNAMIC_RULES;
+
+  /// The maximum number of session scoped rules that an extension can add.
+  external int get MAX_NUMBER_OF_SESSION_RULES;
+
+  /// The maximum number of "unsafe" session scoped rules that an extension can
+  /// add.
+  external int get MAX_NUMBER_OF_UNSAFE_SESSION_RULES;
 
   /// Time interval within which `MAX_GETMATCHEDRULES_CALLS_PER_INTERVAL
   /// getMatchedRules` calls can be made, specified in minutes.
@@ -229,11 +236,7 @@ typedef RuleActionType = String;
 
 /// Describes the reason why a given regular expression isn't supported.
 typedef UnsupportedRegexReason = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Ruleset {
+extension type Ruleset._(JSObject _) implements JSObject {
   external factory Ruleset({
     /// A non-empty string uniquely identifying the ruleset. IDs beginning with
     /// '_' are reserved for internal use.
@@ -245,9 +248,7 @@ class Ruleset {
     /// Whether the ruleset is enabled by default.
     bool enabled,
   });
-}
 
-extension RulesetExtension on Ruleset {
   /// A non-empty string uniquely identifying the ruleset. IDs beginning with
   /// '_' are reserved for internal use.
   external String id;
@@ -258,11 +259,7 @@ extension RulesetExtension on Ruleset {
   /// Whether the ruleset is enabled by default.
   external bool enabled;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class QueryKeyValue {
+extension type QueryKeyValue._(JSObject _) implements JSObject {
   external factory QueryKeyValue({
     String key,
     String value,
@@ -271,9 +268,7 @@ class QueryKeyValue {
     /// Otherwise, the key is also added if it's missing. Defaults to false.
     bool? replaceOnly,
   });
-}
 
-extension QueryKeyValueExtension on QueryKeyValue {
   external String key;
 
   external String value;
@@ -282,11 +277,7 @@ extension QueryKeyValueExtension on QueryKeyValue {
   /// Otherwise, the key is also added if it's missing. Defaults to false.
   external bool? replaceOnly;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class QueryTransform {
+extension type QueryTransform._(JSObject _) implements JSObject {
   external factory QueryTransform({
     /// The list of query keys to be removed.
     JSArray? removeParams,
@@ -294,20 +285,14 @@ class QueryTransform {
     /// The list of query key-value pairs to be added or replaced.
     JSArray? addOrReplaceParams,
   });
-}
 
-extension QueryTransformExtension on QueryTransform {
   /// The list of query keys to be removed.
   external JSArray? removeParams;
 
   /// The list of query key-value pairs to be added or replaced.
   external JSArray? addOrReplaceParams;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class URLTransform {
+extension type URLTransform._(JSObject _) implements JSObject {
   external factory URLTransform({
     /// The new scheme for the request. Allowed values are "http", "https",
     /// "ftp" and "chrome-extension".
@@ -339,9 +324,7 @@ class URLTransform {
     /// The new password for the request.
     String? password,
   });
-}
 
-extension URLTransformExtension on URLTransform {
   /// The new scheme for the request. Allowed values are "http", "https",
   /// "ftp" and "chrome-extension".
   external String? scheme;
@@ -372,11 +355,7 @@ extension URLTransformExtension on URLTransform {
   /// The new password for the request.
   external String? password;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Redirect {
+extension type Redirect._(JSObject _) implements JSObject {
   external factory Redirect({
     /// Path relative to the extension directory. Should start with '/'.
     String? extensionPath,
@@ -394,9 +373,7 @@ class Redirect {
     /// corresponding capture groups. \0 refers to the entire matching text.
     String? regexSubstitution,
   });
-}
 
-extension RedirectExtension on Redirect {
   /// Path relative to the extension directory. Should start with '/'.
   external String? extensionPath;
 
@@ -413,11 +390,32 @@ extension RedirectExtension on Redirect {
   /// corresponding capture groups. \0 refers to the entire matching text.
   external String? regexSubstitution;
 }
+extension type HeaderInfo._(JSObject _) implements JSObject {
+  external factory HeaderInfo({
+    /// The name of the header.
+    String header,
 
-@JS()
-@staticInterop
-@anonymous
-class RuleCondition {
+    /// If specified, match this rule if the header's value contains at least one
+    /// element in this list.
+    JSArray? values,
+
+    /// If specified, the rule is not matched if the header exists but its value
+    /// contains at least one element in this list.
+    JSArray? excludedValues,
+  });
+
+  /// The name of the header.
+  external String header;
+
+  /// If specified, match this rule if the header's value contains at least one
+  /// element in this list.
+  external JSArray? values;
+
+  /// If specified, the rule is not matched if the header exists but its value
+  /// contains at least one element in this list.
+  external JSArray? excludedValues;
+}
+extension type RuleCondition._(JSObject _) implements JSObject {
   external factory RuleCondition({
     /// The pattern which is matched against the network request url.
     /// Supported constructs:
@@ -468,7 +466,7 @@ class RuleCondition {
     String? regexFilter,
 
     /// Whether the `urlFilter` or `regexFilter`
-    /// (whichever is specified) is case sensitive. Default is true.
+    /// (whichever is specified) is case sensitive. Default is false.
     bool? isUrlFilterCaseSensitive,
 
     /// The rule will only match network requests originating from the list of
@@ -583,10 +581,17 @@ class RuleCondition {
     /// [tabs.TAB_ID_NONE] excludes requests which don't originate from a
     /// tab. Only supported for session-scoped rules.
     JSArray? excludedTabIds,
-  });
-}
 
-extension RuleConditionExtension on RuleCondition {
+    /// Rule matches if the request matches any response header in this list (if
+    /// specified).
+    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+    JSArray? responseHeaders,
+
+    /// Rule does not match if the request has any of the specified headers.
+    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+    JSArray? excludedResponseHeaders,
+  });
+
   /// The pattern which is matched against the network request url.
   /// Supported constructs:
   ///
@@ -636,7 +641,7 @@ extension RuleConditionExtension on RuleCondition {
   external String? regexFilter;
 
   /// Whether the `urlFilter` or `regexFilter`
-  /// (whichever is specified) is case sensitive. Default is true.
+  /// (whichever is specified) is case sensitive. Default is false.
   external bool? isUrlFilterCaseSensitive;
 
   /// The rule will only match network requests originating from the list of
@@ -751,12 +756,17 @@ extension RuleConditionExtension on RuleCondition {
   /// [tabs.TAB_ID_NONE] excludes requests which don't originate from a
   /// tab. Only supported for session-scoped rules.
   external JSArray? excludedTabIds;
-}
 
-@JS()
-@staticInterop
-@anonymous
-class ModifyHeaderInfo {
+  /// Rule matches if the request matches any response header in this list (if
+  /// specified).
+  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+  external JSArray? responseHeaders;
+
+  /// Rule does not match if the request has any of the specified headers.
+  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+  external JSArray? excludedResponseHeaders;
+}
+extension type ModifyHeaderInfo._(JSObject _) implements JSObject {
   external factory ModifyHeaderInfo({
     /// The name of the header to be modified.
     String header,
@@ -768,9 +778,7 @@ class ModifyHeaderInfo {
     /// and `set` operations.
     String? value,
   });
-}
 
-extension ModifyHeaderInfoExtension on ModifyHeaderInfo {
   /// The name of the header to be modified.
   external String header;
 
@@ -781,11 +789,7 @@ extension ModifyHeaderInfoExtension on ModifyHeaderInfo {
   /// and `set` operations.
   external String? value;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RuleAction {
+extension type RuleAction._(JSObject _) implements JSObject {
   external factory RuleAction({
     /// The type of action to perform.
     RuleActionType type,
@@ -802,9 +806,7 @@ class RuleAction {
     /// RuleActionType is "modifyHeaders".
     JSArray? responseHeaders,
   });
-}
 
-extension RuleActionExtension on RuleAction {
   /// The type of action to perform.
   external RuleActionType type;
 
@@ -820,11 +822,7 @@ extension RuleActionExtension on RuleAction {
   /// RuleActionType is "modifyHeaders".
   external JSArray? responseHeaders;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Rule {
+extension type Rule._(JSObject _) implements JSObject {
   external factory Rule({
     /// An id which uniquely identifies a rule. Mandatory and should be >= 1.
     int id,
@@ -838,9 +836,7 @@ class Rule {
     /// The action to take if this rule is matched.
     RuleAction action,
   });
-}
 
-extension RuleExtension on Rule {
   /// An id which uniquely identifies a rule. Mandatory and should be >= 1.
   external int id;
 
@@ -853,11 +849,7 @@ extension RuleExtension on Rule {
   /// The action to take if this rule is matched.
   external RuleAction action;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MatchedRule {
+extension type MatchedRule._(JSObject _) implements JSObject {
   external factory MatchedRule({
     /// A matching rule's ID.
     int ruleId,
@@ -867,9 +859,7 @@ class MatchedRule {
     /// [DYNAMIC_RULESET_ID].
     String rulesetId,
   });
-}
 
-extension MatchedRuleExtension on MatchedRule {
   /// A matching rule's ID.
   external int ruleId;
 
@@ -878,26 +868,16 @@ extension MatchedRuleExtension on MatchedRule {
   /// [DYNAMIC_RULESET_ID].
   external String rulesetId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetRulesFilter {
+extension type GetRulesFilter._(JSObject _) implements JSObject {
   external factory GetRulesFilter(
       {
       /// If specified, only rules with matching IDs are included.
       JSArray? ruleIds});
-}
 
-extension GetRulesFilterExtension on GetRulesFilter {
   /// If specified, only rules with matching IDs are included.
   external JSArray? ruleIds;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MatchedRuleInfo {
+extension type MatchedRuleInfo._(JSObject _) implements JSObject {
   external factory MatchedRuleInfo({
     MatchedRule rule,
 
@@ -910,9 +890,7 @@ class MatchedRuleInfo {
     /// still active. Else -1.
     int tabId,
   });
-}
 
-extension MatchedRuleInfoExtension on MatchedRuleInfo {
   external MatchedRule rule;
 
   /// The time the rule was matched. Timestamps will correspond to the
@@ -924,11 +902,7 @@ extension MatchedRuleInfoExtension on MatchedRuleInfo {
   /// still active. Else -1.
   external int tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MatchedRulesFilter {
+extension type MatchedRulesFilter._(JSObject _) implements JSObject {
   external factory MatchedRulesFilter({
     /// If specified, only matches rules for the given tab. Matches rules not
     /// associated with any active tab if set to -1.
@@ -937,9 +911,7 @@ class MatchedRulesFilter {
     /// If specified, only matches rules after the given timestamp.
     double? minTimeStamp,
   });
-}
 
-extension MatchedRulesFilterExtension on MatchedRulesFilter {
   /// If specified, only matches rules for the given tab. Matches rules not
   /// associated with any active tab if set to -1.
   external int? tabId;
@@ -947,26 +919,16 @@ extension MatchedRulesFilterExtension on MatchedRulesFilter {
   /// If specified, only matches rules after the given timestamp.
   external double? minTimeStamp;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RulesMatchedDetails {
+extension type RulesMatchedDetails._(JSObject _) implements JSObject {
   external factory RulesMatchedDetails(
       {
       /// Rules matching the given filter.
       JSArray rulesMatchedInfo});
-}
 
-extension RulesMatchedDetailsExtension on RulesMatchedDetails {
   /// Rules matching the given filter.
   external JSArray rulesMatchedInfo;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RequestDetails {
+extension type RequestDetails._(JSObject _) implements JSObject {
   external factory RequestDetails({
     /// The ID of the request. Request IDs are unique within a browser session.
     String requestId,
@@ -1015,9 +977,7 @@ class RequestDetails {
     /// The resource type of the request.
     ResourceType type,
   });
-}
 
-extension RequestDetailsExtension on RequestDetails {
   /// The ID of the request. Request IDs are unique within a browser session.
   external String requestId;
 
@@ -1065,11 +1025,7 @@ extension RequestDetailsExtension on RequestDetails {
   /// The resource type of the request.
   external ResourceType type;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TestMatchRequestDetails {
+extension type TestMatchRequestDetails._(JSObject _) implements JSObject {
   external factory TestMatchRequestDetails({
     /// The URL of the hypothetical request.
     String url,
@@ -1089,9 +1045,7 @@ class TestMatchRequestDetails {
     /// the request isn't related to a tab.
     int? tabId,
   });
-}
 
-extension TestMatchRequestDetailsExtension on TestMatchRequestDetails {
   /// The URL of the hypothetical request.
   external String url;
 
@@ -1110,52 +1064,30 @@ extension TestMatchRequestDetailsExtension on TestMatchRequestDetails {
   /// the request isn't related to a tab.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MatchedRuleInfoDebug {
+extension type MatchedRuleInfoDebug._(JSObject _) implements JSObject {
   external factory MatchedRuleInfoDebug({
     MatchedRule rule,
 
     /// Details about the request for which the rule was matched.
     RequestDetails request,
   });
-}
 
-extension MatchedRuleInfoDebugExtension on MatchedRuleInfoDebug {
   external MatchedRule rule;
 
   /// Details about the request for which the rule was matched.
   external RequestDetails request;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DNRInfo {
+extension type DNRInfo._(JSObject _) implements JSObject {
   external factory DNRInfo({JSArray rule_resources});
-}
 
-extension DNRInfoExtension on DNRInfo {
   external JSArray rule_resources;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ManifestKeys {
+extension type ManifestKeys._(JSObject _) implements JSObject {
   external factory ManifestKeys({DNRInfo declarative_net_request});
-}
 
-extension ManifestKeysExtension on ManifestKeys {
   external DNRInfo declarative_net_request;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RegexOptions {
+extension type RegexOptions._(JSObject _) implements JSObject {
   external factory RegexOptions({
     /// The regular expresson to check.
     String regex,
@@ -1169,9 +1101,7 @@ class RegexOptions {
     /// `regexSubstition` action. The default is false.
     bool? requireCapturing,
   });
-}
 
-extension RegexOptionsExtension on RegexOptions {
   /// The regular expresson to check.
   external String regex;
 
@@ -1184,11 +1114,7 @@ extension RegexOptionsExtension on RegexOptions {
   /// `regexSubstition` action. The default is false.
   external bool? requireCapturing;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class IsRegexSupportedResult {
+extension type IsRegexSupportedResult._(JSObject _) implements JSObject {
   external factory IsRegexSupportedResult({
     bool isSupported,
 
@@ -1196,35 +1122,23 @@ class IsRegexSupportedResult {
     /// provided if `isSupported` is false.
     UnsupportedRegexReason? reason,
   });
-}
 
-extension IsRegexSupportedResultExtension on IsRegexSupportedResult {
   external bool isSupported;
 
   /// Specifies the reason why the regular expression is not supported. Only
   /// provided if `isSupported` is false.
   external UnsupportedRegexReason? reason;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TestMatchOutcomeResult {
+extension type TestMatchOutcomeResult._(JSObject _) implements JSObject {
   external factory TestMatchOutcomeResult(
       {
       /// The rules (if any) that match the hypothetical request.
       JSArray matchedRules});
-}
 
-extension TestMatchOutcomeResultExtension on TestMatchOutcomeResult {
   /// The rules (if any) that match the hypothetical request.
   external JSArray matchedRules;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateRuleOptions {
+extension type UpdateRuleOptions._(JSObject _) implements JSObject {
   external factory UpdateRuleOptions({
     /// IDs of the rules to remove. Any invalid IDs will be ignored.
     JSArray? removeRuleIds,
@@ -1232,20 +1146,14 @@ class UpdateRuleOptions {
     /// Rules to add.
     JSArray? addRules,
   });
-}
 
-extension UpdateRuleOptionsExtension on UpdateRuleOptions {
   /// IDs of the rules to remove. Any invalid IDs will be ignored.
   external JSArray? removeRuleIds;
 
   /// Rules to add.
   external JSArray? addRules;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateRulesetOptions {
+extension type UpdateRulesetOptions._(JSObject _) implements JSObject {
   external factory UpdateRulesetOptions({
     /// The set of ids corresponding to a static [Ruleset] that should be
     /// disabled.
@@ -1255,9 +1163,7 @@ class UpdateRulesetOptions {
     /// enabled.
     JSArray? enableRulesetIds,
   });
-}
 
-extension UpdateRulesetOptionsExtension on UpdateRulesetOptions {
   /// The set of ids corresponding to a static [Ruleset] that should be
   /// disabled.
   external JSArray? disableRulesetIds;
@@ -1266,11 +1172,7 @@ extension UpdateRulesetOptionsExtension on UpdateRulesetOptions {
   /// enabled.
   external JSArray? enableRulesetIds;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateStaticRulesOptions {
+extension type UpdateStaticRulesOptions._(JSObject _) implements JSObject {
   external factory UpdateStaticRulesOptions({
     /// The id corresponding to a static [Ruleset].
     String rulesetId,
@@ -1281,9 +1183,7 @@ class UpdateStaticRulesOptions {
     /// Set of ids corresponding to rules in the [Ruleset] to enable.
     JSArray? enableRuleIds,
   });
-}
 
-extension UpdateStaticRulesOptionsExtension on UpdateStaticRulesOptions {
   /// The id corresponding to a static [Ruleset].
   external String rulesetId;
 
@@ -1293,26 +1193,16 @@ extension UpdateStaticRulesOptionsExtension on UpdateStaticRulesOptions {
   /// Set of ids corresponding to rules in the [Ruleset] to enable.
   external JSArray? enableRuleIds;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetDisabledRuleIdsOptions {
+extension type GetDisabledRuleIdsOptions._(JSObject _) implements JSObject {
   external factory GetDisabledRuleIdsOptions(
       {
       /// The id corresponding to a static [Ruleset].
       String rulesetId});
-}
 
-extension GetDisabledRuleIdsOptionsExtension on GetDisabledRuleIdsOptions {
   /// The id corresponding to a static [Ruleset].
   external String rulesetId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TabActionCountUpdate {
+extension type TabActionCountUpdate._(JSObject _) implements JSObject {
   external factory TabActionCountUpdate({
     /// The tab for which to update the action count.
     int tabId,
@@ -1321,9 +1211,7 @@ class TabActionCountUpdate {
     /// decrement the count.
     int increment,
   });
-}
 
-extension TabActionCountUpdateExtension on TabActionCountUpdate {
   /// The tab for which to update the action count.
   external int tabId;
 
@@ -1331,11 +1219,7 @@ extension TabActionCountUpdateExtension on TabActionCountUpdate {
   /// decrement the count.
   external int increment;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ExtensionActionOptions {
+extension type ExtensionActionOptions._(JSObject _) implements JSObject {
   external factory ExtensionActionOptions({
     /// Whether to automatically display the action count for a page as the
     /// extension's badge text. This preference is persisted across sessions.
@@ -1344,9 +1228,7 @@ class ExtensionActionOptions {
     /// Details of how the tab's action count should be adjusted.
     TabActionCountUpdate? tabUpdate,
   });
-}
 
-extension ExtensionActionOptionsExtension on ExtensionActionOptions {
   /// Whether to automatically display the action count for a page as the
   /// extension's badge text. This preference is persisted across sessions.
   external bool? displayActionCountAsBadgeText;

@@ -72,7 +72,7 @@ class ChromeFileSystemProvider {
 
   /// Notifies about changes in the watched directory at
   /// `observedPath` in `recursive` mode. If the file
-  /// system is mounted with `supportsNofityTag`, then
+  /// system is mounted with `supportsNotifyTag`, then
   /// `tag` must be provided, and all changes since the last
   /// notification always reported, even if the system was shutdown. The last
   /// tag can be obtained with [getAll].
@@ -664,6 +664,39 @@ typedef FileDataCallback = void Function(
   bool,
 );
 
+class CloudIdentifier {
+  CloudIdentifier.fromJS(this._wrapped);
+
+  CloudIdentifier({
+    /// Identifier for the cloud storage provider (e.g. 'drive.google.com').
+    required String providerName,
+
+    /// The provider's identifier for the given file/directory.
+    required String id,
+  }) : _wrapped = $js.CloudIdentifier(
+          providerName: providerName,
+          id: id,
+        );
+
+  final $js.CloudIdentifier _wrapped;
+
+  $js.CloudIdentifier get toJS => _wrapped;
+
+  /// Identifier for the cloud storage provider (e.g. 'drive.google.com').
+  String get providerName => _wrapped.providerName;
+
+  set providerName(String v) {
+    _wrapped.providerName = v;
+  }
+
+  /// The provider's identifier for the given file/directory.
+  String get id => _wrapped.id;
+
+  set id(String v) {
+    _wrapped.id = v;
+  }
+}
+
 class EntryMetadata {
   EntryMetadata.fromJS(this._wrapped);
 
@@ -693,6 +726,13 @@ class EntryMetadata {
     /// 32 KB in size. Optional, but can be provided only when explicitly
     /// requested by the [onGetMetadataRequested] event.
     String? thumbnail,
+
+    /// Cloud storage representation of this entry. Must be provided if
+    /// requested
+    /// in `options` and the file is backed by cloud storage. For
+    /// local files not backed by cloud storage, it should be undefined when
+    /// requested.
+    CloudIdentifier? cloudIdentifier,
   }) : _wrapped = $js.EntryMetadata(
           isDirectory: isDirectory,
           name: name,
@@ -700,6 +740,7 @@ class EntryMetadata {
           modificationTime: modificationTime,
           mimeType: mimeType,
           thumbnail: thumbnail,
+          cloudIdentifier: cloudIdentifier?.toJS,
         );
 
   final $js.EntryMetadata _wrapped;
@@ -753,6 +794,17 @@ class EntryMetadata {
 
   set thumbnail(String? v) {
     _wrapped.thumbnail = v;
+  }
+
+  /// Cloud storage representation of this entry. Must be provided if requested
+  /// in `options` and the file is backed by cloud storage. For
+  /// local files not backed by cloud storage, it should be undefined when
+  /// requested.
+  CloudIdentifier? get cloudIdentifier =>
+      _wrapped.cloudIdentifier?.let(CloudIdentifier.fromJS);
+
+  set cloudIdentifier(CloudIdentifier? v) {
+    _wrapped.cloudIdentifier = v?.toJS;
   }
 }
 
@@ -1117,8 +1169,12 @@ class GetMetadataRequestedOptions {
     /// Set to `true` if `mimeType` value is requested.
     required bool mimeType,
 
-    /// Set to `true` if the thumbnail is requested.
+    /// Set to `true` if `thumbnail` value is requested.
     required bool thumbnail,
+
+    /// Set to `true` if `cloudIdentifier` value is
+    /// requested.
+    required bool cloudIdentifier,
   }) : _wrapped = $js.GetMetadataRequestedOptions(
           fileSystemId: fileSystemId,
           requestId: requestId,
@@ -1129,6 +1185,7 @@ class GetMetadataRequestedOptions {
           modificationTime: modificationTime,
           mimeType: mimeType,
           thumbnail: thumbnail,
+          cloudIdentifier: cloudIdentifier,
         );
 
   final $js.GetMetadataRequestedOptions _wrapped;
@@ -1192,11 +1249,19 @@ class GetMetadataRequestedOptions {
     _wrapped.mimeType = v;
   }
 
-  /// Set to `true` if the thumbnail is requested.
+  /// Set to `true` if `thumbnail` value is requested.
   bool get thumbnail => _wrapped.thumbnail;
 
   set thumbnail(bool v) {
     _wrapped.thumbnail = v;
+  }
+
+  /// Set to `true` if `cloudIdentifier` value is
+  /// requested.
+  bool get cloudIdentifier => _wrapped.cloudIdentifier;
+
+  set cloudIdentifier(bool v) {
+    _wrapped.cloudIdentifier = v;
   }
 }
 
@@ -1274,7 +1339,7 @@ class ReadDirectoryRequestedOptions {
     /// Set to `true` if `mimeType` value is requested.
     required bool mimeType,
 
-    /// Set to `true` if the thumbnail is requested.
+    /// Set to `true` if `thumbnail` value is requested.
     required bool thumbnail,
   }) : _wrapped = $js.ReadDirectoryRequestedOptions(
           fileSystemId: fileSystemId,
@@ -1349,7 +1414,7 @@ class ReadDirectoryRequestedOptions {
     _wrapped.mimeType = v;
   }
 
-  /// Set to `true` if the thumbnail is requested.
+  /// Set to `true` if `thumbnail` value is requested.
   bool get thumbnail => _wrapped.thumbnail;
 
   set thumbnail(bool v) {

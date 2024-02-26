@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSContentSettingsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSContentSettings {}
-
-extension JSContentSettingsExtension on JSContentSettings {
+extension type JSContentSettings._(JSObject _) {
   /// Whether to allow sites to use the [Private State Tokens
   /// API](https://developer.chrome.com/docs/privacy-sandbox/trust-tokens/). One
   /// of
@@ -117,6 +114,19 @@ extension JSContentSettingsExtension on JSContentSettings {
   /// NOTE: The 'allow' setting is not valid if both patterns are '<all_urls>'.
   external ContentSetting get microphone;
 
+  /// Whether to allow sites to access the clipboard via advanced capabilities
+  /// of the Async Clipboard API. "Advanced" capabilities include anything
+  /// besides writing built-in formats after a user gesture, i.e. the ability to
+  /// read, the ability to write custom formats, and the ability to write
+  /// without a user gesture. One of
+  /// [allow]: Allow sites to use advanced clipboard capabilities,
+  /// [block]: Don't allow sites to use advanced clipboard capabilties,
+  /// [ask]: Ask when a site wants to use advanced clipboard capabilities.
+  /// Default is [ask].
+  /// The primary URL is the URL of the document which requested clipboard
+  /// access. The secondary URL is not used.
+  external ContentSetting get clipboard;
+
   /// Whether to allow sites to access the camera. One of
   /// [allow]: Allow sites to access the camera,
   /// [block]: Don't allow sites to access the camera,
@@ -154,6 +164,8 @@ typedef Scope = String;
 
 typedef AutoVerifyContentSetting = String;
 
+typedef ClipboardContentSetting = String;
+
 typedef CookiesContentSetting = String;
 
 typedef ImagesContentSetting = String;
@@ -179,11 +191,7 @@ typedef CameraContentSetting = String;
 typedef PpapiBrokerContentSetting = String;
 
 typedef MultipleAutomaticDownloadsContentSetting = String;
-
-@JS()
-@staticInterop
-@anonymous
-class ResourceIdentifier {
+extension type ResourceIdentifier._(JSObject _) implements JSObject {
   external factory ResourceIdentifier({
     /// The resource identifier for the given content type.
     String id,
@@ -191,24 +199,16 @@ class ResourceIdentifier {
     /// A human readable description of the resource.
     String? description,
   });
-}
 
-extension ResourceIdentifierExtension on ResourceIdentifier {
   /// The resource identifier for the given content type.
   external String id;
 
   /// A human readable description of the resource.
   external String? description;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ContentSetting {
+extension type ContentSetting._(JSObject _) implements JSObject {
   external factory ContentSetting();
-}
 
-extension ContentSettingExtension on ContentSetting {
   /// Clear all content setting rules set by this extension.
   external JSPromise clear(ClearDetails details);
 
@@ -220,43 +220,27 @@ extension ContentSettingExtension on ContentSetting {
 
   external JSPromise getResourceIdentifiers();
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClearDetails {
+extension type ClearDetails._(JSObject _) implements JSObject {
   external factory ClearDetails(
       {
       /// Where to clear the setting (default: regular).
       Scope? scope});
-}
 
-extension ClearDetailsExtension on ClearDetails {
   /// Where to clear the setting (default: regular).
   external Scope? scope;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetCallbackDetails {
+extension type GetCallbackDetails._(JSObject _) implements JSObject {
   external factory GetCallbackDetails(
       {
       /// The content setting. See the description of the individual ContentSetting
       /// objects for the possible values.
       JSAny setting});
-}
 
-extension GetCallbackDetailsExtension on GetCallbackDetails {
   /// The content setting. See the description of the individual ContentSetting
   /// objects for the possible values.
   external JSAny setting;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetDetails {
+extension type GetDetails._(JSObject _) implements JSObject {
   external factory GetDetails({
     /// The primary URL for which the content setting should be retrieved. Note
     /// that the meaning of a primary URL depends on the content type.
@@ -275,9 +259,7 @@ class GetDetails {
     /// false)
     bool? incognito,
   });
-}
 
-extension GetDetailsExtension on GetDetails {
   /// The primary URL for which the content setting should be retrieved. Note
   /// that the meaning of a primary URL depends on the content type.
   external String primaryUrl;
@@ -295,11 +277,7 @@ extension GetDetailsExtension on GetDetails {
   /// false)
   external bool? incognito;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetDetails {
+extension type SetDetails._(JSObject _) implements JSObject {
   external factory SetDetails({
     /// The pattern for the primary URL. For details on the format of a pattern,
     /// see [Content Setting Patterns](contentSettings#patterns).
@@ -320,9 +298,7 @@ class SetDetails {
     /// Where to set the setting (default: regular).
     Scope? scope,
   });
-}
 
-extension SetDetailsExtension on SetDetails {
   /// The pattern for the primary URL. For details on the format of a pattern,
   /// see [Content Setting Patterns](contentSettings#patterns).
   external String primaryPattern;

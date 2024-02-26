@@ -35,7 +35,7 @@ class ChromeIdentity {
 
   /// Gets an OAuth2 access token using the client ID and scopes
   /// specified in the <a
-  /// href="app_identity.html#update_manifest">`oauth2`
+  /// href="/docs/apps/app_identity#update_manifest">`oauth2`
   /// section of manifest.json</a>.
   ///
   /// The Identity API caches access tokens in memory, so it's ok to
@@ -159,10 +159,10 @@ class ChromeIdentity {
 }
 
 enum AccountStatus {
-  /// Sync is enabled for the primary account.
+  /// Specifies that Sync is enabled for the primary account.
   sync('SYNC'),
 
-  /// Any primary account, if exists.
+  /// Specifies the existence of a primary account, if any.
   any('ANY');
 
   const AccountStatus(this.value);

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSDevtoolsNetworkExtension on JSChromeDevtools {
   }
 }
 
-@JS()
-@staticInterop
-class JSDevtoolsNetwork {}
-
-extension JSDevtoolsNetworkExtension on JSDevtoolsNetwork {
+extension type JSDevtoolsNetwork._(JSObject _) {
   /// Returns HAR log that contains all known network requests.
   external void getHAR(
 
@@ -43,15 +40,9 @@ extension JSDevtoolsNetworkExtension on JSDevtoolsNetwork {
   /// Fired when the inspected window navigates to a new page.
   external Event get onNavigated;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Request {
+extension type Request._(JSObject _) implements JSObject {
   external factory Request();
-}
 
-extension RequestExtension on Request {
   /// Returns content of the response body.
   external void getContent(
 

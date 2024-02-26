@@ -52,48 +52,67 @@ enum Reason {
   /// A reason used for testing purposes only.
   testing('TESTING'),
 
-  /// The offscreen document is responsible for playing audio.
+  /// Specifies that the offscreen document is responsible for playing audio.
   audioPlayback('AUDIO_PLAYBACK'),
 
-  /// The offscreen document needs to embed and script an iframe in order to
-  /// modify the iframe's content.
+  /// Specifies that the offscreen document needs to embed and script an
+  /// iframe in order to modify the iframe's content.
   iframeScripting('IFRAME_SCRIPTING'),
 
-  /// The offscreen document needs to embed an iframe and scrape its DOM to
-  /// extract information.
+  /// Specifies that the offscreen document needs to embed an iframe and
+  /// scrape its DOM to extract information.
   domScraping('DOM_SCRAPING'),
 
-  /// The offscreen document needs to interact with Blob objects (including
-  /// `URL.createObjectURL()`).
+  /// Specifies that the offscreen document needs to interact with Blob
+  /// objects (including `URL.createObjectURL()`).
   blobs('BLOBS'),
 
-  /// The offscreen document needs to use the `DOMParser` API.
+  /// Specifies that the offscreen document needs to use the
+  /// <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser>DOMParser
+  /// API</a>.
   domParser('DOM_PARSER'),
 
-  /// The offscreen document needs to interact with media streams from user
-  /// media (e.g. `getUserMedia()`).
+  /// Specifies that the offscreen document needs to interact with
+  /// media streams from user media (e.g. `getUserMedia()`).
   userMedia('USER_MEDIA'),
 
-  /// The offscreen document needs to interact with media streams from display
-  /// media (e.g. `getDisplayMedia()`).
+  /// Specifies that the offscreen document needs to interact with
+  /// media streams from display media (e.g. `getDisplayMedia()`).
   displayMedia('DISPLAY_MEDIA'),
 
-  /// The offscreen document needs to use WebRTC APIs.
+  /// Specifies that the offscreen document needs to use
+  /// <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API>WebRTC
+  /// APIs</a>.
   webRtc('WEB_RTC'),
 
-  /// The offscreen document needs to interact with the clipboard APIs
-  /// (e.g. `Navigator.clipboard`).
+  /// Specifies that the offscreen document needs to interact with the
+  /// <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API>Clipboard
+  /// API</a>.
   clipboard('CLIPBOARD'),
 
-  /// The offscreen document needs access to
+  /// Specifies that the offscreen document needs access to
   /// [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
   localStorage('LOCAL_STORAGE'),
 
-  /// The offscreen document needs to spawn workers.
+  /// Specifies that the offscreen document needs to spawn workers.
   workers('WORKERS'),
 
-  /// The offscreen document needs to use <a
-  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/geolocation">navigator.geolocation</a>
+  /// Specifies that the offscreen document needs to use
+  /// <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API">navigator.getBattery</a>.
+  batteryStatus('BATTERY_STATUS'),
+
+  /// Specifies that the offscreen document needs to use
+  /// <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia">window.matchMedia</a>.
+  matchMedia('MATCH_MEDIA'),
+
+  /// Specifies that the offscreen document needs to use
+  /// <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/geolocation">navigator.geolocation</a>.
   geolocation('GEOLOCATION');
 
   const Reason(this.value);

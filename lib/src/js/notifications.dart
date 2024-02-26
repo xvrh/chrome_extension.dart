@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSNotificationsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSNotifications {}
-
-extension JSNotificationsExtension on JSNotifications {
+extension type JSNotifications._(JSObject _) {
   /// Creates and displays a notification.
   /// |notificationId|: Identifier of the notification. If not set or empty, an
   /// ID will automatically be generated. If it matches an existing
@@ -97,11 +94,7 @@ extension JSNotificationsExtension on JSNotifications {
 typedef TemplateType = String;
 
 typedef PermissionLevel = String;
-
-@JS()
-@staticInterop
-@anonymous
-class NotificationItem {
+extension type NotificationItem._(JSObject _) implements JSObject {
   external factory NotificationItem({
     /// Title of one item of a list notification.
     String title,
@@ -109,58 +102,40 @@ class NotificationItem {
     /// Additional details about this item.
     String message,
   });
-}
 
-extension NotificationItemExtension on NotificationItem {
   /// Title of one item of a list notification.
   external String title;
 
   /// Additional details about this item.
   external String message;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class NotificationBitmap {
+extension type NotificationBitmap._(JSObject _) implements JSObject {
   external factory NotificationBitmap({
     int width,
     int height,
     JSArrayBuffer? data,
   });
-}
 
-extension NotificationBitmapExtension on NotificationBitmap {
   external int width;
 
   external int height;
 
   external JSArrayBuffer? data;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class NotificationButton {
+extension type NotificationButton._(JSObject _) implements JSObject {
   external factory NotificationButton({
     String title,
     String? iconUrl,
     NotificationBitmap? iconBitmap,
   });
-}
 
-extension NotificationButtonExtension on NotificationButton {
   external String title;
 
   external String? iconUrl;
 
   external NotificationBitmap? iconBitmap;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class NotificationOptions {
+extension type NotificationOptions._(JSObject _) implements JSObject {
   external factory NotificationOptions({
     /// Which type of notification to display.
     /// _Required for [notifications.create]_ method.
@@ -232,9 +207,7 @@ class NotificationOptions {
     /// notification is being shown. This defaults to false.
     bool? silent,
   });
-}
 
-extension NotificationOptionsExtension on NotificationOptions {
   /// Which type of notification to display.
   /// _Required for [notifications.create]_ method.
   external TemplateType? type;

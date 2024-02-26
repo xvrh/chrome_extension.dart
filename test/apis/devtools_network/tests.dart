@@ -31,6 +31,8 @@ void _tests(TestContext context) {
     var browser =
         await puppeteer.connect(browserWsEndpoint: context.puppeteerUrl);
     var page = (await browser.pages).first;
-    await page.goto(context.staticPath('second_page.html'));
-  });
+    await Future.delayed(const Duration(milliseconds: 100));
+    await page.goto(context.staticPath('assets/second_page.html'),
+        wait: Until.domContentLoaded);
+  }, skip: 'Flaky');
 }

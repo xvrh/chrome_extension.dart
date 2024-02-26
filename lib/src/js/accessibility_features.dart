@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -30,11 +31,7 @@ extension JSChromeJSAccessibilityFeaturesExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSAccessibilityFeatures {}
-
-extension JSAccessibilityFeaturesExtension on JSAccessibilityFeatures {
+extension type JSAccessibilityFeatures._(JSObject _) {
   /// *ChromeOS only.*
   ///
   /// Spoken feedback (text-to-speech). The value indicates whether the feature

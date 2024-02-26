@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSTypesExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSTypes {}
-
-extension JSTypesExtension on JSTypes {}
+extension type JSTypes._(JSObject _) {}
 
 /// The scope of the ChromeSetting. One of<ul><li>[regular]: setting for the
 /// regular profile (which is inherited by the incognito profile if not
@@ -46,15 +43,9 @@ typedef ChromeSettingScope = String;
 /// controlled by this extension</li><li>[controlled_by_this_extension]:
 /// controlled by this extension</li></ul>
 typedef LevelOfControl = String;
-
-@JS()
-@staticInterop
-@anonymous
-class ChromeSetting {
+extension type ChromeSetting._(JSObject _) implements JSObject {
   external factory ChromeSetting();
-}
 
-extension ChromeSettingExtension on ChromeSetting {
   /// Gets the value of a setting.
   external JSPromise get(
 
@@ -76,11 +67,7 @@ extension ChromeSettingExtension on ChromeSetting {
   /// Fired after the setting changes.
   external Event get onChange;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetCallbackDetails {
+extension type GetCallbackDetails._(JSObject _) implements JSObject {
   external factory GetCallbackDetails({
     /// The value of the setting.
     JSAny value,
@@ -93,9 +80,7 @@ class GetCallbackDetails {
     /// [details] parameter of `get()` was true.
     bool? incognitoSpecific,
   });
-}
 
-extension GetCallbackDetailsExtension on GetCallbackDetails {
   /// The value of the setting.
   external JSAny value;
 
@@ -107,28 +92,18 @@ extension GetCallbackDetailsExtension on GetCallbackDetails {
   /// [details] parameter of `get()` was true.
   external bool? incognitoSpecific;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetDetails {
+extension type GetDetails._(JSObject _) implements JSObject {
   external factory GetDetails(
       {
       /// Whether to return the value that applies to the incognito session (default
       /// false).
       bool? incognito});
-}
 
-extension GetDetailsExtension on GetDetails {
   /// Whether to return the value that applies to the incognito session (default
   /// false).
   external bool? incognito;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetDetails {
+extension type SetDetails._(JSObject _) implements JSObject {
   external factory SetDetails({
     /// The value of the setting. <br/>Note that every setting has a specific
     /// value type, which is described together with the setting. An extension
@@ -138,9 +113,7 @@ class SetDetails {
     /// Where to set the setting (default: regular).
     ChromeSettingScope? scope,
   });
-}
 
-extension SetDetailsExtension on SetDetails {
   /// The value of the setting. <br/>Note that every setting has a specific
   /// value type, which is described together with the setting. An extension
   /// should _not_ set a value of a different type.
@@ -149,26 +122,16 @@ extension SetDetailsExtension on SetDetails {
   /// Where to set the setting (default: regular).
   external ChromeSettingScope? scope;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClearDetails {
+extension type ClearDetails._(JSObject _) implements JSObject {
   external factory ClearDetails(
       {
       /// Where to clear the setting (default: regular).
       ChromeSettingScope? scope});
-}
 
-extension ClearDetailsExtension on ClearDetails {
   /// Where to clear the setting (default: regular).
   external ChromeSettingScope? scope;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnChangeDetails {
+extension type OnChangeDetails._(JSObject _) implements JSObject {
   external factory OnChangeDetails({
     /// The value of the setting after the change.
     JSAny value,
@@ -181,9 +144,7 @@ class OnChangeDetails {
     /// the extension in incognito mode.
     bool? incognitoSpecific,
   });
-}
 
-extension OnChangeDetailsExtension on OnChangeDetails {
   /// The value of the setting after the change.
   external JSAny value;
 

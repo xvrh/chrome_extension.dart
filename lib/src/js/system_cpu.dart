@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,19 +25,11 @@ extension JSChromeJSSystemCpuExtension on JSChromeSystem {
   }
 }
 
-@JS()
-@staticInterop
-class JSSystemCpu {}
-
-extension JSSystemCpuExtension on JSSystemCpu {
+extension type JSSystemCpu._(JSObject _) {
   /// Queries basic CPU information of the system.
   external JSPromise getInfo();
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CpuTime {
+extension type CpuTime._(JSObject _) implements JSObject {
   external factory CpuTime({
     /// The cumulative time used by userspace programs on this processor.
     double user,
@@ -51,9 +44,7 @@ class CpuTime {
     /// user + kernel + idle.
     double total,
   });
-}
 
-extension CpuTimeExtension on CpuTime {
   /// The cumulative time used by userspace programs on this processor.
   external double user;
 
@@ -67,26 +58,16 @@ extension CpuTimeExtension on CpuTime {
   /// user + kernel + idle.
   external double total;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ProcessorInfo {
+extension type ProcessorInfo._(JSObject _) implements JSObject {
   external factory ProcessorInfo(
       {
       /// Cumulative usage info for this logical processor.
       CpuTime usage});
-}
 
-extension ProcessorInfoExtension on ProcessorInfo {
   /// Cumulative usage info for this logical processor.
   external CpuTime usage;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CpuInfo {
+extension type CpuInfo._(JSObject _) implements JSObject {
   external factory CpuInfo({
     /// The number of logical processors.
     int numOfProcessors,
@@ -111,9 +92,7 @@ class CpuInfo {
     /// **Currently supported on Chrome OS only.**
     JSArray temperatures,
   });
-}
 
-extension CpuInfoExtension on CpuInfo {
   /// The number of logical processors.
   external int numOfProcessors;
 

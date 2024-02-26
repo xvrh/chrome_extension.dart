@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSDownloadsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSDownloads {}
-
-extension JSDownloadsExtension on JSDownloads {
+extension type JSDownloads._(JSObject _) {
   /// Download a URL. If the URL uses the HTTP[S] protocol, then the request
   /// will include all cookies currently set for its hostname. If both
   /// `filename` and `saveAs` are specified, then the
@@ -87,11 +84,12 @@ extension JSDownloadsExtension on JSDownloads {
     GetFileIconOptions? options,
   );
 
-  /// Open the downloaded file now if the [DownloadItem] is complete;
-  /// otherwise returns an error through [runtime.lastError]. Requires the
-  /// `"downloads.open"` permission in addition to the
-  /// `"downloads"` permission. An [onChanged] event will fire
-  /// when the item is opened for the first time.
+  /// Opens the downloaded file now if the [DownloadItem] is complete;
+  /// otherwise returns an error through [runtime.lastError]. This method
+  /// requires the `"downloads.open"` permission in addition to the
+  /// `"downloads"` permission. An [onChanged] event fires
+  /// when the item is opened for the first time. This method can only be called
+  /// in response to a user gesture.
   /// |downloadId|: The identifier for the downloaded file.
   external void open(int downloadId);
 
@@ -130,6 +128,7 @@ extension JSDownloadsExtension on JSDownloads {
   /// one other extension has disabled it will return an error through
   /// [runtime.lastError]. Requires the `"downloads.shelf"`
   /// permission in addition to the `"downloads"` permission.
+  @Deprecated(r'Use $(ref:setUiOptions) instead.')
   external void setShelfEnabled(bool enabled);
 
   /// Change the download UI of every window associated with the current
@@ -229,11 +228,7 @@ typedef DangerType = String;
 typedef State = String;
 
 typedef SuggestFilenameCallback = JSFunction;
-
-@JS()
-@staticInterop
-@anonymous
-class HeaderNameValuePair {
+extension type HeaderNameValuePair._(JSObject _) implements JSObject {
   external factory HeaderNameValuePair({
     /// Name of the HTTP header.
     String name,
@@ -241,20 +236,14 @@ class HeaderNameValuePair {
     /// Value of the HTTP header.
     String value,
   });
-}
 
-extension HeaderNameValuePairExtension on HeaderNameValuePair {
   /// Name of the HTTP header.
   external String name;
 
   /// Value of the HTTP header.
   external String value;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class FilenameSuggestion {
+extension type FilenameSuggestion._(JSObject _) implements JSObject {
   external factory FilenameSuggestion({
     /// The [DownloadItem]'s new target [DownloadItem.filename], as a path
     /// relative to the user's default Downloads directory, possibly containing
@@ -267,9 +256,7 @@ class FilenameSuggestion {
     /// The action to take if `filename` already exists.
     FilenameConflictAction? conflictAction,
   });
-}
 
-extension FilenameSuggestionExtension on FilenameSuggestion {
   /// The [DownloadItem]'s new target [DownloadItem.filename], as a path
   /// relative to the user's default Downloads directory, possibly containing
   /// subdirectories. Absolute paths, empty paths, and paths containing
@@ -281,11 +268,7 @@ extension FilenameSuggestionExtension on FilenameSuggestion {
   /// The action to take if `filename` already exists.
   external FilenameConflictAction? conflictAction;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DownloadOptions {
+extension type DownloadOptions._(JSObject _) implements JSObject {
   external factory DownloadOptions({
     /// The URL to download.
     String url,
@@ -316,9 +299,7 @@ class DownloadOptions {
     /// Post body.
     String? body,
   });
-}
 
-extension DownloadOptionsExtension on DownloadOptions {
   /// The URL to download.
   external String url;
 
@@ -348,11 +329,7 @@ extension DownloadOptionsExtension on DownloadOptions {
   /// Post body.
   external String? body;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DownloadItem {
+extension type DownloadItem._(JSObject _) implements JSObject {
   external factory DownloadItem({
     /// An identifier that is persistent across browser sessions.
     int id,
@@ -451,9 +428,7 @@ class DownloadItem {
     /// changes its name or if the user changes their locale.
     String? byExtensionName,
   });
-}
 
-extension DownloadItemExtension on DownloadItem {
   /// An identifier that is persistent across browser sessions.
   external int id;
 
@@ -551,11 +526,7 @@ extension DownloadItemExtension on DownloadItem {
   /// changes its name or if the user changes their locale.
   external String? byExtensionName;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DownloadQuery {
+extension type DownloadQuery._(JSObject _) implements JSObject {
   external factory DownloadQuery({
     /// This array of search terms limits results to [DownloadItem] whose
     /// `filename` or `url` or `finalUrl`
@@ -662,9 +633,7 @@ class DownloadQuery {
     /// Whether the downloaded file exists;
     bool? exists,
   });
-}
 
-extension DownloadQueryExtension on DownloadQuery {
   /// This array of search terms limits results to [DownloadItem] whose
   /// `filename` or `url` or `finalUrl`
   /// contain all of the search terms that do not begin with a dash '-' and
@@ -770,59 +739,37 @@ extension DownloadQueryExtension on DownloadQuery {
   /// Whether the downloaded file exists;
   external bool? exists;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class StringDelta {
+extension type StringDelta._(JSObject _) implements JSObject {
   external factory StringDelta({
     String? previous,
     String? current,
   });
-}
 
-extension StringDeltaExtension on StringDelta {
   external String? previous;
 
   external String? current;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DoubleDelta {
+extension type DoubleDelta._(JSObject _) implements JSObject {
   external factory DoubleDelta({
     double? previous,
     double? current,
   });
-}
 
-extension DoubleDeltaExtension on DoubleDelta {
   external double? previous;
 
   external double? current;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class BooleanDelta {
+extension type BooleanDelta._(JSObject _) implements JSObject {
   external factory BooleanDelta({
     bool? previous,
     bool? current,
   });
-}
 
-extension BooleanDeltaExtension on BooleanDelta {
   external bool? previous;
 
   external bool? current;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DownloadDelta {
+extension type DownloadDelta._(JSObject _) implements JSObject {
   external factory DownloadDelta({
     /// The `id` of the [DownloadItem]
     /// that changed.
@@ -870,9 +817,7 @@ class DownloadDelta {
     /// The change in `exists`, if any.
     BooleanDelta? exists,
   });
-}
 
-extension DownloadDeltaExtension on DownloadDelta {
   /// The `id` of the [DownloadItem]
   /// that changed.
   external int id;
@@ -919,11 +864,7 @@ extension DownloadDeltaExtension on DownloadDelta {
   /// The change in `exists`, if any.
   external BooleanDelta? exists;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetFileIconOptions {
+extension type GetFileIconOptions._(JSObject _) implements JSObject {
   external factory GetFileIconOptions(
       {
       /// The size of the returned icon. The icon will be square with dimensions
@@ -931,27 +872,19 @@ class GetFileIconOptions {
       /// pixels. The only supported sizes are 16 and 32. It is an error to specify
       /// any other size.
       int? size});
-}
 
-extension GetFileIconOptionsExtension on GetFileIconOptions {
   /// The size of the returned icon. The icon will be square with dimensions
   /// size * size pixels. The default and largest size for the icon is 32x32
   /// pixels. The only supported sizes are 16 and 32. It is an error to specify
   /// any other size.
   external int? size;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UiOptions {
+extension type UiOptions._(JSObject _) implements JSObject {
   external factory UiOptions(
       {
       /// Enable or disable the download UI.
       bool enabled});
-}
 
-extension UiOptionsExtension on UiOptions {
   /// Enable or disable the download UI.
   external bool enabled;
 }

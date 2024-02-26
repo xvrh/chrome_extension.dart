@@ -35,7 +35,7 @@ class ChromeI18n {
   /// or the _substitutions_ array has more than 9 elements - this method
   /// returns `undefined`.
   /// [messageName] The name of the message, as specified in the <a
-  /// href='i18n-messages'>`messages.json`</a> file.
+  /// href='how-to/ui/localization-message-formats'>`messages.json`</a> file.
   /// [substitutions] Up to 9 substitution strings, if the message requires
   /// any.
   /// [returns] Message localized for current locale.

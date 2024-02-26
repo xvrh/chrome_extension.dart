@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,16 +26,12 @@ extension JSChromeJSTabsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSTabs {}
-
-extension JSTabsExtension on JSTabs {
+extension type JSTabs._(JSObject _) {
   /// Retrieves details about the specified tab.
   external JSPromise get(int tabId);
 
-  /// Gets the tab that this script call is being made from. May be undefined if
-  /// called from a non-tab context (for example, a background page or popup
+  /// Gets the tab that this script call is being made from. Returns `undefined`
+  /// if called from a non-tab context (for example, a background page or popup
   /// view).
   external JSPromise getCurrent();
 
@@ -153,13 +150,13 @@ extension JSTabsExtension on JSTabs {
 
   /// Captures the visible area of the currently active tab in the specified
   /// window. In order to call this method, the extension must have either the
-  /// <a href='declare_permissions'><all_urls></a> permission or the
-  /// [activeTab](activeTab) permission. In addition to sites that extensions
-  /// can normally access, this method allows extensions to capture sensitive
-  /// sites that are otherwise restricted, including chrome:-scheme pages, other
-  /// extensions' pages, and data: URLs. These sensitive sites can only be
-  /// captured with the activeTab permission. File URLs may be captured only if
-  /// the extension has been granted file access.
+  /// <a href='develop/concepts/declare-permissions'><all_urls></a> permission
+  /// or the [activeTab](develop/concepts/activeTab) permission. In addition to
+  /// sites that extensions can normally access, this method allows extensions
+  /// to capture sensitive sites that are otherwise restricted, including
+  /// chrome:-scheme pages, other extensions' pages, and data: URLs. These
+  /// sensitive sites can only be captured with the activeTab permission. File
+  /// URLs may be captured only if the extension has been granted file access.
   external JSPromise captureVisibleTab(
     /// The target window. Defaults to the [current
     /// window](windows#current-window).
@@ -168,7 +165,8 @@ extension JSTabsExtension on JSTabs {
   );
 
   /// Injects JavaScript code into a page. For details, see the [programmatic
-  /// injection](content_scripts#pi) section of the content scripts doc.
+  /// injection](develop/concepts/content-scripts#programmatic) section of the
+  /// content scripts doc.
   @Deprecated(r'Replaced by $(ref:scripting.executeScript) in Manifest V3.')
   external JSPromise executeScript(
     /// The ID of the tab in which to run the script; defaults to the active tab
@@ -182,7 +180,8 @@ extension JSTabsExtension on JSTabs {
 
   /// Injects CSS into a page. Styles inserted with this method can be removed
   /// with [scripting.removeCSS]. For details, see the [programmatic
-  /// injection](content_scripts#pi) section of the content scripts doc.
+  /// injection](develop/concepts/content-scripts#programmatic) section of the
+  /// content scripts doc.
   @Deprecated(r'Replaced by $(ref:scripting.insertCSS) in Manifest V3.')
   external JSPromise insertCSS(
     /// The ID of the tab in which to insert the CSS; defaults to the active tab
@@ -347,11 +346,7 @@ typedef ZoomSettingsScope = String;
 
 /// The type of window.
 typedef WindowType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class MutedInfo {
+extension type MutedInfo._(JSObject _) implements JSObject {
   external factory MutedInfo({
     /// Whether the tab is muted (prevented from playing sound). The tab may be
     /// muted even if it has not played or is not currently playing sound.
@@ -366,9 +361,7 @@ class MutedInfo {
     /// extension was not the reason the muted state last changed.
     String? extensionId,
   });
-}
 
-extension MutedInfoExtension on MutedInfo {
   /// Whether the tab is muted (prevented from playing sound). The tab may be
   /// muted even if it has not played or is not currently playing sound.
   /// Equivalent to whether the 'muted' audio indicator is showing.
@@ -382,11 +375,7 @@ extension MutedInfoExtension on MutedInfo {
   /// extension was not the reason the muted state last changed.
   external String? extensionId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Tab {
+extension type Tab._(JSObject _) implements JSObject {
   external factory Tab({
     /// The ID of the tab. Tab IDs are unique within a browser session. Under some
     /// circumstances a tab may not be assigned an ID; for example, when querying
@@ -410,6 +399,10 @@ class Tab {
 
     /// Whether the tab is selected.
     bool selected,
+
+    /// The last time the tab was accessed as the number of milliseconds since
+    /// epoch.
+    double? lastAccessed,
 
     /// Whether the tab is highlighted.
     bool highlighted,
@@ -474,9 +467,7 @@ class Tab {
     /// [sessions] API.
     String? sessionId,
   });
-}
 
-extension TabExtension on Tab {
   /// The ID of the tab. Tab IDs are unique within a browser session. Under some
   /// circumstances a tab may not be assigned an ID; for example, when querying
   /// foreign tabs using the [sessions] API, in which case a session ID may be
@@ -499,6 +490,10 @@ extension TabExtension on Tab {
 
   /// Whether the tab is selected.
   external bool selected;
+
+  /// The last time the tab was accessed as the number of milliseconds since
+  /// epoch.
+  external double? lastAccessed;
 
   /// Whether the tab is highlighted.
   external bool highlighted;
@@ -563,11 +558,7 @@ extension TabExtension on Tab {
   /// [sessions] API.
   external String? sessionId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ZoomSettings {
+extension type ZoomSettings._(JSObject _) implements JSObject {
   external factory ZoomSettings({
     /// Defines how zoom changes are handled, i.e., which entity is responsible
     /// for the actual scaling of the page; defaults to `automatic`.
@@ -582,9 +573,7 @@ class ZoomSettings {
     /// tabs.getZoomSettings.
     double? defaultZoomFactor,
   });
-}
 
-extension ZoomSettingsExtension on ZoomSettings {
   /// Defines how zoom changes are handled, i.e., which entity is responsible
   /// for the actual scaling of the page; defaults to `automatic`.
   external ZoomSettingsMode? mode;
@@ -598,11 +587,7 @@ extension ZoomSettingsExtension on ZoomSettings {
   /// tabs.getZoomSettings.
   external double? defaultZoomFactor;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnUpdatedChangeInfo {
+extension type OnUpdatedChangeInfo._(JSObject _) implements JSObject {
   external factory OnUpdatedChangeInfo({
     /// The tab's loading status.
     TabStatus? status,
@@ -634,9 +619,7 @@ class OnUpdatedChangeInfo {
     /// The tab's new title.
     String? title,
   });
-}
 
-extension OnUpdatedChangeInfoExtension on OnUpdatedChangeInfo {
   /// The tab's loading status.
   external TabStatus? status;
 
@@ -667,61 +650,38 @@ extension OnUpdatedChangeInfoExtension on OnUpdatedChangeInfo {
   /// The tab's new title.
   external String? title;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnMovedMoveInfo {
+extension type OnMovedMoveInfo._(JSObject _) implements JSObject {
   external factory OnMovedMoveInfo({
     int windowId,
     int fromIndex,
     int toIndex,
   });
-}
 
-extension OnMovedMoveInfoExtension on OnMovedMoveInfo {
   external int windowId;
 
   external int fromIndex;
 
   external int toIndex;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnSelectionChangedSelectInfo {
+extension type OnSelectionChangedSelectInfo._(JSObject _) implements JSObject {
   external factory OnSelectionChangedSelectInfo(
       {
       /// The ID of the window the selected tab changed inside of.
       int windowId});
-}
 
-extension OnSelectionChangedSelectInfoExtension
-    on OnSelectionChangedSelectInfo {
   /// The ID of the window the selected tab changed inside of.
   external int windowId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnActiveChangedSelectInfo {
+extension type OnActiveChangedSelectInfo._(JSObject _) implements JSObject {
   external factory OnActiveChangedSelectInfo(
       {
       /// The ID of the window the selected tab changed inside of.
       int windowId});
-}
 
-extension OnActiveChangedSelectInfoExtension on OnActiveChangedSelectInfo {
   /// The ID of the window the selected tab changed inside of.
   external int windowId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnActivatedActiveInfo {
+extension type OnActivatedActiveInfo._(JSObject _) implements JSObject {
   external factory OnActivatedActiveInfo({
     /// The ID of the tab that has become active.
     int tabId,
@@ -729,20 +689,14 @@ class OnActivatedActiveInfo {
     /// The ID of the window the active tab changed inside of.
     int windowId,
   });
-}
 
-extension OnActivatedActiveInfoExtension on OnActivatedActiveInfo {
   /// The ID of the tab that has become active.
   external int tabId;
 
   /// The ID of the window the active tab changed inside of.
   external int windowId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnHighlightChangedSelectInfo {
+extension type OnHighlightChangedSelectInfo._(JSObject _) implements JSObject {
   external factory OnHighlightChangedSelectInfo({
     /// The window whose tabs changed.
     int windowId,
@@ -750,21 +704,14 @@ class OnHighlightChangedSelectInfo {
     /// All highlighted tabs in the window.
     JSArray tabIds,
   });
-}
 
-extension OnHighlightChangedSelectInfoExtension
-    on OnHighlightChangedSelectInfo {
   /// The window whose tabs changed.
   external int windowId;
 
   /// All highlighted tabs in the window.
   external JSArray tabIds;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnHighlightedHighlightInfo {
+extension type OnHighlightedHighlightInfo._(JSObject _) implements JSObject {
   external factory OnHighlightedHighlightInfo({
     /// The window whose tabs changed.
     int windowId,
@@ -772,52 +719,34 @@ class OnHighlightedHighlightInfo {
     /// All highlighted tabs in the window.
     JSArray tabIds,
   });
-}
 
-extension OnHighlightedHighlightInfoExtension on OnHighlightedHighlightInfo {
   /// The window whose tabs changed.
   external int windowId;
 
   /// All highlighted tabs in the window.
   external JSArray tabIds;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnDetachedDetachInfo {
+extension type OnDetachedDetachInfo._(JSObject _) implements JSObject {
   external factory OnDetachedDetachInfo({
     int oldWindowId,
     int oldPosition,
   });
-}
 
-extension OnDetachedDetachInfoExtension on OnDetachedDetachInfo {
   external int oldWindowId;
 
   external int oldPosition;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnAttachedAttachInfo {
+extension type OnAttachedAttachInfo._(JSObject _) implements JSObject {
   external factory OnAttachedAttachInfo({
     int newWindowId,
     int newPosition,
   });
-}
 
-extension OnAttachedAttachInfoExtension on OnAttachedAttachInfo {
   external int newWindowId;
 
   external int newPosition;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnRemovedRemoveInfo {
+extension type OnRemovedRemoveInfo._(JSObject _) implements JSObject {
   external factory OnRemovedRemoveInfo({
     /// The window whose tab is closed.
     int windowId,
@@ -825,29 +754,21 @@ class OnRemovedRemoveInfo {
     /// True when the tab was closed because its parent window was closed.
     bool isWindowClosing,
   });
-}
 
-extension OnRemovedRemoveInfoExtension on OnRemovedRemoveInfo {
   /// The window whose tab is closed.
   external int windowId;
 
   /// True when the tab was closed because its parent window was closed.
   external bool isWindowClosing;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnZoomChangeZoomChangeInfo {
+extension type OnZoomChangeZoomChangeInfo._(JSObject _) implements JSObject {
   external factory OnZoomChangeZoomChangeInfo({
     int tabId,
     double oldZoomFactor,
     double newZoomFactor,
     ZoomSettings zoomSettings,
   });
-}
 
-extension OnZoomChangeZoomChangeInfoExtension on OnZoomChangeZoomChangeInfo {
   external int tabId;
 
   external double oldZoomFactor;
@@ -856,11 +777,7 @@ extension OnZoomChangeZoomChangeInfoExtension on OnZoomChangeZoomChangeInfo {
 
   external ZoomSettings zoomSettings;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ConnectInfo {
+extension type ConnectInfo._(JSObject _) implements JSObject {
   external factory ConnectInfo({
     /// Is passed into onConnect for content scripts that are listening for the
     /// connection event.
@@ -874,9 +791,7 @@ class ConnectInfo {
     /// identified by `documentId` instead of all frames in the tab.
     String? documentId,
   });
-}
 
-extension ConnectInfoExtension on ConnectInfo {
   /// Is passed into onConnect for content scripts that are listening for the
   /// connection event.
   external String? name;
@@ -889,11 +804,7 @@ extension ConnectInfoExtension on ConnectInfo {
   /// identified by `documentId` instead of all frames in the tab.
   external String? documentId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SendMessageOptions {
+extension type SendMessageOptions._(JSObject _) implements JSObject {
   external factory SendMessageOptions({
     /// Send a message to a specific [frame](webNavigation#frame_ids) identified
     /// by `frameId` instead of all frames in the tab.
@@ -903,9 +814,7 @@ class SendMessageOptions {
     /// identified by `documentId` instead of all frames in the tab.
     String? documentId,
   });
-}
 
-extension SendMessageOptionsExtension on SendMessageOptions {
   /// Send a message to a specific [frame](webNavigation#frame_ids) identified
   /// by `frameId` instead of all frames in the tab.
   external int? frameId;
@@ -914,11 +823,7 @@ extension SendMessageOptionsExtension on SendMessageOptions {
   /// identified by `documentId` instead of all frames in the tab.
   external String? documentId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateProperties {
+extension type CreateProperties._(JSObject _) implements JSObject {
   external factory CreateProperties({
     /// The window in which to create the new tab. Defaults to the [current
     /// window](windows#current-window).
@@ -950,9 +855,7 @@ class CreateProperties {
     /// be in the same window as the newly created tab.
     int? openerTabId,
   });
-}
 
-extension CreatePropertiesExtension on CreateProperties {
   /// The window in which to create the new tab. Defaults to the [current
   /// window](windows#current-window).
   external int? windowId;
@@ -983,11 +886,7 @@ extension CreatePropertiesExtension on CreateProperties {
   /// be in the same window as the newly created tab.
   external int? openerTabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class QueryInfo {
+extension type QueryInfo._(JSObject _) implements JSObject {
   external factory QueryInfo({
     /// Whether the tabs are active in their windows.
     bool? active,
@@ -1045,9 +944,7 @@ class QueryInfo {
     /// The position of the tabs within their windows.
     int? index,
   });
-}
 
-extension QueryInfoExtension on QueryInfo {
   /// Whether the tabs are active in their windows.
   external bool? active;
 
@@ -1104,11 +1001,7 @@ extension QueryInfoExtension on QueryInfo {
   /// The position of the tabs within their windows.
   external int? index;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class HighlightInfo {
+extension type HighlightInfo._(JSObject _) implements JSObject {
   external factory HighlightInfo({
     /// The window that contains the tabs.
     int? windowId,
@@ -1116,20 +1009,14 @@ class HighlightInfo {
     /// One or more tab indices to highlight.
     JSAny tabs,
   });
-}
 
-extension HighlightInfoExtension on HighlightInfo {
   /// The window that contains the tabs.
   external int? windowId;
 
   /// One or more tab indices to highlight.
   external JSAny tabs;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateProperties {
+extension type UpdateProperties._(JSObject _) implements JSObject {
   external factory UpdateProperties({
     /// A URL to navigate the tab to. JavaScript URLs are not supported; use
     /// [scripting.executeScript] instead.
@@ -1159,9 +1046,7 @@ class UpdateProperties {
     /// resources are low.
     bool? autoDiscardable,
   });
-}
 
-extension UpdatePropertiesExtension on UpdateProperties {
   /// A URL to navigate the tab to. JavaScript URLs are not supported; use
   /// [scripting.executeScript] instead.
   external String? url;
@@ -1190,11 +1075,7 @@ extension UpdatePropertiesExtension on UpdateProperties {
   /// resources are low.
   external bool? autoDiscardable;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MoveProperties {
+extension type MoveProperties._(JSObject _) implements JSObject {
   external factory MoveProperties({
     /// Defaults to the window the tab is currently in.
     int? windowId,
@@ -1203,9 +1084,7 @@ class MoveProperties {
     /// of the window.
     int index,
   });
-}
 
-extension MovePropertiesExtension on MoveProperties {
   /// Defaults to the window the tab is currently in.
   external int? windowId;
 
@@ -1213,26 +1092,16 @@ extension MovePropertiesExtension on MoveProperties {
   /// of the window.
   external int index;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ReloadProperties {
+extension type ReloadProperties._(JSObject _) implements JSObject {
   external factory ReloadProperties(
       {
       /// Whether to bypass local caching. Defaults to `false`.
       bool? bypassCache});
-}
 
-extension ReloadPropertiesExtension on ReloadProperties {
   /// Whether to bypass local caching. Defaults to `false`.
   external bool? bypassCache;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GroupOptions {
+extension type GroupOptions._(JSObject _) implements JSObject {
   external factory GroupOptions({
     /// The tab ID or list of tab IDs to add to the specified group.
     JSAny tabIds,
@@ -1245,9 +1114,7 @@ class GroupOptions {
     /// specified.
     GroupOptionsCreateProperties? createProperties,
   });
-}
 
-extension GroupOptionsExtension on GroupOptions {
   /// The tab ID or list of tab IDs to add to the specified group.
   external JSAny tabIds;
 
@@ -1259,19 +1126,12 @@ extension GroupOptionsExtension on GroupOptions {
   /// specified.
   external GroupOptionsCreateProperties? createProperties;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GroupOptionsCreateProperties {
+extension type GroupOptionsCreateProperties._(JSObject _) implements JSObject {
   external factory GroupOptionsCreateProperties(
       {
       /// The window of the new group. Defaults to the current window.
       int? windowId});
-}
 
-extension GroupOptionsCreatePropertiesExtension
-    on GroupOptionsCreateProperties {
   /// The window of the new group. Defaults to the current window.
   external int? windowId;
 }

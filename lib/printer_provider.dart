@@ -104,19 +104,19 @@ class ChromePrinterProvider {
 
 /// Error codes returned in response to [onPrintRequested] event.
 enum PrintError {
-  /// Operation completed successfully.
+  /// Specifies that the operation was completed successfully.
   ok('OK'),
 
-  /// General failure.
+  /// Specifies that a general failure occured.
   failed('FAILED'),
 
-  /// Print ticket is invalid. For example, ticket is inconsistent with
-  /// capabilities or extension is not able to handle all settings from the
-  /// ticket.
+  /// Specifies that the print ticket is invalid. For example, the ticket is
+  /// inconsistent with some capabilities, or the extension is not able to
+  /// handle all settings from the ticket.
   invalidTicket('INVALID_TICKET'),
 
-  /// Document is invalid. For example, data may be corrupted or the format is
-  /// incompatible with the extension.
+  /// Specifies that the document is invalid. For example, data may be
+  /// corrupted or the format is incompatible with the extension.
   invalidData('INVALID_DATA');
 
   const PrintError(this.value);
@@ -196,6 +196,12 @@ class PrintJob {
     /// Print ticket in
     /// <a href="https://developers.google.com/cloud-print/docs/cdd#cjt">
     /// CJT format</a>.
+    /// <aside class="aside flow bg-state-info-bg color-state-info-text">
+    /// <div class="flow">The CJT reference is marked as deprecated. It is
+    /// deprecated for Google Cloud Print only. is not deprecated for
+    /// ChromeOS printing.
+    /// </div>
+    /// </aside>
     required Map ticket,
 
     /// The document content type. Supported formats are
@@ -234,6 +240,12 @@ class PrintJob {
   /// Print ticket in
   /// <a href="https://developers.google.com/cloud-print/docs/cdd#cjt">
   /// CJT format</a>.
+  /// <aside class="aside flow bg-state-info-bg color-state-info-text">
+  /// <div class="flow">The CJT reference is marked as deprecated. It is
+  /// deprecated for Google Cloud Print only. is not deprecated for
+  /// ChromeOS printing.
+  /// </div>
+  /// </aside>
   Map get ticket => _wrapped.ticket.toDartMap();
 
   set ticket(Map v) {

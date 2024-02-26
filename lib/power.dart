@@ -43,10 +43,10 @@ class ChromePower {
 }
 
 enum Level {
-  /// Prevent the system from sleeping in response to user inactivity.
+  /// Prevents the system from sleeping in response to user inactivity.
   system('system'),
 
-  /// Prevent the display from being turned off or dimmed or the system
+  /// Prevents the display from being turned off or dimmed, or the system
   /// from sleeping in response to user inactivity.
   display('display');
 

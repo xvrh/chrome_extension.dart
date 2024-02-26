@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,14 +25,13 @@ extension JSChromeJSPrintingExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPrinting {}
-
-extension JSPrintingExtension on JSPrinting {
-  /// Submits the job for print.
-  /// If the extension is not listed in PrintingAPIExtensionsAllowlist policy,
-  /// the user will be prompted to accept the print job.
+extension type JSPrinting._(JSObject _) {
+  /// Submits the job for printing. If the extension is not listed in
+  /// the <a
+  /// href="https://chromeenterprise.google/policies/#PrintingAPIExtensionsAllowlist">
+  /// `PrintingAPIExtensionsAllowlist`</a> policy,
+  /// the user is prompted to accept the print job.<br/>
+  /// Before Chrome 120, this function did not return a promise.
   external JSPromise submitJob(SubmitJobRequest request);
 
   /// Cancels previously submitted job.
@@ -74,16 +74,14 @@ typedef PrinterStatus = String;
 
 /// Status of the print job.
 typedef JobStatus = String;
-
-@JS()
-@staticInterop
-@anonymous
-class SubmitJobRequest {
+extension type SubmitJobRequest._(JSObject _) implements JSObject {
   external factory SubmitJobRequest({
     /// The print job to be submitted.
-    /// The only supported content type is "application/pdf", and the CJT ticket
-    /// shouldn't include FitToPageTicketItem, PageRangeTicketItem,
-    /// ReverseOrderTicketItem and VendorTicketItem fields since they are
+    /// The only supported content type is "application/pdf", and the
+    /// [Cloud Job Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
+    /// shouldn't include `FitToPageTicketItem`,
+    /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
+    /// and `VendorTicketItem` fields since they are
     /// irrelevant for native printing. All other fields must be present.
     PrintJob job,
 
@@ -91,13 +89,13 @@ class SubmitJobRequest {
     /// shouldn't be populated by the extension.
     String? documentBlobUuid,
   });
-}
 
-extension SubmitJobRequestExtension on SubmitJobRequest {
   /// The print job to be submitted.
-  /// The only supported content type is "application/pdf", and the CJT ticket
-  /// shouldn't include FitToPageTicketItem, PageRangeTicketItem,
-  /// ReverseOrderTicketItem and VendorTicketItem fields since they are
+  /// The only supported content type is "application/pdf", and the
+  /// [Cloud Job Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
+  /// shouldn't include `FitToPageTicketItem`,
+  /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
+  /// and `VendorTicketItem` fields since they are
   /// irrelevant for native printing. All other fields must be present.
   external PrintJob job;
 
@@ -105,11 +103,7 @@ extension SubmitJobRequestExtension on SubmitJobRequest {
   /// shouldn't be populated by the extension.
   external String? documentBlobUuid;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SubmitJobResponse {
+extension type SubmitJobResponse._(JSObject _) implements JSObject {
   external factory SubmitJobResponse({
     /// The status of the request.
     SubmitJobStatus status,
@@ -118,9 +112,7 @@ class SubmitJobResponse {
     /// jobs on the device. If status is not OK, jobId will be null.
     String? jobId,
   });
-}
 
-extension SubmitJobResponseExtension on SubmitJobResponse {
   /// The status of the request.
   external SubmitJobStatus status;
 
@@ -128,11 +120,7 @@ extension SubmitJobResponseExtension on SubmitJobResponse {
   /// jobs on the device. If status is not OK, jobId will be null.
   external String? jobId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Printer {
+extension type Printer._(JSObject _) implements JSObject {
   external factory Printer({
     /// The printer's identifier; guaranteed to be unique among printers on the
     /// device.
@@ -164,9 +152,7 @@ class Printer {
     /// recently. This value is guaranteed to be unique amongst printers.
     int? recentlyUsedRank,
   });
-}
 
-extension PrinterExtension on Printer {
   /// The printer's identifier; guaranteed to be unique among printers on the
   /// device.
   external String id;
@@ -197,11 +183,7 @@ extension PrinterExtension on Printer {
   /// recently. This value is guaranteed to be unique amongst printers.
   external int? recentlyUsedRank;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetPrinterInfoResponse {
+extension type GetPrinterInfoResponse._(JSObject _) implements JSObject {
   external factory GetPrinterInfoResponse({
     /// Printer capabilities in
     /// <a href="https://developers.google.com/cloud-print/docs/cdd#cdd">
@@ -212,9 +194,7 @@ class GetPrinterInfoResponse {
     /// The status of the printer.
     PrinterStatus status,
   });
-}
 
-extension GetPrinterInfoResponseExtension on GetPrinterInfoResponse {
   /// Printer capabilities in
   /// <a href="https://developers.google.com/cloud-print/docs/cdd#cdd">
   /// CDD format</a>.

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,19 +25,11 @@ extension JSChromeJSSystemMemoryExtension on JSChromeSystem {
   }
 }
 
-@JS()
-@staticInterop
-class JSSystemMemory {}
-
-extension JSSystemMemoryExtension on JSSystemMemory {
+extension type JSSystemMemory._(JSObject _) {
   /// Get physical memory information.
   external JSPromise getInfo();
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MemoryInfo {
+extension type MemoryInfo._(JSObject _) implements JSObject {
   external factory MemoryInfo({
     /// The total amount of physical memory capacity, in bytes.
     double capacity,
@@ -44,9 +37,7 @@ class MemoryInfo {
     /// The amount of available capacity, in bytes.
     double availableCapacity,
   });
-}
 
-extension MemoryInfoExtension on MemoryInfo {
   /// The total amount of physical memory capacity, in bytes.
   external double capacity;
 

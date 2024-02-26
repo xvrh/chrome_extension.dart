@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSTabGroupsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSTabGroups {}
-
-extension JSTabGroupsExtension on JSTabGroups {
+extension type JSTabGroups._(JSObject _) {
   /// Retrieves details about the specified group.
   external JSPromise get(int groupId);
 
@@ -74,11 +71,7 @@ extension JSTabGroupsExtension on JSTabGroups {
 
 /// The group's color.
 typedef Color = String;
-
-@JS()
-@staticInterop
-@anonymous
-class TabGroup {
+extension type TabGroup._(JSObject _) implements JSObject {
   external factory TabGroup({
     /// The ID of the group. Group IDs are unique within a browser session.
     int id,
@@ -96,9 +89,7 @@ class TabGroup {
     /// The ID of the window that contains the group.
     int windowId,
   });
-}
 
-extension TabGroupExtension on TabGroup {
   /// The ID of the group. Group IDs are unique within a browser session.
   external int id;
 
@@ -115,11 +106,7 @@ extension TabGroupExtension on TabGroup {
   /// The ID of the window that contains the group.
   external int windowId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class QueryInfo {
+extension type QueryInfo._(JSObject _) implements JSObject {
   external factory QueryInfo({
     /// Whether the groups are collapsed.
     bool? collapsed,
@@ -134,9 +121,7 @@ class QueryInfo {
     /// [current window](windows#current-window).
     int? windowId,
   });
-}
 
-extension QueryInfoExtension on QueryInfo {
   /// Whether the groups are collapsed.
   external bool? collapsed;
 
@@ -150,11 +135,7 @@ extension QueryInfoExtension on QueryInfo {
   /// [current window](windows#current-window).
   external int? windowId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateProperties {
+extension type UpdateProperties._(JSObject _) implements JSObject {
   external factory UpdateProperties({
     /// Whether the group should be collapsed.
     bool? collapsed,
@@ -165,9 +146,7 @@ class UpdateProperties {
     /// The title of the group.
     String? title,
   });
-}
 
-extension UpdatePropertiesExtension on UpdateProperties {
   /// Whether the group should be collapsed.
   external bool? collapsed;
 
@@ -177,11 +156,7 @@ extension UpdatePropertiesExtension on UpdateProperties {
   /// The title of the group.
   external String? title;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MoveProperties {
+extension type MoveProperties._(JSObject _) implements JSObject {
   external factory MoveProperties({
     /// The window to move the group to. Defaults to the window the group is
     /// currently in. Note that groups can only be moved to and from windows with
@@ -192,9 +167,7 @@ class MoveProperties {
     /// of the window.
     int index,
   });
-}
 
-extension MovePropertiesExtension on MoveProperties {
   /// The window to move the group to. Defaults to the window the group is
   /// currently in. Note that groups can only be moved to and from windows with
   /// [windows.WindowType] type `"normal"`.

@@ -125,19 +125,46 @@ class ChromeWebRequest {
 }
 
 enum ResourceType {
+  /// Specifies the resource as the main frame.
   mainFrame('main_frame'),
+
+  /// Specifies the resource as a sub frame.
   subFrame('sub_frame'),
+
+  /// Specifies the resource as a stylesheet.
   stylesheet('stylesheet'),
+
+  /// Specifies the resource as a script.
   script('script'),
+
+  /// Specifies the resource as an image.
   image('image'),
+
+  /// Specifies the resource as a font.
   font('font'),
+
+  /// Specifies the resource as an object.
   object('object'),
+
+  /// Specifies the resource as an XMLHttpRequest.
   xmlhttprequest('xmlhttprequest'),
+
+  /// Specifies the resource as a ping.
   ping('ping'),
+
+  /// Specifies the resource as a Content Security Policy (CSP) report.
   cspReport('csp_report'),
+
+  /// Specifies the resource as a media object.
   media('media'),
+
+  /// Specifies the resource as a WebSocket.
   websocket('websocket'),
+
+  /// Specifies the resource as a WebBundle.
   webbundle('webbundle'),
+
+  /// Specifies the resource as a type not included in the listed types.
   other('other');
 
   const ResourceType(this.value);
@@ -150,8 +177,13 @@ enum ResourceType {
 }
 
 enum OnBeforeRequestOptions {
+  /// Specifies the request is blocked until the callback function returns.
   blocking('blocking'),
+
+  /// Specifies that the request body should be included in the event.
   requestBody('requestBody'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnBeforeRequestOptions(this.value);
@@ -164,8 +196,13 @@ enum OnBeforeRequestOptions {
 }
 
 enum OnBeforeSendHeadersOptions {
+  /// Specifies that the request header should be included in the event.
   requestHeaders('requestHeaders'),
+
+  /// Specifies the request is blocked until the callback function returns.
   blocking('blocking'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnBeforeSendHeadersOptions(this.value);
@@ -178,7 +215,10 @@ enum OnBeforeSendHeadersOptions {
 }
 
 enum OnSendHeadersOptions {
+  /// Specifies that the request header should be included in the event.
   requestHeaders('requestHeaders'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnSendHeadersOptions(this.value);
@@ -191,8 +231,13 @@ enum OnSendHeadersOptions {
 }
 
 enum OnHeadersReceivedOptions {
+  /// Specifies the request is blocked until the callback function returns.
   blocking('blocking'),
+
+  /// Specifies that the response headers should be included in the event.
   responseHeaders('responseHeaders'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnHeadersReceivedOptions(this.value);
@@ -205,9 +250,16 @@ enum OnHeadersReceivedOptions {
 }
 
 enum OnAuthRequiredOptions {
+  /// Specifies that the response headers should be included in the event.
   responseHeaders('responseHeaders'),
+
+  /// Specifies the request is blocked until the callback function returns.
   blocking('blocking'),
+
+  /// Specifies that the callback function is handled asynchronously.
   asyncBlocking('asyncBlocking'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnAuthRequiredOptions(this.value);
@@ -220,7 +272,10 @@ enum OnAuthRequiredOptions {
 }
 
 enum OnResponseStartedOptions {
+  /// Specifies that the response headers should be included in the event.
   responseHeaders('responseHeaders'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnResponseStartedOptions(this.value);
@@ -233,7 +288,10 @@ enum OnResponseStartedOptions {
 }
 
 enum OnBeforeRedirectOptions {
+  /// Specifies that the response headers should be included in the event.
   responseHeaders('responseHeaders'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnBeforeRedirectOptions(this.value);
@@ -246,7 +304,10 @@ enum OnBeforeRedirectOptions {
 }
 
 enum OnCompletedOptions {
+  /// Specifies that the response headers should be included in the event.
   responseHeaders('responseHeaders'),
+
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnCompletedOptions(this.value);
@@ -259,6 +320,7 @@ enum OnCompletedOptions {
 }
 
 enum OnErrorOccurredOptions {
+  /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
   extraHeaders('extraHeaders');
 
   const OnErrorOccurredOptions(this.value);

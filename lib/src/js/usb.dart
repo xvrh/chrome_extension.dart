@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -30,11 +31,7 @@ extension JSChromeJSUsbExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSUsb {}
-
-extension JSUsbExtension on JSUsb {
+extension type JSUsb._(JSObject _) {
   /// Enumerates connected USB devices.
   /// |options|: The properties to search for on target devices.
   external JSPromise getDevices(EnumerateDevicesOptions options);
@@ -213,11 +210,7 @@ typedef TransferType = String;
 typedef SynchronizationType = String;
 
 typedef UsageType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Device {
+extension type Device._(JSObject _) implements JSObject {
   external factory Device({
     /// An opaque ID for the USB device. It remains unchanged until the device is
     /// unplugged.
@@ -241,9 +234,7 @@ class Device {
     /// The iSerialNumber string read from the device, if available.
     String serialNumber,
   });
-}
 
-extension DeviceExtension on Device {
   /// An opaque ID for the USB device. It remains unchanged until the device is
   /// unplugged.
   external int device;
@@ -266,11 +257,7 @@ extension DeviceExtension on Device {
   /// The iSerialNumber string read from the device, if available.
   external String serialNumber;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ConnectionHandle {
+extension type ConnectionHandle._(JSObject _) implements JSObject {
   external factory ConnectionHandle({
     /// An opaque handle representing this connection to the USB device and all
     /// associated claimed interfaces and pending transfers. A new handle is
@@ -284,9 +271,7 @@ class ConnectionHandle {
     /// The product ID.
     int productId,
   });
-}
 
-extension ConnectionHandleExtension on ConnectionHandle {
   /// An opaque handle representing this connection to the USB device and all
   /// associated claimed interfaces and pending transfers. A new handle is
   /// created each time the device is opened. The connection handle is
@@ -299,11 +284,7 @@ extension ConnectionHandleExtension on ConnectionHandle {
   /// The product ID.
   external int productId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class EndpointDescriptor {
+extension type EndpointDescriptor._(JSObject _) implements JSObject {
   external factory EndpointDescriptor({
     /// Endpoint address.
     int address,
@@ -329,9 +310,7 @@ class EndpointDescriptor {
     /// Extra descriptor data associated with this endpoint.
     JSArrayBuffer extra_data,
   });
-}
 
-extension EndpointDescriptorExtension on EndpointDescriptor {
   /// Endpoint address.
   external int address;
 
@@ -356,11 +335,7 @@ extension EndpointDescriptorExtension on EndpointDescriptor {
   /// Extra descriptor data associated with this endpoint.
   external JSArrayBuffer extra_data;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class InterfaceDescriptor {
+extension type InterfaceDescriptor._(JSObject _) implements JSObject {
   external factory InterfaceDescriptor({
     /// The interface number.
     int interfaceNumber,
@@ -386,9 +361,7 @@ class InterfaceDescriptor {
     /// Extra descriptor data associated with this interface.
     JSArrayBuffer extra_data,
   });
-}
 
-extension InterfaceDescriptorExtension on InterfaceDescriptor {
   /// The interface number.
   external int interfaceNumber;
 
@@ -413,11 +386,7 @@ extension InterfaceDescriptorExtension on InterfaceDescriptor {
   /// Extra descriptor data associated with this interface.
   external JSArrayBuffer extra_data;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ConfigDescriptor {
+extension type ConfigDescriptor._(JSObject _) implements JSObject {
   external factory ConfigDescriptor({
     /// Is this the active configuration?
     bool active,
@@ -443,9 +412,7 @@ class ConfigDescriptor {
     /// Extra descriptor data associated with this configuration.
     JSArrayBuffer extra_data,
   });
-}
 
-extension ConfigDescriptorExtension on ConfigDescriptor {
   /// Is this the active configuration?
   external bool active;
 
@@ -470,11 +437,7 @@ extension ConfigDescriptorExtension on ConfigDescriptor {
   /// Extra descriptor data associated with this configuration.
   external JSArrayBuffer extra_data;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ControlTransferInfo {
+extension type ControlTransferInfo._(JSObject _) implements JSObject {
   external factory ControlTransferInfo({
     /// The transfer direction (`"in"` or `"out"`).
     Direction direction,
@@ -507,9 +470,7 @@ class ControlTransferInfo {
     /// indicates no timeout.
     int? timeout,
   });
-}
 
-extension ControlTransferInfoExtension on ControlTransferInfo {
   /// The transfer direction (`"in"` or `"out"`).
   external Direction direction;
 
@@ -541,11 +502,7 @@ extension ControlTransferInfoExtension on ControlTransferInfo {
   /// indicates no timeout.
   external int? timeout;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GenericTransferInfo {
+extension type GenericTransferInfo._(JSObject _) implements JSObject {
   external factory GenericTransferInfo({
     /// The transfer direction (`"in"` or `"out"`).
     Direction direction,
@@ -565,9 +522,7 @@ class GenericTransferInfo {
     /// indicates no timeout.
     int? timeout,
   });
-}
 
-extension GenericTransferInfoExtension on GenericTransferInfo {
   /// The transfer direction (`"in"` or `"out"`).
   external Direction direction;
 
@@ -586,11 +541,7 @@ extension GenericTransferInfoExtension on GenericTransferInfo {
   /// indicates no timeout.
   external int? timeout;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class IsochronousTransferInfo {
+extension type IsochronousTransferInfo._(JSObject _) implements JSObject {
   external factory IsochronousTransferInfo({
     /// Transfer parameters. The transfer length or data buffer specified in this
     /// parameter block is split along `packetLength` boundaries to
@@ -603,9 +554,7 @@ class IsochronousTransferInfo {
     /// The length of each of the packets in this transfer.
     int packetLength,
   });
-}
 
-extension IsochronousTransferInfoExtension on IsochronousTransferInfo {
   /// Transfer parameters. The transfer length or data buffer specified in this
   /// parameter block is split along `packetLength` boundaries to
   /// form the individual packets of the transfer.
@@ -617,11 +566,7 @@ extension IsochronousTransferInfoExtension on IsochronousTransferInfo {
   /// The length of each of the packets in this transfer.
   external int packetLength;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TransferResultInfo {
+extension type TransferResultInfo._(JSObject _) implements JSObject {
   external factory TransferResultInfo({
     /// A value of `0` indicates that the transfer was a success.
     /// Other values indicate failure.
@@ -631,9 +576,7 @@ class TransferResultInfo {
     /// transfers.
     JSArrayBuffer? data,
   });
-}
 
-extension TransferResultInfoExtension on TransferResultInfo {
   /// A value of `0` indicates that the transfer was a success.
   /// Other values indicate failure.
   external int? resultCode;
@@ -642,11 +585,7 @@ extension TransferResultInfoExtension on TransferResultInfo {
   /// transfers.
   external JSArrayBuffer? data;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeviceFilter {
+extension type DeviceFilter._(JSObject _) implements JSObject {
   external factory DeviceFilter({
     /// Device vendor ID.
     int? vendorId,
@@ -663,9 +602,7 @@ class DeviceFilter {
     /// USB interface protocol, checked only if the interface sub-class matches.
     int? interfaceProtocol,
   });
-}
 
-extension DeviceFilterExtension on DeviceFilter {
   /// Device vendor ID.
   external int? vendorId;
 
@@ -681,11 +618,7 @@ extension DeviceFilterExtension on DeviceFilter {
   /// USB interface protocol, checked only if the interface sub-class matches.
   external int? interfaceProtocol;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class EnumerateDevicesOptions {
+extension type EnumerateDevicesOptions._(JSObject _) implements JSObject {
   external factory EnumerateDevicesOptions({
     int? vendorId,
     int? productId,
@@ -694,9 +627,7 @@ class EnumerateDevicesOptions {
     /// will return all devices the app has permission for.
     JSArray? filters,
   });
-}
 
-extension EnumerateDevicesOptionsExtension on EnumerateDevicesOptions {
   external int? vendorId;
 
   external int? productId;
@@ -705,11 +636,8 @@ extension EnumerateDevicesOptionsExtension on EnumerateDevicesOptions {
   /// will return all devices the app has permission for.
   external JSArray? filters;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class EnumerateDevicesAndRequestAccessOptions {
+extension type EnumerateDevicesAndRequestAccessOptions._(JSObject _)
+    implements JSObject {
   external factory EnumerateDevicesAndRequestAccessOptions({
     /// The device vendor ID.
     int vendorId,
@@ -721,10 +649,7 @@ class EnumerateDevicesAndRequestAccessOptions {
     /// Only available on Chrome OS. It has no effect on other platforms.
     int? interfaceId,
   });
-}
 
-extension EnumerateDevicesAndRequestAccessOptionsExtension
-    on EnumerateDevicesAndRequestAccessOptions {
   /// The device vendor ID.
   external int vendorId;
 
@@ -735,11 +660,7 @@ extension EnumerateDevicesAndRequestAccessOptionsExtension
   /// Only available on Chrome OS. It has no effect on other platforms.
   external int? interfaceId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DevicePromptOptions {
+extension type DevicePromptOptions._(JSObject _) implements JSObject {
   external factory DevicePromptOptions({
     /// Allow the user to select multiple devices.
     bool? multiple,
@@ -748,9 +669,7 @@ class DevicePromptOptions {
     /// provided devices matching any filter will be displayed.
     JSArray? filters,
   });
-}
 
-extension DevicePromptOptionsExtension on DevicePromptOptions {
   /// Allow the user to select multiple devices.
   external bool? multiple;
 

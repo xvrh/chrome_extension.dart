@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -26,11 +27,7 @@ extension JSChromeJSPrivacyExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPrivacy {}
-
-extension JSPrivacyExtension on JSPrivacy {
+extension type JSPrivacy._(JSObject _) {
   /// Settings that influence Chrome's handling of network connections in
   /// general.
   external PrivacyNetwork get network;
@@ -46,11 +43,7 @@ extension JSPrivacyExtension on JSPrivacy {
 
 /// The IP handling policy of WebRTC.
 typedef IPHandlingPolicy = String;
-
-@JS()
-@staticInterop
-@anonymous
-class PrivacyNetwork {
+extension type PrivacyNetwork._(JSObject _) implements JSObject {
   external factory PrivacyNetwork({
     /// If enabled, Chrome attempts to speed up your web browsing experience by
     /// pre-resolving DNS entries and preemptively opening TCP and SSL connections
@@ -66,9 +59,7 @@ class PrivacyNetwork {
     /// IPHandlingPolicy, defaulting to `default`.
     ChromeSetting webRTCIPHandlingPolicy,
   });
-}
 
-extension PrivacyNetworkExtension on PrivacyNetwork {
   /// If enabled, Chrome attempts to speed up your web browsing experience by
   /// pre-resolving DNS entries and preemptively opening TCP and SSL connections
   /// to servers. This preference only affects actions taken by Chrome's
@@ -83,11 +74,7 @@ extension PrivacyNetworkExtension on PrivacyNetwork {
   /// IPHandlingPolicy, defaulting to `default`.
   external ChromeSetting webRTCIPHandlingPolicy;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PrivacyServices {
+extension type PrivacyServices._(JSObject _) implements JSObject {
   external factory PrivacyServices({
     /// If enabled, Chrome uses a web service to help resolve navigation errors.
     /// This preference's value is a boolean, defaulting to `true`.
@@ -132,9 +119,7 @@ class PrivacyServices {
     /// read. This preference's value is a boolean, defaulting to `true`.
     ChromeSetting translationServiceEnabled,
   });
-}
 
-extension PrivacyServicesExtension on PrivacyServices {
   /// If enabled, Chrome uses a web service to help resolve navigation errors.
   /// This preference's value is a boolean, defaulting to `true`.
   external ChromeSetting alternateErrorPagesEnabled;
@@ -178,22 +163,12 @@ extension PrivacyServicesExtension on PrivacyServices {
   /// read. This preference's value is a boolean, defaulting to `true`.
   external ChromeSetting translationServiceEnabled;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PrivacyWebsites {
+extension type PrivacyWebsites._(JSObject _) implements JSObject {
   external factory PrivacyWebsites({
     /// If disabled, Chrome blocks third-party sites from setting cookies. The
     /// value of this preference is of type boolean, and the default value is
     /// `true`.
     ChromeSetting thirdPartyCookiesAllowed,
-
-    /// If enabled, the experimental [Privacy
-    /// Sandbox](https://www.chromium.org/Home/chromium-privacy/privacy-sandbox)
-    /// features are active. The value of this preference is of type boolean, and
-    /// the default value is `true`.
-    ChromeSetting privacySandboxEnabled,
 
     /// If disabled, the [Topics
     /// API](https://developer.chrome.com/en/docs/privacy-sandbox/topics/) is
@@ -241,20 +216,20 @@ class PrivacyWebsites {
     /// unique ID to plugins in order to run protected content. The value of this
     /// preference is of type boolean, and the default value is `true`.
     ChromeSetting? protectedContentEnabled,
-  });
-}
 
-extension PrivacyWebsitesExtension on PrivacyWebsites {
+    /// If disabled, [Related Website
+    /// Sets](https://developer.chrome.com/docs/privacy-sandbox/related-website-sets/)
+    /// is deactivated. The value of this preference is of type boolean, and the
+    /// default value is `true`. Extensions may only disable this API by setting
+    /// the value to `false`. If you try setting this API to `true`, it will throw
+    /// an error.
+    ChromeSetting relatedWebsiteSetsEnabled,
+  });
+
   /// If disabled, Chrome blocks third-party sites from setting cookies. The
   /// value of this preference is of type boolean, and the default value is
   /// `true`.
   external ChromeSetting thirdPartyCookiesAllowed;
-
-  /// If enabled, the experimental [Privacy
-  /// Sandbox](https://www.chromium.org/Home/chromium-privacy/privacy-sandbox)
-  /// features are active. The value of this preference is of type boolean, and
-  /// the default value is `true`.
-  external ChromeSetting privacySandboxEnabled;
 
   /// If disabled, the [Topics
   /// API](https://developer.chrome.com/en/docs/privacy-sandbox/topics/) is
@@ -302,4 +277,12 @@ extension PrivacyWebsitesExtension on PrivacyWebsites {
   /// unique ID to plugins in order to run protected content. The value of this
   /// preference is of type boolean, and the default value is `true`.
   external ChromeSetting? protectedContentEnabled;
+
+  /// If disabled, [Related Website
+  /// Sets](https://developer.chrome.com/docs/privacy-sandbox/related-website-sets/)
+  /// is deactivated. The value of this preference is of type boolean, and the
+  /// default value is `true`. Extensions may only disable this API by setting
+  /// the value to `false`. If you try setting this API to `true`, it will throw
+  /// an error.
+  external ChromeSetting relatedWebsiteSetsEnabled;
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -28,11 +29,7 @@ extension JSChromeJSDebuggerExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSDebugger {}
-
-extension JSDebuggerExtension on JSDebugger {
+extension type JSDebugger._(JSObject _) {
   /// Attaches debugger to the given target.
   external JSPromise attach(
     /// Debugging target to which you want to attach.
@@ -83,11 +80,7 @@ typedef TargetInfoType = String;
 
 /// Connection termination reason.
 typedef DetachReason = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Debuggee {
+extension type Debuggee._(JSObject _) implements JSObject {
   external factory Debuggee({
     /// The id of the tab which you intend to debug.
     int? tabId,
@@ -100,9 +93,7 @@ class Debuggee {
     /// The opaque id of the debug target.
     String? targetId,
   });
-}
 
-extension DebuggeeExtension on Debuggee {
   /// The id of the tab which you intend to debug.
   external int? tabId;
 
@@ -114,11 +105,7 @@ extension DebuggeeExtension on Debuggee {
   /// The opaque id of the debug target.
   external String? targetId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TargetInfo {
+extension type TargetInfo._(JSObject _) implements JSObject {
   external factory TargetInfo({
     /// Target type.
     TargetInfoType type,
@@ -144,9 +131,7 @@ class TargetInfo {
     /// Target favicon URL.
     String? faviconUrl,
   });
-}
 
-extension TargetInfoExtension on TargetInfo {
   /// Target type.
   external TargetInfoType type;
 

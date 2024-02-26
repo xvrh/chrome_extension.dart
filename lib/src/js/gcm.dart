@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSGcmExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSGcm {}
-
-extension JSGcmExtension on JSGcm {
+extension type JSGcm._(JSObject _) {
   /// Registers the application with FCM. The registration ID will be returned
   /// by the `callback`. If `register` is called again with the same list of
   /// `senderIds`, the same registration ID will be returned.
@@ -63,11 +60,7 @@ extension JSGcmExtension on JSGcm {
   /// The maximum size (in bytes) of all key/value pairs in a message.
   external int get MAX_MESSAGE_SIZE;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnMessageMessage {
+extension type OnMessageMessage._(JSObject _) implements JSObject {
   external factory OnMessageMessage({
     /// The message data.
     JSAny data,
@@ -80,9 +73,7 @@ class OnMessageMessage {
     /// and collapsible messages</a> for details.
     String? collapseKey,
   });
-}
 
-extension OnMessageMessageExtension on OnMessageMessage {
   /// The message data.
   external JSAny data;
 
@@ -94,11 +85,7 @@ extension OnMessageMessageExtension on OnMessageMessage {
   /// and collapsible messages</a> for details.
   external String? collapseKey;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnSendErrorError {
+extension type OnSendErrorError._(JSObject _) implements JSObject {
   external factory OnSendErrorError({
     /// The error message describing the problem.
     String errorMessage,
@@ -110,9 +97,7 @@ class OnSendErrorError {
     /// Additional details related to the error, when available.
     JSAny details,
   });
-}
 
-extension OnSendErrorErrorExtension on OnSendErrorError {
   /// The error message describing the problem.
   external String errorMessage;
 
@@ -123,11 +108,7 @@ extension OnSendErrorErrorExtension on OnSendErrorError {
   /// Additional details related to the error, when available.
   external JSAny details;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SendMessage {
+extension type SendMessage._(JSObject _) implements JSObject {
   external factory SendMessage({
     /// The ID of the server to send the message to as assigned by [Google API
     /// Console](https://console.cloud.google.com/apis/dashboard).
@@ -151,9 +132,7 @@ class SendMessage {
     /// Sum of all key/value pairs should not exceed [gcm.MAX_MESSAGE_SIZE].
     JSAny data,
   });
-}
 
-extension SendMessageExtension on SendMessage {
   /// The ID of the server to send the message to as assigned by [Google API
   /// Console](https://console.cloud.google.com/apis/dashboard).
   external String destinationId;

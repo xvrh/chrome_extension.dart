@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSStorageExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSStorage {}
-
-extension JSStorageExtension on JSStorage {
+extension type JSStorage._(JSObject _) {
   /// Fired when one or more items change.
   external Event get onChanged;
 
@@ -49,11 +46,7 @@ extension JSStorageExtension on JSStorage {
 
 /// The storage area's access level.
 typedef AccessLevel = String;
-
-@JS()
-@staticInterop
-@anonymous
-class StorageChange {
+extension type StorageChange._(JSObject _) implements JSObject {
   external factory StorageChange({
     /// The old value of the item, if there was an old value.
     JSAny? oldValue,
@@ -61,24 +54,16 @@ class StorageChange {
     /// The new value of the item, if there is a new value.
     JSAny? newValue,
   });
-}
 
-extension StorageChangeExtension on StorageChange {
   /// The old value of the item, if there was an old value.
   external JSAny? oldValue;
 
   /// The new value of the item, if there is a new value.
   external JSAny? newValue;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class StorageArea {
+extension type StorageArea._(JSObject _) implements JSObject {
   external factory StorageArea();
-}
 
-extension StorageAreaExtension on StorageArea {
   /// Gets one or more items from storage.
   external JSPromise get(
 
@@ -123,11 +108,7 @@ extension StorageAreaExtension on StorageArea {
   /// Fired when one or more items change.
   external Event get onChanged;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class StorageSync extends StorageArea {
+extension type StorageSync._(JSObject _) implements JSObject, StorageArea {
   external factory StorageSync({
     /// The maximum total amount (in bytes) of data that can be stored in sync
     /// storage, as measured by the JSON stringification of every value plus every
@@ -163,9 +144,7 @@ class StorageSync extends StorageArea {
     int MAX_WRITE_OPERATIONS_PER_MINUTE,
     int MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE,
   });
-}
 
-extension StorageSyncExtension on StorageSync {
   /// The maximum total amount (in bytes) of data that can be stored in sync
   /// storage, as measured by the JSON stringification of every value plus every
   /// key's length. Updates that would cause this limit to be exceeded fail
@@ -201,11 +180,7 @@ extension StorageSyncExtension on StorageSync {
 
   external int MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class StorageLocal extends StorageArea {
+extension type StorageLocal._(JSObject _) implements JSObject, StorageArea {
   external factory StorageLocal(
       {
       /// The maximum amount (in bytes) of data that can be stored in local storage,
@@ -214,9 +189,7 @@ class StorageLocal extends StorageArea {
       /// `unlimitedStorage` permission. Updates that would cause this limit to be
       /// exceeded fail immediately and set [runtime.lastError].
       int QUOTA_BYTES});
-}
 
-extension StorageLocalExtension on StorageLocal {
   /// The maximum amount (in bytes) of data that can be stored in local storage,
   /// as measured by the JSON stringification of every value plus every key's
   /// length. This value will be ignored if the extension has the
@@ -224,11 +197,7 @@ extension StorageLocalExtension on StorageLocal {
   /// exceeded fail immediately and set [runtime.lastError].
   external int QUOTA_BYTES;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class StorageSession extends StorageArea {
+extension type StorageSession._(JSObject _) implements JSObject, StorageArea {
   external factory StorageSession(
       {
       /// The maximum amount (in bytes) of data that can be stored in memory, as
@@ -236,27 +205,19 @@ class StorageSession extends StorageArea {
       /// value and key. Updates that would cause this limit to be exceeded fail
       /// immediately and set [runtime.lastError].
       int QUOTA_BYTES});
-}
 
-extension StorageSessionExtension on StorageSession {
   /// The maximum amount (in bytes) of data that can be stored in memory, as
   /// measured by estimating the dynamically allocated memory usage of every
   /// value and key. Updates that would cause this limit to be exceeded fail
   /// immediately and set [runtime.lastError].
   external int QUOTA_BYTES;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetAccessLevelAccessOptions {
+extension type SetAccessLevelAccessOptions._(JSObject _) implements JSObject {
   external factory SetAccessLevelAccessOptions(
       {
       /// The access level of the storage area.
       AccessLevel accessLevel});
-}
 
-extension SetAccessLevelAccessOptionsExtension on SetAccessLevelAccessOptions {
   /// The access level of the storage area.
   external AccessLevel accessLevel;
 }

@@ -212,14 +212,27 @@ class ChromeDeclarativeNetRequest {
   int get guaranteedMinimumStaticRules =>
       $js.chrome.declarativeNetRequest.GUARANTEED_MINIMUM_STATIC_RULES;
 
-  /// The maximum number of dynamic rules that an extension can add.
-  int get maxNumberOfDynamicRules =>
-      $js.chrome.declarativeNetRequest.MAX_NUMBER_OF_DYNAMIC_RULES;
-
   /// The maximum number of combined dynamic and session scoped rules an
   /// extension can add.
   int get maxNumberOfDynamicAndSessionRules =>
       $js.chrome.declarativeNetRequest.MAX_NUMBER_OF_DYNAMIC_AND_SESSION_RULES;
+
+  /// The maximum number of dynamic rules that an extension can add.
+  int get maxNumberOfDynamicRules =>
+      $js.chrome.declarativeNetRequest.MAX_NUMBER_OF_DYNAMIC_RULES;
+
+  /// The maximum number of "unsafe" dynamic rules that an extension can add.
+  int get maxNumberOfUnsafeDynamicRules =>
+      $js.chrome.declarativeNetRequest.MAX_NUMBER_OF_UNSAFE_DYNAMIC_RULES;
+
+  /// The maximum number of session scoped rules that an extension can add.
+  int get maxNumberOfSessionRules =>
+      $js.chrome.declarativeNetRequest.MAX_NUMBER_OF_SESSION_RULES;
+
+  /// The maximum number of "unsafe" session scoped rules that an extension can
+  /// add.
+  int get maxNumberOfUnsafeSessionRules =>
+      $js.chrome.declarativeNetRequest.MAX_NUMBER_OF_UNSAFE_SESSION_RULES;
 
   /// Time interval within which `MAX_GETMATCHEDRULES_CALLS_PER_INTERVAL
   /// getMatchedRules` calls can be made, specified in minutes.
@@ -715,6 +728,57 @@ class Redirect {
   }
 }
 
+class HeaderInfo {
+  HeaderInfo.fromJS(this._wrapped);
+
+  HeaderInfo({
+    /// The name of the header.
+    required String header,
+
+    /// If specified, match this rule if the header's value contains at least
+    /// one
+    /// element in this list.
+    List<String>? values,
+
+    /// If specified, the rule is not matched if the header exists but its value
+    /// contains at least one element in this list.
+    List<String>? excludedValues,
+  }) : _wrapped = $js.HeaderInfo(
+          header: header,
+          values: values?.toJSArray((e) => e),
+          excludedValues: excludedValues?.toJSArray((e) => e),
+        );
+
+  final $js.HeaderInfo _wrapped;
+
+  $js.HeaderInfo get toJS => _wrapped;
+
+  /// The name of the header.
+  String get header => _wrapped.header;
+
+  set header(String v) {
+    _wrapped.header = v;
+  }
+
+  /// If specified, match this rule if the header's value contains at least one
+  /// element in this list.
+  List<String>? get values =>
+      _wrapped.values?.toDart.cast<String>().map((e) => e).toList();
+
+  set values(List<String>? v) {
+    _wrapped.values = v?.toJSArray((e) => e);
+  }
+
+  /// If specified, the rule is not matched if the header exists but its value
+  /// contains at least one element in this list.
+  List<String>? get excludedValues =>
+      _wrapped.excludedValues?.toDart.cast<String>().map((e) => e).toList();
+
+  set excludedValues(List<String>? v) {
+    _wrapped.excludedValues = v?.toJSArray((e) => e);
+  }
+}
+
 class RuleCondition {
   RuleCondition.fromJS(this._wrapped);
 
@@ -771,7 +835,7 @@ class RuleCondition {
     String? regexFilter,
 
     /// Whether the `urlFilter` or `regexFilter`
-    /// (whichever is specified) is case sensitive. Default is true.
+    /// (whichever is specified) is case sensitive. Default is false.
     bool? isUrlFilterCaseSensitive,
 
     /// The rule will only match network requests originating from the list of
@@ -887,6 +951,15 @@ class RuleCondition {
     /// [tabs.TAB_ID_NONE] excludes requests which don't originate from a
     /// tab. Only supported for session-scoped rules.
     List<int>? excludedTabIds,
+
+    /// Rule matches if the request matches any response header in this list (if
+    /// specified).
+    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+    List<HeaderInfo>? responseHeaders,
+
+    /// Rule does not match if the request has any of the specified headers.
+    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+    List<String>? excludedResponseHeaders,
   }) : _wrapped = $js.RuleCondition(
           urlFilter: urlFilter,
           regexFilter: regexFilter,
@@ -907,6 +980,8 @@ class RuleCondition {
           domainType: domainType?.toJS,
           tabIds: tabIds?.toJSArray((e) => e),
           excludedTabIds: excludedTabIds?.toJSArray((e) => e),
+          responseHeaders: responseHeaders?.toJSArray((e) => e.toJS),
+          excludedResponseHeaders: excludedResponseHeaders?.toJSArray((e) => e),
         );
 
   final $js.RuleCondition _wrapped;
@@ -970,7 +1045,7 @@ class RuleCondition {
   }
 
   /// Whether the `urlFilter` or `regexFilter`
-  /// (whichever is specified) is case sensitive. Default is true.
+  /// (whichever is specified) is case sensitive. Default is false.
   bool? get isUrlFilterCaseSensitive => _wrapped.isUrlFilterCaseSensitive;
 
   set isUrlFilterCaseSensitive(bool? v) {
@@ -1168,6 +1243,30 @@ class RuleCondition {
 
   set excludedTabIds(List<int>? v) {
     _wrapped.excludedTabIds = v?.toJSArray((e) => e);
+  }
+
+  /// Rule matches if the request matches any response header in this list (if
+  /// specified).
+  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+  List<HeaderInfo>? get responseHeaders => _wrapped.responseHeaders?.toDart
+      .cast<$js.HeaderInfo>()
+      .map((e) => HeaderInfo.fromJS(e))
+      .toList();
+
+  set responseHeaders(List<HeaderInfo>? v) {
+    _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
+  }
+
+  /// Rule does not match if the request has any of the specified headers.
+  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+  List<String>? get excludedResponseHeaders =>
+      _wrapped.excludedResponseHeaders?.toDart
+          .cast<String>()
+          .map((e) => e)
+          .toList();
+
+  set excludedResponseHeaders(List<String>? v) {
+    _wrapped.excludedResponseHeaders = v?.toJSArray((e) => e);
   }
 }
 

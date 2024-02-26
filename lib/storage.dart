@@ -52,7 +52,10 @@ class ChromeStorage {
 
 /// The storage area's access level.
 enum AccessLevel {
+  /// Specifies contexts originating from the extension itself.
   trustedContexts('TRUSTED_CONTEXTS'),
+
+  /// Specifies contexts originating from outside the extension.
   trustedAndUntrustedContexts('TRUSTED_AND_UNTRUSTED_CONTEXTS');
 
   const AccessLevel(this.value);
@@ -131,8 +134,9 @@ class StorageArea {
   /// storage.
   /// [returns] Callback with the amount of space being used by storage, or on
   /// failure (in which case [runtime.lastError] will be set).
-  Future<int> getBytesInUse(Object? keys) async {
-    var $res = await promiseToFuture<int>(_wrapped.getBytesInUse(switch (keys) {
+  Future<double> getBytesInUse(Object? keys) async {
+    var $res =
+        await promiseToFuture<double>(_wrapped.getBytesInUse(switch (keys) {
       String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
       null => null,

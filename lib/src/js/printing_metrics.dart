@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSPrintingMetricsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPrintingMetrics {}
-
-extension JSPrintingMetricsExtension on JSPrintingMetrics {
+extension type JSPrintingMetrics._(JSObject _) {
   /// Returns the list of the finished print jobs.
   external JSPromise getPrintJobs();
 
@@ -40,7 +37,7 @@ extension JSPrintingMetricsExtension on JSPrintingMetrics {
 /// The source of the print job.
 typedef PrintJobSource = String;
 
-/// The final status of the print job.
+/// Specifies the final status of the print job.
 typedef PrintJobStatus = String;
 
 /// The source of the printer.
@@ -49,11 +46,7 @@ typedef PrinterSource = String;
 typedef ColorMode = String;
 
 typedef DuplexMode = String;
-
-@JS()
-@staticInterop
-@anonymous
-class MediaSize {
+extension type MediaSize._(JSObject _) implements JSObject {
   external factory MediaSize({
     /// Width (in micrometers) of the media used for printing.
     int width,
@@ -68,9 +61,7 @@ class MediaSize {
     /// IANA page</a> .
     String vendorId,
   });
-}
 
-extension MediaSizeExtension on MediaSize {
   /// Width (in micrometers) of the media used for printing.
   external int width;
 
@@ -84,11 +75,7 @@ extension MediaSizeExtension on MediaSize {
   /// IANA page</a> .
   external String vendorId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PrintSettings {
+extension type PrintSettings._(JSObject _) implements JSObject {
   external factory PrintSettings({
     /// The requested color mode.
     ColorMode color,
@@ -102,9 +89,7 @@ class PrintSettings {
     /// The requested number of copies.
     int copies,
   });
-}
 
-extension PrintSettingsExtension on PrintSettings {
   /// The requested color mode.
   external ColorMode color;
 
@@ -117,11 +102,7 @@ extension PrintSettingsExtension on PrintSettings {
   /// The requested number of copies.
   external int copies;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Printer {
+extension type Printer._(JSObject _) implements JSObject {
   external factory Printer({
     /// Displayed name of the printer.
     String name,
@@ -133,9 +114,7 @@ class Printer {
     /// The source of the printer.
     PrinterSource source,
   });
-}
 
-extension PrinterExtension on Printer {
   /// Displayed name of the printer.
   external String name;
 
@@ -146,11 +125,7 @@ extension PrinterExtension on Printer {
   /// The source of the printer.
   external PrinterSource source;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PrintJobInfo {
+extension type PrintJobInfo._(JSObject _) implements JSObject {
   external factory PrintJobInfo({
     /// The ID of the job.
     String id,
@@ -185,9 +160,7 @@ class PrintJobInfo {
     /// The status of the printer.
     PrinterStatus printer_status,
   });
-}
 
-extension PrintJobInfoExtension on PrintJobInfo {
   /// The ID of the job.
   external String id;
 

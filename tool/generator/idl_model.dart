@@ -285,6 +285,7 @@ enum IDLAttributeTypeEnum {
   documentationTitle("documentation_title"),
   documentationNamespace("documentation_namespace"),
   documentedIn("documented_in"),
+  doesNotSupportPromises("doesNotSupportPromises"),
   ;
 
   final String type;

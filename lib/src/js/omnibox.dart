@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSOmniboxExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSOmnibox {}
-
-extension JSOmniboxExtension on JSOmnibox {
+extension type JSOmnibox._(JSObject _) {
   /// A callback passed to the onInputChanged event used for sending suggestions
   /// back to the browser.
   external void sendSuggestions(
@@ -71,11 +68,7 @@ typedef DescriptionStyleType = String;
 /// navigate to a certain URL, a disposition of 'newForegroundTab' means the
 /// navigation should take place in a new selected tab.
 typedef OnInputEnteredDisposition = String;
-
-@JS()
-@staticInterop
-@anonymous
-class MatchClassification {
+extension type MatchClassification._(JSObject _) implements JSObject {
   external factory MatchClassification({
     int offset,
 
@@ -83,9 +76,7 @@ class MatchClassification {
     DescriptionStyleType type,
     int? length,
   });
-}
 
-extension MatchClassificationExtension on MatchClassification {
   external int offset;
 
   /// The style type
@@ -93,11 +84,7 @@ extension MatchClassificationExtension on MatchClassification {
 
   external int? length;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SuggestResult {
+extension type SuggestResult._(JSObject _) implements JSObject {
   external factory SuggestResult({
     /// The text that is put into the URL bar, and that is sent to the extension
     /// when the user chooses this entry.
@@ -119,9 +106,7 @@ class SuggestResult {
     /// extension.
     JSArray? descriptionStyles,
   });
-}
 
-extension SuggestResultExtension on SuggestResult {
   /// The text that is put into the URL bar, and that is sent to the extension
   /// when the user chooses this entry.
   external String content;
@@ -142,11 +127,7 @@ extension SuggestResultExtension on SuggestResult {
   /// extension.
   external JSArray? descriptionStyles;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DefaultSuggestResult {
+extension type DefaultSuggestResult._(JSObject _) implements JSObject {
   external factory DefaultSuggestResult({
     /// The text that is displayed in the URL dropdown. Can contain XML-style
     /// markup for styling. The supported tags are 'url' (for a literal URL),
@@ -159,9 +140,7 @@ class DefaultSuggestResult {
     /// extension.
     JSArray? descriptionStyles,
   });
-}
 
-extension DefaultSuggestResultExtension on DefaultSuggestResult {
   /// The text that is displayed in the URL dropdown. Can contain XML-style
   /// markup for styling. The supported tags are 'url' (for a literal URL),
   /// 'match' (for highlighting text that matched what the user's query), and

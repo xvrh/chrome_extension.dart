@@ -216,7 +216,7 @@ class OpenOptions {
     /// the extension has a global (non-tab-specific) side panel or
     /// `tabId` is also specified. This will override any
     /// currently-active global side panel the user has open in the given
-    /// window. At least one of this and `tabId` must be provided.
+    /// window. At least one of this or `tabId` must be provided.
     int? windowId,
 
     /// The tab in which to open the side panel. If the corresponding tab has
@@ -225,7 +225,7 @@ class OpenOptions {
     /// the specified tab and any other tabs without a currently-open tab-
     /// specific panel. This will override any currently-active side panel
     /// (global or tab-specific) in the corresponding tab. At least one of this
-    /// and `windowId` must be provided.
+    /// or `windowId` must be provided.
     int? tabId,
   }) : _wrapped = $js.OpenOptions(
           windowId: windowId,
@@ -240,7 +240,7 @@ class OpenOptions {
   /// the extension has a global (non-tab-specific) side panel or
   /// `tabId` is also specified. This will override any
   /// currently-active global side panel the user has open in the given
-  /// window. At least one of this and `tabId` must be provided.
+  /// window. At least one of this or `tabId` must be provided.
   int? get windowId => _wrapped.windowId;
 
   set windowId(int? v) {
@@ -253,7 +253,7 @@ class OpenOptions {
   /// the specified tab and any other tabs without a currently-open tab-
   /// specific panel. This will override any currently-active side panel
   /// (global or tab-specific) in the corresponding tab. At least one of this
-  /// and `windowId` must be provided.
+  /// or `windowId` must be provided.
   int? get tabId => _wrapped.tabId;
 
   set tabId(int? v) {
