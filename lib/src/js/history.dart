@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -15,7 +16,7 @@ extension JSChromeJSHistoryExtension on JSChrome {
   /// Use the `chrome.history` API to interact with the browser's record of
   /// visited pages. You can add, remove, and query for URLs in the browser's
   /// history. To override the history page with your own version, see [Override
-  /// Pages](override).
+  /// Pages](develop/ui/override-chrome-pages).
   JSHistory get history {
     var historyNullable = this.historyNullable;
     if (historyNullable == null) {
@@ -25,11 +26,7 @@ extension JSChromeJSHistoryExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSHistory {}
-
-extension JSHistoryExtension on JSHistory {
+extension type JSHistory._(JSObject _) {
   /// Searches the history for the last visit time of each page matching the
   /// query.
   external JSPromise search(SearchQuery query);
@@ -63,11 +60,7 @@ extension JSHistoryExtension on JSHistory {
 
 /// The [transition type](#transition_types) for this visit from its referrer.
 typedef TransitionType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class HistoryItem {
+extension type HistoryItem._(JSObject _) implements JSObject {
   external factory HistoryItem({
     /// The unique identifier for the item.
     String id,
@@ -89,9 +82,7 @@ class HistoryItem {
     /// address.
     int? typedCount,
   });
-}
 
-extension HistoryItemExtension on HistoryItem {
   /// The unique identifier for the item.
   external String id;
 
@@ -112,11 +103,7 @@ extension HistoryItemExtension on HistoryItem {
   /// address.
   external int? typedCount;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class VisitItem {
+extension type VisitItem._(JSObject _) implements JSObject {
   external factory VisitItem({
     /// The unique identifier for the corresponding [history.HistoryItem].
     String id,
@@ -137,9 +124,7 @@ class VisitItem {
     /// different device.
     bool isLocal,
   });
-}
 
-extension VisitItemExtension on VisitItem {
   /// The unique identifier for the corresponding [history.HistoryItem].
   external String id;
 
@@ -159,46 +144,30 @@ extension VisitItemExtension on VisitItem {
   /// different device.
   external bool isLocal;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UrlDetails {
+extension type UrlDetails._(JSObject _) implements JSObject {
   external factory UrlDetails(
       {
       /// The URL for the operation. It must be in the format as returned from a
       /// call to history.search.
       String url});
-}
 
-extension UrlDetailsExtension on UrlDetails {
   /// The URL for the operation. It must be in the format as returned from a
   /// call to history.search.
   external String url;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnVisitRemovedRemoved {
+extension type OnVisitRemovedRemoved._(JSObject _) implements JSObject {
   external factory OnVisitRemovedRemoved({
     /// True if all history was removed.  If true, then urls will be empty.
     bool allHistory,
     JSArray? urls,
   });
-}
 
-extension OnVisitRemovedRemovedExtension on OnVisitRemovedRemoved {
   /// True if all history was removed.  If true, then urls will be empty.
   external bool allHistory;
 
   external JSArray? urls;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SearchQuery {
+extension type SearchQuery._(JSObject _) implements JSObject {
   external factory SearchQuery({
     /// A free-text query to the history service.  Leave empty to retrieve all
     /// pages.
@@ -216,9 +185,7 @@ class SearchQuery {
     /// The maximum number of results to retrieve.  Defaults to 100.
     int? maxResults,
   });
-}
 
-extension SearchQueryExtension on SearchQuery {
   /// A free-text query to the history service.  Leave empty to retrieve all
   /// pages.
   external String text;
@@ -235,11 +202,7 @@ extension SearchQueryExtension on SearchQuery {
   /// The maximum number of results to retrieve.  Defaults to 100.
   external int? maxResults;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeleteRangeRange {
+extension type DeleteRangeRange._(JSObject _) implements JSObject {
   external factory DeleteRangeRange({
     /// Items added to history after this date, represented in milliseconds since
     /// the epoch.
@@ -249,9 +212,7 @@ class DeleteRangeRange {
     /// the epoch.
     double endTime,
   });
-}
 
-extension DeleteRangeRangeExtension on DeleteRangeRange {
   /// Items added to history after this date, represented in milliseconds since
   /// the epoch.
   external double startTime;

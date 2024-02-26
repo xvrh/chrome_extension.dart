@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSDevtoolsRecorderExtension on JSChromeDevtools {
   }
 }
 
-@JS()
-@staticInterop
-class JSDevtoolsRecorder {}
-
-extension JSDevtoolsRecorderExtension on JSDevtoolsRecorder {
+extension type JSDevtoolsRecorder._(JSObject _) {
   /// Registers a Recorder extension plugin.
   external void registerRecorderExtensionPlugin(
     /// An instance implementing the RecorderExtensionPlugin interface.
@@ -53,15 +50,9 @@ extension JSDevtoolsRecorderExtension on JSDevtoolsRecorder {
     String pagePath,
   );
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RecorderExtensionPlugin {
+extension type RecorderExtensionPlugin._(JSObject _) implements JSObject {
   external factory RecorderExtensionPlugin();
-}
 
-extension RecorderExtensionPluginExtension on RecorderExtensionPlugin {
   /// Converts a recording from the Recorder panel format into a string.
   external void stringify(
 
@@ -88,15 +79,9 @@ extension RecorderExtensionPluginExtension on RecorderExtensionPlugin {
       /// recording schema</a>.
       JSAny recording);
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RecorderView {
+extension type RecorderView._(JSObject _) implements JSObject {
   external factory RecorderView();
-}
 
-extension RecorderViewExtension on RecorderView {
   /// Indicates that the extension wants to show this view in the Recorder
   /// panel.
   external void show();

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSScriptingExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSScripting {}
-
-extension JSScriptingExtension on JSScripting {
+extension type JSScripting._(JSObject _) {
   /// Injects a script into a target context. The script will be run at
   /// `document_idle`. If the script evaluates to a promise,
   /// the browser will wait for the promise to settle and return the
@@ -102,11 +99,7 @@ typedef StyleOrigin = String;
 
 /// The JavaScript world for a script to execute within.
 typedef ExecutionWorld = String;
-
-@JS()
-@staticInterop
-@anonymous
-class InjectionTarget {
+extension type InjectionTarget._(JSObject _) implements JSObject {
   external factory InjectionTarget({
     /// The ID of the tab into which to inject.
     int tabId,
@@ -126,9 +119,7 @@ class InjectionTarget {
     /// This must not be true if `frameIds` is specified.
     bool? allFrames,
   });
-}
 
-extension InjectionTargetExtension on InjectionTarget {
   /// The ID of the tab into which to inject.
   external int tabId;
 
@@ -147,20 +138,16 @@ extension InjectionTargetExtension on InjectionTarget {
   /// This must not be true if `frameIds` is specified.
   external bool? allFrames;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ScriptInjection {
+extension type ScriptInjection._(JSObject _) implements JSObject {
   external factory ScriptInjection({
     /// A JavaScript function to inject. This function will be serialized, and
     /// then deserialized for injection. This means that any bound parameters
     /// and execution context will be lost.
-    /// Exactly one of `files` and `func` must be
+    /// Exactly one of `files` or `func` must be
     /// specified.
     JSAny? func,
 
-    /// The arguments to curry into a provided function. This is only valid if
+    /// The arguments to pass to the provided function. This is only valid if
     /// the `func` parameter is specified. These arguments must be
     /// JSON-serializable.
     JSArray? args,
@@ -174,7 +161,7 @@ class ScriptInjection {
 
     /// The path of the JS or CSS files to inject, relative to the extension's
     /// root directory.
-    /// Exactly one of `files` and `func` must be
+    /// Exactly one of `files` or `func` must be
     /// specified.
     JSArray? files,
 
@@ -191,17 +178,15 @@ class ScriptInjection {
     /// script reaches the target.
     bool? injectImmediately,
   });
-}
 
-extension ScriptInjectionExtension on ScriptInjection {
   /// A JavaScript function to inject. This function will be serialized, and
   /// then deserialized for injection. This means that any bound parameters
   /// and execution context will be lost.
-  /// Exactly one of `files` and `func` must be
+  /// Exactly one of `files` or `func` must be
   /// specified.
   external JSAny? func;
 
-  /// The arguments to curry into a provided function. This is only valid if
+  /// The arguments to pass to the provided function. This is only valid if
   /// the `func` parameter is specified. These arguments must be
   /// JSON-serializable.
   external JSArray? args;
@@ -215,7 +200,7 @@ extension ScriptInjectionExtension on ScriptInjection {
 
   /// The path of the JS or CSS files to inject, relative to the extension's
   /// root directory.
-  /// Exactly one of `files` and `func` must be
+  /// Exactly one of `files` or `func` must be
   /// specified.
   external JSArray? files;
 
@@ -232,11 +217,7 @@ extension ScriptInjectionExtension on ScriptInjection {
   /// script reaches the target.
   external bool? injectImmediately;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CSSInjection {
+extension type CSSInjection._(JSObject _) implements JSObject {
   external factory CSSInjection({
     /// Details specifying the target into which to insert the CSS.
     InjectionTarget target,
@@ -255,9 +236,7 @@ class CSSInjection {
     /// The style origin for the injection. Defaults to `'AUTHOR'`.
     StyleOrigin? origin,
   });
-}
 
-extension CSSInjectionExtension on CSSInjection {
   /// Details specifying the target into which to insert the CSS.
   external InjectionTarget target;
 
@@ -275,11 +254,7 @@ extension CSSInjectionExtension on CSSInjection {
   /// The style origin for the injection. Defaults to `'AUTHOR'`.
   external StyleOrigin? origin;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class InjectionResult {
+extension type InjectionResult._(JSObject _) implements JSObject {
   external factory InjectionResult({
     /// The result of the script execution.
     JSAny? result,
@@ -290,9 +265,7 @@ class InjectionResult {
     /// The document associated with the injection.
     String documentId,
   });
-}
 
-extension InjectionResultExtension on InjectionResult {
   /// The result of the script execution.
   external JSAny? result;
 
@@ -302,25 +275,21 @@ extension InjectionResultExtension on InjectionResult {
   /// The document associated with the injection.
   external String documentId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RegisteredContentScript {
+extension type RegisteredContentScript._(JSObject _) implements JSObject {
   external factory RegisteredContentScript({
     /// The id of the content script, specified in the API call. Must not start
     /// with a '_' as it's reserved as a prefix for generated script IDs.
     String id,
 
     /// Specifies which pages this content script will be injected into. See
-    /// [Match Patterns](match_patterns) for more details on the
-    /// syntax of these strings. Must be specified for
+    /// [Match Patterns](develop/concepts/match-patterns) for more
+    /// details on the syntax of these strings. Must be specified for
     /// [registerContentScripts].
     JSArray? matches,
 
     /// Excludes pages that this content script would otherwise be injected into.
-    /// See [Match Patterns](match_patterns) for more details on the
-    /// syntax of these strings.
+    /// See [Match Patterns](develop/concepts/match-patterns) for
+    /// more details on the syntax of these strings.
     JSArray? excludeMatches,
 
     /// The list of CSS files to be injected into matching pages. These are
@@ -339,8 +308,13 @@ class RegisteredContentScript {
     /// frame is matched.
     bool? allFrames,
 
-    /// TODO(devlin): Add documentation once the implementation is complete. See
-    /// crbug.com/55084.
+    /// Indicates whether the script can be injected into frames where the URL
+    /// contains an unsupported scheme; specifically: about:, data:, blob:, or
+    /// filesystem:. In these cases, the URL's origin is checked to determine if
+    /// the script should be injected. If the origin is `null` (as is the case
+    /// for data: URLs) then the used origin is either the frame that created
+    /// the current frame or the frame that initiated the navigation to this
+    /// frame. Note that this may not be the parent frame.
     bool? matchOriginAsFallback,
 
     /// Specifies when JavaScript files are injected into the web page. The
@@ -355,22 +329,20 @@ class RegisteredContentScript {
     /// `ISOLATED`.
     ExecutionWorld? world,
   });
-}
 
-extension RegisteredContentScriptExtension on RegisteredContentScript {
   /// The id of the content script, specified in the API call. Must not start
   /// with a '_' as it's reserved as a prefix for generated script IDs.
   external String id;
 
   /// Specifies which pages this content script will be injected into. See
-  /// [Match Patterns](match_patterns) for more details on the
-  /// syntax of these strings. Must be specified for
+  /// [Match Patterns](develop/concepts/match-patterns) for more
+  /// details on the syntax of these strings. Must be specified for
   /// [registerContentScripts].
   external JSArray? matches;
 
   /// Excludes pages that this content script would otherwise be injected into.
-  /// See [Match Patterns](match_patterns) for more details on the
-  /// syntax of these strings.
+  /// See [Match Patterns](develop/concepts/match-patterns) for
+  /// more details on the syntax of these strings.
   external JSArray? excludeMatches;
 
   /// The list of CSS files to be injected into matching pages. These are
@@ -389,8 +361,13 @@ extension RegisteredContentScriptExtension on RegisteredContentScript {
   /// frame is matched.
   external bool? allFrames;
 
-  /// TODO(devlin): Add documentation once the implementation is complete. See
-  /// crbug.com/55084.
+  /// Indicates whether the script can be injected into frames where the URL
+  /// contains an unsupported scheme; specifically: about:, data:, blob:, or
+  /// filesystem:. In these cases, the URL's origin is checked to determine if
+  /// the script should be injected. If the origin is `null` (as is the case
+  /// for data: URLs) then the used origin is either the frame that created
+  /// the current frame or the frame that initiated the navigation to this
+  /// frame. Note that this may not be the parent frame.
   external bool? matchOriginAsFallback;
 
   /// Specifies when JavaScript files are injected into the web page. The
@@ -405,19 +382,13 @@ extension RegisteredContentScriptExtension on RegisteredContentScript {
   /// `ISOLATED`.
   external ExecutionWorld? world;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ContentScriptFilter {
+extension type ContentScriptFilter._(JSObject _) implements JSObject {
   external factory ContentScriptFilter(
       {
       /// If specified, [getRegisteredContentScripts] will only return scripts
       /// with an id specified in this list.
       JSArray? ids});
-}
 
-extension ContentScriptFilterExtension on ContentScriptFilter {
   /// If specified, [getRegisteredContentScripts] will only return scripts
   /// with an id specified in this list.
   external JSArray? ids;

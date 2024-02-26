@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,23 +25,16 @@ extension JSChromeJSCommandsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSCommands {}
-
-extension JSCommandsExtension on JSCommands {
+extension type JSCommands._(JSObject _) {
   /// Returns all the registered extension commands for this extension and their
-  /// shortcut (if active).
+  /// shortcut (if active). Before Chrome 110, this command did not return
+  /// `_execute_action`.
   external JSPromise getAll();
 
   /// Fired when a registered command is activated using a keyboard shortcut.
   external Event get onCommand;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Command {
+extension type Command._(JSObject _) implements JSObject {
   external factory Command({
     /// The name of the Extension Command
     String? name,
@@ -51,9 +45,7 @@ class Command {
     /// The shortcut active for this command, or blank if not active.
     String? shortcut,
   });
-}
 
-extension CommandExtension on Command {
   /// The name of the Extension Command
   external String? name;
 

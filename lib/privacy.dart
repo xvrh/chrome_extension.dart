@@ -273,12 +273,6 @@ class PrivacyWebsites {
     /// `true`.
     required ChromeSetting thirdPartyCookiesAllowed,
 
-    /// If enabled, the experimental [Privacy
-    /// Sandbox](https://www.chromium.org/Home/chromium-privacy/privacy-sandbox)
-    /// features are active. The value of this preference is of type boolean,
-    /// and the default value is `true`.
-    required ChromeSetting privacySandboxEnabled,
-
     /// If disabled, the [Topics
     /// API](https://developer.chrome.com/en/docs/privacy-sandbox/topics/) is
     /// deactivated. The value of this preference is of type boolean, and the
@@ -325,9 +319,16 @@ class PrivacyWebsites {
     /// unique ID to plugins in order to run protected content. The value of
     /// this preference is of type boolean, and the default value is `true`.
     ChromeSetting? protectedContentEnabled,
+
+    /// If disabled, [Related Website
+    /// Sets](https://developer.chrome.com/docs/privacy-sandbox/related-website-sets/)
+    /// is deactivated. The value of this preference is of type boolean, and the
+    /// default value is `true`. Extensions may only disable this API by setting
+    /// the value to `false`. If you try setting this API to `true`, it will
+    /// throw an error.
+    required ChromeSetting relatedWebsiteSetsEnabled,
   }) : _wrapped = $js.PrivacyWebsites(
           thirdPartyCookiesAllowed: thirdPartyCookiesAllowed.toJS,
-          privacySandboxEnabled: privacySandboxEnabled.toJS,
           topicsEnabled: topicsEnabled.toJS,
           fledgeEnabled: fledgeEnabled.toJS,
           adMeasurementEnabled: adMeasurementEnabled.toJS,
@@ -335,6 +336,7 @@ class PrivacyWebsites {
           referrersEnabled: referrersEnabled.toJS,
           doNotTrackEnabled: doNotTrackEnabled.toJS,
           protectedContentEnabled: protectedContentEnabled?.toJS,
+          relatedWebsiteSetsEnabled: relatedWebsiteSetsEnabled.toJS,
         );
 
   final $js.PrivacyWebsites _wrapped;
@@ -349,17 +351,6 @@ class PrivacyWebsites {
 
   set thirdPartyCookiesAllowed(ChromeSetting v) {
     _wrapped.thirdPartyCookiesAllowed = v.toJS;
-  }
-
-  /// If enabled, the experimental [Privacy
-  /// Sandbox](https://www.chromium.org/Home/chromium-privacy/privacy-sandbox)
-  /// features are active. The value of this preference is of type boolean, and
-  /// the default value is `true`.
-  ChromeSetting get privacySandboxEnabled =>
-      ChromeSetting.fromJS(_wrapped.privacySandboxEnabled);
-
-  set privacySandboxEnabled(ChromeSetting v) {
-    _wrapped.privacySandboxEnabled = v.toJS;
   }
 
   /// If disabled, the [Topics
@@ -442,5 +433,18 @@ class PrivacyWebsites {
 
   set protectedContentEnabled(ChromeSetting? v) {
     _wrapped.protectedContentEnabled = v?.toJS;
+  }
+
+  /// If disabled, [Related Website
+  /// Sets](https://developer.chrome.com/docs/privacy-sandbox/related-website-sets/)
+  /// is deactivated. The value of this preference is of type boolean, and the
+  /// default value is `true`. Extensions may only disable this API by setting
+  /// the value to `false`. If you try setting this API to `true`, it will throw
+  /// an error.
+  ChromeSetting get relatedWebsiteSetsEnabled =>
+      ChromeSetting.fromJS(_wrapped.relatedWebsiteSetsEnabled);
+
+  set relatedWebsiteSetsEnabled(ChromeSetting v) {
+    _wrapped.relatedWebsiteSetsEnabled = v.toJS;
   }
 }

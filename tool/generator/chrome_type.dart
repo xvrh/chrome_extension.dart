@@ -778,12 +778,16 @@ class ChoiceType extends ChromeType {
       var emit = _createEmit(allocate);
 
       var arguments = StringBuffer();
+
+      var previousWhenMethods = <String>{};
       for (var choice in choices) {
         var jsTypeName = emit(choice.jsType);
         if (jsTypeName.endsWith('?')) {
           jsTypeName = jsTypeName.substring(0, jsTypeName.length - 2);
         }
         var whenMethod = const {
+          'bool': 'isBool',
+          'double': 'isDouble',
           'int': 'isInt',
           'String': 'isString',
           'JSArray': 'isArray',
@@ -796,7 +800,13 @@ class ChoiceType extends ChromeType {
           itemAccessor = itemAccessor.asA(choice.jsTypeReferencedFromDart);
         }
         var conversionCode = emit(choice.toDart(itemAccessor));
-        arguments.writeln('$whenMethod: (v) => $conversionCode,');
+        // TODO: this is a workaround when there are several "isArray" in the Union
+        // There is currently no way to distinguish those. We should instead group
+        // them in a single List<Object>
+        if (!previousWhenMethods.contains(whenMethod)) {
+          arguments.writeln('$whenMethod: (v) => $conversionCode,');
+        }
+        previousWhenMethods.add(whenMethod);
       }
 
       return '${emit(accessor)}$questionMark.when($arguments)';

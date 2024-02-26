@@ -142,35 +142,40 @@ class ChromeCertificateProvider {
 
 /// Types of supported cryptographic signature algorithms.
 enum Algorithm {
-  /// RSASSA PKCS#1 v1.5 signature algorithm with the MD5-SHA-1 hashing. The
-  /// extension must not prepend a DigestInfo prefix but only add PKCS#1
-  /// padding. This algorithm is deprecated and will never be requested by
-  /// Chrome as of version 109.
+  /// Specifies the RSASSA PKCS#1 v1.5 signature algorithm with the MD5-SHA-1
+  /// hashing. The extension must not prepend a DigestInfo prefix but only
+  /// add PKCS#1 padding. This algorithm is deprecated and will never be
+  /// requested
+  ///  by Chrome as of version 109.
   rsassaPkcs1V15Md5Sha1('RSASSA_PKCS1_v1_5_MD5_SHA1'),
 
-  /// RSASSA PKCS#1 v1.5 signature algorithm with the SHA-1 hash function.
+  /// Specifies the RSASSA PKCS#1 v1.5 signature algorithm
+  /// with the SHA-1 hash function.
   rsassaPkcs1V15Sha1('RSASSA_PKCS1_v1_5_SHA1'),
 
-  /// RSASSA PKCS#1 v1.5 signature algorithm with the SHA-256 hashing function.
+  /// Specifies the RSASSA PKCS#1 v1.5 signature algorithm
+  /// with the SHA-256 hashing function.
   rsassaPkcs1V15Sha256('RSASSA_PKCS1_v1_5_SHA256'),
 
-  /// RSASSA PKCS#1 v1.5 signature algorithm with the SHA-384 hashing function.
+  /// Specifies the RSASSA PKCS#1 v1.5 signature algorithm
+  /// with the SHA-384 hashing function.
   rsassaPkcs1V15Sha384('RSASSA_PKCS1_v1_5_SHA384'),
 
-  /// RSASSA PKCS#1 v1.5 signature algorithm with the SHA-512 hashing function.
+  /// Specifies the RSASSA PKCS#1 v1.5 signature algorithm
+  /// with the SHA-512 hashing function.
   rsassaPkcs1V15Sha512('RSASSA_PKCS1_v1_5_SHA512'),
 
-  /// Since Chrome 89. RSASSA PSS signature algorithm with the SHA-256 hashing
+  /// Specifies the RSASSA PSS signature algorithm with the SHA-256 hashing
   /// function, MGF1 mask generation function and the salt of the same size as
   /// the hash.
   rsassaPssSha256('RSASSA_PSS_SHA256'),
 
-  /// Since Chrome 89. RSASSA PSS signature algorithm with the SHA-384 hashing
+  /// Specifies the RSASSA PSS signature algorithm with the SHA-384 hashing
   /// function, MGF1 mask generation function and the salt of the same size as
   /// the hash.
   rsassaPssSha384('RSASSA_PSS_SHA384'),
 
-  /// Since Chrome 89. RSASSA PSS signature algorithm with the SHA-512 hashing
+  /// Specifies the RSASSA PSS signature algorithm with the SHA-512 hashing
   /// function, MGF1 mask generation function and the salt of the same size as
   /// the hash.
   rsassaPssSha512('RSASSA_PSS_SHA512');
@@ -186,8 +191,8 @@ enum Algorithm {
 
 /// Types of errors that the extension can report.
 enum Error {
-  /// General error that cannot be represented by other more specific error
-  /// codes.
+  /// General error that cannot be represented by other more specific
+  /// error codes.
   generalError('GENERAL_ERROR');
 
   const Error(this.value);
@@ -201,10 +206,19 @@ enum Error {
 
 /// Deprecated. Replaced by [Algorithm].
 enum Hash {
+  /// Specifies the MD5 and SHA1 hashing algorithms.
   md5Sha1('MD5_SHA1'),
+
+  /// Specifies the SHA1 hashing algorithm.
   sha1('SHA1'),
+
+  /// Specifies the SHA256 hashing algorithm.
   sha256('SHA256'),
+
+  /// Specifies the SHA384 hashing algorithm.
   sha384('SHA384'),
+
+  /// Specifies the SHA512 hashing algorithm.
   sha512('SHA512');
 
   const Hash(this.value);
@@ -218,7 +232,10 @@ enum Hash {
 
 /// The type of code being requested by the extension with requestPin function.
 enum PinRequestType {
+  /// Specifies the requested code is a PIN.
   pin('PIN'),
+
+  /// Specifies the requested code is a PUK.
   puk('PUK');
 
   const PinRequestType(this.value);
@@ -233,9 +250,16 @@ enum PinRequestType {
 /// The types of errors that can be presented to the user through the
 /// requestPin function.
 enum PinRequestErrorType {
+  /// Specifies the PIN is invalid.
   invalidPin('INVALID_PIN'),
+
+  /// Specifies the PUK is invalid.
   invalidPuk('INVALID_PUK'),
+
+  /// Specifies the maximum attempt number has been exceeded.
   maxAttemptsExceeded('MAX_ATTEMPTS_EXCEEDED'),
+
+  /// Specifies that the error cannot be represented by the above types.
   unknownError('UNKNOWN_ERROR');
 
   const PinRequestErrorType(this.value);

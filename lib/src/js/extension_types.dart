@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSExtensionTypesExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSExtensionTypes {}
-
-extension JSExtensionTypesExtension on JSExtensionTypes {}
+extension type JSExtensionTypes._(JSObject _) {}
 
 /// The format of an image.
 typedef ImageFormat = String;
@@ -46,14 +43,11 @@ typedef FrameType = String;
 typedef DocumentLifecycle = String;
 
 /// The JavaScript world for a script to execute within. Can either be an
-/// isolated world, unique to this extension, or the main world of the DOM which
-/// is shared with the page's JavaScript.
+/// isolated world unique to this extension, the main world of the DOM which is
+/// shared with the page's JavaScript, or a user scripts world that is only
+/// available for scripts registered with the User Scripts API.
 typedef ExecutionWorld = String;
-
-@JS()
-@staticInterop
-@anonymous
-class ImageDetails {
+extension type ImageDetails._(JSObject _) implements JSObject {
   external factory ImageDetails({
     /// The format of the resulting image.  Default is `"jpeg"`.
     ImageFormat? format,
@@ -64,9 +58,7 @@ class ImageDetails {
     /// needed to store it will decrease.
     int? quality,
   });
-}
 
-extension ImageDetailsExtension on ImageDetails {
   /// The format of the resulting image.  Default is `"jpeg"`.
   external ImageFormat? format;
 
@@ -76,11 +68,7 @@ extension ImageDetailsExtension on ImageDetails {
   /// needed to store it will decrease.
   external int? quality;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class InjectDetails {
+extension type InjectDetails._(JSObject _) implements JSObject {
   external factory InjectDetails({
     /// JavaScript or CSS code to inject.
     ///
@@ -118,9 +106,7 @@ class InjectDetails {
     /// Defaults to `"author"`.
     CSSOrigin? cssOrigin,
   });
-}
 
-extension InjectDetailsExtension on InjectDetails {
   /// JavaScript or CSS code to inject.
   ///
   /// **Warning:**
@@ -157,11 +143,7 @@ extension InjectDetailsExtension on InjectDetails {
   /// Defaults to `"author"`.
   external CSSOrigin? cssOrigin;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeleteInjectionDetails {
+extension type DeleteInjectionDetails._(JSObject _) implements JSObject {
   external factory DeleteInjectionDetails({
     /// CSS code to remove.
     String? code,
@@ -188,9 +170,7 @@ class DeleteInjectionDetails {
     /// CSS to remove. Defaults to `"author"`.
     CSSOrigin? cssOrigin,
   });
-}
 
-extension DeleteInjectionDetailsExtension on DeleteInjectionDetails {
   /// CSS code to remove.
   external String? code;
 

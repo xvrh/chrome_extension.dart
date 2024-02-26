@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSFontSettingsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSFontSettings {}
-
-extension JSFontSettingsExtension on JSFontSettings {
+extension type JSFontSettings._(JSObject _) {
   /// Clears the font set by this extension, if any.
   external JSPromise clearFont(ClearFontDetails details);
 
@@ -112,11 +109,7 @@ typedef GenericFamily = String;
 /// [controllable_by_this_extension]: can be controlled by this extension
 /// [controlled_by_this_extension]: controlled by this extension
 typedef LevelOfControl = String;
-
-@JS()
-@staticInterop
-@anonymous
-class FontName {
+extension type FontName._(JSObject _) implements JSObject {
   external factory FontName({
     /// The font ID.
     String fontId,
@@ -124,20 +117,14 @@ class FontName {
     /// The display name of the font.
     String displayName,
   });
-}
 
-extension FontNameExtension on FontName {
   /// The font ID.
   external String fontId;
 
   /// The display name of the font.
   external String displayName;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnFontChangedDetails {
+extension type OnFontChangedDetails._(JSObject _) implements JSObject {
   external factory OnFontChangedDetails({
     /// The font ID. See the description in `getFont`.
     String fontId,
@@ -151,9 +138,7 @@ class OnFontChangedDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension OnFontChangedDetailsExtension on OnFontChangedDetails {
   /// The font ID. See the description in `getFont`.
   external String fontId;
 
@@ -166,11 +151,8 @@ extension OnFontChangedDetailsExtension on OnFontChangedDetails {
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnDefaultFontSizeChangedDetails {
+extension type OnDefaultFontSizeChangedDetails._(JSObject _)
+    implements JSObject {
   external factory OnDefaultFontSizeChangedDetails({
     /// The font size in pixels.
     int pixelSize,
@@ -178,21 +160,15 @@ class OnDefaultFontSizeChangedDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension OnDefaultFontSizeChangedDetailsExtension
-    on OnDefaultFontSizeChangedDetails {
   /// The font size in pixels.
   external int pixelSize;
 
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnDefaultFixedFontSizeChangedDetails {
+extension type OnDefaultFixedFontSizeChangedDetails._(JSObject _)
+    implements JSObject {
   external factory OnDefaultFixedFontSizeChangedDetails({
     /// The font size in pixels.
     int pixelSize,
@@ -200,21 +176,15 @@ class OnDefaultFixedFontSizeChangedDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension OnDefaultFixedFontSizeChangedDetailsExtension
-    on OnDefaultFixedFontSizeChangedDetails {
   /// The font size in pixels.
   external int pixelSize;
 
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnMinimumFontSizeChangedDetails {
+extension type OnMinimumFontSizeChangedDetails._(JSObject _)
+    implements JSObject {
   external factory OnMinimumFontSizeChangedDetails({
     /// The font size in pixels.
     int pixelSize,
@@ -222,21 +192,14 @@ class OnMinimumFontSizeChangedDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension OnMinimumFontSizeChangedDetailsExtension
-    on OnMinimumFontSizeChangedDetails {
   /// The font size in pixels.
   external int pixelSize;
 
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClearFontDetails {
+extension type ClearFontDetails._(JSObject _) implements JSObject {
   external factory ClearFontDetails({
     /// The script for which the font should be cleared. If omitted, the global
     /// script font setting is cleared.
@@ -245,9 +208,7 @@ class ClearFontDetails {
     /// The generic font family for which the font should be cleared.
     GenericFamily genericFamily,
   });
-}
 
-extension ClearFontDetailsExtension on ClearFontDetails {
   /// The script for which the font should be cleared. If omitted, the global
   /// script font setting is cleared.
   external ScriptCode? script;
@@ -255,11 +216,7 @@ extension ClearFontDetailsExtension on ClearFontDetails {
   /// The generic font family for which the font should be cleared.
   external GenericFamily genericFamily;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetFontCallbackDetails {
+extension type GetFontCallbackDetails._(JSObject _) implements JSObject {
   external factory GetFontCallbackDetails({
     /// The font ID. Rather than the literal font ID preference value, this may be
     /// the ID of the font that the system resolves the preference value to. So,
@@ -271,9 +228,7 @@ class GetFontCallbackDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension GetFontCallbackDetailsExtension on GetFontCallbackDetails {
   /// The font ID. Rather than the literal font ID preference value, this may be
   /// the ID of the font that the system resolves the preference value to. So,
   /// [fontId] can differ from the font passed to `setFont`, if, for example,
@@ -284,11 +239,7 @@ extension GetFontCallbackDetailsExtension on GetFontCallbackDetails {
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetFontDetails {
+extension type GetFontDetails._(JSObject _) implements JSObject {
   external factory GetFontDetails({
     /// The script for which the font should be retrieved. If omitted, the font
     /// setting for the global script (script code "Zyyy") is retrieved.
@@ -297,9 +248,7 @@ class GetFontDetails {
     /// The generic font family for which the font should be retrieved.
     GenericFamily genericFamily,
   });
-}
 
-extension GetFontDetailsExtension on GetFontDetails {
   /// The script for which the font should be retrieved. If omitted, the font
   /// setting for the global script (script code "Zyyy") is retrieved.
   external ScriptCode? script;
@@ -307,11 +256,7 @@ extension GetFontDetailsExtension on GetFontDetails {
   /// The generic font family for which the font should be retrieved.
   external GenericFamily genericFamily;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetFontDetails {
+extension type SetFontDetails._(JSObject _) implements JSObject {
   external factory SetFontDetails({
     /// The script code which the font should be set. If omitted, the font setting
     /// for the global script (script code "Zyyy") is set.
@@ -324,9 +269,7 @@ class SetFontDetails {
     /// setting.
     String fontId,
   });
-}
 
-extension SetFontDetailsExtension on SetFontDetails {
   /// The script code which the font should be set. If omitted, the font setting
   /// for the global script (script code "Zyyy") is set.
   external ScriptCode? script;
@@ -338,20 +281,11 @@ extension SetFontDetailsExtension on SetFontDetails {
   /// setting.
   external String fontId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClearDefaultFontSizeDetails {
+extension type ClearDefaultFontSizeDetails._(JSObject _) implements JSObject {
   external factory ClearDefaultFontSizeDetails();
 }
-
-extension ClearDefaultFontSizeDetailsExtension on ClearDefaultFontSizeDetails {}
-
-@JS()
-@staticInterop
-@anonymous
-class GetDefaultFontSizeCallbackDetails {
+extension type GetDefaultFontSizeCallbackDetails._(JSObject _)
+    implements JSObject {
   external factory GetDefaultFontSizeCallbackDetails({
     /// The font size in pixels.
     int pixelSize,
@@ -359,55 +293,31 @@ class GetDefaultFontSizeCallbackDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension GetDefaultFontSizeCallbackDetailsExtension
-    on GetDefaultFontSizeCallbackDetails {
   /// The font size in pixels.
   external int pixelSize;
 
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetDefaultFontSizeDetails {
+extension type GetDefaultFontSizeDetails._(JSObject _) implements JSObject {
   external factory GetDefaultFontSizeDetails();
 }
-
-extension GetDefaultFontSizeDetailsExtension on GetDefaultFontSizeDetails {}
-
-@JS()
-@staticInterop
-@anonymous
-class SetDefaultFontSizeDetails {
+extension type SetDefaultFontSizeDetails._(JSObject _) implements JSObject {
   external factory SetDefaultFontSizeDetails(
       {
       /// The font size in pixels.
       int pixelSize});
-}
 
-extension SetDefaultFontSizeDetailsExtension on SetDefaultFontSizeDetails {
   /// The font size in pixels.
   external int pixelSize;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClearDefaultFixedFontSizeDetails {
+extension type ClearDefaultFixedFontSizeDetails._(JSObject _)
+    implements JSObject {
   external factory ClearDefaultFixedFontSizeDetails();
 }
-
-extension ClearDefaultFixedFontSizeDetailsExtension
-    on ClearDefaultFixedFontSizeDetails {}
-
-@JS()
-@staticInterop
-@anonymous
-class GetDefaultFixedFontSizeCallbackDetails {
+extension type GetDefaultFixedFontSizeCallbackDetails._(JSObject _)
+    implements JSObject {
   external factory GetDefaultFixedFontSizeCallbackDetails({
     /// The font size in pixels.
     int pixelSize,
@@ -415,56 +325,32 @@ class GetDefaultFixedFontSizeCallbackDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension GetDefaultFixedFontSizeCallbackDetailsExtension
-    on GetDefaultFixedFontSizeCallbackDetails {
   /// The font size in pixels.
   external int pixelSize;
 
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetDefaultFixedFontSizeDetails {
+extension type GetDefaultFixedFontSizeDetails._(JSObject _)
+    implements JSObject {
   external factory GetDefaultFixedFontSizeDetails();
 }
-
-extension GetDefaultFixedFontSizeDetailsExtension
-    on GetDefaultFixedFontSizeDetails {}
-
-@JS()
-@staticInterop
-@anonymous
-class SetDefaultFixedFontSizeDetails {
+extension type SetDefaultFixedFontSizeDetails._(JSObject _)
+    implements JSObject {
   external factory SetDefaultFixedFontSizeDetails(
       {
       /// The font size in pixels.
       int pixelSize});
-}
 
-extension SetDefaultFixedFontSizeDetailsExtension
-    on SetDefaultFixedFontSizeDetails {
   /// The font size in pixels.
   external int pixelSize;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClearMinimumFontSizeDetails {
+extension type ClearMinimumFontSizeDetails._(JSObject _) implements JSObject {
   external factory ClearMinimumFontSizeDetails();
 }
-
-extension ClearMinimumFontSizeDetailsExtension on ClearMinimumFontSizeDetails {}
-
-@JS()
-@staticInterop
-@anonymous
-class GetMinimumFontSizeCallbackDetails {
+extension type GetMinimumFontSizeCallbackDetails._(JSObject _)
+    implements JSObject {
   external factory GetMinimumFontSizeCallbackDetails({
     /// The font size in pixels.
     int pixelSize,
@@ -472,37 +358,22 @@ class GetMinimumFontSizeCallbackDetails {
     /// The level of control this extension has over the setting.
     LevelOfControl levelOfControl,
   });
-}
 
-extension GetMinimumFontSizeCallbackDetailsExtension
-    on GetMinimumFontSizeCallbackDetails {
   /// The font size in pixels.
   external int pixelSize;
 
   /// The level of control this extension has over the setting.
   external LevelOfControl levelOfControl;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetMinimumFontSizeDetails {
+extension type GetMinimumFontSizeDetails._(JSObject _) implements JSObject {
   external factory GetMinimumFontSizeDetails();
 }
-
-extension GetMinimumFontSizeDetailsExtension on GetMinimumFontSizeDetails {}
-
-@JS()
-@staticInterop
-@anonymous
-class SetMinimumFontSizeDetails {
+extension type SetMinimumFontSizeDetails._(JSObject _) implements JSObject {
   external factory SetMinimumFontSizeDetails(
       {
       /// The font size in pixels.
       int pixelSize});
-}
 
-extension SetMinimumFontSizeDetailsExtension on SetMinimumFontSizeDetails {
   /// The font size in pixels.
   external int pixelSize;
 }

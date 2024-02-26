@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSPageActionExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPageAction {}
-
-extension JSPageActionExtension on JSPageAction {
+extension type JSPageAction._(JSObject _) {
   /// Shows the page action. The page action is shown whenever the tab is
   /// selected.
   external JSPromise show(
@@ -72,28 +69,18 @@ extension JSPageActionExtension on JSPageAction {
 /// Pixel data for an image. Must be an ImageData object (for example, from a
 /// `canvas` element).
 typedef ImageDataType = JSObject;
-
-@JS()
-@staticInterop
-@anonymous
-class TabDetails {
+extension type TabDetails._(JSObject _) implements JSObject {
   external factory TabDetails(
       {
       /// The ID of the tab to query state for. If no tab is specified, the
       /// non-tab-specific state is returned.
       int? tabId});
-}
 
-extension TabDetailsExtension on TabDetails {
   /// The ID of the tab to query state for. If no tab is specified, the
   /// non-tab-specific state is returned.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetTitleDetails {
+extension type SetTitleDetails._(JSObject _) implements JSObject {
   external factory SetTitleDetails({
     /// The id of the tab for which you want to modify the page action.
     int tabId,
@@ -101,20 +88,14 @@ class SetTitleDetails {
     /// The tooltip string.
     String title,
   });
-}
 
-extension SetTitleDetailsExtension on SetTitleDetails {
   /// The id of the tab for which you want to modify the page action.
   external int tabId;
 
   /// The tooltip string.
   external String title;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetIconDetails {
+extension type SetIconDetails._(JSObject _) implements JSObject {
   external factory SetIconDetails({
     /// The id of the tab for which you want to modify the page action.
     int tabId,
@@ -141,9 +122,7 @@ class SetIconDetails {
     /// **Deprecated.** This argument is ignored.
     int? iconIndex,
   });
-}
 
-extension SetIconDetailsExtension on SetIconDetails {
   /// The id of the tab for which you want to modify the page action.
   external int tabId;
 
@@ -169,11 +148,7 @@ extension SetIconDetailsExtension on SetIconDetails {
   /// **Deprecated.** This argument is ignored.
   external int? iconIndex;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetPopupDetails {
+extension type SetPopupDetails._(JSObject _) implements JSObject {
   external factory SetPopupDetails({
     /// The id of the tab for which you want to modify the page action.
     int tabId,
@@ -182,9 +157,7 @@ class SetPopupDetails {
     /// string (`''`), no popup is shown.
     String popup,
   });
-}
 
-extension SetPopupDetailsExtension on SetPopupDetails {
   /// The id of the tab for which you want to modify the page action.
   external int tabId;
 

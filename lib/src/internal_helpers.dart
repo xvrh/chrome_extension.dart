@@ -46,6 +46,8 @@ extension JSAnyExtension on JSAny {
 extension JSChoiceExtension<T extends Object> on T {
   Object when({
     int Function(int)? isInt,
+    double Function(double)? isDouble,
+    bool Function(bool)? isBool,
     String Function(String)? isString,
     List Function(JSArray)? isArray,
     Map Function(JSAny)? isMap,
@@ -56,6 +58,12 @@ extension JSChoiceExtension<T extends Object> on T {
     }
     if (isInt != null && (this is num || instanceOfString(this, 'Number'))) {
       return isInt(this as int);
+    }
+    if (isDouble != null && (this is num || instanceOfString(this, 'Number'))) {
+      return isDouble(this as double);
+    }
+    if (isBool != null && (this is bool || instanceOfString(this, 'Boolean'))) {
+      return isBool(this as bool);
     }
     if (isString != null &&
         (this is String || instanceOfString(this, 'String'))) {

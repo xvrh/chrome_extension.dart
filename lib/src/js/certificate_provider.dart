@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSCertificateProviderExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSCertificateProvider {}
-
-extension JSCertificateProviderExtension on JSCertificateProvider {
+extension type JSCertificateProvider._(JSObject _) {
   /// Requests the PIN from the user. Only one ongoing request at a time is
   /// allowed. The requests issued while another flow is ongoing are rejected.
   /// It's the extension's responsibility to try again later if another flow is
@@ -127,11 +124,7 @@ typedef CertificatesCallback = JSFunction;
 /// padding. If an error occurred, this callback should be called without
 /// signature.
 typedef SignCallback = JSFunction;
-
-@JS()
-@staticInterop
-@anonymous
-class ClientCertificateInfo {
+extension type ClientCertificateInfo._(JSObject _) implements JSObject {
   external factory ClientCertificateInfo({
     /// The array must contain the DER encoding of the X.509 client certificate
     /// as its first element.
@@ -142,9 +135,7 @@ class ClientCertificateInfo {
     /// asked for signatures using one of these algorithms.
     JSArray supportedAlgorithms,
   });
-}
 
-extension ClientCertificateInfoExtension on ClientCertificateInfo {
   /// The array must contain the DER encoding of the X.509 client certificate
   /// as its first element.
   /// This must include exactly one certificate.
@@ -154,11 +145,7 @@ extension ClientCertificateInfoExtension on ClientCertificateInfo {
   /// asked for signatures using one of these algorithms.
   external JSArray supportedAlgorithms;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetCertificatesDetails {
+extension type SetCertificatesDetails._(JSObject _) implements JSObject {
   external factory SetCertificatesDetails({
     /// When called in response to [onCertificatesUpdateRequested], should
     /// contain the received `certificatesRequestId` value. Otherwise,
@@ -172,9 +159,7 @@ class SetCertificatesDetails {
     /// List of currently available client certificates.
     JSArray clientCertificates,
   });
-}
 
-extension SetCertificatesDetailsExtension on SetCertificatesDetails {
   /// When called in response to [onCertificatesUpdateRequested], should
   /// contain the received `certificatesRequestId` value. Otherwise,
   /// should be unset.
@@ -187,26 +172,16 @@ extension SetCertificatesDetailsExtension on SetCertificatesDetails {
   /// List of currently available client certificates.
   external JSArray clientCertificates;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CertificatesUpdateRequest {
+extension type CertificatesUpdateRequest._(JSObject _) implements JSObject {
   external factory CertificatesUpdateRequest(
       {
       /// Request identifier to be passed to [setCertificates].
       int certificatesRequestId});
-}
 
-extension CertificatesUpdateRequestExtension on CertificatesUpdateRequest {
   /// Request identifier to be passed to [setCertificates].
   external int certificatesRequestId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SignatureRequest {
+extension type SignatureRequest._(JSObject _) implements JSObject {
   external factory SignatureRequest({
     /// Request identifier to be passed to [reportSignature].
     int signRequestId,
@@ -221,9 +196,7 @@ class SignatureRequest {
     /// `input` using the associated private key.
     JSArrayBuffer certificate,
   });
-}
 
-extension SignatureRequestExtension on SignatureRequest {
   /// Request identifier to be passed to [reportSignature].
   external int signRequestId;
 
@@ -237,11 +210,7 @@ extension SignatureRequestExtension on SignatureRequest {
   /// `input` using the associated private key.
   external JSArrayBuffer certificate;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ReportSignatureDetails {
+extension type ReportSignatureDetails._(JSObject _) implements JSObject {
   external factory ReportSignatureDetails({
     /// Request identifier that was received via the [onSignatureRequested]
     /// event.
@@ -253,9 +222,7 @@ class ReportSignatureDetails {
     /// The signature, if successfully generated.
     JSArrayBuffer? signature,
   });
-}
 
-extension ReportSignatureDetailsExtension on ReportSignatureDetails {
   /// Request identifier that was received via the [onSignatureRequested]
   /// event.
   external int signRequestId;
@@ -266,11 +233,7 @@ extension ReportSignatureDetailsExtension on ReportSignatureDetails {
   /// The signature, if successfully generated.
   external JSArrayBuffer? signature;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CertificateInfo {
+extension type CertificateInfo._(JSObject _) implements JSObject {
   external factory CertificateInfo({
     /// Must be the DER encoding of a X.509 certificate. Currently, only
     /// certificates of RSA keys are supported.
@@ -281,9 +244,7 @@ class CertificateInfo {
     /// hash algorithms. This should be in order of decreasing hash preference.
     JSArray supportedHashes,
   });
-}
 
-extension CertificateInfoExtension on CertificateInfo {
   /// Must be the DER encoding of a X.509 certificate. Currently, only
   /// certificates of RSA keys are supported.
   external JSArrayBuffer certificate;
@@ -293,11 +254,7 @@ extension CertificateInfoExtension on CertificateInfo {
   /// hash algorithms. This should be in order of decreasing hash preference.
   external JSArray supportedHashes;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SignRequest {
+extension type SignRequest._(JSObject _) implements JSObject {
   external factory SignRequest({
     /// The unique ID to be used by the extension should it need to call a method
     /// that requires it, e.g. requestPin.
@@ -313,9 +270,7 @@ class SignRequest {
     /// `digest` using the associated private key.
     JSArrayBuffer certificate,
   });
-}
 
-extension SignRequestExtension on SignRequest {
   /// The unique ID to be used by the extension should it need to call a method
   /// that requires it, e.g. requestPin.
   external int signRequestId;
@@ -330,11 +285,7 @@ extension SignRequestExtension on SignRequest {
   /// `digest` using the associated private key.
   external JSArrayBuffer certificate;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RequestPinDetails {
+extension type RequestPinDetails._(JSObject _) implements JSObject {
   external factory RequestPinDetails({
     /// The ID given by Chrome in SignRequest.
     int signRequestId,
@@ -353,9 +304,7 @@ class RequestPinDetails {
     /// exceeded.
     int? attemptsLeft,
   });
-}
 
-extension RequestPinDetailsExtension on RequestPinDetails {
   /// The ID given by Chrome in SignRequest.
   external int signRequestId;
 
@@ -373,11 +322,7 @@ extension RequestPinDetailsExtension on RequestPinDetails {
   /// exceeded.
   external int? attemptsLeft;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class StopPinRequestDetails {
+extension type StopPinRequestDetails._(JSObject _) implements JSObject {
   external factory StopPinRequestDetails({
     /// The ID given by Chrome in SignRequest.
     int signRequestId,
@@ -387,9 +332,7 @@ class StopPinRequestDetails {
     /// e.g. MAX_ATTEMPTS_EXCEEDED.
     PinRequestErrorType? errorType,
   });
-}
 
-extension StopPinRequestDetailsExtension on StopPinRequestDetails {
   /// The ID given by Chrome in SignRequest.
   external int signRequestId;
 
@@ -398,19 +341,13 @@ extension StopPinRequestDetailsExtension on StopPinRequestDetails {
   /// e.g. MAX_ATTEMPTS_EXCEEDED.
   external PinRequestErrorType? errorType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PinResponseDetails {
+extension type PinResponseDetails._(JSObject _) implements JSObject {
   external factory PinResponseDetails(
       {
       /// The code provided by the user. Empty if user closed the dialog or some
       /// other error occurred.
       String? userInput});
-}
 
-extension PinResponseDetailsExtension on PinResponseDetails {
   /// The code provided by the user. Empty if user closed the dialog or some
   /// other error occurred.
   external String? userInput;

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSBookmarksExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSBookmarks {}
-
-extension JSBookmarksExtension on JSBookmarks {
+extension type JSBookmarks._(JSObject _) {
   /// Retrieves the specified BookmarkTreeNode(s).
   external JSPromise get(
 
@@ -124,11 +121,7 @@ extension JSBookmarksExtension on JSBookmarks {
 /// indicates that this node was configured by the system administrator. Omitted
 /// if the node can be modified by the user and the extension (default).
 typedef BookmarkTreeNodeUnmodifiable = String;
-
-@JS()
-@staticInterop
-@anonymous
-class BookmarkTreeNode {
+extension type BookmarkTreeNode._(JSObject _) implements JSObject {
   external factory BookmarkTreeNode({
     /// The unique identifier for the node. IDs are unique within the current
     /// profile, and they remain valid even after the browser is restarted.
@@ -167,9 +160,7 @@ class BookmarkTreeNode {
     /// An ordered list of children of this node.
     JSArray? children,
   });
-}
 
-extension BookmarkTreeNodeExtension on BookmarkTreeNode {
   /// The unique identifier for the node. IDs are unique within the current
   /// profile, and they remain valid even after the browser is restarted.
   external String id;
@@ -207,11 +198,7 @@ extension BookmarkTreeNodeExtension on BookmarkTreeNode {
   /// An ordered list of children of this node.
   external JSArray? children;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateDetails {
+extension type CreateDetails._(JSObject _) implements JSObject {
   external factory CreateDetails({
     /// Defaults to the Other Bookmarks folder.
     String? parentId,
@@ -219,9 +206,7 @@ class CreateDetails {
     String? title,
     String? url,
   });
-}
 
-extension CreateDetailsExtension on CreateDetails {
   /// Defaults to the Other Bookmarks folder.
   external String? parentId;
 
@@ -231,55 +216,37 @@ extension CreateDetailsExtension on CreateDetails {
 
   external String? url;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnRemovedRemoveInfo {
+extension type OnRemovedRemoveInfo._(JSObject _) implements JSObject {
   external factory OnRemovedRemoveInfo({
     String parentId,
     int index,
     BookmarkTreeNode node,
   });
-}
 
-extension OnRemovedRemoveInfoExtension on OnRemovedRemoveInfo {
   external String parentId;
 
   external int index;
 
   external BookmarkTreeNode node;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnChangedChangeInfo {
+extension type OnChangedChangeInfo._(JSObject _) implements JSObject {
   external factory OnChangedChangeInfo({
     String title,
     String? url,
   });
-}
 
-extension OnChangedChangeInfoExtension on OnChangedChangeInfo {
   external String title;
 
   external String? url;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnMovedMoveInfo {
+extension type OnMovedMoveInfo._(JSObject _) implements JSObject {
   external factory OnMovedMoveInfo({
     String parentId,
     int index,
     String oldParentId,
     int oldIndex,
   });
-}
 
-extension OnMovedMoveInfoExtension on OnMovedMoveInfo {
   external String parentId;
 
   external int index;
@@ -288,23 +255,13 @@ extension OnMovedMoveInfoExtension on OnMovedMoveInfo {
 
   external int oldIndex;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnChildrenReorderedReorderInfo {
+extension type OnChildrenReorderedReorderInfo._(JSObject _)
+    implements JSObject {
   external factory OnChildrenReorderedReorderInfo({JSArray childIds});
-}
 
-extension OnChildrenReorderedReorderInfoExtension
-    on OnChildrenReorderedReorderInfo {
   external JSArray childIds;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SearchQuery {
+extension type SearchQuery._(JSObject _) implements JSObject {
   external factory SearchQuery({
     /// A string of words and quoted phrases that are matched against bookmark
     /// URLs and titles.
@@ -316,9 +273,7 @@ class SearchQuery {
     /// The title of the bookmark; matches verbatim.
     String? title,
   });
-}
 
-extension SearchQueryExtension on SearchQuery {
   /// A string of words and quoted phrases that are matched against bookmark
   /// URLs and titles.
   external String? query;
@@ -329,34 +284,22 @@ extension SearchQueryExtension on SearchQuery {
   /// The title of the bookmark; matches verbatim.
   external String? title;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MoveDestination {
+extension type MoveDestination._(JSObject _) implements JSObject {
   external factory MoveDestination({
     String? parentId,
     int? index,
   });
-}
 
-extension MoveDestinationExtension on MoveDestination {
   external String? parentId;
 
   external int? index;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UpdateChanges {
+extension type UpdateChanges._(JSObject _) implements JSObject {
   external factory UpdateChanges({
     String? title,
     String? url,
   });
-}
 
-extension UpdateChangesExtension on UpdateChanges {
   external String? title;
 
   external String? url;

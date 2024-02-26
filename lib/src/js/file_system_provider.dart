@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSFileSystemProviderExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSFileSystemProvider {}
-
-extension JSFileSystemProviderExtension on JSFileSystemProvider {
+extension type JSFileSystemProvider._(JSObject _) {
   /// Mounts a file system with the given `fileSystemId` and
   /// `displayName`. `displayName` will be shown in the
   /// left panel of the Files app. `displayName` can contain any
@@ -60,7 +57,7 @@ extension JSFileSystemProviderExtension on JSFileSystemProvider {
 
   /// Notifies about changes in the watched directory at
   /// `observedPath` in `recursive` mode. If the file
-  /// system is mounted with `supportsNofityTag`, then
+  /// system is mounted with `supportsNotifyTag`, then
   /// `tag` must be provided, and all changes since the last
   /// notification always reported, even if the system was shutdown. The last
   /// tag can be obtained with [getAll].
@@ -242,11 +239,22 @@ typedef EntriesCallback = JSFunction;
 /// has to be called again with additional entries. If no more data is
 /// available, then `hasMore` must be set to false.
 typedef FileDataCallback = JSFunction;
+extension type CloudIdentifier._(JSObject _) implements JSObject {
+  external factory CloudIdentifier({
+    /// Identifier for the cloud storage provider (e.g. 'drive.google.com').
+    String providerName,
 
-@JS()
-@staticInterop
-@anonymous
-class EntryMetadata {
+    /// The provider's identifier for the given file/directory.
+    String id,
+  });
+
+  /// Identifier for the cloud storage provider (e.g. 'drive.google.com').
+  external String providerName;
+
+  /// The provider's identifier for the given file/directory.
+  external String id;
+}
+extension type EntryMetadata._(JSObject _) implements JSObject {
   external factory EntryMetadata({
     /// True if it is a directory. Must be provided if requested in
     /// `options`.
@@ -272,10 +280,14 @@ class EntryMetadata {
     /// 32 KB in size. Optional, but can be provided only when explicitly
     /// requested by the [onGetMetadataRequested] event.
     String? thumbnail,
-  });
-}
 
-extension EntryMetadataExtension on EntryMetadata {
+    /// Cloud storage representation of this entry. Must be provided if requested
+    /// in `options` and the file is backed by cloud storage. For
+    /// local files not backed by cloud storage, it should be undefined when
+    /// requested.
+    CloudIdentifier? cloudIdentifier,
+  });
+
   /// True if it is a directory. Must be provided if requested in
   /// `options`.
   external bool? isDirectory;
@@ -300,12 +312,14 @@ extension EntryMetadataExtension on EntryMetadata {
   /// 32 KB in size. Optional, but can be provided only when explicitly
   /// requested by the [onGetMetadataRequested] event.
   external String? thumbnail;
-}
 
-@JS()
-@staticInterop
-@anonymous
-class Watcher {
+  /// Cloud storage representation of this entry. Must be provided if requested
+  /// in `options` and the file is backed by cloud storage. For
+  /// local files not backed by cloud storage, it should be undefined when
+  /// requested.
+  external CloudIdentifier? cloudIdentifier;
+}
+extension type Watcher._(JSObject _) implements JSObject {
   external factory Watcher({
     /// The path of the entry being observed.
     String entryPath,
@@ -317,9 +331,7 @@ class Watcher {
     /// Tag used by the last notification for the watcher.
     String? lastTag,
   });
-}
 
-extension WatcherExtension on Watcher {
   /// The path of the entry being observed.
   external String entryPath;
 
@@ -330,11 +342,7 @@ extension WatcherExtension on Watcher {
   /// Tag used by the last notification for the watcher.
   external String? lastTag;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OpenedFile {
+extension type OpenedFile._(JSObject _) implements JSObject {
   external factory OpenedFile({
     /// A request ID to be be used by consecutive read/write and close requests.
     int openRequestId,
@@ -345,9 +353,7 @@ class OpenedFile {
     /// Whether the file was opened for reading or writing.
     OpenFileMode mode,
   });
-}
 
-extension OpenedFileExtension on OpenedFile {
   /// A request ID to be be used by consecutive read/write and close requests.
   external int openRequestId;
 
@@ -357,11 +363,7 @@ extension OpenedFileExtension on OpenedFile {
   /// Whether the file was opened for reading or writing.
   external OpenFileMode mode;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class FileSystemInfo {
+extension type FileSystemInfo._(JSObject _) implements JSObject {
   external factory FileSystemInfo({
     /// The identifier of the file system.
     String fileSystemId,
@@ -387,9 +389,7 @@ class FileSystemInfo {
     /// List of watchers.
     JSArray watchers,
   });
-}
 
-extension FileSystemInfoExtension on FileSystemInfo {
   /// The identifier of the file system.
   external String fileSystemId;
 
@@ -414,11 +414,7 @@ extension FileSystemInfoExtension on FileSystemInfo {
   /// List of watchers.
   external JSArray watchers;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MountOptions {
+extension type MountOptions._(JSObject _) implements JSObject {
   external factory MountOptions({
     /// The string indentifier of the file system. Must be unique per each
     /// extension.
@@ -443,9 +439,7 @@ class MountOptions {
     /// session. True by default.
     bool? persistent,
   });
-}
 
-extension MountOptionsExtension on MountOptions {
   /// The string indentifier of the file system. Must be unique per each
   /// extension.
   external String fileSystemId;
@@ -469,26 +463,16 @@ extension MountOptionsExtension on MountOptions {
   /// session. True by default.
   external bool? persistent;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UnmountOptions {
+extension type UnmountOptions._(JSObject _) implements JSObject {
   external factory UnmountOptions(
       {
       /// The identifier of the file system to be unmounted.
       String fileSystemId});
-}
 
-extension UnmountOptionsExtension on UnmountOptions {
   /// The identifier of the file system to be unmounted.
   external String fileSystemId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UnmountRequestedOptions {
+extension type UnmountRequestedOptions._(JSObject _) implements JSObject {
   external factory UnmountRequestedOptions({
     /// The identifier of the file system to be unmounted.
     String fileSystemId,
@@ -496,20 +480,14 @@ class UnmountRequestedOptions {
     /// The unique identifier of this request.
     int requestId,
   });
-}
 
-extension UnmountRequestedOptionsExtension on UnmountRequestedOptions {
   /// The identifier of the file system to be unmounted.
   external String fileSystemId;
 
   /// The unique identifier of this request.
   external int requestId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetMetadataRequestedOptions {
+extension type GetMetadataRequestedOptions._(JSObject _) implements JSObject {
   external factory GetMetadataRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -536,12 +514,14 @@ class GetMetadataRequestedOptions {
     /// Set to `true` if `mimeType` value is requested.
     bool mimeType,
 
-    /// Set to `true` if the thumbnail is requested.
+    /// Set to `true` if `thumbnail` value is requested.
     bool thumbnail,
-  });
-}
 
-extension GetMetadataRequestedOptionsExtension on GetMetadataRequestedOptions {
+    /// Set to `true` if `cloudIdentifier` value is
+    /// requested.
+    bool cloudIdentifier,
+  });
+
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -567,14 +547,14 @@ extension GetMetadataRequestedOptionsExtension on GetMetadataRequestedOptions {
   /// Set to `true` if `mimeType` value is requested.
   external bool mimeType;
 
-  /// Set to `true` if the thumbnail is requested.
+  /// Set to `true` if `thumbnail` value is requested.
   external bool thumbnail;
-}
 
-@JS()
-@staticInterop
-@anonymous
-class GetActionsRequestedOptions {
+  /// Set to `true` if `cloudIdentifier` value is
+  /// requested.
+  external bool cloudIdentifier;
+}
+extension type GetActionsRequestedOptions._(JSObject _) implements JSObject {
   external factory GetActionsRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -585,9 +565,7 @@ class GetActionsRequestedOptions {
     /// List of paths of entries for the list of actions.
     JSArray entryPaths,
   });
-}
 
-extension GetActionsRequestedOptionsExtension on GetActionsRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -597,11 +575,7 @@ extension GetActionsRequestedOptionsExtension on GetActionsRequestedOptions {
   /// List of paths of entries for the list of actions.
   external JSArray entryPaths;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ReadDirectoryRequestedOptions {
+extension type ReadDirectoryRequestedOptions._(JSObject _) implements JSObject {
   external factory ReadDirectoryRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -628,13 +602,10 @@ class ReadDirectoryRequestedOptions {
     /// Set to `true` if `mimeType` value is requested.
     bool mimeType,
 
-    /// Set to `true` if the thumbnail is requested.
+    /// Set to `true` if `thumbnail` value is requested.
     bool thumbnail,
   });
-}
 
-extension ReadDirectoryRequestedOptionsExtension
-    on ReadDirectoryRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -660,14 +631,10 @@ extension ReadDirectoryRequestedOptionsExtension
   /// Set to `true` if `mimeType` value is requested.
   external bool mimeType;
 
-  /// Set to `true` if the thumbnail is requested.
+  /// Set to `true` if `thumbnail` value is requested.
   external bool thumbnail;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OpenFileRequestedOptions {
+extension type OpenFileRequestedOptions._(JSObject _) implements JSObject {
   external factory OpenFileRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -682,9 +649,7 @@ class OpenFileRequestedOptions {
     /// Whether the file will be used for reading or writing.
     OpenFileMode mode,
   });
-}
 
-extension OpenFileRequestedOptionsExtension on OpenFileRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -698,11 +663,7 @@ extension OpenFileRequestedOptionsExtension on OpenFileRequestedOptions {
   /// Whether the file will be used for reading or writing.
   external OpenFileMode mode;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CloseFileRequestedOptions {
+extension type CloseFileRequestedOptions._(JSObject _) implements JSObject {
   external factory CloseFileRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -713,9 +674,7 @@ class CloseFileRequestedOptions {
     /// A request ID used to open the file.
     int openRequestId,
   });
-}
 
-extension CloseFileRequestedOptionsExtension on CloseFileRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -725,11 +684,7 @@ extension CloseFileRequestedOptionsExtension on CloseFileRequestedOptions {
   /// A request ID used to open the file.
   external int openRequestId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ReadFileRequestedOptions {
+extension type ReadFileRequestedOptions._(JSObject _) implements JSObject {
   external factory ReadFileRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -746,9 +701,7 @@ class ReadFileRequestedOptions {
     /// Number of bytes to be returned.
     double length,
   });
-}
 
-extension ReadFileRequestedOptionsExtension on ReadFileRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -764,11 +717,8 @@ extension ReadFileRequestedOptionsExtension on ReadFileRequestedOptions {
   /// Number of bytes to be returned.
   external double length;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateDirectoryRequestedOptions {
+extension type CreateDirectoryRequestedOptions._(JSObject _)
+    implements JSObject {
   external factory CreateDirectoryRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -782,10 +732,7 @@ class CreateDirectoryRequestedOptions {
     /// Whether the operation is recursive (for directories only).
     bool recursive,
   });
-}
 
-extension CreateDirectoryRequestedOptionsExtension
-    on CreateDirectoryRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -798,11 +745,7 @@ extension CreateDirectoryRequestedOptionsExtension
   /// Whether the operation is recursive (for directories only).
   external bool recursive;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeleteEntryRequestedOptions {
+extension type DeleteEntryRequestedOptions._(JSObject _) implements JSObject {
   external factory DeleteEntryRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -816,9 +759,7 @@ class DeleteEntryRequestedOptions {
     /// Whether the operation is recursive (for directories only).
     bool recursive,
   });
-}
 
-extension DeleteEntryRequestedOptionsExtension on DeleteEntryRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -831,11 +772,7 @@ extension DeleteEntryRequestedOptionsExtension on DeleteEntryRequestedOptions {
   /// Whether the operation is recursive (for directories only).
   external bool recursive;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateFileRequestedOptions {
+extension type CreateFileRequestedOptions._(JSObject _) implements JSObject {
   external factory CreateFileRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -846,9 +783,7 @@ class CreateFileRequestedOptions {
     /// The path of the file to be created.
     String filePath,
   });
-}
 
-extension CreateFileRequestedOptionsExtension on CreateFileRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -858,11 +793,7 @@ extension CreateFileRequestedOptionsExtension on CreateFileRequestedOptions {
   /// The path of the file to be created.
   external String filePath;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CopyEntryRequestedOptions {
+extension type CopyEntryRequestedOptions._(JSObject _) implements JSObject {
   external factory CopyEntryRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -876,9 +807,7 @@ class CopyEntryRequestedOptions {
     /// The destination path for the copy operation.
     String targetPath,
   });
-}
 
-extension CopyEntryRequestedOptionsExtension on CopyEntryRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -891,11 +820,7 @@ extension CopyEntryRequestedOptionsExtension on CopyEntryRequestedOptions {
   /// The destination path for the copy operation.
   external String targetPath;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MoveEntryRequestedOptions {
+extension type MoveEntryRequestedOptions._(JSObject _) implements JSObject {
   external factory MoveEntryRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -909,9 +834,7 @@ class MoveEntryRequestedOptions {
     /// The destination path for the copy operation.
     String targetPath,
   });
-}
 
-extension MoveEntryRequestedOptionsExtension on MoveEntryRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -924,11 +847,7 @@ extension MoveEntryRequestedOptionsExtension on MoveEntryRequestedOptions {
   /// The destination path for the copy operation.
   external String targetPath;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TruncateRequestedOptions {
+extension type TruncateRequestedOptions._(JSObject _) implements JSObject {
   external factory TruncateRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -942,9 +861,7 @@ class TruncateRequestedOptions {
     /// Number of bytes to be retained after the operation completes.
     double length,
   });
-}
 
-extension TruncateRequestedOptionsExtension on TruncateRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -957,11 +874,7 @@ extension TruncateRequestedOptionsExtension on TruncateRequestedOptions {
   /// Number of bytes to be retained after the operation completes.
   external double length;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class WriteFileRequestedOptions {
+extension type WriteFileRequestedOptions._(JSObject _) implements JSObject {
   external factory WriteFileRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -978,9 +891,7 @@ class WriteFileRequestedOptions {
     /// Buffer of bytes to be written to the file.
     JSArrayBuffer data,
   });
-}
 
-extension WriteFileRequestedOptionsExtension on WriteFileRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -996,11 +907,7 @@ extension WriteFileRequestedOptionsExtension on WriteFileRequestedOptions {
   /// Buffer of bytes to be written to the file.
   external JSArrayBuffer data;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class AbortRequestedOptions {
+extension type AbortRequestedOptions._(JSObject _) implements JSObject {
   external factory AbortRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -1011,9 +918,7 @@ class AbortRequestedOptions {
     /// An ID of the request to be aborted.
     int operationRequestId,
   });
-}
 
-extension AbortRequestedOptionsExtension on AbortRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -1023,11 +928,7 @@ extension AbortRequestedOptionsExtension on AbortRequestedOptions {
   /// An ID of the request to be aborted.
   external int operationRequestId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class AddWatcherRequestedOptions {
+extension type AddWatcherRequestedOptions._(JSObject _) implements JSObject {
   external factory AddWatcherRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -1042,9 +943,7 @@ class AddWatcherRequestedOptions {
     /// true for directories only.
     bool recursive,
   });
-}
 
-extension AddWatcherRequestedOptionsExtension on AddWatcherRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -1058,11 +957,7 @@ extension AddWatcherRequestedOptionsExtension on AddWatcherRequestedOptions {
   /// true for directories only.
   external bool recursive;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RemoveWatcherRequestedOptions {
+extension type RemoveWatcherRequestedOptions._(JSObject _) implements JSObject {
   external factory RemoveWatcherRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -1076,10 +971,7 @@ class RemoveWatcherRequestedOptions {
     /// Mode of the watcher.
     bool recursive,
   });
-}
 
-extension RemoveWatcherRequestedOptionsExtension
-    on RemoveWatcherRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -1092,11 +984,7 @@ extension RemoveWatcherRequestedOptionsExtension
   /// Mode of the watcher.
   external bool recursive;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Action {
+extension type Action._(JSObject _) implements JSObject {
   external factory Action({
     /// The identifier of the action. Any string or [CommonActionId] for
     /// common actions.
@@ -1105,9 +993,7 @@ class Action {
     /// The title of the action. It may be ignored for common actions.
     String? title,
   });
-}
 
-extension ActionExtension on Action {
   /// The identifier of the action. Any string or [CommonActionId] for
   /// common actions.
   external String id;
@@ -1115,11 +1001,7 @@ extension ActionExtension on Action {
   /// The title of the action. It may be ignored for common actions.
   external String? title;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ExecuteActionRequestedOptions {
+extension type ExecuteActionRequestedOptions._(JSObject _) implements JSObject {
   external factory ExecuteActionRequestedOptions({
     /// The identifier of the file system related to this operation.
     String fileSystemId,
@@ -1133,10 +1015,7 @@ class ExecuteActionRequestedOptions {
     /// The identifier of the action to be executed.
     String actionId,
   });
-}
 
-extension ExecuteActionRequestedOptionsExtension
-    on ExecuteActionRequestedOptions {
   /// The identifier of the file system related to this operation.
   external String fileSystemId;
 
@@ -1149,11 +1028,7 @@ extension ExecuteActionRequestedOptionsExtension
   /// The identifier of the action to be executed.
   external String actionId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Change {
+extension type Change._(JSObject _) implements JSObject {
   external factory Change({
     /// The path of the changed entry.
     String entryPath,
@@ -1161,20 +1036,14 @@ class Change {
     /// The type of the change which happened to the entry.
     ChangeType changeType,
   });
-}
 
-extension ChangeExtension on Change {
   /// The path of the changed entry.
   external String entryPath;
 
   /// The type of the change which happened to the entry.
   external ChangeType changeType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class NotifyOptions {
+extension type NotifyOptions._(JSObject _) implements JSObject {
   external factory NotifyOptions({
     /// The identifier of the file system related to this change.
     String fileSystemId,
@@ -1200,9 +1069,7 @@ class NotifyOptions {
     /// when the system was shutdown.
     String? tag,
   });
-}
 
-extension NotifyOptionsExtension on NotifyOptions {
   /// The identifier of the file system related to this change.
   external String fileSystemId;
 
@@ -1227,11 +1094,7 @@ extension NotifyOptionsExtension on NotifyOptions {
   /// when the system was shutdown.
   external String? tag;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ConfigureRequestedOptions {
+extension type ConfigureRequestedOptions._(JSObject _) implements JSObject {
   external factory ConfigureRequestedOptions({
     /// The identifier of the file system to be configured.
     String fileSystemId,
@@ -1239,9 +1102,7 @@ class ConfigureRequestedOptions {
     /// The unique identifier of this request.
     int requestId,
   });
-}
 
-extension ConfigureRequestedOptionsExtension on ConfigureRequestedOptions {
   /// The identifier of the file system to be configured.
   external String fileSystemId;
 

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSWallpaperExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSWallpaper {}
-
-extension JSWallpaperExtension on JSWallpaper {
+extension type JSWallpaper._(JSObject _) {
   /// Sets wallpaper to the image at _url_ or _wallpaperData_ with the specified
   /// _layout_
   external JSPromise setWallpaper(SetWallpaperDetails details);
@@ -34,11 +31,7 @@ extension JSWallpaperExtension on JSWallpaper {
 
 /// The supported wallpaper layouts.
 typedef WallpaperLayout = String;
-
-@JS()
-@staticInterop
-@anonymous
-class SetWallpaperDetails {
+extension type SetWallpaperDetails._(JSObject _) implements JSObject {
   external factory SetWallpaperDetails({
     /// The jpeg or png encoded wallpaper image as an ArrayBuffer.
     JSArrayBuffer? data,
@@ -56,9 +49,7 @@ class SetWallpaperDetails {
     /// supported yet.
     bool? thumbnail,
   });
-}
 
-extension SetWallpaperDetailsExtension on SetWallpaperDetails {
   /// The jpeg or png encoded wallpaper image as an ArrayBuffer.
   external JSArrayBuffer? data;
 

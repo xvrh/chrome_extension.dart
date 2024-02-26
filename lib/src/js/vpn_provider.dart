@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSVpnProviderExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSVpnProvider {}
-
-extension JSVpnProviderExtension on JSVpnProvider {
+extension type JSVpnProvider._(JSObject _) {
   /// Creates a new VPN configuration that persists across multiple login
   /// sessions of the user.
   /// |name|: The name of the VPN configuration.
@@ -107,11 +104,7 @@ typedef VpnConnectionState = String;
 /// The enum is used by the platform to indicate the event that triggered
 /// `onUIEvent`.
 typedef UIEvent = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Parameters {
+extension type Parameters._(JSObject _) implements JSObject {
   external factory Parameters({
     /// IP address for the VPN interface in CIDR notation.
     /// IPv4 is currently the only supported mode.
@@ -167,9 +160,7 @@ class Parameters {
     /// feature based on browser support.
     String? reconnect,
   });
-}
 
-extension ParametersExtension on Parameters {
   /// IP address for the VPN interface in CIDR notation.
   /// IPv4 is currently the only supported mode.
   external String address;

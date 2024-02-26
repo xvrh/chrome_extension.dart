@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSWebAuthenticationProxyExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSWebAuthenticationProxy {}
-
-extension JSWebAuthenticationProxyExtension on JSWebAuthenticationProxy {
+extension type JSWebAuthenticationProxy._(JSObject _) {
   /// Reports the result of a `navigator.credentials.create()`
   /// call. The extension must call this for every
   /// `onCreateRequest` event it has received, unless the request
@@ -127,26 +124,16 @@ extension JSWebAuthenticationProxyExtension on JSWebAuthenticationProxy {
   /// canceled.
   external Event get onRequestCanceled;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class IsUvpaaRequest {
+extension type IsUvpaaRequest._(JSObject _) implements JSObject {
   external factory IsUvpaaRequest(
       {
       /// An opaque identifier for the request.
       int requestId});
-}
 
-extension IsUvpaaRequestExtension on IsUvpaaRequest {
   /// An opaque identifier for the request.
   external int requestId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateRequest {
+extension type CreateRequest._(JSObject _) implements JSObject {
   external factory CreateRequest({
     /// An opaque identifier for the request.
     int requestId,
@@ -158,9 +145,7 @@ class CreateRequest {
     /// `PublicKeyCredential.parseCreationOptionsFromJSON()`</a>.
     String requestDetailsJson,
   });
-}
 
-extension CreateRequestExtension on CreateRequest {
   /// An opaque identifier for the request.
   external int requestId;
 
@@ -171,11 +156,7 @@ extension CreateRequestExtension on CreateRequest {
   /// `PublicKeyCredential.parseCreationOptionsFromJSON()`</a>.
   external String requestDetailsJson;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetRequest {
+extension type GetRequest._(JSObject _) implements JSObject {
   external factory GetRequest({
     /// An opaque identifier for the request.
     int requestId,
@@ -187,9 +168,7 @@ class GetRequest {
     /// `PublicKeyCredential.parseRequestOptionsFromJSON()`</a>.
     String requestDetailsJson,
   });
-}
 
-extension GetRequestExtension on GetRequest {
   /// An opaque identifier for the request.
   external int requestId;
 
@@ -200,27 +179,17 @@ extension GetRequestExtension on GetRequest {
   /// `PublicKeyCredential.parseRequestOptionsFromJSON()`</a>.
   external String requestDetailsJson;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DOMExceptionDetails {
+extension type DOMExceptionDetails._(JSObject _) implements JSObject {
   external factory DOMExceptionDetails({
     String name,
     String message,
   });
-}
 
-extension DOMExceptionDetailsExtension on DOMExceptionDetails {
   external String name;
 
   external String message;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CreateResponseDetails {
+extension type CreateResponseDetails._(JSObject _) implements JSObject {
   external factory CreateResponseDetails({
     /// The `requestId` of the `CreateRequest`.
     int requestId,
@@ -234,9 +203,7 @@ class CreateResponseDetails {
     /// `PublicKeyCredential.toJSON()`</a>.
     String? responseJson,
   });
-}
 
-extension CreateResponseDetailsExtension on CreateResponseDetails {
   /// The `requestId` of the `CreateRequest`.
   external int requestId;
 
@@ -249,11 +216,7 @@ extension CreateResponseDetailsExtension on CreateResponseDetails {
   /// `PublicKeyCredential.toJSON()`</a>.
   external String? responseJson;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetResponseDetails {
+extension type GetResponseDetails._(JSObject _) implements JSObject {
   external factory GetResponseDetails({
     /// The `requestId` of the `CreateRequest`.
     int requestId,
@@ -267,9 +230,7 @@ class GetResponseDetails {
     /// `PublicKeyCredential.toJSON()`</a>.
     String? responseJson,
   });
-}
 
-extension GetResponseDetailsExtension on GetResponseDetails {
   /// The `requestId` of the `CreateRequest`.
   external int requestId;
 
@@ -282,18 +243,12 @@ extension GetResponseDetailsExtension on GetResponseDetails {
   /// `PublicKeyCredential.toJSON()`</a>.
   external String? responseJson;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class IsUvpaaResponseDetails {
+extension type IsUvpaaResponseDetails._(JSObject _) implements JSObject {
   external factory IsUvpaaResponseDetails({
     int requestId,
     bool isUvpaa,
   });
-}
 
-extension IsUvpaaResponseDetailsExtension on IsUvpaaResponseDetails {
   external int requestId;
 
   external bool isUvpaa;

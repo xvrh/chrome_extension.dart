@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSI18nExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSI18n {}
-
-extension JSI18nExtension on JSI18n {
+extension type JSI18n._(JSObject _) {
   /// Gets the accept-languages of the browser. This is different from the
   /// locale used by the browser; to get the locale, use [i18n.getUILanguage].
   external JSPromise getAcceptLanguages();
@@ -39,7 +36,7 @@ extension JSI18nExtension on JSI18n {
   /// returns `undefined`.
   external String getMessage(
     /// The name of the message, as specified in the <a
-    /// href='i18n-messages'>`messages.json`</a> file.
+    /// href='how-to/ui/localization-message-formats'>`messages.json`</a> file.
     String messageName,
 
     /// Up to 9 substitution strings, if the message requires any.
@@ -64,11 +61,7 @@ extension JSI18nExtension on JSI18n {
 /// For an unknown language, `und` will be returned, which means that
 /// [percentage] of the text is unknown to CLD
 typedef LanguageCode = String;
-
-@JS()
-@staticInterop
-@anonymous
-class GetMessageOptions {
+extension type GetMessageOptions._(JSObject _) implements JSObject {
   external factory GetMessageOptions(
       {
       /// Escape `<` in translation to `&amp;lt;`. This applies only to the message
@@ -76,20 +69,14 @@ class GetMessageOptions {
       /// translation is used in an HTML context. Closure Templates used with
       /// Closure Compiler generate this automatically.
       bool? escapeLt});
-}
 
-extension GetMessageOptionsExtension on GetMessageOptions {
   /// Escape `<` in translation to `&amp;lt;`. This applies only to the message
   /// itself, not to the placeholders. Developers might want to use this if the
   /// translation is used in an HTML context. Closure Templates used with
   /// Closure Compiler generate this automatically.
   external bool? escapeLt;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DetectLanguageCallbackResult {
+extension type DetectLanguageCallbackResult._(JSObject _) implements JSObject {
   external factory DetectLanguageCallbackResult({
     /// CLD detected language reliability
     bool isReliable,
@@ -97,31 +84,22 @@ class DetectLanguageCallbackResult {
     /// array of detectedLanguage
     JSArray languages,
   });
-}
 
-extension DetectLanguageCallbackResultExtension
-    on DetectLanguageCallbackResult {
   /// CLD detected language reliability
   external bool isReliable;
 
   /// array of detectedLanguage
   external JSArray languages;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DetectLanguageCallbackResultLanguages {
+extension type DetectLanguageCallbackResultLanguages._(JSObject _)
+    implements JSObject {
   external factory DetectLanguageCallbackResultLanguages({
     LanguageCode language,
 
     /// The percentage of the detected language
     int percentage,
   });
-}
 
-extension DetectLanguageCallbackResultLanguagesExtension
-    on DetectLanguageCallbackResultLanguages {
   external LanguageCode language;
 
   /// The percentage of the detected language

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSPowerExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPower {}
-
-extension JSPowerExtension on JSPower {
+extension type JSPower._(JSObject _) {
   /// Requests that power management be temporarily disabled. |level|
   /// describes the degree to which power management should be disabled.
   /// If a request previously made by the same app is still active, it

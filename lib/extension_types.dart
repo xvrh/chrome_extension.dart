@@ -98,11 +98,13 @@ enum DocumentLifecycle {
 }
 
 /// The JavaScript world for a script to execute within. Can either be an
-/// isolated world, unique to this extension, or the main world of the DOM which
-/// is shared with the page's JavaScript.
+/// isolated world unique to this extension, the main world of the DOM which is
+/// shared with the page's JavaScript, or a user scripts world that is only
+/// available for scripts registered with the User Scripts API.
 enum ExecutionWorld {
   isolated('ISOLATED'),
-  main('MAIN');
+  main('MAIN'),
+  userScript('USER_SCRIPT');
 
   const ExecutionWorld(this.value);
 

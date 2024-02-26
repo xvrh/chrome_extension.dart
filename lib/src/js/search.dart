@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSSearchExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSSearch {}
-
-extension JSSearchExtension on JSSearch {
+extension type JSSearch._(JSObject _) {
   /// Used to query the default search provider.
   /// In case of an error,
   /// [runtime.lastError] will be set.
@@ -34,11 +31,7 @@ extension JSSearchExtension on JSSearch {
 }
 
 typedef Disposition = String;
-
-@JS()
-@staticInterop
-@anonymous
-class QueryInfo {
+extension type QueryInfo._(JSObject _) implements JSObject {
   external factory QueryInfo({
     /// String to query with the default search provider.
     String text,
@@ -51,9 +44,7 @@ class QueryInfo {
     /// `tabId` cannot be used with `disposition`.
     int? tabId,
   });
-}
 
-extension QueryInfoExtension on QueryInfo {
   /// String to query with the default search provider.
   external String text;
 

@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,26 +23,16 @@ extension JSChromeJSPageCaptureExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPageCapture {}
-
-extension JSPageCaptureExtension on JSPageCapture {
+extension type JSPageCapture._(JSObject _) {
   /// Saves the content of the tab with given id as MHTML.
   external JSPromise saveAsMHTML(SaveAsMhtmlDetails details);
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SaveAsMhtmlDetails {
+extension type SaveAsMhtmlDetails._(JSObject _) implements JSObject {
   external factory SaveAsMhtmlDetails(
       {
       /// The id of the tab to save as MHTML.
       int tabId});
-}
 
-extension SaveAsMhtmlDetailsExtension on SaveAsMhtmlDetails {
   /// The id of the tab to save as MHTML.
   external int tabId;
 }

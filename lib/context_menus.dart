@@ -386,9 +386,9 @@ class CreateProperties {
     /// Whether the item is visible in the menu.
     bool? visible,
 
-    /// A function that is called back when the menu item is clicked. Event
-    /// pages cannot use this; instead, they should register a listener for
-    /// [contextMenus.onClicked].
+    /// A function that is called back when the menu item is clicked. This is
+    /// not available inside of a service worker; instead, they should register
+    /// a listener for [contextMenus.onClicked].
     JSFunction? onclick,
 
     /// The ID of a parent menu item; this makes the item a child of a
@@ -397,7 +397,7 @@ class CreateProperties {
 
     /// Restricts the item to apply only to documents or frames whose URL
     /// matches one of the given patterns. For details on pattern formats, see
-    /// [Match Patterns](match_patterns).
+    /// [Match Patterns](/docs/extensions/develop/concepts/match-patterns).
     List<String>? documentUrlPatterns,
 
     /// Similar to `documentUrlPatterns`, filters based on the `src` attribute
@@ -484,9 +484,9 @@ class CreateProperties {
     _wrapped.visible = v;
   }
 
-  /// A function that is called back when the menu item is clicked. Event pages
-  /// cannot use this; instead, they should register a listener for
-  /// [contextMenus.onClicked].
+  /// A function that is called back when the menu item is clicked. This is not
+  /// available inside of a service worker; instead, they should register a
+  /// listener for [contextMenus.onClicked].
   JSFunction? get onclick => _wrapped.onclick;
 
   set onclick(JSFunction? v) {
@@ -512,7 +512,7 @@ class CreateProperties {
 
   /// Restricts the item to apply only to documents or frames whose URL matches
   /// one of the given patterns. For details on pattern formats, see [Match
-  /// Patterns](match_patterns).
+  /// Patterns](/docs/extensions/develop/concepts/match-patterns).
   List<String>? get documentUrlPatterns => _wrapped.documentUrlPatterns?.toDart
       .cast<String>()
       .map((e) => e)

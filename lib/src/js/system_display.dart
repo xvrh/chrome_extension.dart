@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSSystemDisplayExtension on JSChromeSystem {
   }
 }
 
-@JS()
-@staticInterop
-class JSSystemDisplay {}
-
-extension JSSystemDisplayExtension on JSSystemDisplay {
+extension type JSSystemDisplay._(JSObject _) {
   /// Requests the information for all attached display devices.
   /// |flags|: Options affecting how the information is returned.
   /// |callback|: The callback to invoke with the results.
@@ -155,14 +152,18 @@ extension JSSystemDisplayExtension on JSSystemDisplay {
 /// Layout position, i.e. edge of parent that the display is attached to.
 typedef LayoutPosition = String;
 
+/// An enum to tell if the display is detected and used by the
+/// system. The display is considered 'inactive', if it is not
+/// detected by the system (maybe disconnected, or considered
+/// disconnected due to sleep mode, etc). This state is used to keep
+/// existing display when the all displays are disconnected, for
+/// example.
+typedef ActiveState = String;
+
 /// Mirror mode, i.e. different ways of how a display is mirrored to other
 /// displays.
 typedef MirrorMode = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Bounds {
+extension type Bounds._(JSObject _) implements JSObject {
   external factory Bounds({
     /// The x-coordinate of the upper-left corner.
     int left,
@@ -176,9 +177,7 @@ class Bounds {
     /// The height of the display in pixels.
     int height,
   });
-}
 
-extension BoundsExtension on Bounds {
   /// The x-coordinate of the upper-left corner.
   external int left;
 
@@ -191,11 +190,7 @@ extension BoundsExtension on Bounds {
   /// The height of the display in pixels.
   external int height;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Insets {
+extension type Insets._(JSObject _) implements JSObject {
   external factory Insets({
     /// The x-axis distance from the left bound.
     int left,
@@ -209,9 +204,7 @@ class Insets {
     /// The y-axis distance from the bottom bound.
     int bottom,
   });
-}
 
-extension InsetsExtension on Insets {
   /// The x-axis distance from the left bound.
   external int left;
 
@@ -224,11 +217,7 @@ extension InsetsExtension on Insets {
   /// The y-axis distance from the bottom bound.
   external int bottom;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Point {
+extension type Point._(JSObject _) implements JSObject {
   external factory Point({
     /// The x-coordinate of the point.
     int x,
@@ -236,20 +225,14 @@ class Point {
     /// The y-coordinate of the point.
     int y,
   });
-}
 
-extension PointExtension on Point {
   /// The x-coordinate of the point.
   external int x;
 
   /// The y-coordinate of the point.
   external int y;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TouchCalibrationPair {
+extension type TouchCalibrationPair._(JSObject _) implements JSObject {
   external factory TouchCalibrationPair({
     /// The coordinates of the display point.
     Point displayPoint,
@@ -257,20 +240,14 @@ class TouchCalibrationPair {
     /// The coordinates of the touch point corresponding to the display point.
     Point touchPoint,
   });
-}
 
-extension TouchCalibrationPairExtension on TouchCalibrationPair {
   /// The coordinates of the display point.
   external Point displayPoint;
 
   /// The coordinates of the touch point corresponding to the display point.
   external Point touchPoint;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TouchCalibrationPairQuad {
+extension type TouchCalibrationPairQuad._(JSObject _) implements JSObject {
   external factory TouchCalibrationPairQuad({
     /// First pair of touch and display point required for touch calibration.
     TouchCalibrationPair pair1,
@@ -284,9 +261,7 @@ class TouchCalibrationPairQuad {
     /// Fourth pair of touch and display point required for touch calibration.
     TouchCalibrationPair pair4,
   });
-}
 
-extension TouchCalibrationPairQuadExtension on TouchCalibrationPairQuad {
   /// First pair of touch and display point required for touch calibration.
   external TouchCalibrationPair pair1;
 
@@ -299,11 +274,7 @@ extension TouchCalibrationPairQuadExtension on TouchCalibrationPairQuad {
   /// Fourth pair of touch and display point required for touch calibration.
   external TouchCalibrationPair pair4;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DisplayMode {
+extension type DisplayMode._(JSObject _) implements JSObject {
   external factory DisplayMode({
     /// The display mode width in device independent (user visible) pixels.
     int width,
@@ -335,9 +306,7 @@ class DisplayMode {
     /// True if this mode is interlaced, false if not provided.
     bool? isInterlaced,
   });
-}
 
-extension DisplayModeExtension on DisplayMode {
   /// The display mode width in device independent (user visible) pixels.
   external int width;
 
@@ -368,11 +337,7 @@ extension DisplayModeExtension on DisplayMode {
   /// True if this mode is interlaced, false if not provided.
   external bool? isInterlaced;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DisplayLayout {
+extension type DisplayLayout._(JSObject _) implements JSObject {
   external factory DisplayLayout({
     /// The unique identifier of the display.
     String id,
@@ -388,9 +353,7 @@ class DisplayLayout {
     /// the topmost or leftmost corners are aligned.
     int offset,
   });
-}
 
-extension DisplayLayoutExtension on DisplayLayout {
   /// The unique identifier of the display.
   external String id;
 
@@ -405,11 +368,7 @@ extension DisplayLayoutExtension on DisplayLayout {
   /// the topmost or leftmost corners are aligned.
   external int offset;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Edid {
+extension type Edid._(JSObject _) implements JSObject {
   external factory Edid({
     /// 3 character manufacturer code. See Sec. 3.4.1 page 21. Required in v1.4.
     String manufacturerId,
@@ -420,9 +379,7 @@ class Edid {
     /// Year of manufacturer, Sec. 3.4.4 page 22. Required in v1.4.
     int yearOfManufacture,
   });
-}
 
-extension EdidExtension on Edid {
   /// 3 character manufacturer code. See Sec. 3.4.1 page 21. Required in v1.4.
   external String manufacturerId;
 
@@ -432,11 +389,7 @@ extension EdidExtension on Edid {
   /// Year of manufacturer, Sec. 3.4.4 page 22. Required in v1.4.
   external int yearOfManufacture;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DisplayUnitInfo {
+extension type DisplayUnitInfo._(JSObject _) implements JSObject {
   external factory DisplayUnitInfo({
     /// The unique identifier of the display.
     String id,
@@ -466,6 +419,9 @@ class DisplayUnitInfo {
 
     /// True if this display is enabled.
     bool isEnabled,
+
+    /// Active if the display is detected and used by the system.
+    ActiveState activeState,
 
     /// True for all displays when in unified desktop mode. See documentation
     /// for [enableUnifiedDesktop].
@@ -524,9 +480,7 @@ class DisplayUnitInfo {
     /// equivalent to 150% zoom.
     double displayZoomFactor,
   });
-}
 
-extension DisplayUnitInfoExtension on DisplayUnitInfo {
   /// The unique identifier of the display.
   external String id;
 
@@ -555,6 +509,9 @@ extension DisplayUnitInfoExtension on DisplayUnitInfo {
 
   /// True if this display is enabled.
   external bool isEnabled;
+
+  /// Active if the display is detected and used by the system.
+  external ActiveState activeState;
 
   /// True for all displays when in unified desktop mode. See documentation
   /// for [enableUnifiedDesktop].
@@ -613,11 +570,7 @@ extension DisplayUnitInfoExtension on DisplayUnitInfo {
   /// equivalent to 150% zoom.
   external double displayZoomFactor;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DisplayProperties {
+extension type DisplayProperties._(JSObject _) implements JSObject {
   external factory DisplayProperties({
     /// Chrome OS only. If set to true, changes the display mode to unified
     /// desktop (see [enableUnifiedDesktop] for details). If set to false,
@@ -672,9 +625,7 @@ class DisplayProperties {
     /// performing a pixel by pixel stretch enlargement.
     double? displayZoomFactor,
   });
-}
 
-extension DisplayPropertiesExtension on DisplayProperties {
   /// Chrome OS only. If set to true, changes the display mode to unified
   /// desktop (see [enableUnifiedDesktop] for details). If set to false,
   /// unified desktop mode will be disabled. This is only valid for the
@@ -728,30 +679,20 @@ extension DisplayPropertiesExtension on DisplayProperties {
   /// performing a pixel by pixel stretch enlargement.
   external double? displayZoomFactor;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetInfoFlags {
+extension type GetInfoFlags._(JSObject _) implements JSObject {
   external factory GetInfoFlags(
       {
       /// If set to true, only a single [DisplayUnitInfo] will be returned
       /// by [getInfo] when in unified desktop mode (see
       /// [enableUnifiedDesktop]). Defaults to false.
       bool? singleUnified});
-}
 
-extension GetInfoFlagsExtension on GetInfoFlags {
   /// If set to true, only a single [DisplayUnitInfo] will be returned
   /// by [getInfo] when in unified desktop mode (see
   /// [enableUnifiedDesktop]). Defaults to false.
   external bool? singleUnified;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MirrorModeInfo {
+extension type MirrorModeInfo._(JSObject _) implements JSObject {
   external factory MirrorModeInfo({
     /// The mirror mode that should be set.
     MirrorMode mode,
@@ -763,9 +704,7 @@ class MirrorModeInfo {
     /// 'mixed'.
     JSArray? mirroringDestinationIds,
   });
-}
 
-extension MirrorModeInfoExtension on MirrorModeInfo {
   /// The mirror mode that should be set.
   external MirrorMode mode;
 

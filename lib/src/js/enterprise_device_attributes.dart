@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -28,12 +29,7 @@ extension JSChromeJSEnterpriseDeviceAttributesExtension on JSChromeEnterprise {
   }
 }
 
-@JS()
-@staticInterop
-class JSEnterpriseDeviceAttributes {}
-
-extension JSEnterpriseDeviceAttributesExtension
-    on JSEnterpriseDeviceAttributes {
+extension type JSEnterpriseDeviceAttributes._(JSObject _) {
   /// Fetches the value of
   /// [the device identifier of the directory
   /// API](https://developers.google.com/admin-sdk/directory/v1/guides/manage-chrome-devices),

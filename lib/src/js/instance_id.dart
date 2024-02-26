@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSInstanceIdExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSInstanceId {}
-
-extension JSInstanceIdExtension on JSInstanceId {
+extension type JSInstanceId._(JSObject _) {
   /// Retrieves an identifier for the app instance. The instance ID will be
   /// returned by the `callback`. The same ID will be returned as long as the
   /// application identity has not been revoked or expired.
@@ -56,11 +53,7 @@ extension JSInstanceIdExtension on JSInstanceId {
   /// Fired when all the granted tokens need to be refreshed.
   external Event get onTokenRefresh;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetTokenParams {
+extension type GetTokenParams._(JSObject _) implements JSObject {
   external factory GetTokenParams({
     /// Identifies the entity that is authorized to access resources associated
     /// with this Instance ID. It can be a project ID from [Google developer
@@ -75,9 +68,7 @@ class GetTokenParams {
     /// associated with the token and may be used in processing the request.
     JSAny? options,
   });
-}
 
-extension GetTokenParamsExtension on GetTokenParams {
   /// Identifies the entity that is authorized to access resources associated
   /// with this Instance ID. It can be a project ID from [Google developer
   /// console](https://code.google.com/apis/console).
@@ -91,11 +82,7 @@ extension GetTokenParamsExtension on GetTokenParams {
   /// associated with the token and may be used in processing the request.
   external JSAny? options;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DeleteTokenParams {
+extension type DeleteTokenParams._(JSObject _) implements JSObject {
   external factory DeleteTokenParams({
     /// The authorized entity that is used to obtain the token.
     String authorizedEntity,
@@ -103,9 +90,7 @@ class DeleteTokenParams {
     /// The scope that is used to obtain the token.
     String scope,
   });
-}
 
-extension DeleteTokenParamsExtension on DeleteTokenParams {
   /// The authorized entity that is used to obtain the token.
   external String authorizedEntity;
 

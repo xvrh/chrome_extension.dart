@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,16 +24,8 @@ extension JSChromeJSEventsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSEvents {}
-
-extension JSEventsExtension on JSEvents {}
-
-@JS()
-@staticInterop
-@anonymous
-class Rule {
+extension type JSEvents._(JSObject _) {}
+extension type Rule._(JSObject _) implements JSObject {
   external factory Rule({
     /// Optional identifier that allows referencing this rule.
     String? id,
@@ -50,9 +43,7 @@ class Rule {
     /// Optional priority of this rule. Defaults to 100.
     int? priority,
   });
-}
 
-extension RuleExtension on Rule {
   /// Optional identifier that allows referencing this rule.
   external String? id;
 
@@ -69,15 +60,9 @@ extension RuleExtension on Rule {
   /// Optional priority of this rule. Defaults to 100.
   external int? priority;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Event {
+extension type Event._(JSObject _) implements JSObject {
   external factory Event();
-}
 
-extension EventExtension on Event {
   /// Registers an event listener _callback_ to an event.
   external void addListener(
 
@@ -149,11 +134,7 @@ extension EventExtension on Event {
     JSFunction? callback,
   );
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UrlFilter {
+extension type UrlFilter._(JSObject _) implements JSObject {
   external factory UrlFilter({
     /// Matches if the host name of the URL contains a specified string. To test
     /// whether a host name component has a prefix 'foo', use hostContains:
@@ -239,9 +220,7 @@ class UrlFilter {
     /// 80, 443 and in the range 1000-1200.
     JSArray? ports,
   });
-}
 
-extension UrlFilterExtension on UrlFilter {
   /// Matches if the host name of the URL contains a specified string. To test
   /// whether a host name component has a prefix 'foo', use hostContains:
   /// '.foo'. This matches 'www.foobar.com' and 'foo.com', because an implicit

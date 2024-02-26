@@ -136,10 +136,12 @@ enum StyleOrigin {
 
 /// The JavaScript world for a script to execute within.
 enum ExecutionWorld {
-  /// The isolated world, unique to this extension.
+  /// Specifies the isolated world, which is the execution environment unique
+  /// to this extension.
   isolated('ISOLATED'),
 
-  /// The main world of the DOM, shared with the page's JavaScript.
+  /// Specifies the main world of the DOM, which is the execution environment
+  /// shared with the host page's JavaScript.
   main('MAIN');
 
   const ExecutionWorld(this.value);
@@ -229,11 +231,11 @@ class ScriptInjection {
     /// A JavaScript function to inject. This function will be serialized, and
     /// then deserialized for injection. This means that any bound parameters
     /// and execution context will be lost.
-    /// Exactly one of `files` and `func` must be
+    /// Exactly one of `files` or `func` must be
     /// specified.
     JSAny? func,
 
-    /// The arguments to curry into a provided function. This is only valid if
+    /// The arguments to pass to the provided function. This is only valid if
     /// the `func` parameter is specified. These arguments must be
     /// JSON-serializable.
     List<Object>? args,
@@ -247,7 +249,7 @@ class ScriptInjection {
 
     /// The path of the JS or CSS files to inject, relative to the extension's
     /// root directory.
-    /// Exactly one of `files` and `func` must be
+    /// Exactly one of `files` or `func` must be
     /// specified.
     List<String>? files,
 
@@ -280,7 +282,7 @@ class ScriptInjection {
   /// A JavaScript function to inject. This function will be serialized, and
   /// then deserialized for injection. This means that any bound parameters
   /// and execution context will be lost.
-  /// Exactly one of `files` and `func` must be
+  /// Exactly one of `files` or `func` must be
   /// specified.
   JSAny? get func => _wrapped.func;
 
@@ -288,7 +290,7 @@ class ScriptInjection {
     _wrapped.func = v;
   }
 
-  /// The arguments to curry into a provided function. This is only valid if
+  /// The arguments to pass to the provided function. This is only valid if
   /// the `func` parameter is specified. These arguments must be
   /// JSON-serializable.
   List<Object>? get args =>
@@ -311,7 +313,7 @@ class ScriptInjection {
 
   /// The path of the JS or CSS files to inject, relative to the extension's
   /// root directory.
-  /// Exactly one of `files` and `func` must be
+  /// Exactly one of `files` or `func` must be
   /// specified.
   List<String>? get files =>
       _wrapped.files?.toDart.cast<String>().map((e) => e).toList();
@@ -465,15 +467,15 @@ class RegisteredContentScript {
     required String id,
 
     /// Specifies which pages this content script will be injected into. See
-    /// [Match Patterns](match_patterns) for more details on the
-    /// syntax of these strings. Must be specified for
+    /// [Match Patterns](develop/concepts/match-patterns) for more
+    /// details on the syntax of these strings. Must be specified for
     /// [registerContentScripts].
     List<String>? matches,
 
     /// Excludes pages that this content script would otherwise be injected
     /// into.
-    /// See [Match Patterns](match_patterns) for more details on the
-    /// syntax of these strings.
+    /// See [Match Patterns](develop/concepts/match-patterns) for
+    /// more details on the syntax of these strings.
     List<String>? excludeMatches,
 
     /// The list of CSS files to be injected into matching pages. These are
@@ -492,8 +494,13 @@ class RegisteredContentScript {
     /// frame is matched.
     bool? allFrames,
 
-    /// TODO(devlin): Add documentation once the implementation is complete. See
-    /// crbug.com/55084.
+    /// Indicates whether the script can be injected into frames where the URL
+    /// contains an unsupported scheme; specifically: about:, data:, blob:, or
+    /// filesystem:. In these cases, the URL's origin is checked to determine if
+    /// the script should be injected. If the origin is `null` (as is the case
+    /// for data: URLs) then the used origin is either the frame that created
+    /// the current frame or the frame that initiated the navigation to this
+    /// frame. Note that this may not be the parent frame.
     bool? matchOriginAsFallback,
 
     /// Specifies when JavaScript files are injected into the web page. The
@@ -533,8 +540,8 @@ class RegisteredContentScript {
   }
 
   /// Specifies which pages this content script will be injected into. See
-  /// [Match Patterns](match_patterns) for more details on the
-  /// syntax of these strings. Must be specified for
+  /// [Match Patterns](develop/concepts/match-patterns) for more
+  /// details on the syntax of these strings. Must be specified for
   /// [registerContentScripts].
   List<String>? get matches =>
       _wrapped.matches?.toDart.cast<String>().map((e) => e).toList();
@@ -544,8 +551,8 @@ class RegisteredContentScript {
   }
 
   /// Excludes pages that this content script would otherwise be injected into.
-  /// See [Match Patterns](match_patterns) for more details on the
-  /// syntax of these strings.
+  /// See [Match Patterns](develop/concepts/match-patterns) for
+  /// more details on the syntax of these strings.
   List<String>? get excludeMatches =>
       _wrapped.excludeMatches?.toDart.cast<String>().map((e) => e).toList();
 
@@ -583,8 +590,13 @@ class RegisteredContentScript {
     _wrapped.allFrames = v;
   }
 
-  /// TODO(devlin): Add documentation once the implementation is complete. See
-  /// crbug.com/55084.
+  /// Indicates whether the script can be injected into frames where the URL
+  /// contains an unsupported scheme; specifically: about:, data:, blob:, or
+  /// filesystem:. In these cases, the URL's origin is checked to determine if
+  /// the script should be injected. If the origin is `null` (as is the case
+  /// for data: URLs) then the used origin is either the frame that created
+  /// the current frame or the frame that initiated the navigation to this
+  /// frame. Note that this may not be the parent frame.
   bool? get matchOriginAsFallback => _wrapped.matchOriginAsFallback;
 
   set matchOriginAsFallback(bool? v) {

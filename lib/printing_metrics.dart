@@ -44,14 +44,18 @@ class ChromePrintingMetrics {
 
 /// The source of the print job.
 enum PrintJobSource {
-  /// The job was created from the Print Preview page initiated by the user.
+  /// Specifies that the job was created from the Print Preview page
+  /// initiated by the user.
   printPreview('PRINT_PREVIEW'),
 
-  /// The job was created from an Android App.
+  /// Specifies that the job was created from an Android App.
   androidApp('ANDROID_APP'),
 
-  /// The job was created by extension via Chrome API.
-  extension('EXTENSION');
+  /// Specifies that the job was created by extension via Chrome API.
+  extension('EXTENSION'),
+
+  /// Specifies that the job was created by an Isolated Web App via API.
+  isolatedWebApp('ISOLATED_WEB_APP');
 
   const PrintJobSource(this.value);
 
@@ -62,15 +66,15 @@ enum PrintJobSource {
       values.firstWhere((e) => e.value == value);
 }
 
-/// The final status of the print job.
+/// Specifies the final status of the print job.
 enum PrintJobStatus {
-  /// Print job was interrupted due to some error.
+  /// Specifies that the print job was interrupted due to some error.
   failed('FAILED'),
 
-  /// Print job was canceled by the user or via API.
+  /// Specifies that the print job was canceled by the user or via API.
   canceled('CANCELED'),
 
-  /// Print job was printed without any errors.
+  /// Specifies that the print job was printed without any errors.
   printed('PRINTED');
 
   const PrintJobStatus(this.value);
@@ -84,10 +88,10 @@ enum PrintJobStatus {
 
 /// The source of the printer.
 enum PrinterSource {
-  /// Printer was added by user.
+  /// Specifies that the printer was added by user.
   user('USER'),
 
-  /// Printer was added via policy.
+  /// Specifies that the printer was added via policy.
   policy('POLICY');
 
   const PrinterSource(this.value);
@@ -100,10 +104,10 @@ enum PrinterSource {
 }
 
 enum ColorMode {
-  /// Black and white mode was used.
+  /// Specifies that black and white mode was used.
   blackAndWhite('BLACK_AND_WHITE'),
 
-  /// Color mode was used.
+  /// Specifies that color mode was used.
   color('COLOR');
 
   const ColorMode(this.value);
@@ -116,13 +120,13 @@ enum ColorMode {
 }
 
 enum DuplexMode {
-  /// One-sided printing was used.
+  /// Specifies that one-sided printing was used.
   oneSided('ONE_SIDED'),
 
-  /// Two-sided printing was used, flipping on long edge.
+  /// Specifies that two-sided printing was used, flipping on long edge.
   twoSidedLongEdge('TWO_SIDED_LONG_EDGE'),
 
-  /// Two-sided printing was used, flipping on short edge.
+  /// Specifies that two-sided printing was used, flipping on short edge.
   twoSidedShortEdge('TWO_SIDED_SHORT_EDGE');
 
   const DuplexMode(this.value);

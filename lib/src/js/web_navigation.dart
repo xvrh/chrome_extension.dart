@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSWebNavigationExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSWebNavigation {}
-
-extension JSWebNavigationExtension on JSWebNavigation {
+extension type JSWebNavigation._(JSObject _) {
   /// Retrieves information about the given frame. A frame refers to an <iframe>
   /// or a <frame> of a web page and is identified by a tab ID and a frame ID.
   external JSPromise getFrame(
@@ -87,11 +84,7 @@ extension JSWebNavigationExtension on JSWebNavigation {
 typedef TransitionType = String;
 
 typedef TransitionQualifier = String;
-
-@JS()
-@staticInterop
-@anonymous
-class OnBeforeNavigateDetails {
+extension type OnBeforeNavigateDetails._(JSObject _) implements JSObject {
   external factory OnBeforeNavigateDetails({
     /// The ID of the tab in which the navigation is about to occur.
     int tabId,
@@ -122,9 +115,7 @@ class OnBeforeNavigateDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension OnBeforeNavigateDetailsExtension on OnBeforeNavigateDetails {
   /// The ID of the tab in which the navigation is about to occur.
   external int tabId;
 
@@ -155,11 +146,7 @@ extension OnBeforeNavigateDetailsExtension on OnBeforeNavigateDetails {
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnCommittedDetails {
+extension type OnCommittedDetails._(JSObject _) implements JSObject {
   external factory OnCommittedDetails({
     /// The ID of the tab in which the navigation occurs.
     int tabId,
@@ -199,9 +186,7 @@ class OnCommittedDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension OnCommittedDetailsExtension on OnCommittedDetails {
   /// The ID of the tab in which the navigation occurs.
   external int tabId;
 
@@ -241,11 +226,7 @@ extension OnCommittedDetailsExtension on OnCommittedDetails {
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnDomContentLoadedDetails {
+extension type OnDomContentLoadedDetails._(JSObject _) implements JSObject {
   external factory OnDomContentLoadedDetails({
     /// The ID of the tab in which the navigation occurs.
     int tabId,
@@ -279,9 +260,7 @@ class OnDomContentLoadedDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension OnDomContentLoadedDetailsExtension on OnDomContentLoadedDetails {
   /// The ID of the tab in which the navigation occurs.
   external int tabId;
 
@@ -315,11 +294,7 @@ extension OnDomContentLoadedDetailsExtension on OnDomContentLoadedDetails {
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnCompletedDetails {
+extension type OnCompletedDetails._(JSObject _) implements JSObject {
   external factory OnCompletedDetails({
     /// The ID of the tab in which the navigation occurs.
     int tabId,
@@ -353,9 +328,7 @@ class OnCompletedDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension OnCompletedDetailsExtension on OnCompletedDetails {
   /// The ID of the tab in which the navigation occurs.
   external int tabId;
 
@@ -389,11 +362,7 @@ extension OnCompletedDetailsExtension on OnCompletedDetails {
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnErrorOccurredDetails {
+extension type OnErrorOccurredDetails._(JSObject _) implements JSObject {
   external factory OnErrorOccurredDetails({
     /// The ID of the tab in which the navigation occurs.
     int tabId,
@@ -429,9 +398,7 @@ class OnErrorOccurredDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension OnErrorOccurredDetailsExtension on OnErrorOccurredDetails {
   /// The ID of the tab in which the navigation occurs.
   external int tabId;
 
@@ -467,11 +434,8 @@ extension OnErrorOccurredDetailsExtension on OnErrorOccurredDetails {
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnCreatedNavigationTargetDetails {
+extension type OnCreatedNavigationTargetDetails._(JSObject _)
+    implements JSObject {
   external factory OnCreatedNavigationTargetDetails({
     /// The ID of the tab in which the navigation is triggered.
     int sourceTabId,
@@ -493,10 +457,7 @@ class OnCreatedNavigationTargetDetails {
     /// since the epoch.
     double timeStamp,
   });
-}
 
-extension OnCreatedNavigationTargetDetailsExtension
-    on OnCreatedNavigationTargetDetails {
   /// The ID of the tab in which the navigation is triggered.
   external int sourceTabId;
 
@@ -517,11 +478,8 @@ extension OnCreatedNavigationTargetDetailsExtension
   /// since the epoch.
   external double timeStamp;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnReferenceFragmentUpdatedDetails {
+extension type OnReferenceFragmentUpdatedDetails._(JSObject _)
+    implements JSObject {
   external factory OnReferenceFragmentUpdatedDetails({
     /// The ID of the tab in which the navigation occurs.
     int tabId,
@@ -561,10 +519,7 @@ class OnReferenceFragmentUpdatedDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension OnReferenceFragmentUpdatedDetailsExtension
-    on OnReferenceFragmentUpdatedDetails {
   /// The ID of the tab in which the navigation occurs.
   external int tabId;
 
@@ -604,11 +559,7 @@ extension OnReferenceFragmentUpdatedDetailsExtension
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnTabReplacedDetails {
+extension type OnTabReplacedDetails._(JSObject _) implements JSObject {
   external factory OnTabReplacedDetails({
     /// The ID of the tab that was replaced.
     int replacedTabId,
@@ -619,9 +570,7 @@ class OnTabReplacedDetails {
     /// The time when the replacement happened, in milliseconds since the epoch.
     double timeStamp,
   });
-}
 
-extension OnTabReplacedDetailsExtension on OnTabReplacedDetails {
   /// The ID of the tab that was replaced.
   external int replacedTabId;
 
@@ -631,11 +580,7 @@ extension OnTabReplacedDetailsExtension on OnTabReplacedDetails {
   /// The time when the replacement happened, in milliseconds since the epoch.
   external double timeStamp;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnHistoryStateUpdatedDetails {
+extension type OnHistoryStateUpdatedDetails._(JSObject _) implements JSObject {
   external factory OnHistoryStateUpdatedDetails({
     /// The ID of the tab in which the navigation occurs.
     int tabId,
@@ -675,10 +620,7 @@ class OnHistoryStateUpdatedDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension OnHistoryStateUpdatedDetailsExtension
-    on OnHistoryStateUpdatedDetails {
   /// The ID of the tab in which the navigation occurs.
   external int tabId;
 
@@ -718,11 +660,7 @@ extension OnHistoryStateUpdatedDetailsExtension
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetFrameCallbackDetails {
+extension type GetFrameCallbackDetails._(JSObject _) implements JSObject {
   external factory GetFrameCallbackDetails({
     /// True if the last navigation in this frame was interrupted by an error,
     /// i.e. the onErrorOccurred event fired.
@@ -750,9 +688,7 @@ class GetFrameCallbackDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension GetFrameCallbackDetailsExtension on GetFrameCallbackDetails {
   /// True if the last navigation in this frame was interrupted by an error,
   /// i.e. the onErrorOccurred event fired.
   external bool errorOccurred;
@@ -779,11 +715,7 @@ extension GetFrameCallbackDetailsExtension on GetFrameCallbackDetails {
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetFrameDetails {
+extension type GetFrameDetails._(JSObject _) implements JSObject {
   external factory GetFrameDetails({
     /// The ID of the tab in which the frame is.
     int? tabId,
@@ -798,9 +730,7 @@ class GetFrameDetails {
     /// will be validated to match the document found by provided document ID.
     String? documentId,
   });
-}
 
-extension GetFrameDetailsExtension on GetFrameDetails {
   /// The ID of the tab in which the frame is.
   external int? tabId;
 
@@ -814,11 +744,7 @@ extension GetFrameDetailsExtension on GetFrameDetails {
   /// will be validated to match the document found by provided document ID.
   external String? documentId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetAllFramesCallbackDetails {
+extension type GetAllFramesCallbackDetails._(JSObject _) implements JSObject {
   external factory GetAllFramesCallbackDetails({
     /// True if the last navigation in this frame was interrupted by an error,
     /// i.e. the onErrorOccurred event fired.
@@ -850,9 +776,7 @@ class GetAllFramesCallbackDetails {
     /// The type of frame the navigation occurred in.
     FrameType frameType,
   });
-}
 
-extension GetAllFramesCallbackDetailsExtension on GetAllFramesCallbackDetails {
   /// True if the last navigation in this frame was interrupted by an error,
   /// i.e. the onErrorOccurred event fired.
   external bool errorOccurred;
@@ -883,18 +807,12 @@ extension GetAllFramesCallbackDetailsExtension on GetAllFramesCallbackDetails {
   /// The type of frame the navigation occurred in.
   external FrameType frameType;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetAllFramesDetails {
+extension type GetAllFramesDetails._(JSObject _) implements JSObject {
   external factory GetAllFramesDetails(
       {
       /// The ID of the tab.
       int tabId});
-}
 
-extension GetAllFramesDetailsExtension on GetAllFramesDetails {
   /// The ID of the tab.
   external int tabId;
 }

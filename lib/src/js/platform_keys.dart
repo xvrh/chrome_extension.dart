@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -27,11 +28,7 @@ extension JSChromeJSPlatformKeysExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSPlatformKeys {}
-
-extension JSPlatformKeysExtension on JSPlatformKeys {
+extension type JSPlatformKeys._(JSObject _) {
   /// This method filters from a list of client certificates the ones that
   /// are known to the platform, match `request` and for which the
   /// extension has permission to access the certificate and its private key.
@@ -116,11 +113,7 @@ extension JSPlatformKeysExtension on JSPlatformKeys {
 }
 
 typedef ClientCertificateType = String;
-
-@JS()
-@staticInterop
-@anonymous
-class Match {
+extension type Match._(JSObject _) implements JSObject {
   external factory Match({
     /// The DER encoding of a X.509 certificate.
     JSArrayBuffer certificate,
@@ -133,9 +126,7 @@ class Match {
     /// function are not included.
     JSAny keyAlgorithm,
   });
-}
 
-extension MatchExtension on Match {
   /// The DER encoding of a X.509 certificate.
   external JSArrayBuffer certificate;
 
@@ -147,11 +138,7 @@ extension MatchExtension on Match {
   /// function are not included.
   external JSAny keyAlgorithm;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ClientCertificateRequest {
+extension type ClientCertificateRequest._(JSObject _) implements JSObject {
   external factory ClientCertificateRequest({
     /// This field is a list of the types of certificates requested, sorted in
     /// order of the server's preference. Only certificates of a type contained
@@ -163,9 +150,7 @@ class ClientCertificateRequest {
     /// server. Each entry must be a DER-encoded X.509 DistinguishedName.
     JSArray certificateAuthorities,
   });
-}
 
-extension ClientCertificateRequestExtension on ClientCertificateRequest {
   /// This field is a list of the types of certificates requested, sorted in
   /// order of the server's preference. Only certificates of a type contained
   /// in this list will be retrieved. If `certificateTypes` is the
@@ -176,11 +161,7 @@ extension ClientCertificateRequestExtension on ClientCertificateRequest {
   /// server. Each entry must be a DER-encoded X.509 DistinguishedName.
   external JSArray certificateAuthorities;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SelectDetails {
+extension type SelectDetails._(JSObject _) implements JSObject {
   external factory SelectDetails({
     /// Only certificates that match this request will be returned.
     ClientCertificateRequest request,
@@ -199,9 +180,7 @@ class SelectDetails {
     /// extension has been granted access to (automatically or manually).
     bool interactive,
   });
-}
 
-extension SelectDetailsExtension on SelectDetails {
   /// Only certificates that match this request will be returned.
   external ClientCertificateRequest request;
 
@@ -219,11 +198,7 @@ extension SelectDetailsExtension on SelectDetails {
   /// extension has been granted access to (automatically or manually).
   external bool interactive;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class VerificationDetails {
+extension type VerificationDetails._(JSObject _) implements JSObject {
   external factory VerificationDetails({
     /// Each chain entry must be the DER encoding of a X.509 certificate, the
     /// first entry must be the server certificate and each entry must certify
@@ -234,9 +209,7 @@ class VerificationDetails {
     /// that presented the `serverCertificateChain`.
     String hostname,
   });
-}
 
-extension VerificationDetailsExtension on VerificationDetails {
   /// Each chain entry must be the DER encoding of a X.509 certificate, the
   /// first entry must be the server certificate and each entry must certify
   /// the entry preceding it.
@@ -246,11 +219,7 @@ extension VerificationDetailsExtension on VerificationDetails {
   /// that presented the `serverCertificateChain`.
   external String hostname;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class VerificationResult {
+extension type VerificationResult._(JSObject _) implements JSObject {
   external factory VerificationResult({
     /// The result of the trust verification: true if trust for the given
     /// verification details could be established and false if trust is rejected
@@ -266,9 +235,7 @@ class VerificationResult {
     /// compatible.
     JSArray debug_errors,
   });
-}
 
-extension VerificationResultExtension on VerificationResult {
   /// The result of the trust verification: true if trust for the given
   /// verification details could be established and false if trust is rejected
   /// for any reason.

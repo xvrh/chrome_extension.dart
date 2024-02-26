@@ -1,3 +1,9 @@
+## 0.3.0
+
+- Regenerate the bindings based on Chrome v122
+- Update JS binding for Dart 3.3
+- Require Dart SDK >= 3.3
+
 ## 0.2.0
 
 - Regenerate the bindings based on Chrome v116

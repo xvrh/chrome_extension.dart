@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -15,7 +16,7 @@ extension JSChromeJSBrowserActionExtension on JSChrome {
   /// Use browser actions to put icons in the main Google Chrome toolbar, to the
   /// right of the address bar. In addition to its [icon](browserAction#icon), a
   /// browser action can have a [tooltip](browserAction#tooltip), a
-  /// [badge](browserAction#badge), and a [popup](browserAction#popups).
+  /// [badge](browserAction#badge), and a [popup](browserAction#popup).
   JSBrowserAction get browserAction {
     var browserActionNullable = this.browserActionNullable;
     if (browserActionNullable == null) {
@@ -25,11 +26,7 @@ extension JSChromeJSBrowserActionExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSBrowserAction {}
-
-extension JSBrowserActionExtension on JSBrowserAction {
+extension type JSBrowserAction._(JSObject _) {
   /// Sets the title of the browser action. This title appears in the tooltip.
   external JSPromise setTitle(SetTitleDetails details);
 
@@ -90,28 +87,18 @@ typedef ColorArray = JSArray;
 /// Pixel data for an image. Must be an ImageData object; for example, from a
 /// `canvas` element.
 typedef ImageDataType = JSObject;
-
-@JS()
-@staticInterop
-@anonymous
-class TabDetails {
+extension type TabDetails._(JSObject _) implements JSObject {
   external factory TabDetails(
       {
       /// The ID of the tab to query state for. If no tab is specified, the
       /// non-tab-specific state is returned.
       int? tabId});
-}
 
-extension TabDetailsExtension on TabDetails {
   /// The ID of the tab to query state for. If no tab is specified, the
   /// non-tab-specific state is returned.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetTitleDetails {
+extension type SetTitleDetails._(JSObject _) implements JSObject {
   external factory SetTitleDetails({
     /// The string the browser action should display when moused over.
     String title,
@@ -120,9 +107,7 @@ class SetTitleDetails {
     /// resets when the tab is closed.
     int? tabId,
   });
-}
 
-extension SetTitleDetailsExtension on SetTitleDetails {
   /// The string the browser action should display when moused over.
   external String title;
 
@@ -130,11 +115,7 @@ extension SetTitleDetailsExtension on SetTitleDetails {
   /// resets when the tab is closed.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetIconDetails {
+extension type SetIconDetails._(JSObject _) implements JSObject {
   external factory SetIconDetails({
     /// Either an ImageData object or a dictionary {size -> ImageData}
     /// representing an icon to be set. If the icon is specified as a dictionary,
@@ -159,9 +140,7 @@ class SetIconDetails {
     /// resets when the tab is closed.
     int? tabId,
   });
-}
 
-extension SetIconDetailsExtension on SetIconDetails {
   /// Either an ImageData object or a dictionary {size -> ImageData}
   /// representing an icon to be set. If the icon is specified as a dictionary,
   /// the image used is chosen depending on the screen's pixel density. If the
@@ -185,11 +164,7 @@ extension SetIconDetailsExtension on SetIconDetails {
   /// resets when the tab is closed.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetPopupDetails {
+extension type SetPopupDetails._(JSObject _) implements JSObject {
   external factory SetPopupDetails({
     /// Limits the change to when a particular tab is selected. Automatically
     /// resets when the tab is closed.
@@ -199,9 +174,7 @@ class SetPopupDetails {
     /// string (`''`), no popup is shown.
     String popup,
   });
-}
 
-extension SetPopupDetailsExtension on SetPopupDetails {
   /// Limits the change to when a particular tab is selected. Automatically
   /// resets when the tab is closed.
   external int? tabId;
@@ -210,11 +183,7 @@ extension SetPopupDetailsExtension on SetPopupDetails {
   /// string (`''`), no popup is shown.
   external String popup;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetBadgeTextDetails {
+extension type SetBadgeTextDetails._(JSObject _) implements JSObject {
   external factory SetBadgeTextDetails({
     /// Any number of characters can be passed, but only about four can fit into
     /// the space. If an empty string (`''`) is passed, the badge text is cleared.
@@ -226,9 +195,7 @@ class SetBadgeTextDetails {
     /// resets when the tab is closed.
     int? tabId,
   });
-}
 
-extension SetBadgeTextDetailsExtension on SetBadgeTextDetails {
   /// Any number of characters can be passed, but only about four can fit into
   /// the space. If an empty string (`''`) is passed, the badge text is cleared.
   ///  If `tabId` is specified and `text` is null, the text for the specified
@@ -239,11 +206,8 @@ extension SetBadgeTextDetailsExtension on SetBadgeTextDetails {
   /// resets when the tab is closed.
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SetBadgeBackgroundColorDetails {
+extension type SetBadgeBackgroundColorDetails._(JSObject _)
+    implements JSObject {
   external factory SetBadgeBackgroundColorDetails({
     /// An array of four integers in the range 0-255 that make up the RGBA color
     /// of the badge. Can also be a string with a CSS hex color value; for
@@ -254,10 +218,7 @@ class SetBadgeBackgroundColorDetails {
     /// resets when the tab is closed.
     int? tabId,
   });
-}
 
-extension SetBadgeBackgroundColorDetailsExtension
-    on SetBadgeBackgroundColorDetails {
   /// An array of four integers in the range 0-255 that make up the RGBA color
   /// of the badge. Can also be a string with a CSS hex color value; for
   /// example, `#FF0000` or `#F00` (red). Renders colors at full opacity.

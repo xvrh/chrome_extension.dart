@@ -141,17 +141,19 @@ class ChromeNotifications {
 }
 
 enum TemplateType {
-  /// icon, title, message, expandedMessage, up to two buttons
+  /// Contains an icon, title, message, expandedMessage, and up to two
+  /// buttons.
   basic('basic'),
 
-  /// icon, title, message, expandedMessage, image, up to two buttons
+  /// Contains an icon, title, message, expandedMessage, image, and up
+  ///  to two buttons.
   image('image'),
 
-  /// icon, title, message, items, up to two buttons. Users on Mac OS X only
-  /// see the first item.
+  /// Contains an icon, title, message, items, and up to two buttons.
+  /// Users on Mac OS X only see the first item.
   list('list'),
 
-  /// icon, title, message, progress, up to two buttons
+  /// Contains an icon, title, message, progress, and up to two buttons.
   progress('progress');
 
   const TemplateType(this.value);
@@ -164,11 +166,12 @@ enum TemplateType {
 }
 
 enum PermissionLevel {
-  /// User has elected to show notifications from the app or extension.
-  /// This is the default at install time.
+  /// Specifies that the user has elected to show notifications
+  /// from the app or extension. This is the default at install time.
   granted('granted'),
 
-  /// User has elected not to show notifications from the app or extension.
+  /// Specifies that the user has elected not to show notifications
+  /// from the app or extension.
   denied('denied');
 
   const PermissionLevel(this.value);

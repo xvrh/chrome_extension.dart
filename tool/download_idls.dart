@@ -3,11 +3,11 @@ library download_idls;
 import 'dart:async';
 import 'dart:io';
 import 'generator/download/googlesource.dart';
-import 'generator/download/omaha.dart';
 
 void main() => IdlDownloader().downloadIdls();
 
 class IdlDownloader {
+  static final _version = '122.0.6261.69';
   static final _chromiumBaseUrl = 'https://chromium.googlesource.com';
   static final _chromiumVersionPrefix = '/chromium/src/+/';
   static final _idlDirs = [
@@ -24,8 +24,7 @@ class IdlDownloader {
   /// in the directories we expect to find IDL and JSON files. Any files we
   /// find, we download.
   Future downloadIdls() async {
-    var omahaVersionExtractor = OmahaVersionExtractor();
-    var version = await omahaVersionExtractor.stableVersion;
+    var version = _version;
     print('Downloading IDL and JSON for APIs at Chrome $version');
     var googleSourceCrawler = GoogleSourceCrawler(_chromiumBaseUrl);
     for (var dir in _idlDirs) {

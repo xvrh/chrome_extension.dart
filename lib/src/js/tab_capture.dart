@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSTabCaptureExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSTabCapture {}
-
-extension JSTabCaptureExtension on JSTabCapture {
+extension type JSTabCapture._(JSObject _) {
   /// Captures the visible area of the currently active tab.  Capture can
   /// only be started on the currently active tab after the extension has been
   /// _invoked_, similar to the way that
@@ -74,11 +71,7 @@ extension JSTabCaptureExtension on JSTabCapture {
 }
 
 typedef TabCaptureState = String;
-
-@JS()
-@staticInterop
-@anonymous
-class CaptureInfo {
+extension type CaptureInfo._(JSObject _) implements JSObject {
   external factory CaptureInfo({
     /// The id of the tab whose status changed.
     int tabId,
@@ -89,9 +82,7 @@ class CaptureInfo {
     /// Whether an element in the tab being captured is in fullscreen mode.
     bool fullscreen,
   });
-}
 
-extension CaptureInfoExtension on CaptureInfo {
   /// The id of the tab whose status changed.
   external int tabId;
 
@@ -101,22 +92,12 @@ extension CaptureInfoExtension on CaptureInfo {
   /// Whether an element in the tab being captured is in fullscreen mode.
   external bool fullscreen;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class MediaStreamConstraint {
+extension type MediaStreamConstraint._(JSObject _) implements JSObject {
   external factory MediaStreamConstraint({JSAny mandatory});
-}
 
-extension MediaStreamConstraintExtension on MediaStreamConstraint {
   external JSAny mandatory;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CaptureOptions {
+extension type CaptureOptions._(JSObject _) implements JSObject {
   external factory CaptureOptions({
     bool? audio,
     bool? video,
@@ -124,9 +105,7 @@ class CaptureOptions {
     MediaStreamConstraint? videoConstraints,
     String? presentationId,
   });
-}
 
-extension CaptureOptionsExtension on CaptureOptions {
   external bool? audio;
 
   external bool? video;
@@ -137,11 +116,7 @@ extension CaptureOptionsExtension on CaptureOptions {
 
   external String? presentationId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetMediaStreamOptions {
+extension type GetMediaStreamOptions._(JSObject _) implements JSObject {
   external factory GetMediaStreamOptions({
     /// Optional tab id of the tab which will later invoke
     /// `getUserMedia()` to consume the stream. If not specified
@@ -157,9 +132,7 @@ class GetMediaStreamOptions {
     /// used as the target tab.
     int? targetTabId,
   });
-}
 
-extension GetMediaStreamOptionsExtension on GetMediaStreamOptions {
   /// Optional tab id of the tab which will later invoke
   /// `getUserMedia()` to consume the stream. If not specified
   /// then the resulting stream can be used only by the calling extension.

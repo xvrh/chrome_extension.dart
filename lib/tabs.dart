@@ -31,8 +31,8 @@ class ChromeTabs {
     return Tab.fromJS($res);
   }
 
-  /// Gets the tab that this script call is being made from. May be undefined if
-  /// called from a non-tab context (for example, a background page or popup
+  /// Gets the tab that this script call is being made from. Returns `undefined`
+  /// if called from a non-tab context (for example, a background page or popup
   /// view).
   Future<Tab?> getCurrent() async {
     var $res = await promiseToFuture<$js.Tab?>($js.chrome.tabs.getCurrent());
@@ -235,13 +235,13 @@ class ChromeTabs {
 
   /// Captures the visible area of the currently active tab in the specified
   /// window. In order to call this method, the extension must have either the
-  /// <a href='declare_permissions'><all_urls></a> permission or the
-  /// [activeTab](activeTab) permission. In addition to sites that extensions
-  /// can normally access, this method allows extensions to capture sensitive
-  /// sites that are otherwise restricted, including chrome:-scheme pages, other
-  /// extensions' pages, and data: URLs. These sensitive sites can only be
-  /// captured with the activeTab permission. File URLs may be captured only if
-  /// the extension has been granted file access.
+  /// <a href='develop/concepts/declare-permissions'><all_urls></a> permission
+  /// or the [activeTab](develop/concepts/activeTab) permission. In addition to
+  /// sites that extensions can normally access, this method allows extensions
+  /// to capture sensitive sites that are otherwise restricted, including
+  /// chrome:-scheme pages, other extensions' pages, and data: URLs. These
+  /// sensitive sites can only be captured with the activeTab permission. File
+  /// URLs may be captured only if the extension has been granted file access.
   /// [windowId] The target window. Defaults to the [current
   /// window](windows#current-window).
   Future<String> captureVisibleTab(
@@ -256,7 +256,8 @@ class ChromeTabs {
   }
 
   /// Injects JavaScript code into a page. For details, see the [programmatic
-  /// injection](content_scripts#pi) section of the content scripts doc.
+  /// injection](develop/concepts/content-scripts#programmatic) section of the
+  /// content scripts doc.
   /// [tabId] The ID of the tab in which to run the script; defaults to the
   /// active tab of the current window.
   /// [details] Details of the script to run. Either the code or the file
@@ -276,7 +277,8 @@ class ChromeTabs {
 
   /// Injects CSS into a page. Styles inserted with this method can be removed
   /// with [scripting.removeCSS]. For details, see the [programmatic
-  /// injection](content_scripts#pi) section of the content scripts doc.
+  /// injection](develop/concepts/content-scripts#programmatic) section of the
+  /// content scripts doc.
   /// [tabId] The ID of the tab in which to insert the CSS; defaults to the
   /// active tab of the current window.
   /// [details] Details of the CSS text to insert. Either the code or the file
@@ -729,6 +731,10 @@ class Tab {
     /// Whether the tab is selected.
     required bool selected,
 
+    /// The last time the tab was accessed as the number of milliseconds since
+    /// epoch.
+    double? lastAccessed,
+
     /// Whether the tab is highlighted.
     required bool highlighted,
 
@@ -798,6 +804,7 @@ class Tab {
           windowId: windowId,
           openerTabId: openerTabId,
           selected: selected,
+          lastAccessed: lastAccessed,
           highlighted: highlighted,
           active: active,
           pinned: pinned,
@@ -865,6 +872,14 @@ class Tab {
 
   set selected(bool v) {
     _wrapped.selected = v;
+  }
+
+  /// The last time the tab was accessed as the number of milliseconds since
+  /// epoch.
+  double? get lastAccessed => _wrapped.lastAccessed;
+
+  set lastAccessed(double? v) {
+    _wrapped.lastAccessed = v;
   }
 
   /// Whether the tab is highlighted.

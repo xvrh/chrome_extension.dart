@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSSidePanelExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSSidePanel {}
-
-extension JSSidePanelExtension on JSSidePanel {
+extension type JSSidePanel._(JSObject _) {
   /// Configures the side panel.
   /// |options|: The configuration options to apply to the panel.
   /// |callback|: Invoked when the options have been set.
@@ -54,37 +51,21 @@ extension JSSidePanelExtension on JSSidePanel {
   /// |callback|: Called when the side panel has been opened.
   external JSPromise open(OpenOptions options);
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SidePanel {
+extension type SidePanel._(JSObject _) implements JSObject {
   external factory SidePanel(
       {
       /// Developer specified path for side panel display.
       String default_path});
-}
 
-extension SidePanelExtension on SidePanel {
   /// Developer specified path for side panel display.
   external String default_path;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ManifestKeys {
+extension type ManifestKeys._(JSObject _) implements JSObject {
   external factory ManifestKeys({SidePanel side_panel});
-}
 
-extension ManifestKeysExtension on ManifestKeys {
   external SidePanel side_panel;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PanelOptions {
+extension type PanelOptions._(JSObject _) implements JSObject {
   external factory PanelOptions({
     /// If specified, the side panel options will only apply to the tab with
     /// this id. If omitted, these options set the default behavior (used for any
@@ -101,9 +82,7 @@ class PanelOptions {
     /// value is true.
     bool? enabled,
   });
-}
 
-extension PanelOptionsExtension on PanelOptions {
   /// If specified, the side panel options will only apply to the tab with
   /// this id. If omitted, these options set the default behavior (used for any
   /// tab that doesn't have specific settings). Note: if the same path is set
@@ -119,53 +98,37 @@ extension PanelOptionsExtension on PanelOptions {
   /// value is true.
   external bool? enabled;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class PanelBehavior {
+extension type PanelBehavior._(JSObject _) implements JSObject {
   external factory PanelBehavior(
       {
       /// Whether clicking the extension's icon will toggle showing the extension's
       /// entry in the side panel. Defaults to false.
       bool? openPanelOnActionClick});
-}
 
-extension PanelBehaviorExtension on PanelBehavior {
   /// Whether clicking the extension's icon will toggle showing the extension's
   /// entry in the side panel. Defaults to false.
   external bool? openPanelOnActionClick;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetPanelOptions {
+extension type GetPanelOptions._(JSObject _) implements JSObject {
   external factory GetPanelOptions(
       {
       /// If specified, the side panel options for the given tab will be returned.
       /// Otherwise, returns the default side panel options (used for any tab that
       /// doesn't have specific settings).
       int? tabId});
-}
 
-extension GetPanelOptionsExtension on GetPanelOptions {
   /// If specified, the side panel options for the given tab will be returned.
   /// Otherwise, returns the default side panel options (used for any tab that
   /// doesn't have specific settings).
   external int? tabId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OpenOptions {
+extension type OpenOptions._(JSObject _) implements JSObject {
   external factory OpenOptions({
     /// The window in which to open the side panel. This is only applicable if
     /// the extension has a global (non-tab-specific) side panel or
     /// `tabId` is also specified. This will override any
     /// currently-active global side panel the user has open in the given
-    /// window. At least one of this and `tabId` must be provided.
+    /// window. At least one of this or `tabId` must be provided.
     int? windowId,
 
     /// The tab in which to open the side panel. If the corresponding tab has
@@ -174,17 +137,15 @@ class OpenOptions {
     /// the specified tab and any other tabs without a currently-open tab-
     /// specific panel. This will override any currently-active side panel
     /// (global or tab-specific) in the corresponding tab. At least one of this
-    /// and `windowId` must be provided.
+    /// or `windowId` must be provided.
     int? tabId,
   });
-}
 
-extension OpenOptionsExtension on OpenOptions {
   /// The window in which to open the side panel. This is only applicable if
   /// the extension has a global (non-tab-specific) side panel or
   /// `tabId` is also specified. This will override any
   /// currently-active global side panel the user has open in the given
-  /// window. At least one of this and `tabId` must be provided.
+  /// window. At least one of this or `tabId` must be provided.
   external int? windowId;
 
   /// The tab in which to open the side panel. If the corresponding tab has
@@ -193,6 +154,6 @@ extension OpenOptionsExtension on OpenOptions {
   /// the specified tab and any other tabs without a currently-open tab-
   /// specific panel. This will override any currently-active side panel
   /// (global or tab-specific) in the corresponding tab. At least one of this
-  /// and `windowId` must be provided.
+  /// or `windowId` must be provided.
   external int? tabId;
 }

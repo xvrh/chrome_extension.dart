@@ -22,9 +22,12 @@ class ChromePrinting {
 
   bool get isAvailable => $js.chrome.printingNullable != null && alwaysTrue;
 
-  /// Submits the job for print.
-  /// If the extension is not listed in PrintingAPIExtensionsAllowlist policy,
-  /// the user will be prompted to accept the print job.
+  /// Submits the job for printing. If the extension is not listed in
+  /// the <a
+  /// href="https://chromeenterprise.google/policies/#PrintingAPIExtensionsAllowlist">
+  /// `PrintingAPIExtensionsAllowlist`</a> policy,
+  /// the user is prompted to accept the print job.<br/>
+  /// Before Chrome 120, this function did not return a promise.
   Future<SubmitJobResponse> submitJob(SubmitJobRequest request) async {
     var $res = await promiseToFuture<$js.SubmitJobResponse>(
         $js.chrome.printing.submitJob(request.toJS));
@@ -194,9 +197,12 @@ class SubmitJobRequest {
 
   SubmitJobRequest({
     /// The print job to be submitted.
-    /// The only supported content type is "application/pdf", and the CJT ticket
-    /// shouldn't include FitToPageTicketItem, PageRangeTicketItem,
-    /// ReverseOrderTicketItem and VendorTicketItem fields since they are
+    /// The only supported content type is "application/pdf", and the
+    /// [Cloud Job
+    /// Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
+    /// shouldn't include `FitToPageTicketItem`,
+    /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
+    /// and `VendorTicketItem` fields since they are
     /// irrelevant for native printing. All other fields must be present.
     required PrintJob job,
 
@@ -213,9 +219,11 @@ class SubmitJobRequest {
   $js.SubmitJobRequest get toJS => _wrapped;
 
   /// The print job to be submitted.
-  /// The only supported content type is "application/pdf", and the CJT ticket
-  /// shouldn't include FitToPageTicketItem, PageRangeTicketItem,
-  /// ReverseOrderTicketItem and VendorTicketItem fields since they are
+  /// The only supported content type is "application/pdf", and the
+  /// [Cloud Job Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
+  /// shouldn't include `FitToPageTicketItem`,
+  /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
+  /// and `VendorTicketItem` fields since they are
   /// irrelevant for native printing. All other fields must be present.
   PrintJob get job => PrintJob.fromJS(_wrapped.job);
 

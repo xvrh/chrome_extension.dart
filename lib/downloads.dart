@@ -103,11 +103,12 @@ class ChromeDownloads {
     return $res;
   }
 
-  /// Open the downloaded file now if the [DownloadItem] is complete;
-  /// otherwise returns an error through [runtime.lastError]. Requires the
-  /// `"downloads.open"` permission in addition to the
-  /// `"downloads"` permission. An [onChanged] event will fire
-  /// when the item is opened for the first time.
+  /// Opens the downloaded file now if the [DownloadItem] is complete;
+  /// otherwise returns an error through [runtime.lastError]. This method
+  /// requires the `"downloads.open"` permission in addition to the
+  /// `"downloads"` permission. An [onChanged] event fires
+  /// when the item is opened for the first time. This method can only be called
+  /// in response to a user gesture.
   /// |downloadId|: The identifier for the downloaded file.
   void open(int downloadId) {
     $js.chrome.downloads.open(downloadId);
@@ -160,6 +161,7 @@ class ChromeDownloads {
   /// one other extension has disabled it will return an error through
   /// [runtime.lastError]. Requires the `"downloads.shelf"`
   /// permission in addition to the `"downloads"` permission.
+  @Deprecated(r'Use $(ref:setUiOptions) instead.')
   void setShelfEnabled(bool enabled) {
     $js.chrome.downloads.setShelfEnabled(enabled);
   }
@@ -345,6 +347,7 @@ enum DangerType {
   accepted('accepted'),
   allowlistedByPolicy('allowlistedByPolicy'),
   asyncScanning('asyncScanning'),
+  asyncLocalPasswordScanning('asyncLocalPasswordScanning'),
   passwordProtected('passwordProtected'),
   blockedTooLarge('blockedTooLarge'),
   sensitiveContentWarning('sensitiveContentWarning'),
@@ -353,7 +356,8 @@ enum DangerType {
   deepScannedFailed('deepScannedFailed'),
   deepScannedSafe('deepScannedSafe'),
   deepScannedOpenedDangerous('deepScannedOpenedDangerous'),
-  promptForScaning('promptForScaning'),
+  promptForScanning('promptForScanning'),
+  promptForLocalPasswordScanning('promptForLocalPasswordScanning'),
   accountCompromise('accountCompromise');
 
   const DangerType(this.value);

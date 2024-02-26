@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -25,11 +26,7 @@ extension JSChromeJSSessionsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSSessions {}
-
-extension JSSessionsExtension on JSSessions {
+extension type JSSessions._(JSObject _) {
   /// Gets the list of recently closed tabs and/or windows.
   external JSPromise getRecentlyClosed(Filter? filter);
 
@@ -53,30 +50,20 @@ extension JSSessionsExtension on JSSessions {
   /// requested list.
   external int get MAX_SESSION_RESULTS;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Filter {
+extension type Filter._(JSObject _) implements JSObject {
   external factory Filter(
       {
       /// The maximum number of entries to be fetched in the requested list. Omit
       /// this parameter to fetch the maximum number of entries
       /// ([sessions.MAX_SESSION_RESULTS]).
       int? maxResults});
-}
 
-extension FilterExtension on Filter {
   /// The maximum number of entries to be fetched in the requested list. Omit
   /// this parameter to fetch the maximum number of entries
   /// ([sessions.MAX_SESSION_RESULTS]).
   external int? maxResults;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Session {
+extension type Session._(JSObject _) implements JSObject {
   external factory Session({
     /// The time when the window or tab was closed or modified, represented in
     /// milliseconds since the epoch.
@@ -90,9 +77,7 @@ class Session {
     /// [sessions.Session.tab] will be set.
     Window? window,
   });
-}
 
-extension SessionExtension on Session {
   /// The time when the window or tab was closed or modified, represented in
   /// milliseconds since the epoch.
   external int lastModified;
@@ -105,11 +90,7 @@ extension SessionExtension on Session {
   /// [sessions.Session.tab] will be set.
   external Window? window;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Device {
+extension type Device._(JSObject _) implements JSObject {
   external factory Device({
     String info,
 
@@ -120,9 +101,7 @@ class Device {
     /// recently to least recently modified session.
     JSArray sessions,
   });
-}
 
-extension DeviceExtension on Device {
   external String info;
 
   /// The name of the foreign device.

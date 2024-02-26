@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -26,11 +27,7 @@ extension JSChromeJSDevtoolsPanelsExtension on JSChromeDevtools {
   }
 }
 
-@JS()
-@staticInterop
-class JSDevtoolsPanels {}
-
-extension JSDevtoolsPanelsExtension on JSDevtoolsPanels {
+extension type JSDevtoolsPanels._(JSObject _) {
   /// Creates an extension panel.
   external void create(
     /// Title that is displayed next to the extension icon in the Developer
@@ -83,15 +80,9 @@ extension JSDevtoolsPanelsExtension on JSDevtoolsPanels {
   /// values: `default` (the default) and `dark`.
   external String get themeName;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ElementsPanel {
+extension type ElementsPanel._(JSObject _) implements JSObject {
   external factory ElementsPanel();
-}
 
-extension ElementsPanelExtension on ElementsPanel {
   /// Creates a pane within panel's sidebar.
   external void createSidebarPane(
     /// Text that is displayed in sidebar caption.
@@ -104,15 +95,9 @@ extension ElementsPanelExtension on ElementsPanel {
   /// Fired when an object is selected in the panel.
   external Event get onSelectionChanged;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SourcesPanel {
+extension type SourcesPanel._(JSObject _) implements JSObject {
   external factory SourcesPanel();
-}
 
-extension SourcesPanelExtension on SourcesPanel {
   /// Creates a pane within panel's sidebar.
   external void createSidebarPane(
     /// Text that is displayed in sidebar caption.
@@ -125,15 +110,9 @@ extension SourcesPanelExtension on SourcesPanel {
   /// Fired when an object is selected in the panel.
   external Event get onSelectionChanged;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ExtensionPanel {
+extension type ExtensionPanel._(JSObject _) implements JSObject {
   external factory ExtensionPanel();
-}
 
-extension ExtensionPanelExtension on ExtensionPanel {
   /// Appends a button to the status bar of the panel.
   external Button createStatusBarButton(
     /// Path to the icon of the button. The file should contain a 64x24-pixel
@@ -158,15 +137,9 @@ extension ExtensionPanelExtension on ExtensionPanel {
   /// Fired when the user switches away from the panel.
   external Event get onHidden;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ExtensionSidebarPane {
+extension type ExtensionSidebarPane._(JSObject _) implements JSObject {
   external factory ExtensionSidebarPane();
-}
 
-extension ExtensionSidebarPaneExtension on ExtensionSidebarPane {
   /// Sets the height of the sidebar.
   external void setHeight(
 
@@ -216,15 +189,9 @@ extension ExtensionSidebarPaneExtension on ExtensionSidebarPane {
   /// switching away from the panel that hosts the sidebar pane.
   external Event get onHidden;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class Button {
+extension type Button._(JSObject _) implements JSObject {
   external factory Button();
-}
 
-extension ButtonExtension on Button {
   /// Updates the attributes of the button. If some of the arguments are omitted
   /// or `null`, the corresponding attributes are not updated.
   external void update(

@@ -32,9 +32,10 @@ class ChromeCookies {
   }
 
   /// Retrieves all cookies from a single cookie store that match the given
-  /// information.  The cookies returned will be sorted, with those with the
-  /// longest path first.  If multiple cookies have the same path length, those
-  /// with the earliest creation time will be first.
+  /// information. The cookies returned will be sorted, with those with the
+  /// longest path first. If multiple cookies have the same path length, those
+  /// with the earliest creation time will be first. This method only retrieves
+  /// cookies for domains that the extension has host permissions to.
   /// [details] Information to filter the cookies being retrieved.
   Future<List<Cookie>> getAll(GetAllDetails details) async {
     var $res =
@@ -125,6 +126,27 @@ enum OnChangedCause {
       values.firstWhere((e) => e.value == value);
 }
 
+class CookiePartitionKey {
+  CookiePartitionKey.fromJS(this._wrapped);
+
+  CookiePartitionKey(
+      {
+      /// The top-level site the partitioned cookie is available in.
+      String? topLevelSite})
+      : _wrapped = $js.CookiePartitionKey(topLevelSite: topLevelSite);
+
+  final $js.CookiePartitionKey _wrapped;
+
+  $js.CookiePartitionKey get toJS => _wrapped;
+
+  /// The top-level site the partitioned cookie is available in.
+  String? get topLevelSite => _wrapped.topLevelSite;
+
+  set topLevelSite(String? v) {
+    _wrapped.topLevelSite = v;
+  }
+}
+
 class Cookie {
   Cookie.fromJS(this._wrapped);
 
@@ -168,6 +190,10 @@ class Cookie {
     /// The ID of the cookie store containing this cookie, as provided in
     /// getAllCookieStores().
     required String storeId,
+
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.Cookie(
           name: name,
           value: value,
@@ -180,6 +206,7 @@ class Cookie {
           session: session,
           expirationDate: expirationDate,
           storeId: storeId,
+          partitionKey: partitionKey?.toJS,
         );
 
   final $js.Cookie _wrapped;
@@ -269,6 +296,15 @@ class Cookie {
   set storeId(String v) {
     _wrapped.storeId = v;
   }
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  CookiePartitionKey? get partitionKey =>
+      _wrapped.partitionKey?.let(CookiePartitionKey.fromJS);
+
+  set partitionKey(CookiePartitionKey? v) {
+    _wrapped.partitionKey = v?.toJS;
+  }
 }
 
 class CookieStore {
@@ -321,10 +357,15 @@ class CookieDetails {
     /// The ID of the cookie store in which to look for the cookie. By default,
     /// the current execution context's cookie store will be used.
     String? storeId,
+
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.CookieDetails(
           url: url,
           name: name,
           storeId: storeId,
+          partitionKey: partitionKey?.toJS,
         );
 
   final $js.CookieDetails _wrapped;
@@ -354,6 +395,15 @@ class CookieDetails {
 
   set storeId(String? v) {
     _wrapped.storeId = v;
+  }
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  CookiePartitionKey? get partitionKey =>
+      _wrapped.partitionKey?.let(CookiePartitionKey.fromJS);
+
+  set partitionKey(CookiePartitionKey? v) {
+    _wrapped.partitionKey = v?.toJS;
   }
 }
 
@@ -428,6 +478,10 @@ class GetAllDetails {
     /// The cookie store to retrieve cookies from. If omitted, the current
     /// execution context's cookie store will be used.
     String? storeId,
+
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.GetAllDetails(
           url: url,
           name: name,
@@ -436,6 +490,7 @@ class GetAllDetails {
           secure: secure,
           session: session,
           storeId: storeId,
+          partitionKey: partitionKey?.toJS,
         );
 
   final $js.GetAllDetails _wrapped;
@@ -493,6 +548,15 @@ class GetAllDetails {
   set storeId(String? v) {
     _wrapped.storeId = v;
   }
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  CookiePartitionKey? get partitionKey =>
+      _wrapped.partitionKey?.let(CookiePartitionKey.fromJS);
+
+  set partitionKey(CookiePartitionKey? v) {
+    _wrapped.partitionKey = v?.toJS;
+  }
 }
 
 class SetDetails {
@@ -536,6 +600,10 @@ class SetDetails {
     /// The ID of the cookie store in which to set the cookie. By default, the
     /// cookie is set in the current execution context's cookie store.
     String? storeId,
+
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.SetDetails(
           url: url,
           name: name,
@@ -547,6 +615,7 @@ class SetDetails {
           sameSite: sameSite?.toJS,
           expirationDate: expirationDate,
           storeId: storeId,
+          partitionKey: partitionKey?.toJS,
         );
 
   final $js.SetDetails _wrapped;
@@ -629,6 +698,15 @@ class SetDetails {
   set storeId(String? v) {
     _wrapped.storeId = v;
   }
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  CookiePartitionKey? get partitionKey =>
+      _wrapped.partitionKey?.let(CookiePartitionKey.fromJS);
+
+  set partitionKey(CookiePartitionKey? v) {
+    _wrapped.partitionKey = v?.toJS;
+  }
 }
 
 class RemoveCallbackDetails {
@@ -643,10 +721,15 @@ class RemoveCallbackDetails {
 
     /// The ID of the cookie store from which the cookie was removed.
     required String storeId,
+
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.RemoveCallbackDetails(
           url: url,
           name: name,
           storeId: storeId,
+          partitionKey: partitionKey?.toJS,
         );
 
   final $js.RemoveCallbackDetails _wrapped;
@@ -672,5 +755,14 @@ class RemoveCallbackDetails {
 
   set storeId(String v) {
     _wrapped.storeId = v;
+  }
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  CookiePartitionKey? get partitionKey =>
+      _wrapped.partitionKey?.let(CookiePartitionKey.fromJS);
+
+  set partitionKey(CookiePartitionKey? v) {
+    _wrapped.partitionKey = v?.toJS;
   }
 }

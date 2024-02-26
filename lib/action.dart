@@ -67,7 +67,7 @@ class ChromeAction {
   /// non-tab-specific badge text is returned. If
   /// [displayActionCountAsBadgeText](declarativeNetRequest#setExtensionActionOptions)
   /// is enabled, a placeholder text will be returned unless the
-  /// [declarativeNetRequestFeedback](declare_permissions#declarativeNetRequestFeedback)
+  /// [declarativeNetRequestFeedback](/docs/extensions/develop/concepts/declare-permissions#declarativeNetRequestFeedback)
   /// permission is present or tab-specific badge text was provided.
   Future<String> getBadgeText(TabDetails details) async {
     var $res = await promiseToFuture<String>(

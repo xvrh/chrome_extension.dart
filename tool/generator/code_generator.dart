@@ -12,7 +12,9 @@ const _sharedBinding = 'chrome.dart';
 const _internalHelpers = 'src/internal_helpers.dart';
 const _jsPrefix = r'$js';
 
-final _formatter = DartFormatter();
+final _formatter = DartFormatter(
+  experimentFlags: ['inline-class'],
+);
 
 class _GeneratorBase {
   final model.ChromeApi api;
@@ -27,6 +29,7 @@ class JsBindingGenerator extends _GeneratorBase {
 
   String toCode() {
     final library = Library((b) => b
+      ..annotations.add(_jsAnnotation())
       ..name = ''
       ..comments.add('ignore_for_file: non_constant_identifier_names')
       ..comments.add('ignore_for_file: unnecessary_import')
@@ -60,12 +63,14 @@ if (${api.nameWithoutGroup.lowerCamel}Nullable == null) {
 return ${api.nameWithoutGroup.lowerCamel}Nullable;            
 '''))
           ])),
-        Class((b) => b
-          ..annotations.addAll([_jsAnnotation(), _staticInteropAnnotation()])
-          ..name = bindingClassName),
-        Extension((b) => b
-          ..name = '${bindingClassName}Extension'
-          ..on = refer(bindingClassName)
+        ExtensionType((b) => b
+          ..primaryConstructorName = '_'
+          ..representationDeclaration = RepresentationDeclaration((r) {
+            r
+              ..declaredRepresentationType = refer('JSObject')
+              ..name = '_';
+          })
+          ..name = bindingClassName
           ..methods.addAll(api.functions.map(_function))
           ..methods.addAll(api.events.map(_event))
           ..methods.addAll(api.properties.map(_property))),
@@ -151,30 +156,29 @@ return ${api.nameWithoutGroup.lowerCamel}Nullable;
   }
 
   Iterable<Spec> _dictionary(model.Dictionary type) sync* {
-    yield Class((b) {
+    yield ExtensionType((b) {
       b
-        ..annotations.addAll([
-          _jsAnnotation(),
-          _staticInteropAnnotation(),
-          _anonymousAnnotation()
-        ])
+        ..primaryConstructorName = '_'
+        ..representationDeclaration = RepresentationDeclaration((r) {
+          r
+            ..name = '_'
+            ..declaredRepresentationType = refer('JSObject');
+        })
         ..name = type.name
         ..constructors.add(Constructor((b) => b
           ..external = true
           ..factory = true
           ..optionalParameters
-              .addAll(type.properties.map(_typePropertyAsParameter))));
+              .addAll(type.properties.map(_typePropertyAsParameter))))
+        ..fields.addAll(type.properties.map(_typeProperty))
+        ..methods.addAll(type.methods.map(_function))
+        ..methods.addAll(type.events.map(_event));
 
+      b.implements.add(refer('JSObject'));
       if (type.extend case var extend?) {
-        b.extend = refer(extend);
+        b.implements.add(refer(extend));
       }
     });
-    yield Extension((b) => b
-      ..name = '${type.name}Extension'
-      ..on = refer(type.name)
-      ..fields.addAll(type.properties.map(_typeProperty))
-      ..methods.addAll(type.methods.map(_function))
-      ..methods.addAll(type.events.map(_event)));
   }
 
   Field _typeProperty(model.Property property) {
@@ -761,7 +765,6 @@ String _emitCode(Spec spec, {Allocator? allocator}) {
 Expression _staticInteropAnnotation() =>
     refer('staticInterop', _dartInteropUrl);
 
-Expression _anonymousAnnotation() => refer('anonymous', _dartInteropUrl);
 Expression _jsAnnotation([String? name]) =>
     refer('JS', _dartInteropUrl).call([if (name != null) literalString(name)]);
 

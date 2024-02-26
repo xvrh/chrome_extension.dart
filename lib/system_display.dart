@@ -216,17 +216,38 @@ enum LayoutPosition {
       values.firstWhere((e) => e.value == value);
 }
 
+/// An enum to tell if the display is detected and used by the
+/// system. The display is considered 'inactive', if it is not
+/// detected by the system (maybe disconnected, or considered
+/// disconnected due to sleep mode, etc). This state is used to keep
+/// existing display when the all displays are disconnected, for
+/// example.
+enum ActiveState {
+  active('active'),
+  inactive('inactive');
+
+  const ActiveState(this.value);
+
+  final String value;
+
+  String get toJS => value;
+  static ActiveState fromJS(String value) =>
+      values.firstWhere((e) => e.value == value);
+}
+
 /// Mirror mode, i.e. different ways of how a display is mirrored to other
 /// displays.
 enum MirrorMode {
-  /// Use the default mode (extended or unified desktop).
+  /// Specifies the default mode (extended or unified desktop).
   off('off'),
 
-  /// The default source display will be mirrored to all other displays.
+  /// Specifies that the default source display will be mirrored to all other
+  /// displays.
   normal('normal'),
 
-  /// The specified source display will be mirrored to the provided
-  /// destination displays. All other connected displays will be extended.
+  /// Specifies that the specified source display will be mirrored to the
+  /// provided destination displays. All other connected displays will be
+  ///  extended.
   mixed('mixed');
 
   const MirrorMode(this.value);
@@ -726,6 +747,9 @@ class DisplayUnitInfo {
     /// True if this display is enabled.
     required bool isEnabled,
 
+    /// Active if the display is detected and used by the system.
+    required ActiveState activeState,
+
     /// True for all displays when in unified desktop mode. See documentation
     /// for [enableUnifiedDesktop].
     required bool isUnified,
@@ -791,6 +815,7 @@ class DisplayUnitInfo {
           isPrimary: isPrimary,
           isInternal: isInternal,
           isEnabled: isEnabled,
+          activeState: activeState.toJS,
           isUnified: isUnified,
           isAutoRotationAllowed: isAutoRotationAllowed,
           dpiX: dpiX,
@@ -874,6 +899,13 @@ class DisplayUnitInfo {
 
   set isEnabled(bool v) {
     _wrapped.isEnabled = v;
+  }
+
+  /// Active if the display is detected and used by the system.
+  ActiveState get activeState => ActiveState.fromJS(_wrapped.activeState);
+
+  set activeState(ActiveState v) {
+    _wrapped.activeState = v.toJS;
   }
 
   /// True for all displays when in unified desktop mode. See documentation

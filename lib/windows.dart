@@ -87,7 +87,7 @@ class ChromeWindows {
   int get windowIdNone => $js.chrome.windows.WINDOW_ID_NONE;
 
   /// The windowId value that represents the [current
-  /// window](windows#current-window).
+  /// window](#the_current_window).
   int get windowIdCurrent => $js.chrome.windows.WINDOW_ID_CURRENT;
 
   /// Fired when a window is created.
@@ -181,8 +181,13 @@ enum WindowState {
 /// Specifies what type of browser window to create. 'panel' is deprecated and
 /// is available only to existing allowlisted extensions on Chrome OS.
 enum CreateType {
+  /// Specifies the window as a standard window.
   normal('normal'),
+
+  /// Specifies the window as a popup window.
   popup('popup'),
+
+  /// Specifies the window as a panel.
   panel('panel');
 
   const CreateType(this.value);

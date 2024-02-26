@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -22,11 +23,7 @@ extension JSChromeJSIdentityExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSIdentity {}
-
-extension JSIdentityExtension on JSIdentity {
+extension type JSIdentity._(JSObject _) {
   /// Retrieves a list of AccountInfo objects describing the accounts
   /// present on the profile.
   ///
@@ -35,7 +32,7 @@ extension JSIdentityExtension on JSIdentity {
 
   /// Gets an OAuth2 access token using the client ID and scopes
   /// specified in the <a
-  /// href="app_identity.html#update_manifest">`oauth2`
+  /// href="/docs/apps/app_identity#update_manifest">`oauth2`
   /// section of manifest.json</a>.
   ///
   /// The Identity API caches access tokens in memory, so it's ok to
@@ -131,47 +128,31 @@ extension JSIdentityExtension on JSIdentity {
 }
 
 typedef AccountStatus = String;
-
-@JS()
-@staticInterop
-@anonymous
-class AccountInfo {
+extension type AccountInfo._(JSObject _) implements JSObject {
   external factory AccountInfo(
       {
       /// A unique identifier for the account. This ID will not change
       /// for the lifetime of the account.
       String id});
-}
 
-extension AccountInfoExtension on AccountInfo {
   /// A unique identifier for the account. This ID will not change
   /// for the lifetime of the account.
   external String id;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ProfileDetails {
+extension type ProfileDetails._(JSObject _) implements JSObject {
   external factory ProfileDetails(
       {
       /// A status of the primary account signed into a profile whose
       /// `ProfileUserInfo` should be returned. Defaults to
       /// `SYNC` account status.
       AccountStatus? accountStatus});
-}
 
-extension ProfileDetailsExtension on ProfileDetails {
   /// A status of the primary account signed into a profile whose
   /// `ProfileUserInfo` should be returned. Defaults to
   /// `SYNC` account status.
   external AccountStatus? accountStatus;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class ProfileUserInfo {
+extension type ProfileUserInfo._(JSObject _) implements JSObject {
   external factory ProfileUserInfo({
     /// An email address for the user account signed into the current
     /// profile. Empty if the user is not signed in or the
@@ -185,9 +166,7 @@ class ProfileUserInfo {
     /// manifest permission is not specified.
     String id,
   });
-}
 
-extension ProfileUserInfoExtension on ProfileUserInfo {
   /// An email address for the user account signed into the current
   /// profile. Empty if the user is not signed in or the
   /// `identity.email` manifest permission is not
@@ -200,11 +179,7 @@ extension ProfileUserInfoExtension on ProfileUserInfo {
   /// manifest permission is not specified.
   external String id;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class TokenDetails {
+extension type TokenDetails._(JSObject _) implements JSObject {
   external factory TokenDetails({
     /// Fetching a token may require the user to sign-in to Chrome, or
     /// approve the application's requested scopes. If the interactive
@@ -230,9 +205,7 @@ class TokenDetails {
     /// requested permissions are granted or denied individually.
     bool? enableGranularPermissions,
   });
-}
 
-extension TokenDetailsExtension on TokenDetails {
   /// Fetching a token may require the user to sign-in to Chrome, or
   /// approve the application's requested scopes. If the interactive
   /// flag is `true`, `getAuthToken` will
@@ -257,26 +230,16 @@ extension TokenDetailsExtension on TokenDetails {
   /// requested permissions are granted or denied individually.
   external bool? enableGranularPermissions;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class InvalidTokenDetails {
+extension type InvalidTokenDetails._(JSObject _) implements JSObject {
   external factory InvalidTokenDetails(
       {
       /// The specific token that should be removed from the cache.
       String token});
-}
 
-extension InvalidTokenDetailsExtension on InvalidTokenDetails {
   /// The specific token that should be removed from the cache.
   external String token;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class WebAuthFlowDetails {
+extension type WebAuthFlowDetails._(JSObject _) implements JSObject {
   external factory WebAuthFlowDetails({
     /// The URL that initiates the auth flow.
     String url,
@@ -317,9 +280,7 @@ class WebAuthFlowDetails {
     /// `false`.
     int? timeoutMsForNonInteractive,
   });
-}
 
-extension WebAuthFlowDetailsExtension on WebAuthFlowDetails {
   /// The URL that initiates the auth flow.
   external String url;
 
@@ -359,11 +320,7 @@ extension WebAuthFlowDetailsExtension on WebAuthFlowDetails {
   /// `false`.
   external int? timeoutMsForNonInteractive;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetAuthTokenResult {
+extension type GetAuthTokenResult._(JSObject _) implements JSObject {
   external factory GetAuthTokenResult({
     /// The specific token associated with the request.
     String? token,
@@ -371,9 +328,7 @@ class GetAuthTokenResult {
     /// A list of OAuth2 scopes granted to the extension.
     JSArray? grantedScopes,
   });
-}
 
-extension GetAuthTokenResultExtension on GetAuthTokenResult {
   /// The specific token associated with the request.
   external String? token;
 

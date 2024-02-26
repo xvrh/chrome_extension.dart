@@ -9,7 +9,7 @@ part 'communication.g.dart';
 final defaultServerUrl = const String.fromEnvironment('server-url');
 
 class Server {
-  final ServerInfo Function() onInfo;
+  final Future<ServerInfo> Function() onInfo;
   final void Function(LogRequest) onLog;
   final void Function(TerminateRequest) onTerminate;
 
@@ -31,8 +31,8 @@ class Server {
     });
   }
 
-  shelf.Response _info() {
-    return _wrapResponse(onInfo());
+  Future<shelf.Response> _info() async {
+    return _wrapResponse(await onInfo());
   }
 
   Future<shelf.Response> _log(shelf.Request request) async {

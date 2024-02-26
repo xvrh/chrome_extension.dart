@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSDesktopCaptureExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSDesktopCapture {}
-
-extension JSDesktopCaptureExtension on JSDesktopCapture {
+extension type JSDesktopCapture._(JSObject _) {
   /// Shows desktop media picker UI with the specified set of sources.
   external int chooseDesktopMedia(
     /// Set of sources that should be shown to the user. The sources order in
@@ -68,11 +65,7 @@ typedef SystemAudioPreferenceEnum = String;
 /// Mirrors
 /// [SelfCapturePreferenceEnum](https://w3c.github.io/mediacapture-screen-share/#dom-selfcapturepreferenceenum).
 typedef SelfCapturePreferenceEnum = String;
-
-@JS()
-@staticInterop
-@anonymous
-class ChooseDesktopMediaOptions {
+extension type ChooseDesktopMediaOptions._(JSObject _) implements JSObject {
   external factory ChooseDesktopMediaOptions({
     /// Mirrors
     /// [systemAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-systemaudio).
@@ -87,9 +80,7 @@ class ChooseDesktopMediaOptions {
     /// the appropriate warnings, as it does when getDisplayMedia() is invoked.
     bool? suppressLocalAudioPlaybackIntended,
   });
-}
 
-extension ChooseDesktopMediaOptionsExtension on ChooseDesktopMediaOptions {
   /// Mirrors
   /// [systemAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-systemaudio).
   external SystemAudioPreferenceEnum? systemAudio;

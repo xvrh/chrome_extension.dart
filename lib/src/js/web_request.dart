@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -24,11 +25,7 @@ extension JSChromeJSWebRequestExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSWebRequest {}
-
-extension JSWebRequestExtension on JSWebRequest {
+extension type JSWebRequest._(JSObject _) {
   /// Needs to be called when the behavior of the webRequest handlers has
   /// changed to prevent incorrect handling due to caching. This function call
   /// is expensive. Don't call it often.
@@ -108,11 +105,7 @@ typedef IgnoredActionType = String;
 /// An array of HTTP headers. Each header is represented as a dictionary
 /// containing the keys `name` and either `value` or `binaryValue`.
 typedef HttpHeaders = JSArray;
-
-@JS()
-@staticInterop
-@anonymous
-class RequestFilter {
+extension type RequestFilter._(JSObject _) implements JSObject {
   external factory RequestFilter({
     /// A list of URLs or URL patterns. Requests that cannot match any of the URLs
     /// will be filtered out.
@@ -124,9 +117,7 @@ class RequestFilter {
     int? tabId,
     int? windowId,
   });
-}
 
-extension RequestFilterExtension on RequestFilter {
   /// A list of URLs or URL patterns. Requests that cannot match any of the URLs
   /// will be filtered out.
   external JSArray urls;
@@ -139,11 +130,7 @@ extension RequestFilterExtension on RequestFilter {
 
   external int? windowId;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class BlockingResponse {
+extension type BlockingResponse._(JSObject _) implements JSObject {
   external factory BlockingResponse({
     /// If true, the request is cancelled. This prevents the request from being
     /// sent. This can be used as a response to the onBeforeRequest,
@@ -175,9 +162,7 @@ class BlockingResponse {
     /// is made using the supplied credentials.
     BlockingResponseAuthCredentials? authCredentials,
   });
-}
 
-extension BlockingResponseExtension on BlockingResponse {
   /// If true, the request is cancelled. This prevents the request from being
   /// sent. This can be used as a response to the onBeforeRequest,
   /// onBeforeSendHeaders, onHeadersReceived and onAuthRequired events.
@@ -208,11 +193,7 @@ extension BlockingResponseExtension on BlockingResponse {
   /// is made using the supplied credentials.
   external BlockingResponseAuthCredentials? authCredentials;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class UploadData {
+extension type UploadData._(JSObject _) implements JSObject {
   external factory UploadData({
     /// An ArrayBuffer with a copy of the data.
     JSAny? bytes,
@@ -220,20 +201,14 @@ class UploadData {
     /// A string with the file's path and name.
     String? file,
   });
-}
 
-extension UploadDataExtension on UploadData {
   /// An ArrayBuffer with a copy of the data.
   external JSAny? bytes;
 
   /// A string with the file's path and name.
   external String? file;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnBeforeRequestDetails {
+extension type OnBeforeRequestDetails._(JSObject _) implements JSObject {
   external factory OnBeforeRequestDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -286,9 +261,7 @@ class OnBeforeRequestDetails {
     /// The time when this signal is triggered, in milliseconds since the epoch.
     double timeStamp,
   });
-}
 
-extension OnBeforeRequestDetailsExtension on OnBeforeRequestDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -341,11 +314,7 @@ extension OnBeforeRequestDetailsExtension on OnBeforeRequestDetails {
   /// The time when this signal is triggered, in milliseconds since the epoch.
   external double timeStamp;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnBeforeSendHeadersDetails {
+extension type OnBeforeSendHeadersDetails._(JSObject _) implements JSObject {
   external factory OnBeforeSendHeadersDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -397,9 +366,7 @@ class OnBeforeSendHeadersDetails {
     /// The HTTP request headers that are going to be sent out with this request.
     HttpHeaders? requestHeaders,
   });
-}
 
-extension OnBeforeSendHeadersDetailsExtension on OnBeforeSendHeadersDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -451,11 +418,7 @@ extension OnBeforeSendHeadersDetailsExtension on OnBeforeSendHeadersDetails {
   /// The HTTP request headers that are going to be sent out with this request.
   external HttpHeaders? requestHeaders;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnSendHeadersDetails {
+extension type OnSendHeadersDetails._(JSObject _) implements JSObject {
   external factory OnSendHeadersDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -507,9 +470,7 @@ class OnSendHeadersDetails {
     /// The HTTP request headers that have been sent out with this request.
     HttpHeaders? requestHeaders,
   });
-}
 
-extension OnSendHeadersDetailsExtension on OnSendHeadersDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -561,11 +522,7 @@ extension OnSendHeadersDetailsExtension on OnSendHeadersDetails {
   /// The HTTP request headers that have been sent out with this request.
   external HttpHeaders? requestHeaders;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnHeadersReceivedDetails {
+extension type OnHeadersReceivedDetails._(JSObject _) implements JSObject {
   external factory OnHeadersReceivedDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -624,9 +581,7 @@ class OnHeadersReceivedDetails {
     /// Standard HTTP status code returned by the server.
     int statusCode,
   });
-}
 
-extension OnHeadersReceivedDetailsExtension on OnHeadersReceivedDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -685,11 +640,7 @@ extension OnHeadersReceivedDetailsExtension on OnHeadersReceivedDetails {
   /// Standard HTTP status code returned by the server.
   external int statusCode;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnAuthRequiredDetails {
+extension type OnAuthRequiredDetails._(JSObject _) implements JSObject {
   external factory OnAuthRequiredDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -761,9 +712,7 @@ class OnAuthRequiredDetails {
     /// Standard HTTP status code returned by the server.
     int statusCode,
   });
-}
 
-extension OnAuthRequiredDetailsExtension on OnAuthRequiredDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -835,11 +784,7 @@ extension OnAuthRequiredDetailsExtension on OnAuthRequiredDetails {
   /// Standard HTTP status code returned by the server.
   external int statusCode;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnResponseStartedDetails {
+extension type OnResponseStartedDetails._(JSObject _) implements JSObject {
   external factory OnResponseStartedDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -906,9 +851,7 @@ class OnResponseStartedDetails {
     /// string if there are no headers.
     String statusLine,
   });
-}
 
-extension OnResponseStartedDetailsExtension on OnResponseStartedDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -975,11 +918,7 @@ extension OnResponseStartedDetailsExtension on OnResponseStartedDetails {
   /// string if there are no headers.
   external String statusLine;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnBeforeRedirectDetails {
+extension type OnBeforeRedirectDetails._(JSObject _) implements JSObject {
   external factory OnBeforeRedirectDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -1049,9 +988,7 @@ class OnBeforeRedirectDetails {
     /// string if there are no headers.
     String statusLine,
   });
-}
 
-extension OnBeforeRedirectDetailsExtension on OnBeforeRedirectDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -1121,11 +1058,7 @@ extension OnBeforeRedirectDetailsExtension on OnBeforeRedirectDetails {
   /// string if there are no headers.
   external String statusLine;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnCompletedDetails {
+extension type OnCompletedDetails._(JSObject _) implements JSObject {
   external factory OnCompletedDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -1192,9 +1125,7 @@ class OnCompletedDetails {
     /// string if there are no headers.
     String statusLine,
   });
-}
 
-extension OnCompletedDetailsExtension on OnCompletedDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -1261,11 +1192,7 @@ extension OnCompletedDetailsExtension on OnCompletedDetails {
   /// string if there are no headers.
   external String statusLine;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnErrorOccurredDetails {
+extension type OnErrorOccurredDetails._(JSObject _) implements JSObject {
   external factory OnErrorOccurredDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -1327,9 +1254,7 @@ class OnErrorOccurredDetails {
     /// content.
     String error,
   });
-}
 
-extension OnErrorOccurredDetailsExtension on OnErrorOccurredDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -1391,11 +1316,7 @@ extension OnErrorOccurredDetailsExtension on OnErrorOccurredDetails {
   /// content.
   external String error;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnActionIgnoredDetails {
+extension type OnActionIgnoredDetails._(JSObject _) implements JSObject {
   external factory OnActionIgnoredDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
     /// a result, they could be used to relate different events of the same
@@ -1405,9 +1326,7 @@ class OnActionIgnoredDetails {
     /// The proposed action which was ignored.
     IgnoredActionType action,
   });
-}
 
-extension OnActionIgnoredDetailsExtension on OnActionIgnoredDetails {
   /// The ID of the request. Request IDs are unique within a browser session. As
   /// a result, they could be used to relate different events of the same
   /// request.
@@ -1416,11 +1335,7 @@ extension OnActionIgnoredDetailsExtension on OnActionIgnoredDetails {
   /// The proposed action which was ignored.
   external IgnoredActionType action;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class HttpHeadersItems {
+extension type HttpHeadersItems._(JSObject _) implements JSObject {
   external factory HttpHeadersItems({
     /// Name of the HTTP header.
     String name,
@@ -1432,9 +1347,7 @@ class HttpHeadersItems {
     /// individual byte values (0..255).
     JSArray? binaryValue,
   });
-}
 
-extension HttpHeadersItemsExtension on HttpHeadersItems {
   /// Name of the HTTP header.
   external String name;
 
@@ -1445,28 +1358,19 @@ extension HttpHeadersItemsExtension on HttpHeadersItems {
   /// individual byte values (0..255).
   external JSArray? binaryValue;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class BlockingResponseAuthCredentials {
+extension type BlockingResponseAuthCredentials._(JSObject _)
+    implements JSObject {
   external factory BlockingResponseAuthCredentials({
     String username,
     String password,
   });
-}
 
-extension BlockingResponseAuthCredentialsExtension
-    on BlockingResponseAuthCredentials {
   external String username;
 
   external String password;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnBeforeRequestDetailsRequestBody {
+extension type OnBeforeRequestDetailsRequestBody._(JSObject _)
+    implements JSObject {
   external factory OnBeforeRequestDetailsRequestBody({
     /// Errors when obtaining request body data.
     String? error,
@@ -1484,10 +1388,7 @@ class OnBeforeRequestDetailsRequestBody {
     /// array.
     JSArray? raw,
   });
-}
 
-extension OnBeforeRequestDetailsRequestBodyExtension
-    on OnBeforeRequestDetailsRequestBody {
   /// Errors when obtaining request body data.
   external String? error;
 
@@ -1504,19 +1405,13 @@ extension OnBeforeRequestDetailsRequestBodyExtension
   /// array.
   external JSArray? raw;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class OnAuthRequiredDetailsChallenger {
+extension type OnAuthRequiredDetailsChallenger._(JSObject _)
+    implements JSObject {
   external factory OnAuthRequiredDetailsChallenger({
     String host,
     int port,
   });
-}
 
-extension OnAuthRequiredDetailsChallengerExtension
-    on OnAuthRequiredDetailsChallenger {
   external String host;
 
   external int port;

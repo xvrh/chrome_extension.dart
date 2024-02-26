@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSCookiesExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSCookies {}
-
-extension JSCookiesExtension on JSCookies {
+extension type JSCookies._(JSObject _) {
   /// Retrieves information about a single cookie. If more than one cookie of
   /// the same name exists for the given URL, the one with the longest path will
   /// be returned. For cookies with the same path length, the cookie with the
@@ -35,9 +32,10 @@ extension JSCookiesExtension on JSCookies {
   external JSPromise get(CookieDetails details);
 
   /// Retrieves all cookies from a single cookie store that match the given
-  /// information.  The cookies returned will be sorted, with those with the
-  /// longest path first.  If multiple cookies have the same path length, those
-  /// with the earliest creation time will be first.
+  /// information. The cookies returned will be sorted, with those with the
+  /// longest path first. If multiple cookies have the same path length, those
+  /// with the earliest creation time will be first. This method only retrieves
+  /// cookies for domains that the extension has host permissions to.
   external JSPromise getAll(
 
       /// Information to filter the cookies being retrieved.
@@ -82,11 +80,16 @@ typedef SameSiteStatus = String;
 /// call that overwrote it, "cause" will be "overwrite". Plan your response
 /// accordingly.
 typedef OnChangedCause = String;
+extension type CookiePartitionKey._(JSObject _) implements JSObject {
+  external factory CookiePartitionKey(
+      {
+      /// The top-level site the partitioned cookie is available in.
+      String? topLevelSite});
 
-@JS()
-@staticInterop
-@anonymous
-class Cookie {
+  /// The top-level site the partitioned cookie is available in.
+  external String? topLevelSite;
+}
+extension type Cookie._(JSObject _) implements JSObject {
   external factory Cookie({
     /// The name of the cookie.
     String name,
@@ -127,10 +130,12 @@ class Cookie {
     /// The ID of the cookie store containing this cookie, as provided in
     /// getAllCookieStores().
     String storeId,
-  });
-}
 
-extension CookieExtension on Cookie {
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
+  });
+
   /// The name of the cookie.
   external String name;
 
@@ -170,12 +175,12 @@ extension CookieExtension on Cookie {
   /// The ID of the cookie store containing this cookie, as provided in
   /// getAllCookieStores().
   external String storeId;
-}
 
-@JS()
-@staticInterop
-@anonymous
-class CookieStore {
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  external CookiePartitionKey? partitionKey;
+}
+extension type CookieStore._(JSObject _) implements JSObject {
   external factory CookieStore({
     /// The unique identifier for the cookie store.
     String id,
@@ -183,20 +188,14 @@ class CookieStore {
     /// Identifiers of all the browser tabs that share this cookie store.
     JSArray tabIds,
   });
-}
 
-extension CookieStoreExtension on CookieStore {
   /// The unique identifier for the cookie store.
   external String id;
 
   /// Identifiers of all the browser tabs that share this cookie store.
   external JSArray tabIds;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class CookieDetails {
+extension type CookieDetails._(JSObject _) implements JSObject {
   external factory CookieDetails({
     /// The URL with which the cookie to access is associated. This argument may
     /// be a full URL, in which case any data following the URL path (e.g. the
@@ -210,10 +209,12 @@ class CookieDetails {
     /// The ID of the cookie store in which to look for the cookie. By default,
     /// the current execution context's cookie store will be used.
     String? storeId,
-  });
-}
 
-extension CookieDetailsExtension on CookieDetails {
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
+  });
+
   /// The URL with which the cookie to access is associated. This argument may
   /// be a full URL, in which case any data following the URL path (e.g. the
   /// query string) is simply ignored. If host permissions for this URL are not
@@ -226,12 +227,12 @@ extension CookieDetailsExtension on CookieDetails {
   /// The ID of the cookie store in which to look for the cookie. By default,
   /// the current execution context's cookie store will be used.
   external String? storeId;
-}
 
-@JS()
-@staticInterop
-@anonymous
-class OnChangedChangeInfo {
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  external CookiePartitionKey? partitionKey;
+}
+extension type OnChangedChangeInfo._(JSObject _) implements JSObject {
   external factory OnChangedChangeInfo({
     /// True if a cookie was removed.
     bool removed,
@@ -242,9 +243,7 @@ class OnChangedChangeInfo {
     /// The underlying reason behind the cookie's change.
     OnChangedCause cause,
   });
-}
 
-extension OnChangedChangeInfoExtension on OnChangedChangeInfo {
   /// True if a cookie was removed.
   external bool removed;
 
@@ -254,11 +253,7 @@ extension OnChangedChangeInfoExtension on OnChangedChangeInfo {
   /// The underlying reason behind the cookie's change.
   external OnChangedCause cause;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class GetAllDetails {
+extension type GetAllDetails._(JSObject _) implements JSObject {
   external factory GetAllDetails({
     /// Restricts the retrieved cookies to those that would match the given URL.
     String? url,
@@ -283,10 +278,12 @@ class GetAllDetails {
     /// The cookie store to retrieve cookies from. If omitted, the current
     /// execution context's cookie store will be used.
     String? storeId,
-  });
-}
 
-extension GetAllDetailsExtension on GetAllDetails {
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
+  });
+
   /// Restricts the retrieved cookies to those that would match the given URL.
   external String? url;
 
@@ -310,12 +307,12 @@ extension GetAllDetailsExtension on GetAllDetails {
   /// The cookie store to retrieve cookies from. If omitted, the current
   /// execution context's cookie store will be used.
   external String? storeId;
-}
 
-@JS()
-@staticInterop
-@anonymous
-class SetDetails {
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  external CookiePartitionKey? partitionKey;
+}
+extension type SetDetails._(JSObject _) implements JSObject {
   external factory SetDetails({
     /// The request-URI to associate with the setting of the cookie. This value
     /// can affect the default domain and path values of the created cookie. If
@@ -353,10 +350,12 @@ class SetDetails {
     /// The ID of the cookie store in which to set the cookie. By default, the
     /// cookie is set in the current execution context's cookie store.
     String? storeId,
-  });
-}
 
-extension SetDetailsExtension on SetDetails {
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
+  });
+
   /// The request-URI to associate with the setting of the cookie. This value
   /// can affect the default domain and path values of the created cookie. If
   /// host permissions for this URL are not specified in the manifest file, the
@@ -393,12 +392,12 @@ extension SetDetailsExtension on SetDetails {
   /// The ID of the cookie store in which to set the cookie. By default, the
   /// cookie is set in the current execution context's cookie store.
   external String? storeId;
-}
 
-@JS()
-@staticInterop
-@anonymous
-class RemoveCallbackDetails {
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  external CookiePartitionKey? partitionKey;
+}
+extension type RemoveCallbackDetails._(JSObject _) implements JSObject {
   external factory RemoveCallbackDetails({
     /// The URL associated with the cookie that's been removed.
     String url,
@@ -408,10 +407,12 @@ class RemoveCallbackDetails {
 
     /// The ID of the cookie store from which the cookie was removed.
     String storeId,
-  });
-}
 
-extension RemoveCallbackDetailsExtension on RemoveCallbackDetails {
+    /// The partition key for reading or modifying cookies with the Partitioned
+    /// attribute.
+    CookiePartitionKey? partitionKey,
+  });
+
   /// The URL associated with the cookie that's been removed.
   external String url;
 
@@ -420,4 +421,8 @@ extension RemoveCallbackDetailsExtension on RemoveCallbackDetails {
 
   /// The ID of the cookie store from which the cookie was removed.
   external String storeId;
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  external CookiePartitionKey? partitionKey;
 }

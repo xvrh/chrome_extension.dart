@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
 
+@JS()
 library;
 
 import 'dart:js_interop';
@@ -23,11 +24,7 @@ extension JSChromeJSBrowsingDataExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSBrowsingData {}
-
-extension JSBrowsingDataExtension on JSBrowsingData {
+extension type JSBrowsingData._(JSObject _) {
   /// Reports which types of data are currently selected in the 'Clear browsing
   /// data' settings UI.  Note: some of the data types included in this API are
   /// not available in the settings UI, and some UI settings control more than
@@ -88,11 +85,7 @@ extension JSBrowsingDataExtension on JSBrowsingData {
   /// Clears websites' WebSQL data.
   external JSPromise removeWebSQL(RemovalOptions options);
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RemovalOptions {
+extension type RemovalOptions._(JSObject _) implements JSObject {
   external factory RemovalOptions({
     /// Remove data accumulated on or after this date, represented in milliseconds
     /// since the epoch (accessible via the `getTime` method of the JavaScript
@@ -116,9 +109,7 @@ class RemovalOptions {
     /// and cache.  Cookies are excluded for the whole registrable domain.
     JSArray? excludeOrigins,
   });
-}
 
-extension RemovalOptionsExtension on RemovalOptions {
   /// Remove data accumulated on or after this date, represented in milliseconds
   /// since the epoch (accessible via the `getTime` method of the JavaScript
   /// `Date` object). If absent, defaults to 0 (which would remove all browsing
@@ -141,11 +132,7 @@ extension RemovalOptionsExtension on RemovalOptions {
   /// and cache.  Cookies are excluded for the whole registrable domain.
   external JSArray? excludeOrigins;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class DataTypeSet {
+extension type DataTypeSet._(JSObject _) implements JSObject {
   external factory DataTypeSet({
     /// Websites' appcaches.
     bool? appcache,
@@ -192,9 +179,7 @@ class DataTypeSet {
     /// Websites' WebSQL data.
     bool? webSQL,
   });
-}
 
-extension DataTypeSetExtension on DataTypeSet {
   /// Websites' appcaches.
   external bool? appcache;
 
@@ -240,11 +225,7 @@ extension DataTypeSetExtension on DataTypeSet {
   /// Websites' WebSQL data.
   external bool? webSQL;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class SettingsCallbackResult {
+extension type SettingsCallbackResult._(JSObject _) implements JSObject {
   external factory SettingsCallbackResult({
     RemovalOptions options,
 
@@ -258,9 +239,7 @@ class SettingsCallbackResult {
     /// if not.
     DataTypeSet dataRemovalPermitted,
   });
-}
 
-extension SettingsCallbackResultExtension on SettingsCallbackResult {
   external RemovalOptions options;
 
   /// All of the types will be present in the result, with values of `true` if
@@ -273,11 +252,7 @@ extension SettingsCallbackResultExtension on SettingsCallbackResult {
   /// if not.
   external DataTypeSet dataRemovalPermitted;
 }
-
-@JS()
-@staticInterop
-@anonymous
-class RemovalOptionsOriginTypes {
+extension type RemovalOptionsOriginTypes._(JSObject _) implements JSObject {
   external factory RemovalOptionsOriginTypes({
     /// Normal websites.
     bool? unprotectedWeb,
@@ -289,9 +264,7 @@ class RemovalOptionsOriginTypes {
     /// careful!).
     bool? extension,
   });
-}
 
-extension RemovalOptionsOriginTypesExtension on RemovalOptionsOriginTypes {
   /// Normal websites.
   external bool? unprotectedWeb;
 

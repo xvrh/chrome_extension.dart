@@ -27,12 +27,12 @@ class ChromeAlarms {
   /// replaced by this alarm.
   ///
   /// In order to reduce the load on the user's machine, Chrome limits alarms
-  /// to at most once every 1 minute but may delay them an arbitrary amount
+  /// to at most once every 30 seconds but may delay them an arbitrary amount
   /// more.  That is, setting `delayInMinutes` or
-  /// `periodInMinutes` to less than `1` will not be
+  /// `periodInMinutes` to less than `0.5` will not be
   /// honored and will cause a warning.  `when` can be set to less
-  /// than 1 minute after "now" without warning but won't actually cause the
-  /// alarm to fire for at least 1 minute.
+  /// than 30 seconds after "now" without warning but won't actually cause the
+  /// alarm to fire for at least 30 seconds.
   ///
   /// To help you debug your app or extension, when you've loaded it unpacked,
   /// there's no limit to how often the alarm can fire.
