@@ -23,7 +23,8 @@ jobs:
       - run: |
           (dart pub get) && \
           (cd extension_examples/dart && dart pub get) && \
-          (cd extension_examples/flutter && flutter pub get)
+          (cd extension_examples/flutter && flutter pub get) && \
+          (cd extension_examples/flutter2 && flutter pub get)
       - run: flutter analyze --fatal-infos .
       - run: dart run puppeteer:download_chrome
       - run: xvfb-run --auto-servernum dart test
