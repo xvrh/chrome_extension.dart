@@ -28,10 +28,9 @@ packages:
   chrome_extension:
     dependency: "direct main"
     description:
-      name: chrome_extension
-      sha256: "35bf0e46c60c24690686c5565d68c23b8fcb125fc86786db33f9bd3145726c50"
-      url: "https://pub.dev"
-    source: hosted
+      path: "../.."
+      relative: true
+    source: path
     version: "0.3.0"
   clock:
     dependency: transitive
