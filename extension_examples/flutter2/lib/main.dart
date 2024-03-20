@@ -1,7 +1,6 @@
 import 'package:chrome_extension/tabs.dart';
 import 'package:flutter/material.dart' hide Tab;
 import 'package:web/web.dart' as web;
-
 import 'qr_view.dart';
 
 void main() => runApp(const MyApp());
