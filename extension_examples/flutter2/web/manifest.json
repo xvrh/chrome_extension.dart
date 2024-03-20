@@ -1,0 +1,20 @@
+{
+    "name": "QR Code Extension",
+    "description": "QR Code Extension",
+    "version": "1.0.0",
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' ; object-src 'self'"
+    },
+    "action": {
+        "default_popup": "index.html#popup",
+        "default_icon": "icons/Icon-192.png"
+    },
+    "permissions": [
+        "activeTab"
+    ],
+    "manifest_version": 3,
+    "options_ui": {
+        "page": "index.html#options",
+        "open_in_tab": true
+    }
+}
