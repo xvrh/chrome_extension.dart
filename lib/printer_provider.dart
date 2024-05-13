@@ -7,7 +7,7 @@ import 'src/js/printer_provider.dart' as $js;
 import 'src/js/usb.dart' as $js_usb;
 import 'usb.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _printerProvider = ChromePrinterProvider._();
 

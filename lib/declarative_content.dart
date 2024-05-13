@@ -6,7 +6,7 @@ import 'events.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/declarative_content.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _declarativeContent = ChromeDeclarativeContent._();
 

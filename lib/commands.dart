@@ -8,7 +8,7 @@ import 'src/js/commands.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
 import 'tabs.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _commands = ChromeCommands._();
 

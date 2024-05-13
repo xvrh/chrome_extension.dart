@@ -8,7 +8,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/input_ime.dart' as $js;
 
 export 'input.dart' show ChromeInput, ChromeInputExtension;
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _inputIme = ChromeInputIme._();
 

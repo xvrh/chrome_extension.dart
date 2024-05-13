@@ -8,7 +8,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/extension.dart' as $js;
 import 'src/js/runtime.dart' as $js_runtime;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _extension = ChromeExtension._();
 

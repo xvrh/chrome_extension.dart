@@ -6,7 +6,7 @@ import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/top_sites.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _topSites = ChromeTopSites._();
 

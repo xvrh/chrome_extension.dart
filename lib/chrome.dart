@@ -94,7 +94,7 @@ export 'scripting.dart' show ChromeScripting, ChromeScriptingExtension;
 export 'search.dart' show ChromeSearch, ChromeSearchExtension;
 export 'sessions.dart' show ChromeSessions, ChromeSessionsExtension;
 export 'side_panel.dart' show ChromeSidePanel, ChromeSidePanelExtension;
-export 'src/chrome.dart' show chrome, Chrome;
+export 'src/chrome.dart' show chrome, Chrome, EventStream;
 export 'storage.dart' show ChromeStorage, ChromeStorageExtension;
 export 'system.dart' show ChromeSystem, ChromeSystemExtension;
 export 'system_cpu.dart' show ChromeSystemCpu, ChromeSystemCpuExtension;

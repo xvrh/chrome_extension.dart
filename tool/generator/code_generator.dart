@@ -210,7 +210,7 @@ class DartApiGenerator extends _GeneratorBase {
       ..name = ''
       ..comments.add('ignore_for_file: unnecessary_parenthesis')
       ..directives.addAll([
-        Directive.export('src/chrome.dart', show: ['chrome']),
+        Directive.export('src/chrome.dart', show: ['chrome', 'EventStream']),
         Directive.import(_internalHelpers),
         if (api.group case var group?)
           Directive.export('${group.snakeCase}.dart', show: [
@@ -738,7 +738,7 @@ String generateDartGroupCode(String groupName, List<model.ChromeApi> apis) {
 String generateChromeCode(List<model.ChromeApi> apis, List<String> groups) {
   final library = Library((b) => b
     ..directives.addAll([
-      Directive.export('src/chrome.dart', show: ['chrome', 'Chrome']),
+      Directive.export('src/chrome.dart', show: ['chrome', 'Chrome', 'EventStream']),
       for (var api in apis)
         Directive.export(api.fileName, show: [
           'Chrome${api.name.upperCamel}',

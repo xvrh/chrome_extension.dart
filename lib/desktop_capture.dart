@@ -6,7 +6,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/desktop_capture.dart' as $js;
 import 'tabs.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _desktopCapture = ChromeDesktopCapture._();
 

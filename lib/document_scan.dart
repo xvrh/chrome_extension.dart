@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/document_scan.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _documentScan = ChromeDocumentScan._();
 

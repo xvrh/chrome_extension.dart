@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/page_capture.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _pageCapture = ChromePageCapture._();
 

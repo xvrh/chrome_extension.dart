@@ -7,7 +7,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/system_display.dart' as $js;
 import 'system.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 export 'system.dart' show ChromeSystem, ChromeSystemExtension;
 
 final _systemDisplay = ChromeSystemDisplay._();

@@ -7,7 +7,7 @@ import 'src/js/context_menus.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
 import 'tabs.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _contextMenus = ChromeContextMenus._();
 

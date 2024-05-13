@@ -7,7 +7,7 @@ import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/web_navigation.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _webNavigation = ChromeWebNavigation._();
 

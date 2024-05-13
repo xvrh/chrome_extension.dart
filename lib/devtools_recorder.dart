@@ -7,7 +7,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/devtools_recorder.dart' as $js;
 
 export 'devtools.dart' show ChromeDevtools, ChromeDevtoolsExtension;
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _devtoolsRecorder = ChromeDevtoolsRecorder._();
 
