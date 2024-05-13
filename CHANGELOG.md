@@ -1,3 +1,7 @@
+## 0.3.1
+
+- Expose `EventStream` class.
+
 ## 0.3.0
 
 - Regenerate the bindings based on Chrome v122
