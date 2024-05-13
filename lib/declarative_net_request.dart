@@ -7,7 +7,7 @@ import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/declarative_net_request.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _declarativeNetRequest = ChromeDeclarativeNetRequest._();
 

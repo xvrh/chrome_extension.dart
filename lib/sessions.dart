@@ -8,7 +8,7 @@ import 'src/js/sessions.dart' as $js;
 import 'tabs.dart';
 import 'windows.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _sessions = ChromeSessions._();
 

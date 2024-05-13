@@ -8,7 +8,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/enterprise_hardware_platform.dart' as $js;
 
 export 'enterprise.dart' show ChromeEnterprise, ChromeEnterpriseExtension;
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _enterpriseHardwarePlatform = ChromeEnterpriseHardwarePlatform._();
 

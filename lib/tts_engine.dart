@@ -7,7 +7,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/tts_engine.dart' as $js;
 import 'tts.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _ttsEngine = ChromeTtsEngine._();
 

@@ -6,7 +6,7 @@ import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/platform_keys.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _platformKeys = ChromePlatformKeys._();
 

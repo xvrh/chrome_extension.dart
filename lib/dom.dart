@@ -5,7 +5,7 @@ library;
 import 'src/internal_helpers.dart';
 import 'src/js/dom.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _dom = ChromeDom._();
 

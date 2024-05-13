@@ -8,7 +8,7 @@ import 'src/js/tabs.dart' as $js_tabs;
 import 'src/js/windows.dart' as $js;
 import 'tabs.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _windows = ChromeWindows._();
 

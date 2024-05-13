@@ -6,7 +6,7 @@ import 'src/internal_helpers.dart';
 import 'src/js/proxy.dart' as $js;
 import 'types.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _proxy = ChromeProxy._();
 

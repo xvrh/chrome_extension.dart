@@ -9,7 +9,7 @@ import 'src/js/browser_action.dart' as $js_browser_action;
 import 'src/js/tabs.dart' as $js_tabs;
 import 'tabs.dart';
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _action = ChromeAction._();
 

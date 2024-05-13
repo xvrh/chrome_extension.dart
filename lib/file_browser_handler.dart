@@ -5,7 +5,7 @@ library;
 import 'src/internal_helpers.dart';
 import 'src/js/file_browser_handler.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _fileBrowserHandler = ChromeFileBrowserHandler._();
 

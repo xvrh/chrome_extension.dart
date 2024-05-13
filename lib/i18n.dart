@@ -6,7 +6,7 @@ import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/i18n.dart' as $js;
 
-export 'src/chrome.dart' show chrome;
+export 'src/chrome.dart' show chrome, EventStream;
 
 final _i18n = ChromeI18n._();
 
