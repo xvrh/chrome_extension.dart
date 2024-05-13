@@ -164,6 +164,7 @@ void _tests(TestContext context) {
     var getPopupParams = TabDetails(tabId: tab.id);
 
     await chrome.action.setPopup(popupParams);
+    await _addSmallDelay();
     var actual = await chrome.action.getPopup(getPopupParams);
     check(actual).endsWith(popupFile); // adds extension prefix
     await chrome.action.setPopup(clearPopupParams);
