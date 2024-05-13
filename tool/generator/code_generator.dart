@@ -737,7 +737,8 @@ String generateDartGroupCode(String groupName, List<model.ChromeApi> apis) {
 String generateChromeCode(List<model.ChromeApi> apis, List<String> groups) {
   final library = Library((b) => b
     ..directives.addAll([
-      Directive.export('src/chrome.dart', show: ['chrome', 'Chrome', 'EventStream']),
+      Directive.export('src/chrome.dart',
+          show: ['chrome', 'Chrome', 'EventStream']),
       for (var api in apis)
         Directive.export(api.fileName, show: [
           'Chrome${api.name.upperCamel}',
