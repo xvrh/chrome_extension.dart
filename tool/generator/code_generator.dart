@@ -29,7 +29,6 @@ class JsBindingGenerator extends _GeneratorBase {
 
   String toCode() {
     final library = Library((b) => b
-      ..annotations.add(_jsAnnotation())
       ..name = ''
       ..comments.add('ignore_for_file: non_constant_identifier_names')
       ..comments.add('ignore_for_file: unnecessary_import')
