@@ -155,7 +155,7 @@ class ChromeIdentity {
               account: AccountInfo.fromJS(account),
               signedIn: signedIn,
             ));
-          });
+          }.toJS);
 }
 
 enum AccountStatus {

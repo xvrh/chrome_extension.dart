@@ -50,7 +50,7 @@ class ChromeOmnibox {
   EventStream<void> get onInputStarted =>
       $js.chrome.omnibox.onInputStarted.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// User has changed what is typed into the omnibox.
   EventStream<OnInputChangedEvent> get onInputChanged =>
@@ -62,7 +62,7 @@ class ChromeOmnibox {
               text: text,
               suggest: suggest,
             ));
-          });
+          }.toJS);
 
   /// User has accepted what is typed into the omnibox.
   EventStream<OnInputEnteredEvent> get onInputEntered =>
@@ -74,19 +74,19 @@ class ChromeOmnibox {
               text: text,
               disposition: OnInputEnteredDisposition.fromJS(disposition),
             ));
-          });
+          }.toJS);
 
   /// User has ended the keyword input session without accepting the input.
   EventStream<void> get onInputCancelled =>
       $js.chrome.omnibox.onInputCancelled.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// User has deleted a suggested result.
   EventStream<String> get onDeleteSuggestion =>
       $js.chrome.omnibox.onDeleteSuggestion.asStream(($c) => (String text) {
             return $c(text);
-          });
+          }.toJS);
 }
 
 /// The style type.

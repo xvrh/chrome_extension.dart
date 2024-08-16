@@ -462,7 +462,7 @@ class DartApiGenerator extends _GeneratorBase {
             ])
             ..body = Block.of([
               refer(r'$c').call([completeParameter]).returned.statement
-            ])).closure.code).closure
+            ])).closure.code).closure.property('toJS')
       ]).code
       ..lambda = true
       ..type = MethodType.getter);

@@ -185,7 +185,7 @@ class ChromeDownloads {
   EventStream<DownloadItem> get onCreated => $js.chrome.downloads.onCreated
       .asStream(($c) => ($js.DownloadItem downloadItem) {
             return $c(DownloadItem.fromJS(downloadItem));
-          });
+          }.toJS);
 
   /// Fires with the `downloadId` when a download is erased from
   /// history.
@@ -194,7 +194,7 @@ class ChromeDownloads {
   EventStream<int> get onErased =>
       $js.chrome.downloads.onErased.asStream(($c) => (int downloadId) {
             return $c(downloadId);
-          });
+          }.toJS);
 
   /// When any of a [DownloadItem]'s properties except
   /// `bytesReceived` and `estimatedEndTime` changes,
@@ -203,7 +203,7 @@ class ChromeDownloads {
   EventStream<DownloadDelta> get onChanged => $js.chrome.downloads.onChanged
       .asStream(($c) => ($js.DownloadDelta downloadDelta) {
             return $c(DownloadDelta.fromJS(downloadDelta));
-          });
+          }.toJS);
 
   /// During the filename determination process, extensions will be given the
   /// opportunity to override the target [DownloadItem.filename]. Each
@@ -238,7 +238,7 @@ class ChromeDownloads {
                 (suggest as Function)(suggestion?.toJS);
               },
             ));
-          });
+          }.toJS);
 }
 
 /// <dl><dt>uniquify</dt>

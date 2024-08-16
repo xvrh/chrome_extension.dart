@@ -72,7 +72,7 @@ class ChromeInstanceId {
   EventStream<void> get onTokenRefresh =>
       $js.chrome.instanceId.onTokenRefresh.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 class GetTokenParams {

@@ -114,7 +114,7 @@ class ChromeWebAuthenticationProxy {
       $js.chrome.webAuthenticationProxy.onRemoteSessionStateChange
           .asStream(($c) => () {
                 return $c(null);
-              });
+              }.toJS);
 
   /// Fires when a WebAuthn `navigator.credentials.create()` call
   /// occurs. The extension must supply a response by calling
@@ -124,7 +124,7 @@ class ChromeWebAuthenticationProxy {
       $js.chrome.webAuthenticationProxy.onCreateRequest
           .asStream(($c) => ($js.CreateRequest requestInfo) {
                 return $c(CreateRequest.fromJS(requestInfo));
-              });
+              }.toJS);
 
   /// Fires when a WebAuthn navigator.credentials.get() call occurs. The
   /// extension must supply a response by calling
@@ -134,7 +134,7 @@ class ChromeWebAuthenticationProxy {
       $js.chrome.webAuthenticationProxy.onGetRequest
           .asStream(($c) => ($js.GetRequest requestInfo) {
                 return $c(GetRequest.fromJS(requestInfo));
-              });
+              }.toJS);
 
   /// Fires when a
   /// `PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()`
@@ -145,7 +145,7 @@ class ChromeWebAuthenticationProxy {
       $js.chrome.webAuthenticationProxy.onIsUvpaaRequest
           .asStream(($c) => ($js.IsUvpaaRequest requestInfo) {
                 return $c(IsUvpaaRequest.fromJS(requestInfo));
-              });
+              }.toJS);
 
   /// Fires when a `onCreateRequest` or `onGetRequest`
   /// event is canceled (because the WebAuthn request was aborted by the
@@ -157,7 +157,7 @@ class ChromeWebAuthenticationProxy {
       $js.chrome.webAuthenticationProxy.onRequestCanceled
           .asStream(($c) => (int requestId) {
                 return $c(requestId);
-              });
+              }.toJS);
 }
 
 class IsUvpaaRequest {

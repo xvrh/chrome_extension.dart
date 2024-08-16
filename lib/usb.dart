@@ -288,14 +288,14 @@ class ChromeUsb {
   EventStream<Device> get onDeviceAdded =>
       $js.chrome.usb.onDeviceAdded.asStream(($c) => ($js.Device device) {
             return $c(Device.fromJS(device));
-          });
+          }.toJS);
 
   /// Event generated when a device is removed from the system. See
   /// [onDeviceAdded] for which events are delivered.
   EventStream<Device> get onDeviceRemoved =>
       $js.chrome.usb.onDeviceRemoved.asStream(($c) => ($js.Device device) {
             return $c(Device.fromJS(device));
-          });
+          }.toJS);
 }
 
 /// Direction, Recipient, RequestType, and TransferType all map to their

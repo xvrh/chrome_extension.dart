@@ -60,7 +60,7 @@ class ChromeGcm {
   EventStream<OnMessageMessage> get onMessage =>
       $js.chrome.gcm.onMessage.asStream(($c) => ($js.OnMessageMessage message) {
             return $c(OnMessageMessage.fromJS(message));
-          });
+          }.toJS);
 
   /// Fired when a FCM server had to delete messages sent by an app server to
   /// the application. See [Lifetime of a
@@ -69,13 +69,13 @@ class ChromeGcm {
   EventStream<void> get onMessagesDeleted =>
       $js.chrome.gcm.onMessagesDeleted.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Fired when it was not possible to send a message to the FCM server.
   EventStream<OnSendErrorError> get onSendError =>
       $js.chrome.gcm.onSendError.asStream(($c) => ($js.OnSendErrorError error) {
             return $c(OnSendErrorError.fromJS(error));
-          });
+          }.toJS);
 }
 
 class OnMessageMessage {

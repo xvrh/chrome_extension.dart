@@ -247,7 +247,7 @@ class ChromeRuntime {
   EventStream<void> get onStartup =>
       $js.chrome.runtime.onStartup.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Fired when the extension is first installed, when the extension is updated
   /// to a new version, and when Chrome is updated to a new version.
@@ -255,7 +255,7 @@ class ChromeRuntime {
       $js.chrome.runtime.onInstalled
           .asStream(($c) => ($js.OnInstalledDetails details) {
                 return $c(OnInstalledDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Sent to the event page just before it is unloaded. This gives the
   /// extension opportunity to do some clean up. Note that since the page is
@@ -266,13 +266,13 @@ class ChromeRuntime {
   EventStream<void> get onSuspend =>
       $js.chrome.runtime.onSuspend.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Sent after onSuspend to indicate that the app won't be unloaded after all.
   EventStream<void> get onSuspendCanceled =>
       $js.chrome.runtime.onSuspendCanceled.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Fired when an update is available, but isn't installed immediately because
   /// the app is currently running. If you do nothing, the update will be
@@ -288,41 +288,41 @@ class ChromeRuntime {
       $js.chrome.runtime.onUpdateAvailable
           .asStream(($c) => ($js.OnUpdateAvailableDetails details) {
                 return $c(OnUpdateAvailableDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when a Chrome update is available, but isn't installed immediately
   /// because a browser restart is required.
   EventStream<void> get onBrowserUpdateAvailable =>
       $js.chrome.runtime.onBrowserUpdateAvailable.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Fired when a connection is made from either an extension process or a
   /// content script (by [runtime.connect]).
   EventStream<Port> get onConnect =>
       $js.chrome.runtime.onConnect.asStream(($c) => ($js.Port port) {
             return $c(Port.fromJS(port));
-          });
+          }.toJS);
 
   /// Fired when a connection is made from another extension (by
   /// [runtime.connect]), or from an externally connectable web site.
   EventStream<Port> get onConnectExternal =>
       $js.chrome.runtime.onConnectExternal.asStream(($c) => ($js.Port port) {
             return $c(Port.fromJS(port));
-          });
+          }.toJS);
 
   /// Fired when a connection is made from a user script from this extension.
   EventStream<Port> get onUserScriptConnect =>
       $js.chrome.runtime.onUserScriptConnect.asStream(($c) => ($js.Port port) {
             return $c(Port.fromJS(port));
-          });
+          }.toJS);
 
   /// Fired when a connection is made from a native application. Currently only
   /// supported on Chrome OS.
   EventStream<Port> get onConnectNative =>
       $js.chrome.runtime.onConnectNative.asStream(($c) => ($js.Port port) {
             return $c(Port.fromJS(port));
-          });
+          }.toJS);
 
   /// Fired when a message is sent from either an extension process (by
   /// [runtime.sendMessage]) or a content script (by [tabs.sendMessage]).
@@ -337,7 +337,7 @@ class ChromeRuntime {
               sender: MessageSender.fromJS(sender),
               sendResponse: sendResponse,
             ));
-          });
+          }.toJS);
 
   /// Fired when a message is sent from another extension/app (by
   /// [runtime.sendMessage]). Cannot be used in a content script.
@@ -352,7 +352,7 @@ class ChromeRuntime {
               sender: MessageSender.fromJS(sender),
               sendResponse: sendResponse,
             ));
-          });
+          }.toJS);
 
   /// Fired when a message is sent from a user script associated with the same
   /// extension.
@@ -367,7 +367,7 @@ class ChromeRuntime {
               sender: MessageSender.fromJS(sender),
               sendResponse: sendResponse,
             ));
-          });
+          }.toJS);
 
   /// Fired when an app or the device that it runs on needs to be restarted. The
   /// app should close all its windows at its earliest convenient time to let
@@ -378,7 +378,7 @@ class ChromeRuntime {
       $js.chrome.runtime.onRestartRequired
           .asStream(($c) => ($js.OnRestartRequiredReason reason) {
                 return $c(OnRestartRequiredReason.fromJS(reason));
-              });
+              }.toJS);
 }
 
 /// The operating system Chrome is running on.
@@ -636,7 +636,7 @@ class Port {
   EventStream<Port> get onDisconnect =>
       _wrapped.onDisconnect.asStream(($c) => ($js.Port port) {
             return $c(Port.fromJS(port));
-          });
+          }.toJS);
 
   /// This event is fired when $(ref:Port.postMessage postMessage) is called by
   /// the other end of the port.
@@ -649,7 +649,7 @@ class Port {
               message: message.dartify()!,
               port: Port.fromJS(port),
             ));
-          });
+          }.toJS);
 }
 
 class MessageSender {

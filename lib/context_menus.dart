@@ -121,7 +121,7 @@ class ChromeContextMenus {
               info: OnClickData.fromJS(info),
               tab: tab?.let(Tab.fromJS),
             ));
-          });
+          }.toJS);
 }
 
 /// The different contexts a menu can appear in. Specifying 'all' is equivalent

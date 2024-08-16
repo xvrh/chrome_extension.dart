@@ -408,7 +408,7 @@ class ChromeTabs {
   EventStream<Tab> get onCreated =>
       $js.chrome.tabs.onCreated.asStream(($c) => ($js.Tab tab) {
             return $c(Tab.fromJS(tab));
-          });
+          }.toJS);
 
   /// Fired when a tab is updated.
   EventStream<OnUpdatedEvent> get onUpdated =>
@@ -422,7 +422,7 @@ class ChromeTabs {
               changeInfo: OnUpdatedChangeInfo.fromJS(changeInfo),
               tab: Tab.fromJS(tab),
             ));
-          });
+          }.toJS);
 
   /// Fired when a tab is moved within a window. Only one move event is fired,
   /// representing the tab the user directly moved. Move events are not fired
@@ -438,7 +438,7 @@ class ChromeTabs {
               tabId: tabId,
               moveInfo: OnMovedMoveInfo.fromJS(moveInfo),
             ));
-          });
+          }.toJS);
 
   /// Fires when the selected tab in a window changes.
   EventStream<OnSelectionChangedEvent> get onSelectionChanged =>
@@ -450,7 +450,7 @@ class ChromeTabs {
               tabId: tabId,
               selectInfo: OnSelectionChangedSelectInfo.fromJS(selectInfo),
             ));
-          });
+          }.toJS);
 
   /// Fires when the selected tab in a window changes. Note that the tab's URL
   /// may not be set at the time this event fired, but you can listen to
@@ -464,7 +464,7 @@ class ChromeTabs {
               tabId: tabId,
               selectInfo: OnActiveChangedSelectInfo.fromJS(selectInfo),
             ));
-          });
+          }.toJS);
 
   /// Fires when the active tab in a window changes. Note that the tab's URL may
   /// not be set at the time this event fired, but you can listen to onUpdated
@@ -473,21 +473,21 @@ class ChromeTabs {
       $js.chrome.tabs.onActivated
           .asStream(($c) => ($js.OnActivatedActiveInfo activeInfo) {
                 return $c(OnActivatedActiveInfo.fromJS(activeInfo));
-              });
+              }.toJS);
 
   /// Fired when the highlighted or selected tabs in a window changes.
   EventStream<OnHighlightChangedSelectInfo> get onHighlightChanged =>
       $js.chrome.tabs.onHighlightChanged
           .asStream(($c) => ($js.OnHighlightChangedSelectInfo selectInfo) {
                 return $c(OnHighlightChangedSelectInfo.fromJS(selectInfo));
-              });
+              }.toJS);
 
   /// Fired when the highlighted or selected tabs in a window changes.
   EventStream<OnHighlightedHighlightInfo> get onHighlighted =>
       $js.chrome.tabs.onHighlighted
           .asStream(($c) => ($js.OnHighlightedHighlightInfo highlightInfo) {
                 return $c(OnHighlightedHighlightInfo.fromJS(highlightInfo));
-              });
+              }.toJS);
 
   /// Fired when a tab is detached from a window; for example, because it was
   /// moved between windows.
@@ -500,7 +500,7 @@ class ChromeTabs {
               tabId: tabId,
               detachInfo: OnDetachedDetachInfo.fromJS(detachInfo),
             ));
-          });
+          }.toJS);
 
   /// Fired when a tab is attached to a window; for example, because it was
   /// moved between windows.
@@ -513,7 +513,7 @@ class ChromeTabs {
               tabId: tabId,
               attachInfo: OnAttachedAttachInfo.fromJS(attachInfo),
             ));
-          });
+          }.toJS);
 
   /// Fired when a tab is closed.
   EventStream<OnRemovedEvent> get onRemoved =>
@@ -525,7 +525,7 @@ class ChromeTabs {
               tabId: tabId,
               removeInfo: OnRemovedRemoveInfo.fromJS(removeInfo),
             ));
-          });
+          }.toJS);
 
   /// Fired when a tab is replaced with another tab due to prerendering or
   /// instant.
@@ -538,14 +538,14 @@ class ChromeTabs {
               addedTabId: addedTabId,
               removedTabId: removedTabId,
             ));
-          });
+          }.toJS);
 
   /// Fired when a tab is zoomed.
   EventStream<OnZoomChangeZoomChangeInfo> get onZoomChange =>
       $js.chrome.tabs.onZoomChange
           .asStream(($c) => ($js.OnZoomChangeZoomChangeInfo zoomChangeInfo) {
                 return $c(OnZoomChangeZoomChangeInfo.fromJS(zoomChangeInfo));
-              });
+              }.toJS);
 }
 
 /// The tab's loading status.

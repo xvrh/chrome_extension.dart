@@ -101,7 +101,7 @@ class ChromeSetting {
   EventStream<OnChangeDetails> get onChange =>
       _wrapped.onChange.asStream(($c) => ($js.OnChangeDetails details) {
             return $c(OnChangeDetails.fromJS(details));
-          });
+          }.toJS);
 }
 
 class GetCallbackDetails {

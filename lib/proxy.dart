@@ -32,7 +32,7 @@ class ChromeProxy {
       $js.chrome.proxy.onProxyError
           .asStream(($c) => ($js.OnProxyErrorDetails details) {
                 return $c(OnProxyErrorDetails.fromJS(details));
-              });
+              }.toJS);
 }
 
 enum Scheme {

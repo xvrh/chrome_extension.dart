@@ -162,28 +162,28 @@ class ChromeInputIme {
               engineId: engineID,
               screen: ScreenType.fromJS(screen),
             ));
-          });
+          }.toJS);
 
   /// This event is sent when an IME is deactivated. It signals that the IME
   /// will no longer be receiving onKeyPress events.
   EventStream<String> get onDeactivated =>
       $js.chrome.input.ime.onDeactivated.asStream(($c) => (String engineId) {
             return $c(engineId);
-          });
+          }.toJS);
 
   /// This event is sent when focus enters a text box. It is sent to all
   /// extensions that are listening to this event, and enabled by the user.
   EventStream<InputContext> get onFocus =>
       $js.chrome.input.ime.onFocus.asStream(($c) => ($js.InputContext context) {
             return $c(InputContext.fromJS(context));
-          });
+          }.toJS);
 
   /// This event is sent when focus leaves a text box. It is sent to all
   /// extensions that are listening to this event, and enabled by the user.
   EventStream<int> get onBlur =>
       $js.chrome.input.ime.onBlur.asStream(($c) => (int contextId) {
             return $c(contextId);
-          });
+          }.toJS);
 
   /// This event is sent when the properties of the current InputContext change,
   /// such as the the type. It is sent to all extensions that are listening to
@@ -192,7 +192,7 @@ class ChromeInputIme {
       $js.chrome.input.ime.onInputContextUpdate
           .asStream(($c) => ($js.InputContext context) {
                 return $c(InputContext.fromJS(context));
-              });
+              }.toJS);
 
   /// Fired when a key event is sent from the operating system. The event will
   /// be sent to the extension if this extension owns the active IME. The
@@ -211,7 +211,7 @@ class ChromeInputIme {
               keyData: KeyboardEvent.fromJS(keyData),
               requestId: requestId,
             ));
-          });
+          }.toJS);
 
   /// This event is sent if this extension owns the active IME.
   EventStream<OnCandidateClickedEvent> get onCandidateClicked =>
@@ -225,7 +225,7 @@ class ChromeInputIme {
               candidateId: candidateID,
               button: MouseButton.fromJS(button),
             ));
-          });
+          }.toJS);
 
   /// Called when the user selects a menu item
   EventStream<OnMenuItemActivatedEvent> get onMenuItemActivated =>
@@ -237,7 +237,7 @@ class ChromeInputIme {
               engineId: engineID,
               name: name,
             ));
-          });
+          }.toJS);
 
   /// Called when the editable string around caret is changed or when the caret
   /// position is moved. The text length is limited to 100 characters for each
@@ -252,13 +252,13 @@ class ChromeInputIme {
               surroundingInfo: OnSurroundingTextChangedSurroundingInfo.fromJS(
                   surroundingInfo),
             ));
-          });
+          }.toJS);
 
   /// This event is sent when chrome terminates ongoing text input session.
   EventStream<String> get onReset =>
       $js.chrome.input.ime.onReset.asStream(($c) => (String engineId) {
             return $c(engineId);
-          });
+          }.toJS);
 
   /// This event is sent when a button in an assistive window is clicked.
   EventStream<OnAssistiveWindowButtonClickedDetails>
@@ -267,7 +267,7 @@ class ChromeInputIme {
               ($c) => ($js.OnAssistiveWindowButtonClickedDetails details) {
                     return $c(
                         OnAssistiveWindowButtonClickedDetails.fromJS(details));
-                  });
+                  }.toJS);
 }
 
 enum KeyboardEventType {

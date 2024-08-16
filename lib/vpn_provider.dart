@@ -87,7 +87,7 @@ class ChromeVpnProvider {
               message: PlatformMessage.fromJS(message),
               error: error,
             ));
-          });
+          }.toJS);
 
   /// Triggered when an IP packet is received via the tunnel for the VPN
   /// session owned by the extension.
@@ -96,7 +96,7 @@ class ChromeVpnProvider {
       $js.chrome.vpnProvider.onPacketReceived
           .asStream(($c) => (JSArrayBuffer data) {
                 return $c(data.toDart);
-              });
+              }.toJS);
 
   /// Triggered when a configuration created by the extension is removed by the
   /// platform.
@@ -104,7 +104,7 @@ class ChromeVpnProvider {
   EventStream<String> get onConfigRemoved =>
       $js.chrome.vpnProvider.onConfigRemoved.asStream(($c) => (String id) {
             return $c(id);
-          });
+          }.toJS);
 
   /// Triggered when a configuration is created by the platform for the
   /// extension.
@@ -122,7 +122,7 @@ class ChromeVpnProvider {
               name: name,
               data: data.toDartMap(),
             ));
-          });
+          }.toJS);
 
   /// Triggered when there is a UI event for the extension. UI events are
   /// signals from the platform that indicate to the app that a UI dialog
@@ -138,7 +138,7 @@ class ChromeVpnProvider {
               event: UIEvent.fromJS(event),
               id: id,
             ));
-          });
+          }.toJS);
 }
 
 /// The enum is used by the platform to notify the client of the VPN session

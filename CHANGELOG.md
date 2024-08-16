@@ -1,3 +1,7 @@
+## 0.4.0
+
+- Fix the package to work with Dart 3.5 & Flutter 3.24
+
 ## 0.3.1
 
 - Expose `EventStream` class.

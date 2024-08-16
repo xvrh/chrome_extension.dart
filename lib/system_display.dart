@@ -197,7 +197,7 @@ class ChromeSystemDisplay {
   EventStream<void> get onDisplayChanged =>
       $js.chrome.system.display.onDisplayChanged.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 /// Layout position, i.e. edge of parent that the display is attached to.

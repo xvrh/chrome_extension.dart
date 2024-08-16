@@ -78,7 +78,7 @@ class ChromeCookies {
   EventStream<OnChangedChangeInfo> get onChanged => $js.chrome.cookies.onChanged
       .asStream(($c) => ($js.OnChangedChangeInfo changeInfo) {
             return $c(OnChangedChangeInfo.fromJS(changeInfo));
-          });
+          }.toJS);
 }
 
 /// A cookie's 'SameSite' state

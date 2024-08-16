@@ -81,7 +81,7 @@ class ChromeTts {
   EventStream<TtsEvent> get onEvent =>
       $js.chrome.tts.onEvent.asStream(($c) => ($js.TtsEvent event) {
             return $c(TtsEvent.fromJS(event));
-          });
+          }.toJS);
 }
 
 enum EventType {

@@ -86,7 +86,7 @@ class ChromeTabCapture {
       $js.chrome.tabCapture.onStatusChanged
           .asStream(($c) => ($js.CaptureInfo info) {
                 return $c(CaptureInfo.fromJS(info));
-              });
+              }.toJS);
 }
 
 enum TabCaptureState {

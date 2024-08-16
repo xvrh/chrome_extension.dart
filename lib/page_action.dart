@@ -78,7 +78,7 @@ class ChromePageAction {
   EventStream<Tab> get onClicked =>
       $js.chrome.pageAction.onClicked.asStream(($c) => ($js_tabs.Tab tab) {
             return $c(Tab.fromJS(tab));
-          });
+          }.toJS);
 }
 
 /// Pixel data for an image. Must be an ImageData object (for example, from a

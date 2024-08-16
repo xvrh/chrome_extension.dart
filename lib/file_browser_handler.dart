@@ -32,7 +32,7 @@ class ChromeFileBrowserHandler {
               id: id,
               details: FileHandlerExecuteEventDetails.fromJS(details),
             ));
-          });
+          }.toJS);
 }
 
 class FileHandlerExecuteEventDetails {
