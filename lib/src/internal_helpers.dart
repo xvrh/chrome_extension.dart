@@ -82,14 +82,14 @@ extension JSChoiceExtension<T extends Object> on T {
 
 extension EventStreamExtension on js.Event {
   EventStream<T> asStream<T>(
-      Function Function(void Function(T)) callbackFactory) {
+      JSFunction Function(void Function(T)) callbackFactory) {
     return EventStream<T>(this, callbackFactory);
   }
 }
 
 class EventStream<T> extends Stream<T> {
   final js.Event _target;
-  final Function Function(void Function(T)) _callbackFactory;
+  final JSFunction Function(void Function(T)) _callbackFactory;
 
   EventStream(this._target, this._callbackFactory);
 
@@ -116,8 +116,8 @@ class _EventStreamSubscription<T> implements StreamSubscription<T> {
   late final JSFunction _callback;
 
   _EventStreamSubscription(this._target, this._onData,
-      Function Function(dynamic Function(T)) callbackFactory) {
-    _callback = allowInterop(callbackFactory(_wrapZone(_addData))).toJS;
+      JSFunction Function(dynamic Function(T)) callbackFactory) {
+    _callback = callbackFactory(_wrapZone(_addData));
     _tryResume();
   }
 

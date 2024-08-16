@@ -91,7 +91,7 @@ class ChromeDevtoolsInspectedWindow {
       $js.chrome.devtools.inspectedWindow.onResourceAdded
           .asStream(($c) => ($js.Resource resource) {
                 return $c(Resource.fromJS(resource));
-              });
+              }.toJS);
 
   /// Fired when a new revision of the resource is committed (e.g. user saves an
   /// edited version of the resource in the Developer Tools).
@@ -105,7 +105,7 @@ class ChromeDevtoolsInspectedWindow {
                   resource: Resource.fromJS(resource),
                   content: content,
                 ));
-              });
+              }.toJS);
 }
 
 class Resource {

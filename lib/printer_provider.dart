@@ -35,7 +35,7 @@ class ChromePrinterProvider {
                   (resultCallback
                       as Function)(printerInfo.toJSArray((e) => e.toJS));
                 });
-              });
+              }.toJS);
 
   /// Event fired when print manager requests information about a USB device
   /// that may be a printer.
@@ -61,7 +61,7 @@ class ChromePrinterProvider {
                         (resultCallback as Function)(printerInfo?.toJS);
                       },
                     ));
-                  });
+                  }.toJS);
 
   /// Event fired when print manager requests printer capabilities.
   /// |printerId|: Unique ID of the printer whose capabilities are requested.
@@ -81,7 +81,7 @@ class ChromePrinterProvider {
                 (resultCallback as Function)(capabilities.jsify()!);
               },
             ));
-          });
+          }.toJS);
 
   /// Event fired when print manager requests printing.
   /// |printJob|: The printing request parameters.
@@ -99,7 +99,7 @@ class ChromePrinterProvider {
                 (resultCallback as Function)(result.toJS);
               },
             ));
-          });
+          }.toJS);
 }
 
 /// Error codes returned in response to [onPrintRequested] event.

@@ -124,14 +124,14 @@ class ChromeFontSettings {
       $js.chrome.fontSettings.onFontChanged
           .asStream(($c) => ($js.OnFontChangedDetails details) {
                 return $c(OnFontChangedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when the default font size setting changes.
   EventStream<OnDefaultFontSizeChangedDetails> get onDefaultFontSizeChanged =>
       $js.chrome.fontSettings.onDefaultFontSizeChanged
           .asStream(($c) => ($js.OnDefaultFontSizeChangedDetails details) {
                 return $c(OnDefaultFontSizeChangedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when the default fixed font size setting changes.
   EventStream<OnDefaultFixedFontSizeChangedDetails>
@@ -139,14 +139,14 @@ class ChromeFontSettings {
           .chrome.fontSettings.onDefaultFixedFontSizeChanged
           .asStream(($c) => ($js.OnDefaultFixedFontSizeChangedDetails details) {
                 return $c(OnDefaultFixedFontSizeChangedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when the minimum font size setting changes.
   EventStream<OnMinimumFontSizeChangedDetails> get onMinimumFontSizeChanged =>
       $js.chrome.fontSettings.onMinimumFontSizeChanged
           .asStream(($c) => ($js.OnMinimumFontSizeChangedDetails details) {
                 return $c(OnMinimumFontSizeChangedDetails.fromJS(details));
-              });
+              }.toJS);
 }
 
 /// An ISO 15924 script code. The default, or global, script is represented by

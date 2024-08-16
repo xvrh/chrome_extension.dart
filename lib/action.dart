@@ -141,7 +141,7 @@ class ChromeAction {
   EventStream<Tab> get onClicked =>
       $js.chrome.action.onClicked.asStream(($c) => ($js_tabs.Tab tab) {
             return $c(Tab.fromJS(tab));
-          });
+          }.toJS);
 }
 
 class TabDetails {

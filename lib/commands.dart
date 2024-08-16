@@ -46,7 +46,7 @@ class ChromeCommands {
               command: command,
               tab: tab?.let(Tab.fromJS),
             ));
-          });
+          }.toJS);
 }
 
 class Command {

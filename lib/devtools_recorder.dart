@@ -113,10 +113,10 @@ class RecorderView {
   /// Fired when the view is shown.
   EventStream<void> get onShown => _wrapped.onShown.asStream(($c) => () {
         return $c(null);
-      });
+      }.toJS);
 
   /// Fired when the view is hidden.
   EventStream<void> get onHidden => _wrapped.onHidden.asStream(($c) => () {
         return $c(null);
-      });
+      }.toJS);
 }

@@ -41,7 +41,7 @@ class ChromeLoginState {
       $js.chrome.loginState.onSessionStateChanged
           .asStream(($c) => ($js.SessionState sessionState) {
                 return $c(SessionState.fromJS(sessionState));
-              });
+              }.toJS);
 }
 
 enum ProfileType {

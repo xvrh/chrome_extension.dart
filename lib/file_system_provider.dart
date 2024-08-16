@@ -126,7 +126,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when metadata of a file or a directory at `entryPath`
   /// is requested. The metadata must be returned with the
@@ -149,7 +149,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when a list of actions for a set of files or directories at
   /// `entryPaths` is requested. All of the returned actions must
@@ -174,7 +174,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when contents of a directory at `directoryPath` are
   /// requested. The results must be returned in chunks by calling the
@@ -198,7 +198,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when opening a file at `filePath` is requested. If the
   /// file does not exist, then the operation must fail. Maximum number of
@@ -220,7 +220,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when opening a file previously opened with
   /// `openRequestId` is requested to be closed.
@@ -241,7 +241,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when reading contents of a file opened previously with
   /// `openRequestId` is requested. The results must be returned in
@@ -264,7 +264,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when creating a directory is requested. The operation must fail
   /// with the EXISTS error if the target directory already exists.
@@ -288,7 +288,7 @@ class ChromeFileSystemProvider {
                     (errorCallback as Function)(error.toJS);
                   },
                 ));
-              });
+              }.toJS);
 
   /// Raised when deleting an entry is requested. If `recursive` is
   /// true, and the entry is a directory, then all of the entries inside
@@ -310,7 +310,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when creating a file is requested. If the file already exists,
   /// then `errorCallback` must be called with the
@@ -332,7 +332,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when copying an entry (recursively if a directory) is requested.
   /// If an error occurs, then `errorCallback` must be called.
@@ -353,7 +353,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when moving an entry (recursively if a directory) is requested.
   /// If an error occurs, then `errorCallback` must be called.
@@ -374,7 +374,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when truncating a file to a desired length is requested.
   /// If an error occurs, then `errorCallback` must be called.
@@ -395,7 +395,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when writing contents to a file opened previously with
   /// `openRequestId` is requested.
@@ -416,7 +416,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when aborting an operation with `operationRequestId`
   /// is requested. The operation executed with `operationRequestId`
@@ -442,7 +442,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when showing a configuration dialog for `fileSystemId`
   /// is requested. If it's handled, the
@@ -465,7 +465,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when showing a dialog for mounting a new file system is requested.
   /// If the extension/app is a file handler, then this event shouldn't be
@@ -488,7 +488,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when setting a new directory watcher is requested. If an error
   /// occurs, then `errorCallback` must be called.
@@ -509,7 +509,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when the watcher should be removed. If an error occurs, then
   /// `errorCallback` must be called.
@@ -530,7 +530,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 
   /// Raised when executing an action for a set of files or directories is\
   /// requested. After the action is completed, `successCallback`
@@ -552,7 +552,7 @@ class ChromeFileSystemProvider {
                 (errorCallback as Function)(error.toJS);
               },
             ));
-          });
+          }.toJS);
 }
 
 /// Error codes used by providing extensions in response to requests as well

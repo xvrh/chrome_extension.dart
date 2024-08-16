@@ -124,7 +124,7 @@ class ElementsPanel {
   EventStream<void> get onSelectionChanged =>
       _wrapped.onSelectionChanged.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 class SourcesPanel {
@@ -156,7 +156,7 @@ class SourcesPanel {
   EventStream<void> get onSelectionChanged =>
       _wrapped.onSelectionChanged.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 class ExtensionPanel {
@@ -199,18 +199,18 @@ class ExtensionPanel {
               action: action,
               queryString: queryString,
             ));
-          });
+          }.toJS);
 
   /// Fired when the user switches to the panel.
   EventStream<JSObject> get onShown =>
       _wrapped.onShown.asStream(($c) => (JSObject window) {
             return $c(window);
-          });
+          }.toJS);
 
   /// Fired when the user switches away from the panel.
   EventStream<void> get onHidden => _wrapped.onHidden.asStream(($c) => () {
         return $c(null);
-      });
+      }.toJS);
 }
 
 class ExtensionSidebarPane {
@@ -277,13 +277,13 @@ class ExtensionSidebarPane {
   EventStream<JSObject> get onShown =>
       _wrapped.onShown.asStream(($c) => (JSObject window) {
             return $c(window);
-          });
+          }.toJS);
 
   /// Fired when the sidebar pane becomes hidden as a result of the user
   /// switching away from the panel that hosts the sidebar pane.
   EventStream<void> get onHidden => _wrapped.onHidden.asStream(($c) => () {
         return $c(null);
-      });
+      }.toJS);
 }
 
 class Button {
@@ -316,7 +316,7 @@ class Button {
   /// Fired when the button is clicked.
   EventStream<void> get onClicked => _wrapped.onClicked.asStream(($c) => () {
         return $c(null);
-      });
+      }.toJS);
 }
 
 class ExtensionPanelOnSearchEvent {

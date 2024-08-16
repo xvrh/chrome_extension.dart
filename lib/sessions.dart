@@ -60,7 +60,7 @@ class ChromeSessions {
   EventStream<void> get onChanged =>
       $js.chrome.sessions.onChanged.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 class Filter {

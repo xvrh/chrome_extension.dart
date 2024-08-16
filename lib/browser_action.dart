@@ -115,7 +115,7 @@ class ChromeBrowserAction {
   EventStream<Tab> get onClicked =>
       $js.chrome.browserAction.onClicked.asStream(($c) => ($js_tabs.Tab tab) {
             return $c(Tab.fromJS(tab));
-          });
+          }.toJS);
 }
 
 typedef ColorArray = List<int>;

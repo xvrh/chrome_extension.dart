@@ -56,7 +56,7 @@ class ChromeIdle {
   EventStream<IdleState> get onStateChanged =>
       $js.chrome.idle.onStateChanged.asStream(($c) => ($js.IdleState newState) {
             return $c(IdleState.fromJS(newState));
-          });
+          }.toJS);
 }
 
 enum IdleState {

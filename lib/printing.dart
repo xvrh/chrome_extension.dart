@@ -84,7 +84,7 @@ class ChromePrinting {
               jobId: jobId,
               status: JobStatus.fromJS(status),
             ));
-          });
+          }.toJS);
 }
 
 /// The status of [submitJob] request.

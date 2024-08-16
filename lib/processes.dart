@@ -71,7 +71,7 @@ class ChromeProcesses {
   EventStream<Map> get onUpdated =>
       $js.chrome.processes.onUpdated.asStream(($c) => (JSAny processes) {
             return $c(processes.toDartMap());
-          });
+          }.toJS);
 
   /// Fired each time the Task Manager updates its process statistics,
   /// providing the dictionary of updated Process objects, indexed by process
@@ -86,7 +86,7 @@ class ChromeProcesses {
       $js.chrome.processes.onUpdatedWithMemory
           .asStream(($c) => (JSAny processes) {
                 return $c(processes.toDartMap());
-              });
+              }.toJS);
 
   /// Fired each time a process is created, providing the corrseponding Process
   /// object.
@@ -95,7 +95,7 @@ class ChromeProcesses {
   EventStream<Process> get onCreated =>
       $js.chrome.processes.onCreated.asStream(($c) => ($js.Process process) {
             return $c(Process.fromJS(process));
-          });
+          }.toJS);
 
   /// Fired each time a process becomes unresponsive, providing the
   /// corrseponding Process object.
@@ -105,7 +105,7 @@ class ChromeProcesses {
   EventStream<Process> get onUnresponsive => $js.chrome.processes.onUnresponsive
       .asStream(($c) => ($js.Process process) {
             return $c(Process.fromJS(process));
-          });
+          }.toJS);
 
   /// Fired each time a process is terminated, providing the type of exit.
   /// |processId|: The ID of the process that exited.
@@ -124,7 +124,7 @@ class ChromeProcesses {
               exitType: exitType,
               exitCode: exitCode,
             ));
-          });
+          }.toJS);
 }
 
 /// The types of the browser processes.

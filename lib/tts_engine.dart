@@ -73,7 +73,7 @@ class ChromeTtsEngine {
               options: SpeakOptions.fromJS(options),
               sendTtsEvent: sendTtsEvent,
             ));
-          });
+          }.toJS);
 
   /// Called when the user makes a call to tts.speak() and one of the voices
   /// from this extension's manifest is the first to match the options object.
@@ -94,7 +94,7 @@ class ChromeTtsEngine {
               sendTtsAudio: sendTtsAudio,
               sendError: sendError,
             ));
-          });
+          }.toJS);
 
   /// Fired when a call is made to tts.stop and this extension may be in the
   /// middle of speaking. If an extension receives a call to onStop and speech
@@ -103,7 +103,7 @@ class ChromeTtsEngine {
   EventStream<void> get onStop =>
       $js.chrome.ttsEngine.onStop.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Optional: if an engine supports the pause event, it should pause the
   /// current utterance being spoken, if any, until it receives a resume event
@@ -111,7 +111,7 @@ class ChromeTtsEngine {
   EventStream<void> get onPause =>
       $js.chrome.ttsEngine.onPause.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Optional: if an engine supports the pause event, it should also support
   /// the resume event, to continue speaking the current utterance, if any. Note
@@ -119,7 +119,7 @@ class ChromeTtsEngine {
   EventStream<void> get onResume =>
       $js.chrome.ttsEngine.onResume.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 enum VoiceGender {

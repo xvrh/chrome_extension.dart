@@ -39,7 +39,7 @@ class ChromePrintingMetrics {
       $js.chrome.printingMetrics.onPrintJobFinished
           .asStream(($c) => ($js.PrintJobInfo jobInfo) {
                 return $c(PrintJobInfo.fromJS(jobInfo));
-              });
+              }.toJS);
 }
 
 /// The source of the print job.

@@ -171,25 +171,25 @@ class ChromeManagement {
       $js.chrome.management.onInstalled
           .asStream(($c) => ($js.ExtensionInfo info) {
                 return $c(ExtensionInfo.fromJS(info));
-              });
+              }.toJS);
 
   /// Fired when an app or extension has been uninstalled.
   EventStream<String> get onUninstalled =>
       $js.chrome.management.onUninstalled.asStream(($c) => (String id) {
             return $c(id);
-          });
+          }.toJS);
 
   /// Fired when an app or extension has been enabled.
   EventStream<ExtensionInfo> get onEnabled => $js.chrome.management.onEnabled
       .asStream(($c) => ($js.ExtensionInfo info) {
             return $c(ExtensionInfo.fromJS(info));
-          });
+          }.toJS);
 
   /// Fired when an app or extension has been disabled.
   EventStream<ExtensionInfo> get onDisabled => $js.chrome.management.onDisabled
       .asStream(($c) => ($js.ExtensionInfo info) {
             return $c(ExtensionInfo.fromJS(info));
-          });
+          }.toJS);
 }
 
 /// These are all possible app launch types.

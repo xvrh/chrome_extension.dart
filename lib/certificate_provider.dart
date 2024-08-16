@@ -78,7 +78,7 @@ class ChromeCertificateProvider {
       $js.chrome.certificateProvider.onCertificatesUpdateRequested
           .asStream(($c) => ($js.CertificatesUpdateRequest request) {
                 return $c(CertificatesUpdateRequest.fromJS(request));
-              });
+              }.toJS);
 
   /// This event fires every time the browser needs to sign a message using a
   /// certificate provided by this extension via [setCertificates].
@@ -89,7 +89,7 @@ class ChromeCertificateProvider {
       $js.chrome.certificateProvider.onSignatureRequested
           .asStream(($c) => ($js.SignatureRequest request) {
                 return $c(SignatureRequest.fromJS(request));
-              });
+              }.toJS);
 
   /// This event fires every time the browser requests the current list of
   /// certificates provided by this extension. The extension must call
@@ -115,7 +115,7 @@ class ChromeCertificateProvider {
                             .toList());
                       });
                     });
-                  });
+                  }.toJS);
 
   /// This event fires every time the browser needs to sign a message using
   /// a certificate provided by this extension in reply to an
@@ -137,7 +137,7 @@ class ChromeCertificateProvider {
                 (reportCallback as Function)(signature?.toJS);
               },
             ));
-          });
+          }.toJS);
 }
 
 /// Types of supported cryptographic signature algorithms.

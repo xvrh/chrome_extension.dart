@@ -162,7 +162,7 @@ class ChromeBookmarks {
               id: id,
               bookmark: BookmarkTreeNode.fromJS(bookmark),
             ));
-          });
+          }.toJS);
 
   /// Fired when a bookmark or folder is removed.  When a folder is removed
   /// recursively, a single notification is fired for the folder, and none for
@@ -176,7 +176,7 @@ class ChromeBookmarks {
               id: id,
               removeInfo: OnRemovedRemoveInfo.fromJS(removeInfo),
             ));
-          });
+          }.toJS);
 
   /// Fired when a bookmark or folder changes.  **Note:** Currently, only title
   /// and url changes trigger this.
@@ -189,7 +189,7 @@ class ChromeBookmarks {
               id: id,
               changeInfo: OnChangedChangeInfo.fromJS(changeInfo),
             ));
-          });
+          }.toJS);
 
   /// Fired when a bookmark or folder is moved to a different parent folder.
   EventStream<OnMovedEvent> get onMoved =>
@@ -201,7 +201,7 @@ class ChromeBookmarks {
               id: id,
               moveInfo: OnMovedMoveInfo.fromJS(moveInfo),
             ));
-          });
+          }.toJS);
 
   /// Fired when the children of a folder have changed their order due to the
   /// order being sorted in the UI.  This is not called as a result of a move().
@@ -214,7 +214,7 @@ class ChromeBookmarks {
               id: id,
               reorderInfo: OnChildrenReorderedReorderInfo.fromJS(reorderInfo),
             ));
-          });
+          }.toJS);
 
   /// Fired when a bookmark import session is begun.  Expensive observers should
   /// ignore onCreated updates until onImportEnded is fired.  Observers should
@@ -222,13 +222,13 @@ class ChromeBookmarks {
   EventStream<void> get onImportBegan =>
       $js.chrome.bookmarks.onImportBegan.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 
   /// Fired when a bookmark import session is ended.
   EventStream<void> get onImportEnded =>
       $js.chrome.bookmarks.onImportEnded.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 /// Indicates the reason why this node is unmodifiable. The [managed] value

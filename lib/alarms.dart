@@ -88,7 +88,7 @@ class ChromeAlarms {
   EventStream<Alarm> get onAlarm =>
       $js.chrome.alarms.onAlarm.asStream(($c) => ($js.Alarm alarm) {
             return $c(Alarm.fromJS(alarm));
-          });
+          }.toJS);
 }
 
 class Alarm {

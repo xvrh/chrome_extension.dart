@@ -98,7 +98,7 @@ class ChromeDebugger {
               method: method,
               params: params?.toDartMap(),
             ));
-          });
+          }.toJS);
 
   /// Fired when browser terminates debugging session for the tab. This happens
   /// when either the tab is being closed or Chrome DevTools is being invoked
@@ -112,7 +112,7 @@ class ChromeDebugger {
               source: Debuggee.fromJS(source),
               reason: DetachReason.fromJS(reason),
             ));
-          });
+          }.toJS);
 }
 
 /// Target type.

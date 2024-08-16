@@ -47,7 +47,7 @@ class ChromeStorage {
               changes: changes.toDartMap(),
               areaName: areaName,
             ));
-          });
+          }.toJS);
 }
 
 /// The storage area's access level.
@@ -192,7 +192,7 @@ class StorageArea {
   EventStream<Map> get onChanged =>
       _wrapped.onChanged.asStream(($c) => (JSAny changes) {
             return $c(changes.toDartMap());
-          });
+          }.toJS);
 }
 
 class StorageSync extends StorageArea {

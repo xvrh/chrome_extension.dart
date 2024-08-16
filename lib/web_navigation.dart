@@ -49,7 +49,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onBeforeNavigate
           .asStream(($c) => ($js.OnBeforeNavigateDetails details) {
                 return $c(OnBeforeNavigateDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when a navigation is committed. The document (and the resources it
   /// refers to, such as images and subframes) might still be downloading, but
@@ -59,7 +59,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onCommitted
           .asStream(($c) => ($js.OnCommittedDetails details) {
                 return $c(OnCommittedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when the page's DOM is fully constructed, but the referenced
   /// resources may not finish loading.
@@ -67,7 +67,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onDOMContentLoaded
           .asStream(($c) => ($js.OnDomContentLoadedDetails details) {
                 return $c(OnDomContentLoadedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when a document, including the resources it refers to, is completely
   /// loaded and initialized.
@@ -75,7 +75,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onCompleted
           .asStream(($c) => ($js.OnCompletedDetails details) {
                 return $c(OnCompletedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when an error occurs and the navigation is aborted. This can happen
   /// if either a network error occurred, or the user aborted the navigation.
@@ -83,7 +83,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onErrorOccurred
           .asStream(($c) => ($js.OnErrorOccurredDetails details) {
                 return $c(OnErrorOccurredDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when a new window, or a new tab in an existing window, is created to
   /// host a navigation.
@@ -91,7 +91,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onCreatedNavigationTarget
           .asStream(($c) => ($js.OnCreatedNavigationTargetDetails details) {
                 return $c(OnCreatedNavigationTargetDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when the reference fragment of a frame was updated. All future
   /// events for that frame will use the updated URL.
@@ -100,7 +100,7 @@ class ChromeWebNavigation {
           .chrome.webNavigation.onReferenceFragmentUpdated
           .asStream(($c) => ($js.OnReferenceFragmentUpdatedDetails details) {
                 return $c(OnReferenceFragmentUpdatedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when the contents of the tab is replaced by a different (usually
   /// previously pre-rendered) tab.
@@ -108,7 +108,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onTabReplaced
           .asStream(($c) => ($js.OnTabReplacedDetails details) {
                 return $c(OnTabReplacedDetails.fromJS(details));
-              });
+              }.toJS);
 
   /// Fired when the frame's history was updated to a new URL. All future events
   /// for that frame will use the updated URL.
@@ -116,7 +116,7 @@ class ChromeWebNavigation {
       $js.chrome.webNavigation.onHistoryStateUpdated
           .asStream(($c) => ($js.OnHistoryStateUpdatedDetails details) {
                 return $c(OnHistoryStateUpdatedDetails.fromJS(details));
-              });
+              }.toJS);
 }
 
 /// Cause of the navigation. The same transition types as defined in the history

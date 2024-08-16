@@ -42,13 +42,13 @@ class ChromeDevtoolsNetwork {
       $js.chrome.devtools.network.onRequestFinished
           .asStream(($c) => ($js.Request request) {
                 return $c(Request.fromJS(request));
-              });
+              }.toJS);
 
   /// Fired when the inspected window navigates to a new page.
   EventStream<String> get onNavigated =>
       $js.chrome.devtools.network.onNavigated.asStream(($c) => (String url) {
             return $c(url);
-          });
+          }.toJS);
 }
 
 class Request {

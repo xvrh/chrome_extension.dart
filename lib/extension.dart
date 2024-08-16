@@ -136,7 +136,7 @@ class ChromeExtension {
               sender: MessageSender.fromJS(sender),
               sendResponse: sendResponse,
             ));
-          });
+          }.toJS);
 
   /// Fired when a request is sent from another extension.
   EventStream<OnRequestExternalEvent> get onRequestExternal =>
@@ -150,7 +150,7 @@ class ChromeExtension {
               sender: MessageSender.fromJS(sender),
               sendResponse: sendResponse,
             ));
-          });
+          }.toJS);
 }
 
 /// The type of extension view.

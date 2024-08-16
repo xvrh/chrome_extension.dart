@@ -63,13 +63,13 @@ class ChromePermissions {
   EventStream<Permissions> get onAdded => $js.chrome.permissions.onAdded
       .asStream(($c) => ($js.Permissions permissions) {
             return $c(Permissions.fromJS(permissions));
-          });
+          }.toJS);
 
   /// Fired when access to permissions has been removed from the extension.
   EventStream<Permissions> get onRemoved => $js.chrome.permissions.onRemoved
       .asStream(($c) => ($js.Permissions permissions) {
             return $c(Permissions.fromJS(permissions));
-          });
+          }.toJS);
 }
 
 class Permissions {

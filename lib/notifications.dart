@@ -103,13 +103,13 @@ class ChromeNotifications {
               notificationId: notificationId,
               byUser: byUser,
             ));
-          });
+          }.toJS);
 
   /// The user clicked in a non-button area of the notification.
   EventStream<String> get onClicked => $js.chrome.notifications.onClicked
       .asStream(($c) => (String notificationId) {
             return $c(notificationId);
-          });
+          }.toJS);
 
   /// The user pressed a button in the notification.
   EventStream<OnButtonClickedEvent> get onButtonClicked =>
@@ -121,7 +121,7 @@ class ChromeNotifications {
               notificationId: notificationId,
               buttonIndex: buttonIndex,
             ));
-          });
+          }.toJS);
 
   /// The user changes the permission level.  As of Chrome 47, only ChromeOS
   /// has UI that dispatches this event.
@@ -129,7 +129,7 @@ class ChromeNotifications {
       $js.chrome.notifications.onPermissionLevelChanged
           .asStream(($c) => ($js.PermissionLevel level) {
                 return $c(PermissionLevel.fromJS(level));
-              });
+              }.toJS);
 
   /// The user clicked on a link for the app's notification settings.  As of
   /// Chrome 47, only ChromeOS has UI that dispatches this event.
@@ -137,7 +137,7 @@ class ChromeNotifications {
   EventStream<void> get onShowSettings =>
       $js.chrome.notifications.onShowSettings.asStream(($c) => () {
             return $c(null);
-          });
+          }.toJS);
 }
 
 enum TemplateType {
