@@ -78,17 +78,17 @@ class ChromeTabs {
   /// specified tab for the current extension.
   /// [message] The message to send. This message should be a JSON-ifiable
   /// object.
-  Future<Object> sendMessage(
+  Future<Object?> sendMessage(
     int tabId,
     Object message,
     SendMessageOptions? options,
   ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.tabs.sendMessage(
+    var $res = await promiseToFuture<JSAny?>($js.chrome.tabs.sendMessage(
       tabId,
       message.jsify()!,
       options?.toJS,
     ));
-    return $res.dartify()!;
+    return $res?.dartify();
   }
 
   /// Gets the tab that is selected in the specified window.
