@@ -260,8 +260,10 @@ enum Scope {
   final String value;
 
   JSString get toJS => value.toJS;
-  static Scope fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static Scope fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Type of key to generate.
@@ -274,8 +276,10 @@ enum Algorithm {
   final String value;
 
   JSString get toJS => value.toJS;
-  static Algorithm fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static Algorithm fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class Token {

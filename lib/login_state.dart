@@ -56,8 +56,10 @@ enum ProfileType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ProfileType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ProfileType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum SessionState {
@@ -84,6 +86,8 @@ enum SessionState {
   final String value;
 
   JSString get toJS => value.toJS;
-  static SessionState fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static SessionState fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }

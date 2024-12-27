@@ -409,8 +409,10 @@ enum PlatformOs {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PlatformOs fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PlatformOs fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The machine's processor architecture.
@@ -438,8 +440,10 @@ enum PlatformArch {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PlatformArch fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PlatformArch fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The native client architecture. This may be different from arch on some
@@ -465,8 +469,10 @@ enum PlatformNaclArch {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PlatformNaclArch fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PlatformNaclArch fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Result of the update check.
@@ -486,8 +492,10 @@ enum RequestUpdateCheckStatus {
   final String value;
 
   JSString get toJS => value.toJS;
-  static RequestUpdateCheckStatus fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static RequestUpdateCheckStatus fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The reason that this event is being dispatched.
@@ -509,8 +517,10 @@ enum OnInstalledReason {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnInstalledReason fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnInstalledReason fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The reason that the event is being dispatched. 'app_update' is used when the
@@ -533,8 +543,10 @@ enum OnRestartRequiredReason {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnRestartRequiredReason fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnRestartRequiredReason fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum ContextType {
@@ -558,8 +570,10 @@ enum ContextType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ContextType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ContextType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class Port {

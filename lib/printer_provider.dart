@@ -120,8 +120,10 @@ enum PrintError {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PrintError fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PrintError fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 typedef PrintersCallback = void Function(List<PrinterInfo>);

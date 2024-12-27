@@ -100,8 +100,10 @@ enum SubmitJobStatus {
   final String value;
 
   JSString get toJS => value.toJS;
-  static SubmitJobStatus fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static SubmitJobStatus fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The source of the printer.
@@ -117,8 +119,10 @@ enum PrinterSource {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PrinterSource fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PrinterSource fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The status of the printer.
@@ -162,8 +166,10 @@ enum PrinterStatus {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PrinterStatus fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PrinterStatus fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Status of the print job.
@@ -188,8 +194,10 @@ enum JobStatus {
   final String value;
 
   JSString get toJS => value.toJS;
-  static JobStatus fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static JobStatus fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class SubmitJobRequest {

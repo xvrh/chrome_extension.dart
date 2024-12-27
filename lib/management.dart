@@ -204,8 +204,10 @@ enum LaunchType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static LaunchType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static LaunchType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// A reason the item is disabled.
@@ -218,8 +220,10 @@ enum ExtensionDisabledReason {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ExtensionDisabledReason fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ExtensionDisabledReason fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The type of this extension, app, or theme.
@@ -236,8 +240,10 @@ enum ExtensionType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ExtensionType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ExtensionType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// How the extension was installed. One of
@@ -258,8 +264,10 @@ enum ExtensionInstallType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ExtensionInstallType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ExtensionInstallType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class IconInfo {

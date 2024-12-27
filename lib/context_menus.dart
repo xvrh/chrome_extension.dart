@@ -150,8 +150,10 @@ enum ContextType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ContextType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ContextType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The type of menu item.
@@ -166,8 +168,10 @@ enum ItemType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ItemType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ItemType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class OnClickData {

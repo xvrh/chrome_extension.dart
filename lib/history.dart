@@ -102,8 +102,10 @@ enum TransitionType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static TransitionType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static TransitionType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class HistoryItem {

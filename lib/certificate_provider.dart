@@ -184,8 +184,10 @@ enum Algorithm {
   final String value;
 
   JSString get toJS => value.toJS;
-  static Algorithm fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static Algorithm fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Types of errors that the extension can report.
@@ -199,8 +201,10 @@ enum Error {
   final String value;
 
   JSString get toJS => value.toJS;
-  static Error fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static Error fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Deprecated. Replaced by [Algorithm].
@@ -225,8 +229,10 @@ enum Hash {
   final String value;
 
   JSString get toJS => value.toJS;
-  static Hash fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static Hash fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The type of code being requested by the extension with requestPin function.
@@ -242,8 +248,10 @@ enum PinRequestType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PinRequestType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PinRequestType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The types of errors that can be presented to the user through the
@@ -266,8 +274,10 @@ enum PinRequestErrorType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PinRequestErrorType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PinRequestErrorType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The callback provided by the extension that Chrome uses to report back

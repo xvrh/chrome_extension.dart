@@ -62,8 +62,10 @@ enum PrintJobSource {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PrintJobSource fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PrintJobSource fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Specifies the final status of the print job.
@@ -82,8 +84,10 @@ enum PrintJobStatus {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PrintJobStatus fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PrintJobStatus fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The source of the printer.
@@ -99,8 +103,10 @@ enum PrinterSource {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PrinterSource fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PrinterSource fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum ColorMode {
@@ -115,8 +121,10 @@ enum ColorMode {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ColorMode fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ColorMode fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum DuplexMode {
@@ -134,8 +142,10 @@ enum DuplexMode {
   final String value;
 
   JSString get toJS => value.toJS;
-  static DuplexMode fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static DuplexMode fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class MediaSize {

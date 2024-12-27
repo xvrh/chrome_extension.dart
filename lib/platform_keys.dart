@@ -173,8 +173,10 @@ enum ClientCertificateType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ClientCertificateType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ClientCertificateType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class Match {

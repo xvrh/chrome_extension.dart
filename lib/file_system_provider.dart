@@ -576,8 +576,10 @@ enum ProviderError {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ProviderError fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ProviderError fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Mode of opening a file. Used by [onOpenFileRequested].
@@ -590,8 +592,10 @@ enum OpenFileMode {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OpenFileMode fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OpenFileMode fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Type of a change detected on the observed directory.
@@ -604,8 +608,10 @@ enum ChangeType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ChangeType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ChangeType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// List of common actions. `"SHARE"` is for sharing files with
@@ -623,8 +629,10 @@ enum CommonActionId {
   final String value;
 
   JSString get toJS => value.toJS;
-  static CommonActionId fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static CommonActionId fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Callback to be called by the providing extension in case of a success.

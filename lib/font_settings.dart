@@ -310,8 +310,10 @@ enum ScriptCode {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ScriptCode fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ScriptCode fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// A CSS generic font family.
@@ -329,8 +331,10 @@ enum GenericFamily {
   final String value;
 
   JSString get toJS => value.toJS;
-  static GenericFamily fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static GenericFamily fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// One of
@@ -350,8 +354,10 @@ enum LevelOfControl {
   final String value;
 
   JSString get toJS => value.toJS;
-  static LevelOfControl fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static LevelOfControl fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class FontName {

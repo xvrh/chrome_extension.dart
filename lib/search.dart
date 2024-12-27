@@ -44,8 +44,10 @@ enum Disposition {
   final String value;
 
   JSString get toJS => value.toJS;
-  static Disposition fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static Disposition fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class QueryInfo {

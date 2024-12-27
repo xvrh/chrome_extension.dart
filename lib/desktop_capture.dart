@@ -71,8 +71,10 @@ enum DesktopCaptureSourceType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static DesktopCaptureSourceType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static DesktopCaptureSourceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Mirrors
@@ -86,8 +88,10 @@ enum SystemAudioPreferenceEnum {
   final String value;
 
   JSString get toJS => value.toJS;
-  static SystemAudioPreferenceEnum fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static SystemAudioPreferenceEnum fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Mirrors
@@ -101,8 +105,10 @@ enum SelfCapturePreferenceEnum {
   final String value;
 
   JSString get toJS => value.toJS;
-  static SelfCapturePreferenceEnum fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static SelfCapturePreferenceEnum fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class ChooseDesktopMediaOptions {

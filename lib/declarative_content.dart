@@ -37,8 +37,10 @@ enum PageStateMatcherInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static PageStateMatcherInstanceType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static PageStateMatcherInstanceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum ShowPageActionInstanceType {
@@ -49,8 +51,10 @@ enum ShowPageActionInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ShowPageActionInstanceType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ShowPageActionInstanceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum ShowActionInstanceType {
@@ -61,8 +65,10 @@ enum ShowActionInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ShowActionInstanceType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ShowActionInstanceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum SetIconInstanceType {
@@ -73,8 +79,10 @@ enum SetIconInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static SetIconInstanceType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static SetIconInstanceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum RequestContentScriptInstanceType {
@@ -86,8 +94,10 @@ enum RequestContentScriptInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static RequestContentScriptInstanceType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static RequestContentScriptInstanceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// See <a

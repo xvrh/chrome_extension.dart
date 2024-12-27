@@ -258,8 +258,10 @@ enum FilenameConflictAction {
   final String value;
 
   JSString get toJS => value.toJS;
-  static FilenameConflictAction fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static FilenameConflictAction fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum HttpMethod {
@@ -271,8 +273,10 @@ enum HttpMethod {
   final String value;
 
   JSString get toJS => value.toJS;
-  static HttpMethod fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static HttpMethod fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum InterruptReason {
@@ -311,8 +315,10 @@ enum InterruptReason {
   final String value;
 
   JSString get toJS => value.toJS;
-  static InterruptReason fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static InterruptReason fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// <dl><dt>file</dt>
@@ -364,8 +370,10 @@ enum DangerType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static DangerType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static DangerType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// <dl><dt>in_progress</dt>
@@ -385,8 +393,10 @@ enum State {
   final String value;
 
   JSString get toJS => value.toJS;
-  static State fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static State fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 typedef SuggestFilenameCallback = void Function(FilenameSuggestion?);

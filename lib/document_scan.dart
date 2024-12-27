@@ -216,8 +216,10 @@ enum OperationResult {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OperationResult fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OperationResult fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// How the scanner is connected to the computer.
@@ -231,8 +233,10 @@ enum ConnectionType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ConnectionType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ConnectionType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The type of an option.  This is the same set of types as SANE_Value_Type.
@@ -270,8 +274,10 @@ enum OptionType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OptionType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OptionType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The unit of measurement for an option.  This is the same set of units as
@@ -303,8 +309,10 @@ enum OptionUnit {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OptionUnit fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OptionUnit fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The type of constraint represented by an OptionConstraint.
@@ -339,8 +347,10 @@ enum ConstraintType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ConstraintType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ConstraintType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// How an option can be changed.
@@ -359,8 +369,10 @@ enum Configurability {
   final String value;
 
   JSString get toJS => value.toJS;
-  static Configurability fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static Configurability fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class ScanOptions {

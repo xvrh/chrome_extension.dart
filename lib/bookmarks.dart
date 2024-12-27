@@ -242,8 +242,10 @@ enum BookmarkTreeNodeUnmodifiable {
   final String value;
 
   JSString get toJS => value.toJS;
-  static BookmarkTreeNodeUnmodifiable fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static BookmarkTreeNodeUnmodifiable fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class BookmarkTreeNode {

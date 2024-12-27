@@ -172,8 +172,10 @@ enum ResourceType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ResourceType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ResourceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnBeforeRequestOptions {
@@ -191,8 +193,10 @@ enum OnBeforeRequestOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnBeforeRequestOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnBeforeRequestOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnBeforeSendHeadersOptions {
@@ -210,8 +214,10 @@ enum OnBeforeSendHeadersOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnBeforeSendHeadersOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnBeforeSendHeadersOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnSendHeadersOptions {
@@ -226,8 +232,10 @@ enum OnSendHeadersOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnSendHeadersOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnSendHeadersOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnHeadersReceivedOptions {
@@ -245,8 +253,10 @@ enum OnHeadersReceivedOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnHeadersReceivedOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnHeadersReceivedOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnAuthRequiredOptions {
@@ -267,8 +277,10 @@ enum OnAuthRequiredOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnAuthRequiredOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnAuthRequiredOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnResponseStartedOptions {
@@ -283,8 +295,10 @@ enum OnResponseStartedOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnResponseStartedOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnResponseStartedOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnBeforeRedirectOptions {
@@ -299,8 +313,10 @@ enum OnBeforeRedirectOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnBeforeRedirectOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnBeforeRedirectOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnCompletedOptions {
@@ -315,8 +331,10 @@ enum OnCompletedOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnCompletedOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnCompletedOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum OnErrorOccurredOptions {
@@ -328,8 +346,10 @@ enum OnErrorOccurredOptions {
   final String value;
 
   JSString get toJS => value.toJS;
-  static OnErrorOccurredOptions fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static OnErrorOccurredOptions fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum IgnoredActionType {
@@ -343,8 +363,10 @@ enum IgnoredActionType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static IgnoredActionType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static IgnoredActionType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// An array of HTTP headers. Each header is represented as a dictionary

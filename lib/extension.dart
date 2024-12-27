@@ -163,8 +163,10 @@ enum ViewType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static ViewType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static ViewType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class GetViewsFetchProperties {

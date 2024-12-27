@@ -145,8 +145,10 @@ enum WindowType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static WindowType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static WindowType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The state of this browser window. In some circumstances a window may not be
@@ -174,8 +176,10 @@ enum WindowState {
   final String value;
 
   JSString get toJS => value.toJS;
-  static WindowState fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static WindowState fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Specifies what type of browser window to create. 'panel' is deprecated and
@@ -195,8 +199,10 @@ enum CreateType {
   final String value;
 
   JSString get toJS => value.toJS;
-  static CreateType fromJS(JSString value) =>
-      values.firstWhere((e) => e.value == value.toDart);
+  static CreateType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class Window {

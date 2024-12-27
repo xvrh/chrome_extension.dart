@@ -513,11 +513,13 @@ class DartApiGenerator extends _GeneratorBase {
         ..name = 'fromJS'
         ..static = true
         ..returns = refer(enumeration.name)
-        ..lambda = true
         ..requiredParameters.add(Parameter((b) => b
           ..name = 'value'
           ..type = refer('JSString')))
-        ..body = Code('values.firstWhere((e) => e.value == value.toDart)'))));
+        ..body = Code('''
+        var dartValue = value.toDart;
+        return values.firstWhere((e) => e.value == dartValue);
+'''))));
   }
 
   Iterable<Spec> _dictionary(model.Dictionary dictionary) sync* {
