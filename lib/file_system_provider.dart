@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_parenthesis
+// ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment
 
 library;
 
@@ -118,11 +118,11 @@ class ChromeFileSystemProvider {
             return $c(OnUnmountRequestedEvent(
               options: UnmountRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -141,11 +141,11 @@ class ChromeFileSystemProvider {
             return $c(OnGetMetadataRequestedEvent(
               options: GetMetadataRequestedOptions.fromJS(options),
               successCallback: (EntryMetadata metadata) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)(metadata.toJS);
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -166,11 +166,11 @@ class ChromeFileSystemProvider {
             return $c(OnGetActionsRequestedEvent(
               options: GetActionsRequestedOptions.fromJS(options),
               successCallback: (List<Action> actions) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)(actions.toJSArray((e) => e.toJS));
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -189,12 +189,12 @@ class ChromeFileSystemProvider {
             return $c(OnReadDirectoryRequestedEvent(
               options: ReadDirectoryRequestedOptions.fromJS(options),
               successCallback: (List<EntryMetadata> entries, bool hasMore) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)(
                     entries.toJSArray((e) => e.toJS), hasMore);
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -212,11 +212,11 @@ class ChromeFileSystemProvider {
             return $c(OnOpenFileRequestedEvent(
               options: OpenFileRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -233,11 +233,11 @@ class ChromeFileSystemProvider {
             return $c(OnCloseFileRequestedEvent(
               options: CloseFileRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -256,11 +256,11 @@ class ChromeFileSystemProvider {
             return $c(OnReadFileRequestedEvent(
               options: ReadFileRequestedOptions.fromJS(options),
               successCallback: (ByteBuffer data, bool hasMore) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)(data.toJS, hasMore);
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -280,11 +280,11 @@ class ChromeFileSystemProvider {
                 return $c(OnCreateDirectoryRequestedEvent(
                   options: CreateDirectoryRequestedOptions.fromJS(options),
                   successCallback: () {
-                    //ignore: avoid_dynamic_calls
+                    //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                     (successCallback as Function)();
                   },
                   errorCallback: (ProviderError error) {
-                    //ignore: avoid_dynamic_calls
+                    //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                     (errorCallback as Function)(error.toJS);
                   },
                 ));
@@ -302,11 +302,11 @@ class ChromeFileSystemProvider {
             return $c(OnDeleteEntryRequestedEvent(
               options: DeleteEntryRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -324,11 +324,11 @@ class ChromeFileSystemProvider {
             return $c(OnCreateFileRequestedEvent(
               options: CreateFileRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -345,11 +345,11 @@ class ChromeFileSystemProvider {
             return $c(OnCopyEntryRequestedEvent(
               options: CopyEntryRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -366,11 +366,11 @@ class ChromeFileSystemProvider {
             return $c(OnMoveEntryRequestedEvent(
               options: MoveEntryRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -387,11 +387,11 @@ class ChromeFileSystemProvider {
             return $c(OnTruncateRequestedEvent(
               options: TruncateRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -408,11 +408,11 @@ class ChromeFileSystemProvider {
             return $c(OnWriteFileRequestedEvent(
               options: WriteFileRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -434,11 +434,11 @@ class ChromeFileSystemProvider {
             return $c(OnAbortRequestedEvent(
               options: AbortRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -457,11 +457,11 @@ class ChromeFileSystemProvider {
             return $c(OnConfigureRequestedEvent(
               options: ConfigureRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -480,11 +480,11 @@ class ChromeFileSystemProvider {
           ) {
             return $c(OnMountRequestedEvent(
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -501,11 +501,11 @@ class ChromeFileSystemProvider {
             return $c(OnAddWatcherRequestedEvent(
               options: AddWatcherRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -522,11 +522,11 @@ class ChromeFileSystemProvider {
             return $c(OnRemoveWatcherRequestedEvent(
               options: RemoveWatcherRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));
@@ -544,11 +544,11 @@ class ChromeFileSystemProvider {
             return $c(OnExecuteActionRequestedEvent(
               options: ExecuteActionRequestedOptions.fromJS(options),
               successCallback: () {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (successCallback as Function)();
               },
               errorCallback: (ProviderError error) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (errorCallback as Function)(error.toJS);
               },
             ));

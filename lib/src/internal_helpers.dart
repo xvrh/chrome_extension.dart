@@ -54,6 +54,8 @@ extension JSChoiceExtension<T extends Object> on T {
     Object Function(Object)? isOther,
   }) {
     if (isArray != null && isJavaScriptArray(this)) {
+      // TODO: find the proper way
+      // ignore: invalid_runtime_check_with_js_interop_types
       return isArray(this as JSArray);
     }
     if (isInt != null && (this is num || instanceOfString(this, 'Number'))) {
@@ -70,6 +72,8 @@ extension JSChoiceExtension<T extends Object> on T {
       return isString(this as String);
     }
     if (isMap != null && isJavaScriptSimpleObject(this)) {
+      // TODO: find the proper way
+      // ignore: invalid_runtime_check_with_js_interop_types
       return isMap(this as JSAny);
     }
     if (isOther != null) {

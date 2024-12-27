@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_parenthesis
+// ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment
 
 library;
 
@@ -105,7 +105,7 @@ class ChromeCertificateProvider {
               .asStream(($c) => ($js.CertificatesCallback reportCallback) {
                     return $c((List<CertificateInfo> certificates,
                         void Function(List<ByteBuffer>) callback) {
-                      //ignore: avoid_dynamic_calls
+                      //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                       (reportCallback as Function)(
                           certificates.toJSArray((e) => e.toJS),
                           (JSArray rejectedCertificates) {
@@ -133,7 +133,7 @@ class ChromeCertificateProvider {
             return $c(OnSignDigestRequestedEvent(
               request: SignRequest.fromJS(request),
               reportCallback: (ByteBuffer? signature) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (reportCallback as Function)(signature?.toJS);
               },
             ));

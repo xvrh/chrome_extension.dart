@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_parenthesis
+// ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment
 
 library;
 
@@ -172,17 +172,17 @@ class ChromeRuntime {
   /// messaging](/docs/extensions/manifest/externally_connectable).
   /// [message] The message to send. This message should be a JSON-ifiable
   /// object.
-  Future<Object> sendMessage(
+  Future<Object?> sendMessage(
     String? extensionId,
     Object message,
     SendMessageOptions? options,
   ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.runtime.sendMessage(
+    var $res = await promiseToFuture<JSAny?>($js.chrome.runtime.sendMessage(
       extensionId,
       message.jsify()!,
       options?.toJS,
     ));
-    return $res.dartify()!;
+    return $res?.dartify();
   }
 
   /// Send a single message to a native application.

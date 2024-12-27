@@ -205,7 +205,7 @@ class JsonProperty {
   final String? type;
   final num? minimum, maximum;
   final int? minLength, maxLength;
-  final bool? optional;
+  bool? optional;
   final Object? value;
 
   @JsonKey(defaultValue: '')

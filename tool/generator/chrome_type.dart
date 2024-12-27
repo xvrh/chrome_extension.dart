@@ -684,7 +684,8 @@ class FunctionType extends ChromeType {
       var returnKeyword = returns != null ? 'return' : '';
       buffer.writeln('(${dartParameters.join(',')}) {');
       //TODO: find a proper way
-      buffer.writeln('  //ignore: avoid_dynamic_calls');
+      buffer.writeln(
+          '  //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types');
       buffer.writeln(
           '$returnKeyword (${emit(accessor)} as Function)(${forwardParameter.join(',')});');
       buffer.writeln('}');

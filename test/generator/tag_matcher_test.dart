@@ -1,4 +1,4 @@
-library tag_matcher_test;
+library;
 
 import 'package:test/test.dart';
 import '../../tool/generator/download/tag_matcher.dart';

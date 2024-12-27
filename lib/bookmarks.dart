@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_parenthesis
+// ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment
 
 library;
 

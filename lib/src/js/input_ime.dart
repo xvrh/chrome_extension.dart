@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: unnecessary_import
+// ignore_for_file: unintended_html_in_doc_comment
 
 library;
 

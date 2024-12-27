@@ -1,4 +1,4 @@
-library googlesource_test;
+library;
 
 import 'dart:async';
 import 'dart:convert';

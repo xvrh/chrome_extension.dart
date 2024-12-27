@@ -6,6 +6,7 @@ import 'chrome_model.dart' as model;
 import 'chrome_type.dart';
 import 'comment.dart';
 import 'utils/string.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 const _dartInteropUrl = 'dart:js_interop';
 const _sharedBinding = 'chrome.dart';
@@ -13,7 +14,7 @@ const _internalHelpers = 'src/internal_helpers.dart';
 const _jsPrefix = r'$js';
 
 final _formatter = DartFormatter(
-  experimentFlags: ['inline-class'],
+  languageVersion: Version(3, 5, 0),
 );
 
 class _GeneratorBase {
@@ -32,6 +33,7 @@ class JsBindingGenerator extends _GeneratorBase {
       ..name = ''
       ..comments.add('ignore_for_file: non_constant_identifier_names')
       ..comments.add('ignore_for_file: unnecessary_import')
+      ..comments.add('ignore_for_file: unintended_html_in_doc_comment')
       ..directives.addAll([
         Directive.export('chrome.dart'),
         if (api.group case var group?)
@@ -207,7 +209,8 @@ class DartApiGenerator extends _GeneratorBase {
   String toCode() {
     final library = Library((b) => b
       ..name = ''
-      ..comments.add('ignore_for_file: unnecessary_parenthesis')
+      ..comments.add(
+          'ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment')
       ..directives.addAll([
         Directive.export('src/chrome.dart', show: ['chrome', 'EventStream']),
         Directive.import(_internalHelpers),
