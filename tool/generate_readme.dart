@@ -3,13 +3,15 @@ import 'dart:io';
 import 'package:dart_style/dart_style.dart';
 import 'apis.dart';
 import 'generator/utils/string.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 final RegExp _importRegex = RegExp(r"import '([^']+)';\r?\n");
 final RegExp _ignoreForFileRegex =
     RegExp(r'^// ignore_for_file:.*$', multiLine: true);
 
-final DartFormatter _dartFormatter =
-    DartFormatter(lineEnding: Platform.isWindows ? '\r\n' : '\n');
+final DartFormatter _dartFormatter = DartFormatter(
+    lineEnding: Platform.isWindows ? '\r\n' : '\n',
+    languageVersion: Version(3, 5, 0));
 
 void main() {
   var readme = generateReadme();

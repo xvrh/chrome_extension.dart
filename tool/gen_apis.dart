@@ -42,8 +42,12 @@ ChromeApi _createApi(Context context, String apiName) {
 
   ChromeApi model;
   if (idlFile.path.endsWith('.json')) {
-    model = JsonModelConverter(context, json.JsonNamespace.parse(content))
-        .convert();
+    var jsonModel = json.JsonNamespace.parse(content);
+
+    if (p.basename(idlFile.path) == 'runtime.json') {
+      _fixRuntimeModel(jsonModel);
+    }
+    model = JsonModelConverter(context, jsonModel).convert();
   } else {
     model = idl.IdlModelConverter.fromString(context, content).convert();
   }
@@ -85,4 +89,9 @@ File _locateDefinitionFile(String apiName) {
   }
 
   throw Exception('No IDL file found for library $fileName');
+}
+
+void _fixRuntimeModel(json.JsonNamespace model) {
+  var function = model.functions.firstWhere((f) => f.name == 'sendMessage');
+  function.returnsAsync!.parameters!.single.optional = true;
 }

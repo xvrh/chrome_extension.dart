@@ -6,6 +6,7 @@ import 'chrome_model.dart' as model;
 import 'chrome_type.dart';
 import 'comment.dart';
 import 'utils/string.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 const _dartInteropUrl = 'dart:js_interop';
 const _sharedBinding = 'chrome.dart';
@@ -13,7 +14,7 @@ const _internalHelpers = 'src/internal_helpers.dart';
 const _jsPrefix = r'$js';
 
 final _formatter = DartFormatter(
-  experimentFlags: ['inline-class'],
+  languageVersion: Version(3, 5, 0),
 );
 
 class _GeneratorBase {
