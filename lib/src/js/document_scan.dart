@@ -120,23 +120,23 @@ extension type JSDocumentScan._(JSObject _) {
 /// performed by the backend.  It contains the same causes as SANE_Status plus
 /// additional statuses that come from the IPC layers and image conversion
 /// stages.
-typedef OperationResult = String;
+typedef OperationResult = JSString;
 
 /// How the scanner is connected to the computer.
-typedef ConnectionType = String;
+typedef ConnectionType = JSString;
 
 /// The type of an option.  This is the same set of types as SANE_Value_Type.
-typedef OptionType = String;
+typedef OptionType = JSString;
 
 /// The unit of measurement for an option.  This is the same set of units as
 /// SANE_Unit.
-typedef OptionUnit = String;
+typedef OptionUnit = JSString;
 
 /// The type of constraint represented by an OptionConstraint.
-typedef ConstraintType = String;
+typedef ConstraintType = JSString;
 
 /// How an option can be changed.
-typedef Configurability = String;
+typedef Configurability = JSString;
 extension type ScanOptions._(JSObject _) implements JSObject {
   external factory ScanOptions({
     /// The MIME types that are accepted by the caller.

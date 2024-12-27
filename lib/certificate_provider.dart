@@ -105,15 +105,15 @@ class ChromeCertificateProvider {
               .asStream(($c) => ($js.CertificatesCallback reportCallback) {
                     return $c((List<CertificateInfo> certificates,
                         void Function(List<ByteBuffer>) callback) {
-                      //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
-                      (reportCallback as Function)(
+                      reportCallback.callAsFunction(
+                          null,
                           certificates.toJSArray((e) => e.toJS),
                           (JSArray rejectedCertificates) {
-                        callback(rejectedCertificates.toDart
-                            .cast<JSArrayBuffer>()
-                            .map((e) => e.toDart)
-                            .toList());
-                      });
+                            callback(rejectedCertificates.toDart
+                                .cast<JSArrayBuffer>()
+                                .map((e) => e.toDart)
+                                .toList());
+                          }.toJS);
                     });
                   }.toJS);
 
@@ -133,8 +133,7 @@ class ChromeCertificateProvider {
             return $c(OnSignDigestRequestedEvent(
               request: SignRequest.fromJS(request),
               reportCallback: (ByteBuffer? signature) {
-                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
-                (reportCallback as Function)(signature?.toJS);
+                reportCallback.callAsFunction(null, signature?.toJS);
               },
             ));
           }.toJS);
@@ -184,9 +183,9 @@ enum Algorithm {
 
   final String value;
 
-  String get toJS => value;
-  static Algorithm fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Algorithm fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Types of errors that the extension can report.
@@ -199,9 +198,9 @@ enum Error {
 
   final String value;
 
-  String get toJS => value;
-  static Error fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Error fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Deprecated. Replaced by [Algorithm].
@@ -225,9 +224,9 @@ enum Hash {
 
   final String value;
 
-  String get toJS => value;
-  static Hash fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Hash fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The type of code being requested by the extension with requestPin function.
@@ -242,9 +241,9 @@ enum PinRequestType {
 
   final String value;
 
-  String get toJS => value;
-  static PinRequestType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PinRequestType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The types of errors that can be presented to the user through the
@@ -266,9 +265,9 @@ enum PinRequestErrorType {
 
   final String value;
 
-  String get toJS => value;
-  static PinRequestErrorType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PinRequestErrorType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The callback provided by the extension that Chrome uses to report back

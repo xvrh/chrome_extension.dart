@@ -31,9 +31,8 @@ class ChromePrinterProvider {
       $js.chrome.printerProvider.onGetPrintersRequested
           .asStream(($c) => ($js.PrintersCallback resultCallback) {
                 return $c((List<PrinterInfo> printerInfo) {
-                  //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
-                  (resultCallback
-                      as Function)(printerInfo.toJSArray((e) => e.toJS));
+                  resultCallback.callAsFunction(
+                      null, printerInfo.toJSArray((e) => e.toJS));
                 });
               }.toJS);
 
@@ -57,8 +56,7 @@ class ChromePrinterProvider {
                     return $c(OnGetUsbPrinterInfoRequestedEvent(
                       device: Device.fromJS(device),
                       resultCallback: (PrinterInfo? printerInfo) {
-                        //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
-                        (resultCallback as Function)(printerInfo?.toJS);
+                        resultCallback.callAsFunction(null, printerInfo?.toJS);
                       },
                     ));
                   }.toJS);
@@ -77,8 +75,7 @@ class ChromePrinterProvider {
             return $c(OnGetCapabilityRequestedEvent(
               printerId: printerId,
               resultCallback: (Map capabilities) {
-                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
-                (resultCallback as Function)(capabilities.jsify()!);
+                resultCallback.callAsFunction(null, capabilities.jsify()!);
               },
             ));
           }.toJS);
@@ -95,8 +92,7 @@ class ChromePrinterProvider {
             return $c(OnPrintRequestedEvent(
               printJob: PrintJob.fromJS(printJob),
               resultCallback: (PrintError result) {
-                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
-                (resultCallback as Function)(result.toJS);
+                resultCallback.callAsFunction(null, result.toJS);
               },
             ));
           }.toJS);
@@ -123,9 +119,9 @@ enum PrintError {
 
   final String value;
 
-  String get toJS => value;
-  static PrintError fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PrintError fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 typedef PrintersCallback = void Function(List<PrinterInfo>);

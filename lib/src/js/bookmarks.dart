@@ -120,7 +120,7 @@ extension type JSBookmarks._(JSObject _) {
 /// Indicates the reason why this node is unmodifiable. The [managed] value
 /// indicates that this node was configured by the system administrator. Omitted
 /// if the node can be modified by the user and the extension (default).
-typedef BookmarkTreeNodeUnmodifiable = String;
+typedef BookmarkTreeNodeUnmodifiable = JSString;
 extension type BookmarkTreeNode._(JSObject _) implements JSObject {
   external factory BookmarkTreeNode({
     /// The unique identifier for the node. IDs are unique within the current

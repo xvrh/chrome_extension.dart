@@ -81,9 +81,9 @@ extension type JSWebNavigation._(JSObject _) {
 /// API are used. These are the same transition types as defined in the [history
 /// API](history#transition_types) except with `"start_page"` in place of
 /// `"auto_toplevel"` (for backwards compatibility).
-typedef TransitionType = String;
+typedef TransitionType = JSString;
 
-typedef TransitionQualifier = String;
+typedef TransitionQualifier = JSString;
 extension type OnBeforeNavigateDetails._(JSObject _) implements JSObject {
   external factory OnBeforeNavigateDetails({
     /// The ID of the tab in which the navigation is about to occur.

@@ -97,10 +97,10 @@ extension type JSFontSettings._(JSObject _) {
 
 /// An ISO 15924 script code. The default, or global, script is represented by
 /// script code "Zyyy".
-typedef ScriptCode = String;
+typedef ScriptCode = JSString;
 
 /// A CSS generic font family.
-typedef GenericFamily = String;
+typedef GenericFamily = JSString;
 
 /// One of
 /// [not_controllable]: cannot be controlled by any extension
@@ -108,7 +108,7 @@ typedef GenericFamily = String;
 /// precedence
 /// [controllable_by_this_extension]: can be controlled by this extension
 /// [controlled_by_this_extension]: controlled by this extension
-typedef LevelOfControl = String;
+typedef LevelOfControl = JSString;
 extension type FontName._(JSObject _) implements JSObject {
   external factory FontName({
     /// The font ID.

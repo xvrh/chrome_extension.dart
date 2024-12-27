@@ -308,9 +308,9 @@ enum Direction {
 
   final String value;
 
-  String get toJS => value;
-  static Direction fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Direction fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum Recipient {
@@ -323,9 +323,9 @@ enum Recipient {
 
   final String value;
 
-  String get toJS => value;
-  static Recipient fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Recipient fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum RequestType {
@@ -338,9 +338,9 @@ enum RequestType {
 
   final String value;
 
-  String get toJS => value;
-  static RequestType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static RequestType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum TransferType {
@@ -353,9 +353,9 @@ enum TransferType {
 
   final String value;
 
-  String get toJS => value;
-  static TransferType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static TransferType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// For interrupt and isochronous modes, SynchronizationType and UsageType map
@@ -369,9 +369,9 @@ enum SynchronizationType {
 
   final String value;
 
-  String get toJS => value;
-  static SynchronizationType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static SynchronizationType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum UsageType {
@@ -385,9 +385,9 @@ enum UsageType {
 
   final String value;
 
-  String get toJS => value;
-  static UsageType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static UsageType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class Device {

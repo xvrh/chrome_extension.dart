@@ -31,9 +31,9 @@ enum ImageFormat {
 
   final String value;
 
-  String get toJS => value;
-  static ImageFormat fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ImageFormat fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The soonest that the JavaScript or CSS will be injected into the tab.
@@ -46,9 +46,9 @@ enum RunAt {
 
   final String value;
 
-  String get toJS => value;
-  static RunAt fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static RunAt fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The [origin](https://www.w3.org/TR/css3-cascade/#cascading-origins) of
@@ -61,9 +61,9 @@ enum CSSOrigin {
 
   final String value;
 
-  String get toJS => value;
-  static CSSOrigin fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static CSSOrigin fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The type of frame.
@@ -76,9 +76,9 @@ enum FrameType {
 
   final String value;
 
-  String get toJS => value;
-  static FrameType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static FrameType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The document lifecycle of the frame.
@@ -92,9 +92,9 @@ enum DocumentLifecycle {
 
   final String value;
 
-  String get toJS => value;
-  static DocumentLifecycle fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static DocumentLifecycle fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The JavaScript world for a script to execute within. Can either be an
@@ -110,9 +110,9 @@ enum ExecutionWorld {
 
   final String value;
 
-  String get toJS => value;
-  static ExecutionWorld fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ExecutionWorld fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class ImageDetails {

@@ -46,9 +46,9 @@ enum Scheme {
 
   final String value;
 
-  String get toJS => value;
-  static Scheme fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Scheme fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum Mode {
@@ -62,9 +62,9 @@ enum Mode {
 
   final String value;
 
-  String get toJS => value;
-  static Mode fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Mode fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class ProxyServer {

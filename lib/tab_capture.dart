@@ -99,9 +99,9 @@ enum TabCaptureState {
 
   final String value;
 
-  String get toJS => value;
-  static TabCaptureState fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static TabCaptureState fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class CaptureInfo {

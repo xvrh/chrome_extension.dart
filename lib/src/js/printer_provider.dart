@@ -59,7 +59,7 @@ extension type JSPrinterProvider._(JSObject _) {
 }
 
 /// Error codes returned in response to [onPrintRequested] event.
-typedef PrintError = String;
+typedef PrintError = JSString;
 
 typedef PrintersCallback = JSFunction;
 

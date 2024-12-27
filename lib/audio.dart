@@ -119,9 +119,9 @@ enum StreamType {
 
   final String value;
 
-  String get toJS => value;
-  static StreamType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static StreamType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Available audio device types.
@@ -147,9 +147,9 @@ enum DeviceType {
 
   final String value;
 
-  String get toJS => value;
-  static DeviceType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static DeviceType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class AudioDeviceInfo {

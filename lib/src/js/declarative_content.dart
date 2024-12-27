@@ -30,15 +30,15 @@ extension type JSDeclarativeContent._(JSObject _) {
   external Event get onPageChanged;
 }
 
-typedef PageStateMatcherInstanceType = String;
+typedef PageStateMatcherInstanceType = JSString;
 
-typedef ShowPageActionInstanceType = String;
+typedef ShowPageActionInstanceType = JSString;
 
-typedef ShowActionInstanceType = String;
+typedef ShowActionInstanceType = JSString;
 
-typedef SetIconInstanceType = String;
+typedef SetIconInstanceType = JSString;
 
-typedef RequestContentScriptInstanceType = String;
+typedef RequestContentScriptInstanceType = JSString;
 
 /// See <a
 /// href="https://developer.mozilla.org/en-US/docs/Web/API/ImageData">https://developer.mozilla.org/en-US/docs/Web/API/ImageData</a>.

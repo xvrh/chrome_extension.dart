@@ -197,19 +197,19 @@ extension type JSUsb._(JSObject _) {
 
 /// Direction, Recipient, RequestType, and TransferType all map to their
 /// namesakes within the USB specification.
-typedef Direction = String;
+typedef Direction = JSString;
 
-typedef Recipient = String;
+typedef Recipient = JSString;
 
-typedef RequestType = String;
+typedef RequestType = JSString;
 
-typedef TransferType = String;
+typedef TransferType = JSString;
 
 /// For interrupt and isochronous modes, SynchronizationType and UsageType map
 /// to their namesakes within the USB specification.
-typedef SynchronizationType = String;
+typedef SynchronizationType = JSString;
 
-typedef UsageType = String;
+typedef UsageType = JSString;
 extension type Device._(JSObject _) implements JSObject {
   external factory Device({
     /// An opaque ID for the USB device. It remains unchanged until the device is

@@ -160,9 +160,9 @@ enum TemplateType {
 
   final String value;
 
-  String get toJS => value;
-  static TemplateType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static TemplateType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum PermissionLevel {
@@ -178,9 +178,9 @@ enum PermissionLevel {
 
   final String value;
 
-  String get toJS => value;
-  static PermissionLevel fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PermissionLevel fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class NotificationItem {

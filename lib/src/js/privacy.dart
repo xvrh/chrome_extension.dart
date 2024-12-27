@@ -42,7 +42,7 @@ extension type JSPrivacy._(JSObject _) {
 }
 
 /// The IP handling policy of WebRTC.
-typedef IPHandlingPolicy = String;
+typedef IPHandlingPolicy = JSString;
 extension type PrivacyNetwork._(JSObject _) implements JSObject {
   external factory PrivacyNetwork({
     /// If enabled, Chrome attempts to speed up your web browsing experience by

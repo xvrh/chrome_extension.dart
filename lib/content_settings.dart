@@ -180,9 +180,9 @@ enum Scope {
 
   final String value;
 
-  String get toJS => value;
-  static Scope fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Scope fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum AutoVerifyContentSetting {
@@ -193,9 +193,9 @@ enum AutoVerifyContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static AutoVerifyContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static AutoVerifyContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum ClipboardContentSetting {
@@ -207,9 +207,9 @@ enum ClipboardContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static ClipboardContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ClipboardContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum CookiesContentSetting {
@@ -221,9 +221,9 @@ enum CookiesContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static CookiesContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static CookiesContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum ImagesContentSetting {
@@ -234,9 +234,9 @@ enum ImagesContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static ImagesContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ImagesContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum JavascriptContentSetting {
@@ -247,9 +247,9 @@ enum JavascriptContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static JavascriptContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static JavascriptContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum LocationContentSetting {
@@ -261,9 +261,9 @@ enum LocationContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static LocationContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static LocationContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum PluginsContentSetting {
@@ -273,9 +273,9 @@ enum PluginsContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static PluginsContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PluginsContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum PopupsContentSetting {
@@ -286,9 +286,9 @@ enum PopupsContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static PopupsContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PopupsContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum NotificationsContentSetting {
@@ -300,9 +300,9 @@ enum NotificationsContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static NotificationsContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static NotificationsContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum FullscreenContentSetting {
@@ -312,9 +312,9 @@ enum FullscreenContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static FullscreenContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static FullscreenContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum MouselockContentSetting {
@@ -324,9 +324,9 @@ enum MouselockContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static MouselockContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static MouselockContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum MicrophoneContentSetting {
@@ -338,9 +338,9 @@ enum MicrophoneContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static MicrophoneContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static MicrophoneContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum CameraContentSetting {
@@ -352,9 +352,9 @@ enum CameraContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static CameraContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static CameraContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum PpapiBrokerContentSetting {
@@ -364,9 +364,9 @@ enum PpapiBrokerContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static PpapiBrokerContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PpapiBrokerContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum MultipleAutomaticDownloadsContentSetting {
@@ -378,9 +378,9 @@ enum MultipleAutomaticDownloadsContentSetting {
 
   final String value;
 
-  String get toJS => value;
-  static MultipleAutomaticDownloadsContentSetting fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static MultipleAutomaticDownloadsContentSetting fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class ResourceIdentifier {

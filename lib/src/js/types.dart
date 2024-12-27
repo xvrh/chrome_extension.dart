@@ -35,14 +35,14 @@ extension type JSTypes._(JSObject _) {}
 /// profile that can only be set during an incognito session and is deleted when
 /// the incognito session ends (overrides regular and incognito_persistent
 /// preferences).</li></ul>
-typedef ChromeSettingScope = String;
+typedef ChromeSettingScope = JSString;
 
 /// One of<ul><li>[not_controllable]: cannot be controlled by any
 /// extension</li><li>[controlled_by_other_extensions]: controlled by extensions
 /// with higher precedence</li><li>[controllable_by_this_extension]: can be
 /// controlled by this extension</li><li>[controlled_by_this_extension]:
 /// controlled by this extension</li></ul>
-typedef LevelOfControl = String;
+typedef LevelOfControl = JSString;
 extension type ChromeSetting._(JSObject _) implements JSObject {
   external factory ChromeSetting();
 

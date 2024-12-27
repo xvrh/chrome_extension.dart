@@ -116,9 +116,9 @@ enum Color {
 
   final String value;
 
-  String get toJS => value;
-  static Color fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Color fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class TabGroup {

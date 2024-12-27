@@ -180,10 +180,10 @@ extension type JSEnterprisePlatformKeys._(JSObject _) {
 }
 
 /// Whether to use the Enterprise User Key or the Enterprise Machine Key.
-typedef Scope = String;
+typedef Scope = JSString;
 
 /// Type of key to generate.
-typedef Algorithm = String;
+typedef Algorithm = JSString;
 extension type Token._(JSObject _) implements JSObject {
   external factory Token({
     /// Uniquely identifies this `Token`.

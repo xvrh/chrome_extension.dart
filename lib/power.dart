@@ -54,7 +54,7 @@ enum Level {
 
   final String value;
 
-  String get toJS => value;
-  static Level fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Level fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }

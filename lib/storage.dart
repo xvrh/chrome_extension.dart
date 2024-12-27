@@ -62,9 +62,9 @@ enum AccessLevel {
 
   final String value;
 
-  String get toJS => value;
-  static AccessLevel fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static AccessLevel fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class StorageChange {

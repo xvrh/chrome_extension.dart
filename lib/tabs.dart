@@ -558,9 +558,9 @@ enum TabStatus {
 
   final String value;
 
-  String get toJS => value;
-  static TabStatus fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static TabStatus fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// An event that caused a muted state change.
@@ -578,9 +578,9 @@ enum MutedInfoReason {
 
   final String value;
 
-  String get toJS => value;
-  static MutedInfoReason fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static MutedInfoReason fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Defines how zoom changes are handled, i.e., which entity is responsible for
@@ -604,9 +604,9 @@ enum ZoomSettingsMode {
 
   final String value;
 
-  String get toJS => value;
-  static ZoomSettingsMode fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ZoomSettingsMode fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Defines whether zoom changes persist for the page's origin, or only take
@@ -630,9 +630,9 @@ enum ZoomSettingsScope {
 
   final String value;
 
-  String get toJS => value;
-  static ZoomSettingsScope fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ZoomSettingsScope fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The type of window.
@@ -647,9 +647,9 @@ enum WindowType {
 
   final String value;
 
-  String get toJS => value;
-  static WindowType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static WindowType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class MutedInfo {

@@ -45,7 +45,7 @@ extension type JSStorage._(JSObject _) {
 }
 
 /// The storage area's access level.
-typedef AccessLevel = String;
+typedef AccessLevel = JSString;
 extension type StorageChange._(JSObject _) implements JSObject {
   external factory StorageChange({
     /// The old value of the item, if there was an old value.

@@ -54,4 +54,4 @@ extension type JSIdle._(JSObject _) {
   external Event get onStateChanged;
 }
 
-typedef IdleState = String;
+typedef IdleState = JSString;

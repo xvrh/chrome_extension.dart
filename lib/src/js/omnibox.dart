@@ -61,13 +61,13 @@ extension type JSOmnibox._(JSObject _) {
 }
 
 /// The style type.
-typedef DescriptionStyleType = String;
+typedef DescriptionStyleType = JSString;
 
 /// The window disposition for the omnibox query. This is the recommended
 /// context to display results. For example, if the omnibox command is to
 /// navigate to a certain URL, a disposition of 'newForegroundTab' means the
 /// navigation should take place in a new selected tab.
-typedef OnInputEnteredDisposition = String;
+typedef OnInputEnteredDisposition = JSString;
 extension type MatchClassification._(JSObject _) implements JSObject {
   external factory MatchClassification({
     int offset,

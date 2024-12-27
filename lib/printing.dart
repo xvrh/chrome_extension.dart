@@ -99,9 +99,9 @@ enum SubmitJobStatus {
 
   final String value;
 
-  String get toJS => value;
-  static SubmitJobStatus fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static SubmitJobStatus fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The source of the printer.
@@ -116,9 +116,9 @@ enum PrinterSource {
 
   final String value;
 
-  String get toJS => value;
-  static PrinterSource fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PrinterSource fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The status of the printer.
@@ -161,9 +161,9 @@ enum PrinterStatus {
 
   final String value;
 
-  String get toJS => value;
-  static PrinterStatus fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PrinterStatus fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Status of the print job.
@@ -187,9 +187,9 @@ enum JobStatus {
 
   final String value;
 
-  String get toJS => value;
-  static JobStatus fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static JobStatus fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class SubmitJobRequest {

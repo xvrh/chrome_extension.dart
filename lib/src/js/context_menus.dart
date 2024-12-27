@@ -80,10 +80,10 @@ extension type JSContextMenus._(JSObject _) {
 /// to the context menu that appears when clicking the app icon in the
 /// launcher/taskbar/dock/etc. Different platforms might put limitations on what
 /// is actually supported in a launcher context menu.
-typedef ContextType = String;
+typedef ContextType = JSString;
 
 /// The type of menu item.
-typedef ItemType = String;
+typedef ItemType = JSString;
 extension type OnClickData._(JSObject _) implements JSObject {
   external factory OnClickData({
     /// The ID of the menu item that was clicked.

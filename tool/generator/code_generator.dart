@@ -79,7 +79,7 @@ return ${api.nameWithoutGroup.lowerCamel}Nullable;
           TypeDef((b) => b
             ..name = type.name
             ..docs.add(documentationComment(type.documentation, indent: 0))
-            ..definition = refer('String')),
+            ..definition = refer('JSString')),
         for (var type in api.typedefs)
           TypeDef((b) => b
             ..name = type.alias
@@ -507,8 +507,8 @@ class DartApiGenerator extends _GeneratorBase {
         ..name = 'toJS'
         ..type = MethodType.getter
         ..lambda = true
-        ..returns = refer('String')
-        ..body = Code('value')))
+        ..returns = refer('JSString')
+        ..body = Code('value.toJS')))
       ..methods.add(Method((b) => b
         ..name = 'fromJS'
         ..static = true
@@ -516,8 +516,8 @@ class DartApiGenerator extends _GeneratorBase {
         ..lambda = true
         ..requiredParameters.add(Parameter((b) => b
           ..name = 'value'
-          ..type = refer('String')))
-        ..body = Code('values.firstWhere((e) => e.value == value)'))));
+          ..type = refer('JSString')))
+        ..body = Code('values.firstWhere((e) => e.value == value.toDart)'))));
   }
 
   Iterable<Spec> _dictionary(model.Dictionary dictionary) sync* {

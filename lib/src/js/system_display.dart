@@ -150,7 +150,7 @@ extension type JSSystemDisplay._(JSObject _) {
 }
 
 /// Layout position, i.e. edge of parent that the display is attached to.
-typedef LayoutPosition = String;
+typedef LayoutPosition = JSString;
 
 /// An enum to tell if the display is detected and used by the
 /// system. The display is considered 'inactive', if it is not
@@ -158,11 +158,11 @@ typedef LayoutPosition = String;
 /// disconnected due to sleep mode, etc). This state is used to keep
 /// existing display when the all displays are disconnected, for
 /// example.
-typedef ActiveState = String;
+typedef ActiveState = JSString;
 
 /// Mirror mode, i.e. different ways of how a display is mirrored to other
 /// displays.
-typedef MirrorMode = String;
+typedef MirrorMode = JSString;
 extension type Bounds._(JSObject _) implements JSObject {
   external factory Bounds({
     /// The x-coordinate of the upper-left corner.

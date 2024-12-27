@@ -211,9 +211,9 @@ enum LayoutPosition {
 
   final String value;
 
-  String get toJS => value;
-  static LayoutPosition fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static LayoutPosition fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// An enum to tell if the display is detected and used by the
@@ -230,9 +230,9 @@ enum ActiveState {
 
   final String value;
 
-  String get toJS => value;
-  static ActiveState fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ActiveState fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Mirror mode, i.e. different ways of how a display is mirrored to other
@@ -254,9 +254,9 @@ enum MirrorMode {
 
   final String value;
 
-  String get toJS => value;
-  static MirrorMode fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static MirrorMode fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class Bounds {

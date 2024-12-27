@@ -63,9 +63,9 @@ extension type JSTts._(JSObject _) {
   external Event get onEvent;
 }
 
-typedef EventType = String;
+typedef EventType = JSString;
 
-typedef VoiceGender = String;
+typedef VoiceGender = JSString;
 extension type TtsOptions._(JSObject _) implements JSObject {
   external factory TtsOptions({
     /// If true, enqueues this utterance if TTS is already in progress. If false

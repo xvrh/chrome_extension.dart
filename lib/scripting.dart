@@ -129,9 +129,9 @@ enum StyleOrigin {
 
   final String value;
 
-  String get toJS => value;
-  static StyleOrigin fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static StyleOrigin fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The JavaScript world for a script to execute within.
@@ -148,9 +148,9 @@ enum ExecutionWorld {
 
   final String value;
 
-  String get toJS => value;
-  static ExecutionWorld fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ExecutionWorld fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class InjectionTarget {

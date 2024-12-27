@@ -70,7 +70,7 @@ extension type JSTabGroups._(JSObject _) {
 }
 
 /// The group's color.
-typedef Color = String;
+typedef Color = JSString;
 extension type TabGroup._(JSObject _) implements JSObject {
   external factory TabGroup({
     /// The ID of the group. Group IDs are unique within a browser session.

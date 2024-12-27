@@ -90,20 +90,20 @@ extension type JSCertificateProvider._(JSObject _) {
 }
 
 /// Types of supported cryptographic signature algorithms.
-typedef Algorithm = String;
+typedef Algorithm = JSString;
 
 /// Types of errors that the extension can report.
-typedef Error = String;
+typedef Error = JSString;
 
 /// Deprecated. Replaced by [Algorithm].
-typedef Hash = String;
+typedef Hash = JSString;
 
 /// The type of code being requested by the extension with requestPin function.
-typedef PinRequestType = String;
+typedef PinRequestType = JSString;
 
 /// The types of errors that can be presented to the user through the
 /// requestPin function.
-typedef PinRequestErrorType = String;
+typedef PinRequestErrorType = JSString;
 
 /// The callback provided by the extension that Chrome uses to report back
 /// rejected certificates. See `CertificatesCallback`.

@@ -91,9 +91,9 @@ extension type JSNotifications._(JSObject _) {
   external Event get onShowSettings;
 }
 
-typedef TemplateType = String;
+typedef TemplateType = JSString;
 
-typedef PermissionLevel = String;
+typedef PermissionLevel = JSString;
 extension type NotificationItem._(JSObject _) implements JSObject {
   external factory NotificationItem({
     /// Title of one item of a list notification.

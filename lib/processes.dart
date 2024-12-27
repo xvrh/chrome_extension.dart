@@ -145,9 +145,9 @@ enum ProcessType {
 
   final String value;
 
-  String get toJS => value;
-  static ProcessType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ProcessType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class TaskInfo {

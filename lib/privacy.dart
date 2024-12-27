@@ -50,9 +50,9 @@ enum IPHandlingPolicy {
 
   final String value;
 
-  String get toJS => value;
-  static IPHandlingPolicy fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static IPHandlingPolicy fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class PrivacyNetwork {

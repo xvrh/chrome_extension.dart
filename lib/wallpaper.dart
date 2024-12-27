@@ -40,9 +40,9 @@ enum WallpaperLayout {
 
   final String value;
 
-  String get toJS => value;
-  static WallpaperLayout fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static WallpaperLayout fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class SetWallpaperDetails {

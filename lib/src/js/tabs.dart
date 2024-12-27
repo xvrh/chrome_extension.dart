@@ -330,22 +330,22 @@ extension type JSTabs._(JSObject _) {
 }
 
 /// The tab's loading status.
-typedef TabStatus = String;
+typedef TabStatus = JSString;
 
 /// An event that caused a muted state change.
-typedef MutedInfoReason = String;
+typedef MutedInfoReason = JSString;
 
 /// Defines how zoom changes are handled, i.e., which entity is responsible for
 /// the actual scaling of the page; defaults to `automatic`.
-typedef ZoomSettingsMode = String;
+typedef ZoomSettingsMode = JSString;
 
 /// Defines whether zoom changes persist for the page's origin, or only take
 /// effect in this tab; defaults to `per-origin` when in `automatic` mode, and
 /// `per-tab` otherwise.
-typedef ZoomSettingsScope = String;
+typedef ZoomSettingsScope = JSString;
 
 /// The type of window.
-typedef WindowType = String;
+typedef WindowType = JSString;
 extension type MutedInfo._(JSObject _) implements JSObject {
   external factory MutedInfo({
     /// Whether the tab is muted (prevented from playing sound). The tab may be

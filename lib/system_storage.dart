@@ -80,9 +80,9 @@ enum StorageUnitType {
 
   final String value;
 
-  String get toJS => value;
-  static StorageUnitType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static StorageUnitType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum EjectDeviceResultCode {
@@ -105,9 +105,9 @@ enum EjectDeviceResultCode {
 
   final String value;
 
-  String get toJS => value;
-  static EjectDeviceResultCode fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static EjectDeviceResultCode fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class StorageUnitInfo {

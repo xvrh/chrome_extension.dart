@@ -64,16 +64,16 @@ extension type JSPrinting._(JSObject _) {
 }
 
 /// The status of [submitJob] request.
-typedef SubmitJobStatus = String;
+typedef SubmitJobStatus = JSString;
 
 /// The source of the printer.
-typedef PrinterSource = String;
+typedef PrinterSource = JSString;
 
 /// The status of the printer.
-typedef PrinterStatus = String;
+typedef PrinterStatus = JSString;
 
 /// Status of the print job.
-typedef JobStatus = String;
+typedef JobStatus = JSString;
 extension type SubmitJobRequest._(JSObject _) implements JSObject {
   external factory SubmitJobRequest({
     /// The print job to be submitted.

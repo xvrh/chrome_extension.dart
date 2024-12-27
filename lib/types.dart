@@ -41,9 +41,9 @@ enum ChromeSettingScope {
 
   final String value;
 
-  String get toJS => value;
-  static ChromeSettingScope fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ChromeSettingScope fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// One of<ul><li>[not_controllable]: cannot be controlled by any
@@ -61,9 +61,9 @@ enum LevelOfControl {
 
   final String value;
 
-  String get toJS => value;
-  static LevelOfControl fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static LevelOfControl fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class ChromeSetting {

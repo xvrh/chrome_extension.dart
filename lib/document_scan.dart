@@ -215,9 +215,9 @@ enum OperationResult {
 
   final String value;
 
-  String get toJS => value;
-  static OperationResult fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static OperationResult fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// How the scanner is connected to the computer.
@@ -230,9 +230,9 @@ enum ConnectionType {
 
   final String value;
 
-  String get toJS => value;
-  static ConnectionType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ConnectionType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The type of an option.  This is the same set of types as SANE_Value_Type.
@@ -269,9 +269,9 @@ enum OptionType {
 
   final String value;
 
-  String get toJS => value;
-  static OptionType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static OptionType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The unit of measurement for an option.  This is the same set of units as
@@ -302,9 +302,9 @@ enum OptionUnit {
 
   final String value;
 
-  String get toJS => value;
-  static OptionUnit fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static OptionUnit fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The type of constraint represented by an OptionConstraint.
@@ -338,9 +338,9 @@ enum ConstraintType {
 
   final String value;
 
-  String get toJS => value;
-  static ConstraintType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ConstraintType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// How an option can be changed.
@@ -358,9 +358,9 @@ enum Configurability {
 
   final String value;
 
-  String get toJS => value;
-  static Configurability fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static Configurability fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class ScanOptions {

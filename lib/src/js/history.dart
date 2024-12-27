@@ -59,7 +59,7 @@ extension type JSHistory._(JSObject _) {
 }
 
 /// The [transition type](#transition_types) for this visit from its referrer.
-typedef TransitionType = String;
+typedef TransitionType = JSString;
 extension type HistoryItem._(JSObject _) implements JSObject {
   external factory HistoryItem({
     /// The unique identifier for the item.

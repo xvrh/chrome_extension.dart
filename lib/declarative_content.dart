@@ -36,9 +36,9 @@ enum PageStateMatcherInstanceType {
 
   final String value;
 
-  String get toJS => value;
-  static PageStateMatcherInstanceType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PageStateMatcherInstanceType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum ShowPageActionInstanceType {
@@ -48,9 +48,9 @@ enum ShowPageActionInstanceType {
 
   final String value;
 
-  String get toJS => value;
-  static ShowPageActionInstanceType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ShowPageActionInstanceType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum ShowActionInstanceType {
@@ -60,9 +60,9 @@ enum ShowActionInstanceType {
 
   final String value;
 
-  String get toJS => value;
-  static ShowActionInstanceType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ShowActionInstanceType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum SetIconInstanceType {
@@ -72,9 +72,9 @@ enum SetIconInstanceType {
 
   final String value;
 
-  String get toJS => value;
-  static SetIconInstanceType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static SetIconInstanceType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 enum RequestContentScriptInstanceType {
@@ -85,9 +85,9 @@ enum RequestContentScriptInstanceType {
 
   final String value;
 
-  String get toJS => value;
-  static RequestContentScriptInstanceType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static RequestContentScriptInstanceType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// See <a

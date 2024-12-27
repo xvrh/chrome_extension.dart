@@ -96,9 +96,9 @@ enum SameSiteStatus {
 
   final String value;
 
-  String get toJS => value;
-  static SameSiteStatus fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static SameSiteStatus fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// The underlying reason behind the cookie's change. If a cookie was inserted,
@@ -121,9 +121,9 @@ enum OnChangedCause {
 
   final String value;
 
-  String get toJS => value;
-  static OnChangedCause fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static OnChangedCause fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class CookiePartitionKey {

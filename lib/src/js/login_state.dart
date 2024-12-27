@@ -36,6 +36,6 @@ extension type JSLoginState._(JSObject _) {
   external Event get onSessionStateChanged;
 }
 
-typedef ProfileType = String;
+typedef ProfileType = JSString;
 
-typedef SessionState = String;
+typedef SessionState = JSString;

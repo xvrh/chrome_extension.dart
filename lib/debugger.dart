@@ -126,9 +126,9 @@ enum TargetInfoType {
 
   final String value;
 
-  String get toJS => value;
-  static TargetInfoType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static TargetInfoType fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 /// Connection termination reason.
@@ -140,9 +140,9 @@ enum DetachReason {
 
   final String value;
 
-  String get toJS => value;
-  static DetachReason fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static DetachReason fromJS(JSString value) =>
+      values.firstWhere((e) => e.value == value.toDart);
 }
 
 class Debuggee {
