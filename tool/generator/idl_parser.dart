@@ -1,4 +1,4 @@
-library chrome_idl_parser;
+library;
 
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';

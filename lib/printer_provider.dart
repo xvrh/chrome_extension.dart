@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_parenthesis
+// ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment
 
 library;
 
@@ -31,7 +31,7 @@ class ChromePrinterProvider {
       $js.chrome.printerProvider.onGetPrintersRequested
           .asStream(($c) => ($js.PrintersCallback resultCallback) {
                 return $c((List<PrinterInfo> printerInfo) {
-                  //ignore: avoid_dynamic_calls
+                  //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                   (resultCallback
                       as Function)(printerInfo.toJSArray((e) => e.toJS));
                 });
@@ -57,7 +57,7 @@ class ChromePrinterProvider {
                     return $c(OnGetUsbPrinterInfoRequestedEvent(
                       device: Device.fromJS(device),
                       resultCallback: (PrinterInfo? printerInfo) {
-                        //ignore: avoid_dynamic_calls
+                        //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                         (resultCallback as Function)(printerInfo?.toJS);
                       },
                     ));
@@ -77,7 +77,7 @@ class ChromePrinterProvider {
             return $c(OnGetCapabilityRequestedEvent(
               printerId: printerId,
               resultCallback: (Map capabilities) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (resultCallback as Function)(capabilities.jsify()!);
               },
             ));
@@ -95,7 +95,7 @@ class ChromePrinterProvider {
             return $c(OnPrintRequestedEvent(
               printJob: PrintJob.fromJS(printJob),
               resultCallback: (PrintError result) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (resultCallback as Function)(result.toJS);
               },
             ));

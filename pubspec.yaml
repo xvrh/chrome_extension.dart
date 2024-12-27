@@ -28,6 +28,7 @@ dev_dependencies:
   project_tools:
     git:
       url: https://github.com/xvrh/project_tools.dart.git
+  pub_semver:
   puppeteer:
   shelf:
   shelf_router:

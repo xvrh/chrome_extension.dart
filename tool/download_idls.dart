@@ -1,4 +1,4 @@
-library download_idls;
+library;
 
 import 'dart:async';
 import 'dart:io';

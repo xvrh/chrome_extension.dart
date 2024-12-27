@@ -1,4 +1,4 @@
-library chrome_idl_convert_test;
+library;
 
 import 'package:test/test.dart';
 import '../../tool/generator/chrome_type.dart' show Context;

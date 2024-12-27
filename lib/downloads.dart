@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_parenthesis
+// ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment
 
 library;
 
@@ -234,7 +234,7 @@ class ChromeDownloads {
             return $c(OnDeterminingFilenameEvent(
               downloadItem: DownloadItem.fromJS(downloadItem),
               suggest: (FilenameSuggestion? suggestion) {
-                //ignore: avoid_dynamic_calls
+                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
                 (suggest as Function)(suggestion?.toJS);
               },
             ));

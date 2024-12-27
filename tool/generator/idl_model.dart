@@ -1,4 +1,4 @@
-library chrome_idl_model;
+library;
 
 /// This class provides a model for IDL-specified namespaces.
 class IDLNamespaceDeclaration {

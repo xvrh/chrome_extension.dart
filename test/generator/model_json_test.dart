@@ -1,4 +1,4 @@
-library model_json_test;
+library;
 
 import 'dart:convert';
 import 'dart:io';

@@ -33,6 +33,7 @@ class JsBindingGenerator extends _GeneratorBase {
       ..name = ''
       ..comments.add('ignore_for_file: non_constant_identifier_names')
       ..comments.add('ignore_for_file: unnecessary_import')
+      ..comments.add('ignore_for_file: unintended_html_in_doc_comment')
       ..directives.addAll([
         Directive.export('chrome.dart'),
         if (api.group case var group?)
@@ -208,7 +209,8 @@ class DartApiGenerator extends _GeneratorBase {
   String toCode() {
     final library = Library((b) => b
       ..name = ''
-      ..comments.add('ignore_for_file: unnecessary_parenthesis')
+      ..comments.add(
+          'ignore_for_file: unnecessary_parenthesis, unintended_html_in_doc_comment')
       ..directives.addAll([
         Directive.export('src/chrome.dart', show: ['chrome', 'EventStream']),
         Directive.import(_internalHelpers),

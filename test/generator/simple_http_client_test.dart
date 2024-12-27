@@ -1,4 +1,4 @@
-library simple_http_client_test;
+library;
 
 import 'dart:async';
 import 'dart:io';
