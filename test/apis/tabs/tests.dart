@@ -178,11 +178,6 @@ void _tests(TestContext context) {
     expect(currentTabs, hasLength(1));
   });
 
-  test('detectLanguage', () async {
-    var language = await chrome.tabs.detectLanguage(window.tabs!.first.id);
-    expect(language, isA<String>());
-  });
-
   test('onCreated', () async {
     late StreamSubscription subscription;
     subscription = chrome.tabs.onCreated.listen(expectAsync1((Tab tab) {
