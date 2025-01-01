@@ -99,9 +99,11 @@ enum DescriptionStyleType {
 
   final String value;
 
-  String get toJS => value;
-  static DescriptionStyleType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static DescriptionStyleType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The window disposition for the omnibox query. This is the recommended
@@ -117,9 +119,11 @@ enum OnInputEnteredDisposition {
 
   final String value;
 
-  String get toJS => value;
-  static OnInputEnteredDisposition fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static OnInputEnteredDisposition fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class MatchClassification {

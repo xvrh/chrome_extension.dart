@@ -678,16 +678,13 @@ class FunctionType extends ChromeType {
       ];
       var forwardParameter = <String>[
         for (var param in positionalParameters)
-          emit(param.type.toJS(code.refer(param.dartName))),
+          emit(param.type.toJSAny(code.refer(param.dartName))),
       ];
 
       var returnKeyword = returns != null ? 'return' : '';
       buffer.writeln('(${dartParameters.join(',')}) {');
-      //TODO: find a proper way
       buffer.writeln(
-          '  //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types');
-      buffer.writeln(
-          '$returnKeyword (${emit(accessor)} as Function)(${forwardParameter.join(',')});');
+          '$returnKeyword ${emit(accessor)}.callAsFunction(null, ${forwardParameter.join(',')});');
       buffer.writeln('}');
 
       return '$buffer';
@@ -715,7 +712,7 @@ class FunctionType extends ChromeType {
           '$returnKeyword ${emit(accessor)}(${forwardParameter.join(',')});');
       buffer.writeln('}');
 
-      return '$buffer';
+      return '$buffer.toJS';
     }));
   }
 }

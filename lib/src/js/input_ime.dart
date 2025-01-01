@@ -137,37 +137,37 @@ extension type JSInputIme._(JSObject _) {
   external Event get onAssistiveWindowButtonClicked;
 }
 
-typedef KeyboardEventType = String;
+typedef KeyboardEventType = JSString;
 
 /// Type of value this text field edits, (Text, Number, URL, etc)
-typedef InputContextType = String;
+typedef InputContextType = JSString;
 
 /// The auto-capitalize type of the text field.
-typedef AutoCapitalizeType = String;
+typedef AutoCapitalizeType = JSString;
 
 /// The type of menu item. Radio buttons between separators are considered
 /// grouped.
-typedef MenuItemStyle = String;
+typedef MenuItemStyle = JSString;
 
 /// The type of the underline to modify this segment.
-typedef UnderlineStyle = String;
+typedef UnderlineStyle = JSString;
 
 /// Where to display the candidate window. If set to 'cursor', the window
 /// follows the cursor. If set to 'composition', the window is locked to the
 /// beginning of the composition.
-typedef WindowPosition = String;
+typedef WindowPosition = JSString;
 
 /// The screen type under which the IME is activated.
-typedef ScreenType = String;
+typedef ScreenType = JSString;
 
 /// Which mouse buttons was clicked.
-typedef MouseButton = String;
+typedef MouseButton = JSString;
 
 /// Type of assistive window.
-typedef AssistiveWindowType = String;
+typedef AssistiveWindowType = JSString;
 
 /// ID of buttons in assistive window.
-typedef AssistiveWindowButton = String;
+typedef AssistiveWindowButton = JSString;
 extension type KeyboardEvent._(JSObject _) implements JSObject {
   external factory KeyboardEvent({
     /// One of keyup or keydown.

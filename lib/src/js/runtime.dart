@@ -256,29 +256,29 @@ extension type JSRuntime._(JSObject _) {
 }
 
 /// The operating system Chrome is running on.
-typedef PlatformOs = String;
+typedef PlatformOs = JSString;
 
 /// The machine's processor architecture.
-typedef PlatformArch = String;
+typedef PlatformArch = JSString;
 
 /// The native client architecture. This may be different from arch on some
 /// platforms.
-typedef PlatformNaclArch = String;
+typedef PlatformNaclArch = JSString;
 
 /// Result of the update check.
-typedef RequestUpdateCheckStatus = String;
+typedef RequestUpdateCheckStatus = JSString;
 
 /// The reason that this event is being dispatched.
-typedef OnInstalledReason = String;
+typedef OnInstalledReason = JSString;
 
 /// The reason that the event is being dispatched. 'app_update' is used when the
 /// restart is needed because the application is updated to a newer version.
 /// 'os_update' is used when the restart is needed because the browser/OS is
 /// updated to a newer version. 'periodic' is used when the system runs for more
 /// than the permitted uptime set in the enterprise policy.
-typedef OnRestartRequiredReason = String;
+typedef OnRestartRequiredReason = JSString;
 
-typedef ContextType = String;
+typedef ContextType = JSString;
 extension type Port._(JSObject _) implements JSObject {
   external factory Port({
     /// The name of the port, as specified in the call to [runtime.connect].

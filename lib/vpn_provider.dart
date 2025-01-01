@@ -181,9 +181,11 @@ enum PlatformMessage {
 
   final String value;
 
-  String get toJS => value;
-  static PlatformMessage fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PlatformMessage fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The enum is used by the VPN client to inform the platform
@@ -200,9 +202,11 @@ enum VpnConnectionState {
 
   final String value;
 
-  String get toJS => value;
-  static VpnConnectionState fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static VpnConnectionState fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The enum is used by the platform to indicate the event that triggered
@@ -220,9 +224,11 @@ enum UIEvent {
 
   final String value;
 
-  String get toJS => value;
-  static UIEvent fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static UIEvent fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class Parameters {

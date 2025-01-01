@@ -94,16 +94,16 @@ extension type JSVpnProvider._(JSObject _) {
 
 /// The enum is used by the platform to notify the client of the VPN session
 /// status.
-typedef PlatformMessage = String;
+typedef PlatformMessage = JSString;
 
 /// The enum is used by the VPN client to inform the platform
 /// of its current state. This helps provide meaningful messages
 /// to the user.
-typedef VpnConnectionState = String;
+typedef VpnConnectionState = JSString;
 
 /// The enum is used by the platform to indicate the event that triggered
 /// `onUIEvent`.
-typedef UIEvent = String;
+typedef UIEvent = JSString;
 extension type Parameters._(JSObject _) implements JSObject {
   external factory Parameters({
     /// IP address for the VPN interface in CIDR notation.

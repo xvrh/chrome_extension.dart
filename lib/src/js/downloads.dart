@@ -190,11 +190,11 @@ extension type JSDownloads._(JSObject _) {
 ///     <dt>prompt</dt>
 ///     <dd>The user will be prompted with a file chooser dialog.</dd>
 /// </dl>
-typedef FilenameConflictAction = String;
+typedef FilenameConflictAction = JSString;
 
-typedef HttpMethod = String;
+typedef HttpMethod = JSString;
 
-typedef InterruptReason = String;
+typedef InterruptReason = JSString;
 
 /// <dl><dt>file</dt>
 ///     <dd>The download's filename is suspicious.</dd>
@@ -216,7 +216,7 @@ typedef InterruptReason = String;
 ///     <dt>accepted</dt>
 ///     <dd>The user has accepted the dangerous download.</dd>
 /// </dl>
-typedef DangerType = String;
+typedef DangerType = JSString;
 
 /// <dl><dt>in_progress</dt>
 ///     <dd>The download is currently receiving data from the server.</dd>
@@ -225,7 +225,7 @@ typedef DangerType = String;
 ///     <dt>complete</dt>
 ///     <dd>The download completed successfully.</dd>
 /// </dl>
-typedef State = String;
+typedef State = JSString;
 
 typedef SuggestFilenameCallback = JSFunction;
 extension type HeaderNameValuePair._(JSObject _) implements JSObject {

@@ -68,7 +68,9 @@ enum IdleState {
 
   final String value;
 
-  String get toJS => value;
-  static IdleState fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static IdleState fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }

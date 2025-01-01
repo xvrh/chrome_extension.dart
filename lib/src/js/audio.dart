@@ -78,10 +78,10 @@ extension type JSAudio._(JSObject _) {
 }
 
 /// Type of stream an audio device provides.
-typedef StreamType = String;
+typedef StreamType = JSString;
 
 /// Available audio device types.
-typedef DeviceType = String;
+typedef DeviceType = JSString;
 extension type AudioDeviceInfo._(JSObject _) implements JSObject {
   external factory AudioDeviceInfo({
     /// The unique identifier of the audio device.

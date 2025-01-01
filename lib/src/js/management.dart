@@ -140,13 +140,13 @@ extension type JSManagement._(JSObject _) {
 }
 
 /// These are all possible app launch types.
-typedef LaunchType = String;
+typedef LaunchType = JSString;
 
 /// A reason the item is disabled.
-typedef ExtensionDisabledReason = String;
+typedef ExtensionDisabledReason = JSString;
 
 /// The type of this extension, app, or theme.
-typedef ExtensionType = String;
+typedef ExtensionType = JSString;
 
 /// How the extension was installed. One of
 /// [admin]: The extension was installed because of an administrative policy,
@@ -154,7 +154,7 @@ typedef ExtensionType = String;
 /// [normal]: The extension was installed normally via a .crx file,
 /// [sideload]: The extension was installed by other software on the machine,
 /// [other]: The extension was installed by other means.
-typedef ExtensionInstallType = String;
+typedef ExtensionInstallType = JSString;
 extension type IconInfo._(JSObject _) implements JSObject {
   external factory IconInfo({
     /// A number representing the width and height of the icon. Likely values

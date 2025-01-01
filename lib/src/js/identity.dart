@@ -127,7 +127,7 @@ extension type JSIdentity._(JSObject _) {
   external Event get onSignInChanged;
 }
 
-typedef AccountStatus = String;
+typedef AccountStatus = JSString;
 extension type AccountInfo._(JSObject _) implements JSObject {
   external factory AccountInfo(
       {

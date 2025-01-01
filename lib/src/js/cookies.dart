@@ -68,7 +68,7 @@ extension type JSCookies._(JSObject _) {
 /// 'no_restriction' corresponds to a cookie set with 'SameSite=None', 'lax' to
 /// 'SameSite=Lax', and 'strict' to 'SameSite=Strict'. 'unspecified' corresponds
 /// to a cookie set without the SameSite attribute.
-typedef SameSiteStatus = String;
+typedef SameSiteStatus = JSString;
 
 /// The underlying reason behind the cookie's change. If a cookie was inserted,
 /// or removed via an explicit call to "chrome.cookies.remove", "cause" will be
@@ -79,7 +79,7 @@ typedef SameSiteStatus = String;
 /// will be "evicted".  If a cookie was automatically removed due to a "set"
 /// call that overwrote it, "cause" will be "overwrite". Plan your response
 /// accordingly.
-typedef OnChangedCause = String;
+typedef OnChangedCause = JSString;
 extension type CookiePartitionKey._(JSObject _) implements JSObject {
   external factory CookiePartitionKey(
       {

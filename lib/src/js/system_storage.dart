@@ -47,9 +47,9 @@ extension type JSSystemStorage._(JSObject _) {
   external Event get onDetached;
 }
 
-typedef StorageUnitType = String;
+typedef StorageUnitType = JSString;
 
-typedef EjectDeviceResultCode = String;
+typedef EjectDeviceResultCode = JSString;
 extension type StorageUnitInfo._(JSObject _) implements JSObject {
   external factory StorageUnitInfo({
     /// The transient ID that uniquely identifies the storage device.

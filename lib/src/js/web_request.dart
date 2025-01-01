@@ -80,27 +80,27 @@ extension type JSWebRequest._(JSObject _) {
   external int get MAX_HANDLER_BEHAVIOR_CHANGED_CALLS_PER_10_MINUTES;
 }
 
-typedef ResourceType = String;
+typedef ResourceType = JSString;
 
-typedef OnBeforeRequestOptions = String;
+typedef OnBeforeRequestOptions = JSString;
 
-typedef OnBeforeSendHeadersOptions = String;
+typedef OnBeforeSendHeadersOptions = JSString;
 
-typedef OnSendHeadersOptions = String;
+typedef OnSendHeadersOptions = JSString;
 
-typedef OnHeadersReceivedOptions = String;
+typedef OnHeadersReceivedOptions = JSString;
 
-typedef OnAuthRequiredOptions = String;
+typedef OnAuthRequiredOptions = JSString;
 
-typedef OnResponseStartedOptions = String;
+typedef OnResponseStartedOptions = JSString;
 
-typedef OnBeforeRedirectOptions = String;
+typedef OnBeforeRedirectOptions = JSString;
 
-typedef OnCompletedOptions = String;
+typedef OnCompletedOptions = JSString;
 
-typedef OnErrorOccurredOptions = String;
+typedef OnErrorOccurredOptions = JSString;
 
-typedef IgnoredActionType = String;
+typedef IgnoredActionType = JSString;
 
 /// An array of HTTP headers. Each header is represented as a dictionary
 /// containing the keys `name` and either `value` or `binaryValue`.

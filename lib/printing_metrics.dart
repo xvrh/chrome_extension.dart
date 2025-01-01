@@ -61,9 +61,11 @@ enum PrintJobSource {
 
   final String value;
 
-  String get toJS => value;
-  static PrintJobSource fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PrintJobSource fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Specifies the final status of the print job.
@@ -81,9 +83,11 @@ enum PrintJobStatus {
 
   final String value;
 
-  String get toJS => value;
-  static PrintJobStatus fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PrintJobStatus fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The source of the printer.
@@ -98,9 +102,11 @@ enum PrinterSource {
 
   final String value;
 
-  String get toJS => value;
-  static PrinterSource fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static PrinterSource fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum ColorMode {
@@ -114,9 +120,11 @@ enum ColorMode {
 
   final String value;
 
-  String get toJS => value;
-  static ColorMode fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ColorMode fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum DuplexMode {
@@ -133,9 +141,11 @@ enum DuplexMode {
 
   final String value;
 
-  String get toJS => value;
-  static DuplexMode fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static DuplexMode fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class MediaSize {

@@ -30,7 +30,7 @@ extension type JSSearch._(JSObject _) {
   external JSPromise query(QueryInfo queryInfo);
 }
 
-typedef Disposition = String;
+typedef Disposition = JSString;
 extension type QueryInfo._(JSObject _) implements JSObject {
   external factory QueryInfo({
     /// String to query with the default search provider.

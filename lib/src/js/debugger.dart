@@ -76,10 +76,10 @@ extension type JSDebugger._(JSObject _) {
 }
 
 /// Target type.
-typedef TargetInfoType = String;
+typedef TargetInfoType = JSString;
 
 /// Connection termination reason.
-typedef DetachReason = String;
+typedef DetachReason = JSString;
 extension type Debuggee._(JSObject _) implements JSObject {
   external factory Debuggee({
     /// The id of the tab which you intend to debug.

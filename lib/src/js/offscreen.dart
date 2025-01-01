@@ -44,7 +44,7 @@ extension type JSOffscreen._(JSObject _) {
   external JSPromise hasDocument();
 }
 
-typedef Reason = String;
+typedef Reason = JSString;
 extension type CreateParameters._(JSObject _) implements JSObject {
   external factory CreateParameters({
     /// The reason(s) the extension is creating the offscreen document.

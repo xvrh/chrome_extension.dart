@@ -35,17 +35,17 @@ extension type JSPrintingMetrics._(JSObject _) {
 }
 
 /// The source of the print job.
-typedef PrintJobSource = String;
+typedef PrintJobSource = JSString;
 
 /// Specifies the final status of the print job.
-typedef PrintJobStatus = String;
+typedef PrintJobStatus = JSString;
 
 /// The source of the printer.
-typedef PrinterSource = String;
+typedef PrinterSource = JSString;
 
-typedef ColorMode = String;
+typedef ColorMode = JSString;
 
-typedef DuplexMode = String;
+typedef DuplexMode = JSString;
 extension type MediaSize._(JSObject _) implements JSObject {
   external factory MediaSize({
     /// Width (in micrometers) of the media used for printing.

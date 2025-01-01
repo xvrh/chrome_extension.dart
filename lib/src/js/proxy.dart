@@ -36,9 +36,9 @@ extension type JSProxy._(JSObject _) {
   external ChromeSetting get settings;
 }
 
-typedef Scheme = String;
+typedef Scheme = JSString;
 
-typedef Mode = String;
+typedef Mode = JSString;
 extension type ProxyServer._(JSObject _) implements JSObject {
   external factory ProxyServer({
     /// The scheme (protocol) of the proxy server itself. Defaults to 'http'.

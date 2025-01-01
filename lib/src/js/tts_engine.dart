@@ -83,7 +83,7 @@ extension type JSTtsEngine._(JSObject _) {
   external Event get onResume;
 }
 
-typedef VoiceGender = String;
+typedef VoiceGender = JSString;
 extension type SpeakOptions._(JSObject _) implements JSObject {
   external factory SpeakOptions({
     /// The name of the voice to use for synthesis.

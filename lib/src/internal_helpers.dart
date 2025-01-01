@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:js_interop';
-import 'dart:js_util';
 import '../runtime.dart';
 import 'js/events.dart' as js;
 
@@ -37,13 +36,13 @@ extension ListToJsExtension<T> on List<T> {
 
 extension JSAnyExtension on JSAny {
   Map toDartMap() {
-    var map = this.dartify()! as Map;
+    var map = dartify()! as Map;
     // TODO: convert inner map and list?
     return map;
   }
 }
 
-extension JSChoiceExtension<T extends Object> on T {
+extension JSChoiceExtension<T extends JSAny> on T {
   Object when({
     int Function(int)? isInt,
     double Function(double)? isDouble,
@@ -53,27 +52,23 @@ extension JSChoiceExtension<T extends Object> on T {
     Map Function(JSAny)? isMap,
     Object Function(Object)? isOther,
   }) {
-    if (isArray != null && isJavaScriptArray(this)) {
-      // TODO: find the proper way
+    if (isArray != null && isA<JSArray>()) {
       // ignore: invalid_runtime_check_with_js_interop_types
       return isArray(this as JSArray);
     }
-    if (isInt != null && (this is num || instanceOfString(this, 'Number'))) {
-      return isInt(this as int);
+    if (isInt != null && (isA<JSNumber>())) {
+      return isInt((dartify()! as num).toInt());
     }
-    if (isDouble != null && (this is num || instanceOfString(this, 'Number'))) {
-      return isDouble(this as double);
+    if (isDouble != null && (isA<JSNumber>())) {
+      return isDouble((dartify()! as num).toDouble());
     }
-    if (isBool != null && (this is bool || instanceOfString(this, 'Boolean'))) {
-      return isBool(this as bool);
+    if (isBool != null && (isA<JSBoolean>())) {
+      return isBool(dartify()! as bool);
     }
-    if (isString != null &&
-        (this is String || instanceOfString(this, 'String'))) {
-      return isString(this as String);
+    if (isString != null && (isA<JSString>())) {
+      return isString(dartify()! as String);
     }
-    if (isMap != null && isJavaScriptSimpleObject(this)) {
-      // TODO: find the proper way
-      // ignore: invalid_runtime_check_with_js_interop_types
+    if (isMap != null && isA<JSObject>()) {
       return isMap(this as JSAny);
     }
     if (isOther != null) {

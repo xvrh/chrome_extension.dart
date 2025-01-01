@@ -56,15 +56,15 @@ extension type JSDesktopCapture._(JSObject _) {
 
 /// Enum used to define set of desktop media sources used in
 /// chooseDesktopMedia().
-typedef DesktopCaptureSourceType = String;
+typedef DesktopCaptureSourceType = JSString;
 
 /// Mirrors
 /// [SystemAudioPreferenceEnum](https://w3c.github.io/mediacapture-screen-share/#dom-systemaudiopreferenceenum).
-typedef SystemAudioPreferenceEnum = String;
+typedef SystemAudioPreferenceEnum = JSString;
 
 /// Mirrors
 /// [SelfCapturePreferenceEnum](https://w3c.github.io/mediacapture-screen-share/#dom-selfcapturepreferenceenum).
-typedef SelfCapturePreferenceEnum = String;
+typedef SelfCapturePreferenceEnum = JSString;
 extension type ChooseDesktopMediaOptions._(JSObject _) implements JSObject {
   external factory ChooseDesktopMediaOptions({
     /// Mirrors

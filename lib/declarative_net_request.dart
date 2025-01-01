@@ -305,9 +305,11 @@ enum ResourceType {
 
   final String value;
 
-  String get toJS => value;
-  static ResourceType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ResourceType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// This describes the HTTP request method of a network request.
@@ -326,9 +328,11 @@ enum RequestMethod {
 
   final String value;
 
-  String get toJS => value;
-  static RequestMethod fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static RequestMethod fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// This describes whether the request is first or third party to the frame in
@@ -345,9 +349,11 @@ enum DomainType {
 
   final String value;
 
-  String get toJS => value;
-  static DomainType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static DomainType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// This describes the possible operations for a "modifyHeaders" rule.
@@ -367,9 +373,11 @@ enum HeaderOperation {
 
   final String value;
 
-  String get toJS => value;
-  static HeaderOperation fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static HeaderOperation fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Describes the kind of action to take if a given RuleCondition matches.
@@ -399,9 +407,11 @@ enum RuleActionType {
 
   final String value;
 
-  String get toJS => value;
-  static RuleActionType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static RuleActionType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Describes the reason why a given regular expression isn't supported.
@@ -418,9 +428,11 @@ enum UnsupportedRegexReason {
 
   final String value;
 
-  String get toJS => value;
-  static UnsupportedRegexReason fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static UnsupportedRegexReason fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class Ruleset {

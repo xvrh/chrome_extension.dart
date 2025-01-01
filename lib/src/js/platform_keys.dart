@@ -112,7 +112,7 @@ extension type JSPlatformKeys._(JSObject _) {
   );
 }
 
-typedef ClientCertificateType = String;
+typedef ClientCertificateType = JSString;
 extension type Match._(JSObject _) implements JSObject {
   external factory Match({
     /// The DER encoding of a X.509 certificate.

@@ -70,7 +70,7 @@ extension type JSTabCapture._(JSObject _) {
   external Event get onStatusChanged;
 }
 
-typedef TabCaptureState = String;
+typedef TabCaptureState = JSString;
 extension type CaptureInfo._(JSObject _) implements JSObject {
   external factory CaptureInfo({
     /// The id of the tab whose status changed.

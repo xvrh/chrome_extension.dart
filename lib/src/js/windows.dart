@@ -82,16 +82,16 @@ extension type JSWindows._(JSObject _) {
 /// The type of browser window this is. In some circumstances a window may not
 /// be assigned a `type` property; for example, when querying closed windows
 /// from the [sessions] API.
-typedef WindowType = String;
+typedef WindowType = JSString;
 
 /// The state of this browser window. In some circumstances a window may not be
 /// assigned a `state` property; for example, when querying closed windows from
 /// the [sessions] API.
-typedef WindowState = String;
+typedef WindowState = JSString;
 
 /// Specifies what type of browser window to create. 'panel' is deprecated and
 /// is available only to existing allowlisted extensions on Chrome OS.
-typedef CreateType = String;
+typedef CreateType = JSString;
 extension type Window._(JSObject _) implements JSObject {
   external factory Window({
     /// The ID of the window. Window IDs are unique within a browser session. In

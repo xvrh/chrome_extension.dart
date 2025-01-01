@@ -100,9 +100,11 @@ enum EventType {
 
   final String value;
 
-  String get toJS => value;
-  static EventType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static EventType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum VoiceGender {
@@ -113,9 +115,11 @@ enum VoiceGender {
 
   final String value;
 
-  String get toJS => value;
-  static VoiceGender fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static VoiceGender fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class TtsOptions {

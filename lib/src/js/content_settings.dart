@@ -160,37 +160,37 @@ extension type JSContentSettings._(JSObject _) {
 /// [incognito_session_only]: setting for incognito profile that can only be set
 /// during an incognito session and is deleted when the incognito session ends
 /// (overrides regular settings).
-typedef Scope = String;
+typedef Scope = JSString;
 
-typedef AutoVerifyContentSetting = String;
+typedef AutoVerifyContentSetting = JSString;
 
-typedef ClipboardContentSetting = String;
+typedef ClipboardContentSetting = JSString;
 
-typedef CookiesContentSetting = String;
+typedef CookiesContentSetting = JSString;
 
-typedef ImagesContentSetting = String;
+typedef ImagesContentSetting = JSString;
 
-typedef JavascriptContentSetting = String;
+typedef JavascriptContentSetting = JSString;
 
-typedef LocationContentSetting = String;
+typedef LocationContentSetting = JSString;
 
-typedef PluginsContentSetting = String;
+typedef PluginsContentSetting = JSString;
 
-typedef PopupsContentSetting = String;
+typedef PopupsContentSetting = JSString;
 
-typedef NotificationsContentSetting = String;
+typedef NotificationsContentSetting = JSString;
 
-typedef FullscreenContentSetting = String;
+typedef FullscreenContentSetting = JSString;
 
-typedef MouselockContentSetting = String;
+typedef MouselockContentSetting = JSString;
 
-typedef MicrophoneContentSetting = String;
+typedef MicrophoneContentSetting = JSString;
 
-typedef CameraContentSetting = String;
+typedef CameraContentSetting = JSString;
 
-typedef PpapiBrokerContentSetting = String;
+typedef PpapiBrokerContentSetting = JSString;
 
-typedef MultipleAutomaticDownloadsContentSetting = String;
+typedef MultipleAutomaticDownloadsContentSetting = JSString;
 extension type ResourceIdentifier._(JSObject _) implements JSObject {
   external factory ResourceIdentifier({
     /// The resource identifier for the given content type.

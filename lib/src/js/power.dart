@@ -40,4 +40,4 @@ extension type JSPower._(JSObject _) {
   external JSPromise reportActivity();
 }
 
-typedef Level = String;
+typedef Level = JSString;

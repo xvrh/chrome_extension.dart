@@ -27,26 +27,26 @@ extension JSChromeJSExtensionTypesExtension on JSChrome {
 extension type JSExtensionTypes._(JSObject _) {}
 
 /// The format of an image.
-typedef ImageFormat = String;
+typedef ImageFormat = JSString;
 
 /// The soonest that the JavaScript or CSS will be injected into the tab.
-typedef RunAt = String;
+typedef RunAt = JSString;
 
 /// The [origin](https://www.w3.org/TR/css3-cascade/#cascading-origins) of
 /// injected CSS.
-typedef CSSOrigin = String;
+typedef CSSOrigin = JSString;
 
 /// The type of frame.
-typedef FrameType = String;
+typedef FrameType = JSString;
 
 /// The document lifecycle of the frame.
-typedef DocumentLifecycle = String;
+typedef DocumentLifecycle = JSString;
 
 /// The JavaScript world for a script to execute within. Can either be an
 /// isolated world unique to this extension, the main world of the DOM which is
 /// shared with the page's JavaScript, or a user scripts world that is only
 /// available for scripts registered with the User Scripts API.
-typedef ExecutionWorld = String;
+typedef ExecutionWorld = JSString;
 extension type ImageDetails._(JSObject _) implements JSObject {
   external factory ImageDetails({
     /// The format of the resulting image.  Default is `"jpeg"`.

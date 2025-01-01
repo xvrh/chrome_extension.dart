@@ -89,7 +89,7 @@ extension type JSProcesses._(JSObject _) {
 }
 
 /// The types of the browser processes.
-typedef ProcessType = String;
+typedef ProcessType = JSString;
 extension type TaskInfo._(JSObject _) implements JSObject {
   external factory TaskInfo({
     /// The title of the task.

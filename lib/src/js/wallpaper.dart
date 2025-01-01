@@ -30,7 +30,7 @@ extension type JSWallpaper._(JSObject _) {
 }
 
 /// The supported wallpaper layouts.
-typedef WallpaperLayout = String;
+typedef WallpaperLayout = JSString;
 extension type SetWallpaperDetails._(JSObject _) implements JSObject {
   external factory SetWallpaperDetails({
     /// The jpeg or png encoded wallpaper image as an ArrayBuffer.

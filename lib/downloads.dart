@@ -234,8 +234,7 @@ class ChromeDownloads {
             return $c(OnDeterminingFilenameEvent(
               downloadItem: DownloadItem.fromJS(downloadItem),
               suggest: (FilenameSuggestion? suggestion) {
-                //ignore: avoid_dynamic_calls, invalid_runtime_check_with_js_interop_types
-                (suggest as Function)(suggestion?.toJS);
+                suggest.callAsFunction(null, suggestion?.toJS);
               },
             ));
           }.toJS);
@@ -258,9 +257,11 @@ enum FilenameConflictAction {
 
   final String value;
 
-  String get toJS => value;
-  static FilenameConflictAction fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static FilenameConflictAction fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum HttpMethod {
@@ -271,9 +272,11 @@ enum HttpMethod {
 
   final String value;
 
-  String get toJS => value;
-  static HttpMethod fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static HttpMethod fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum InterruptReason {
@@ -311,9 +314,11 @@ enum InterruptReason {
 
   final String value;
 
-  String get toJS => value;
-  static InterruptReason fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static InterruptReason fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// <dl><dt>file</dt>
@@ -364,9 +369,11 @@ enum DangerType {
 
   final String value;
 
-  String get toJS => value;
-  static DangerType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static DangerType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// <dl><dt>in_progress</dt>
@@ -385,9 +392,11 @@ enum State {
 
   final String value;
 
-  String get toJS => value;
-  static State fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static State fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 typedef SuggestFilenameCallback = void Function(FilenameSuggestion?);

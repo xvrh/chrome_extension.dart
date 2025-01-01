@@ -278,9 +278,11 @@ enum KeyboardEventType {
 
   final String value;
 
-  String get toJS => value;
-  static KeyboardEventType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static KeyboardEventType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Type of value this text field edits, (Text, Number, URL, etc)
@@ -298,9 +300,11 @@ enum InputContextType {
 
   final String value;
 
-  String get toJS => value;
-  static InputContextType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static InputContextType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The auto-capitalize type of the text field.
@@ -313,9 +317,11 @@ enum AutoCapitalizeType {
 
   final String value;
 
-  String get toJS => value;
-  static AutoCapitalizeType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static AutoCapitalizeType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The type of menu item. Radio buttons between separators are considered
@@ -329,9 +335,11 @@ enum MenuItemStyle {
 
   final String value;
 
-  String get toJS => value;
-  static MenuItemStyle fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static MenuItemStyle fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The type of the underline to modify this segment.
@@ -344,9 +352,11 @@ enum UnderlineStyle {
 
   final String value;
 
-  String get toJS => value;
-  static UnderlineStyle fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static UnderlineStyle fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Where to display the candidate window. If set to 'cursor', the window
@@ -360,9 +370,11 @@ enum WindowPosition {
 
   final String value;
 
-  String get toJS => value;
-  static WindowPosition fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static WindowPosition fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// The screen type under which the IME is activated.
@@ -376,9 +388,11 @@ enum ScreenType {
 
   final String value;
 
-  String get toJS => value;
-  static ScreenType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static ScreenType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Which mouse buttons was clicked.
@@ -391,9 +405,11 @@ enum MouseButton {
 
   final String value;
 
-  String get toJS => value;
-  static MouseButton fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static MouseButton fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// Type of assistive window.
@@ -404,9 +420,11 @@ enum AssistiveWindowType {
 
   final String value;
 
-  String get toJS => value;
-  static AssistiveWindowType fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static AssistiveWindowType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 /// ID of buttons in assistive window.
@@ -418,9 +436,11 @@ enum AssistiveWindowButton {
 
   final String value;
 
-  String get toJS => value;
-  static AssistiveWindowButton fromJS(String value) =>
-      values.firstWhere((e) => e.value == value);
+  JSString get toJS => value.toJS;
+  static AssistiveWindowButton fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 class KeyboardEvent {

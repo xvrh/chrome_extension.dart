@@ -98,7 +98,7 @@ extension type JSExtension._(JSObject _) {
 }
 
 /// The type of extension view.
-typedef ViewType = String;
+typedef ViewType = JSString;
 extension type GetViewsFetchProperties._(JSObject _) implements JSObject {
   external factory GetViewsFetchProperties({
     /// The type of view to get. If omitted, returns all views (including

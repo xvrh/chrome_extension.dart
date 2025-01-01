@@ -95,10 +95,10 @@ extension type JSScripting._(JSObject _) {
 /// See [style
 /// origins](https://developer.mozilla.org/en-US/docs/Glossary/Style_origin)
 /// for more info.
-typedef StyleOrigin = String;
+typedef StyleOrigin = JSString;
 
 /// The JavaScript world for a script to execute within.
-typedef ExecutionWorld = String;
+typedef ExecutionWorld = JSString;
 extension type InjectionTarget._(JSObject _) implements JSObject {
   external factory InjectionTarget({
     /// The ID of the tab into which to inject.
