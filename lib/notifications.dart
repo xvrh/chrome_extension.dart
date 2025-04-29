@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/notifications.dart' as $js;
@@ -40,11 +39,11 @@ class ChromeNotifications {
     String? notificationId,
     NotificationOptions options,
   ) async {
-    var $res = await promiseToFuture<String>($js.chrome.notifications.create(
-      notificationId,
-      options.toJS,
-    ));
-    return $res;
+    var $res =
+        await $js.chrome.notifications
+            .create(notificationId, options.toJS)
+            .toDart;
+    return ($res).dartify() as String? ?? '';
   }
 
   /// Updates an existing notification.
@@ -58,11 +57,11 @@ class ChromeNotifications {
     String notificationId,
     NotificationOptions options,
   ) async {
-    var $res = await promiseToFuture<bool>($js.chrome.notifications.update(
-      notificationId,
-      options.toJS,
-    ));
-    return $res;
+    var $res =
+        await $js.chrome.notifications
+            .update(notificationId, options.toJS)
+            .toDart;
+    return ($res).dartify() as bool? ?? false;
   }
 
   /// Clears the specified notification.
@@ -72,72 +71,79 @@ class ChromeNotifications {
   ///
   /// The callback is required before Chrome 42.
   Future<bool> clear(String notificationId) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.notifications.clear(notificationId));
-    return $res;
+    var $res = await $js.chrome.notifications.clear(notificationId).toDart;
+    return ($res).dartify() as bool? ?? false;
   }
 
   /// Retrieves all the notifications of this app or extension.
   /// |callback|: Returns the set of notification_ids currently in the system.
   Future<Map> getAll() async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.notifications.getAll());
-    return $res.toDartMap();
+    var $res = await $js.chrome.notifications.getAll().toDart;
+    return ($res).dartify() as Map? ?? {};
   }
 
   /// Retrieves whether the user has enabled notifications from this app
   /// or extension.
   /// |callback|: Returns the current permission level.
   Future<PermissionLevel> getPermissionLevel() async {
-    var $res = await promiseToFuture<$js.PermissionLevel>(
-        $js.chrome.notifications.getPermissionLevel());
-    return PermissionLevel.fromJS($res);
+    var $res = await $js.chrome.notifications.getPermissionLevel().toDart;
+    return PermissionLevel.fromJS($res! as $js.PermissionLevel);
   }
 
   /// The notification closed, either by the system or by user action.
   EventStream<OnClosedEvent> get onClosed =>
-      $js.chrome.notifications.onClosed.asStream(($c) => (
-            String notificationId,
-            bool byUser,
-          ) {
-            return $c(OnClosedEvent(
-              notificationId: notificationId,
-              byUser: byUser,
-            ));
-          }.toJS);
+      $js.chrome.notifications.onClosed.asStream(
+        ($c) =>
+            (String notificationId, bool byUser) {
+              return $c(
+                OnClosedEvent(notificationId: notificationId, byUser: byUser),
+              );
+            }.toJS,
+      );
 
   /// The user clicked in a non-button area of the notification.
-  EventStream<String> get onClicked => $js.chrome.notifications.onClicked
-      .asStream(($c) => (String notificationId) {
-            return $c(notificationId);
-          }.toJS);
+  EventStream<String> get onClicked =>
+      $js.chrome.notifications.onClicked.asStream(
+        ($c) =>
+            (String notificationId) {
+              return $c(notificationId);
+            }.toJS,
+      );
 
   /// The user pressed a button in the notification.
   EventStream<OnButtonClickedEvent> get onButtonClicked =>
-      $js.chrome.notifications.onButtonClicked.asStream(($c) => (
-            String notificationId,
-            int buttonIndex,
-          ) {
-            return $c(OnButtonClickedEvent(
-              notificationId: notificationId,
-              buttonIndex: buttonIndex,
-            ));
-          }.toJS);
+      $js.chrome.notifications.onButtonClicked.asStream(
+        ($c) =>
+            (String notificationId, int buttonIndex) {
+              return $c(
+                OnButtonClickedEvent(
+                  notificationId: notificationId,
+                  buttonIndex: buttonIndex,
+                ),
+              );
+            }.toJS,
+      );
 
   /// The user changes the permission level.  As of Chrome 47, only ChromeOS
   /// has UI that dispatches this event.
   EventStream<PermissionLevel> get onPermissionLevelChanged =>
-      $js.chrome.notifications.onPermissionLevelChanged
-          .asStream(($c) => ($js.PermissionLevel level) {
-                return $c(PermissionLevel.fromJS(level));
-              }.toJS);
+      $js.chrome.notifications.onPermissionLevelChanged.asStream(
+        ($c) =>
+            ($js.PermissionLevel level) {
+              return $c(PermissionLevel.fromJS(level));
+            }.toJS,
+      );
 
   /// The user clicked on a link for the app's notification settings.  As of
   /// Chrome 47, only ChromeOS has UI that dispatches this event.
   /// As of Chrome 65, that UI has been removed from ChromeOS, too.
   EventStream<void> get onShowSettings =>
-      $js.chrome.notifications.onShowSettings.asStream(($c) => () {
-            return $c(null);
-          }.toJS);
+      $js.chrome.notifications.onShowSettings.asStream(
+        ($c) =>
+            () {
+              return $c(null);
+            }.toJS,
+      );
 }
 
 enum TemplateType {
@@ -196,10 +202,7 @@ class NotificationItem {
 
     /// Additional details about this item.
     required String message,
-  }) : _wrapped = $js.NotificationItem(
-          title: title,
-          message: message,
-        );
+  }) : _wrapped = $js.NotificationItem(title: title, message: message);
 
   final $js.NotificationItem _wrapped;
 
@@ -228,10 +231,10 @@ class NotificationBitmap {
     required int height,
     ByteBuffer? data,
   }) : _wrapped = $js.NotificationBitmap(
-          width: width,
-          height: height,
-          data: data?.toJS,
-        );
+         width: width,
+         height: height,
+         data: data?.toJS,
+       );
 
   final $js.NotificationBitmap _wrapped;
 
@@ -264,10 +267,10 @@ class NotificationButton {
     String? iconUrl,
     NotificationBitmap? iconBitmap,
   }) : _wrapped = $js.NotificationButton(
-          title: title,
-          iconUrl: iconUrl,
-          iconBitmap: iconBitmap?.toJS,
-        );
+         title: title,
+         iconUrl: iconUrl,
+         iconBitmap: iconBitmap?.toJS,
+       );
 
   final $js.NotificationButton _wrapped;
 
@@ -368,26 +371,26 @@ class NotificationOptions {
     /// notification is being shown. This defaults to false.
     bool? silent,
   }) : _wrapped = $js.NotificationOptions(
-          type: type?.toJS,
-          iconUrl: iconUrl,
-          iconBitmap: iconBitmap?.toJS,
-          appIconMaskUrl: appIconMaskUrl,
-          appIconMaskBitmap: appIconMaskBitmap?.toJS,
-          title: title,
-          message: message,
-          contextMessage: contextMessage,
-          priority: priority,
-          eventTime: eventTime,
-          buttons: buttons?.toJSArray((e) => e.toJS),
-          expandedMessage: expandedMessage,
-          imageUrl: imageUrl,
-          imageBitmap: imageBitmap?.toJS,
-          items: items?.toJSArray((e) => e.toJS),
-          progress: progress,
-          isClickable: isClickable,
-          requireInteraction: requireInteraction,
-          silent: silent,
-        );
+         type: type?.toJS,
+         iconUrl: iconUrl,
+         iconBitmap: iconBitmap?.toJS,
+         appIconMaskUrl: appIconMaskUrl,
+         appIconMaskBitmap: appIconMaskBitmap?.toJS,
+         title: title,
+         message: message,
+         contextMessage: contextMessage,
+         priority: priority,
+         eventTime: eventTime,
+         buttons: buttons?.toJSArray((e) => e.toJS),
+         expandedMessage: expandedMessage,
+         imageUrl: imageUrl,
+         imageBitmap: imageBitmap?.toJS,
+         items: items?.toJSArray((e) => e.toJS),
+         progress: progress,
+         isClickable: isClickable,
+         requireInteraction: requireInteraction,
+         silent: silent,
+       );
 
   final $js.NotificationOptions _wrapped;
 
@@ -480,10 +483,11 @@ class NotificationOptions {
   }
 
   /// Text and icons for up to two notification action buttons.
-  List<NotificationButton>? get buttons => _wrapped.buttons?.toDart
-      .cast<$js.NotificationButton>()
-      .map((e) => NotificationButton.fromJS(e))
-      .toList();
+  List<NotificationButton>? get buttons =>
+      _wrapped.buttons?.toDart
+          .cast<$js.NotificationButton>()
+          .map((e) => NotificationButton.fromJS(e))
+          .toList();
 
   set buttons(List<NotificationButton>? v) {
     _wrapped.buttons = v?.toJSArray((e) => e.toJS);
@@ -514,10 +518,11 @@ class NotificationOptions {
 
   /// Items for multi-item notifications. Users on Mac OS X only see the first
   /// item.
-  List<NotificationItem>? get items => _wrapped.items?.toDart
-      .cast<$js.NotificationItem>()
-      .map((e) => NotificationItem.fromJS(e))
-      .toList();
+  List<NotificationItem>? get items =>
+      _wrapped.items?.toDart
+          .cast<$js.NotificationItem>()
+          .map((e) => NotificationItem.fromJS(e))
+          .toList();
 
   set items(List<NotificationItem>? v) {
     _wrapped.items = v?.toJSArray((e) => e.toJS);
@@ -554,10 +559,7 @@ class NotificationOptions {
 }
 
 class OnClosedEvent {
-  OnClosedEvent({
-    required this.notificationId,
-    required this.byUser,
-  });
+  OnClosedEvent({required this.notificationId, required this.byUser});
 
   final String notificationId;
 

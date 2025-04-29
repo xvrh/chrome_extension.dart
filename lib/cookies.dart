@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/cookies.dart' as $js;
 
@@ -26,9 +25,8 @@ class ChromeCookies {
   /// be returned. For cookies with the same path length, the cookie with the
   /// earliest creation time will be returned.
   Future<Cookie?> get(CookieDetails details) async {
-    var $res = await promiseToFuture<$js.Cookie?>(
-        $js.chrome.cookies.get(details.toJS));
-    return $res?.let(Cookie.fromJS);
+    var $res = await $js.chrome.cookies.get(details.toJS).toDart;
+    return ($res as $js.Cookie?)?.let(Cookie.fromJS);
   }
 
   /// Retrieves all cookies from a single cookie store that match the given
@@ -38,34 +36,35 @@ class ChromeCookies {
   /// cookies for domains that the extension has host permissions to.
   /// [details] Information to filter the cookies being retrieved.
   Future<List<Cookie>> getAll(GetAllDetails details) async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.cookies.getAll(details.toJS));
-    return $res.toDart.cast<$js.Cookie>().map((e) => Cookie.fromJS(e)).toList();
+    var $res = await $js.chrome.cookies.getAll(details.toJS).toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<Cookie>((e) => Cookie.fromJS(e as $js.Cookie))
+        .toList();
   }
 
   /// Sets a cookie with the given cookie data; may overwrite equivalent cookies
   /// if they exist.
   /// [details] Details about the cookie being set.
   Future<Cookie?> set(SetDetails details) async {
-    var $res = await promiseToFuture<$js.Cookie?>(
-        $js.chrome.cookies.set(details.toJS));
-    return $res?.let(Cookie.fromJS);
+    var $res = await $js.chrome.cookies.set(details.toJS).toDart;
+    return ($res as $js.Cookie?)?.let(Cookie.fromJS);
   }
 
   /// Deletes a cookie by name.
   Future<RemoveCallbackDetails?> remove(CookieDetails details) async {
-    var $res = await promiseToFuture<$js.RemoveCallbackDetails?>(
-        $js.chrome.cookies.remove(details.toJS));
-    return $res?.let(RemoveCallbackDetails.fromJS);
+    var $res = await $js.chrome.cookies.remove(details.toJS).toDart;
+    return ($res as $js.RemoveCallbackDetails?)?.let(
+      RemoveCallbackDetails.fromJS,
+    );
   }
 
   /// Lists all existing cookie stores.
   Future<List<CookieStore>> getAllCookieStores() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.cookies.getAllCookieStores());
-    return $res.toDart
-        .cast<$js.CookieStore>()
-        .map((e) => CookieStore.fromJS(e))
+    var $res = await $js.chrome.cookies.getAllCookieStores().toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<CookieStore>((e) => CookieStore.fromJS(e as $js.CookieStore))
         .toList();
   }
 
@@ -75,10 +74,13 @@ class ChromeCookies {
   /// with "cause" of "overwrite" .  Afterwards, a new cookie is written with
   /// the updated values, generating a second notification with "cause"
   /// "explicit".
-  EventStream<OnChangedChangeInfo> get onChanged => $js.chrome.cookies.onChanged
-      .asStream(($c) => ($js.OnChangedChangeInfo changeInfo) {
-            return $c(OnChangedChangeInfo.fromJS(changeInfo));
-          }.toJS);
+  EventStream<OnChangedChangeInfo> get onChanged =>
+      $js.chrome.cookies.onChanged.asStream(
+        ($c) =>
+            ($js.OnChangedChangeInfo changeInfo) {
+              return $c(OnChangedChangeInfo.fromJS(changeInfo));
+            }.toJS,
+      );
 }
 
 /// A cookie's 'SameSite' state
@@ -133,11 +135,10 @@ enum OnChangedCause {
 class CookiePartitionKey {
   CookiePartitionKey.fromJS(this._wrapped);
 
-  CookiePartitionKey(
-      {
-      /// The top-level site the partitioned cookie is available in.
-      String? topLevelSite})
-      : _wrapped = $js.CookiePartitionKey(topLevelSite: topLevelSite);
+  CookiePartitionKey({
+    /// The top-level site the partitioned cookie is available in.
+    String? topLevelSite,
+  }) : _wrapped = $js.CookiePartitionKey(topLevelSite: topLevelSite);
 
   final $js.CookiePartitionKey _wrapped;
 
@@ -199,19 +200,19 @@ class Cookie {
     /// attribute.
     CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.Cookie(
-          name: name,
-          value: value,
-          domain: domain,
-          hostOnly: hostOnly,
-          path: path,
-          secure: secure,
-          httpOnly: httpOnly,
-          sameSite: sameSite.toJS,
-          session: session,
-          expirationDate: expirationDate,
-          storeId: storeId,
-          partitionKey: partitionKey?.toJS,
-        );
+         name: name,
+         value: value,
+         domain: domain,
+         hostOnly: hostOnly,
+         path: path,
+         secure: secure,
+         httpOnly: httpOnly,
+         sameSite: sameSite.toJS,
+         session: session,
+         expirationDate: expirationDate,
+         storeId: storeId,
+         partitionKey: partitionKey?.toJS,
+       );
 
   final $js.Cookie _wrapped;
 
@@ -320,10 +321,7 @@ class CookieStore {
 
     /// Identifiers of all the browser tabs that share this cookie store.
     required List<int> tabIds,
-  }) : _wrapped = $js.CookieStore(
-          id: id,
-          tabIds: tabIds.toJSArray((e) => e),
-        );
+  }) : _wrapped = $js.CookieStore(id: id, tabIds: tabIds.toJSArray((e) => e));
 
   final $js.CookieStore _wrapped;
 
@@ -366,11 +364,11 @@ class CookieDetails {
     /// attribute.
     CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.CookieDetails(
-          url: url,
-          name: name,
-          storeId: storeId,
-          partitionKey: partitionKey?.toJS,
-        );
+         url: url,
+         name: name,
+         storeId: storeId,
+         partitionKey: partitionKey?.toJS,
+       );
 
   final $js.CookieDetails _wrapped;
 
@@ -424,10 +422,10 @@ class OnChangedChangeInfo {
     /// The underlying reason behind the cookie's change.
     required OnChangedCause cause,
   }) : _wrapped = $js.OnChangedChangeInfo(
-          removed: removed,
-          cookie: cookie.toJS,
-          cause: cause.toJS,
-        );
+         removed: removed,
+         cookie: cookie.toJS,
+         cause: cause.toJS,
+       );
 
   final $js.OnChangedChangeInfo _wrapped;
 
@@ -487,15 +485,15 @@ class GetAllDetails {
     /// attribute.
     CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.GetAllDetails(
-          url: url,
-          name: name,
-          domain: domain,
-          path: path,
-          secure: secure,
-          session: session,
-          storeId: storeId,
-          partitionKey: partitionKey?.toJS,
-        );
+         url: url,
+         name: name,
+         domain: domain,
+         path: path,
+         secure: secure,
+         session: session,
+         storeId: storeId,
+         partitionKey: partitionKey?.toJS,
+       );
 
   final $js.GetAllDetails _wrapped;
 
@@ -609,18 +607,18 @@ class SetDetails {
     /// attribute.
     CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.SetDetails(
-          url: url,
-          name: name,
-          value: value,
-          domain: domain,
-          path: path,
-          secure: secure,
-          httpOnly: httpOnly,
-          sameSite: sameSite?.toJS,
-          expirationDate: expirationDate,
-          storeId: storeId,
-          partitionKey: partitionKey?.toJS,
-        );
+         url: url,
+         name: name,
+         value: value,
+         domain: domain,
+         path: path,
+         secure: secure,
+         httpOnly: httpOnly,
+         sameSite: sameSite?.toJS,
+         expirationDate: expirationDate,
+         storeId: storeId,
+         partitionKey: partitionKey?.toJS,
+       );
 
   final $js.SetDetails _wrapped;
 
@@ -730,11 +728,11 @@ class RemoveCallbackDetails {
     /// attribute.
     CookiePartitionKey? partitionKey,
   }) : _wrapped = $js.RemoveCallbackDetails(
-          url: url,
-          name: name,
-          storeId: storeId,
-          partitionKey: partitionKey?.toJS,
-        );
+         url: url,
+         name: name,
+         storeId: storeId,
+         partitionKey: partitionKey?.toJS,
+       );
 
   final $js.RemoveCallbackDetails _wrapped;
 

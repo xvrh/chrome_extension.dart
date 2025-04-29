@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/system_cpu.dart' as $js;
 import 'system.dart';
@@ -25,9 +24,8 @@ class ChromeSystemCpu {
 
   /// Queries basic CPU information of the system.
   Future<CpuInfo> getInfo() async {
-    var $res =
-        await promiseToFuture<$js.CpuInfo>($js.chrome.system.cpu.getInfo());
-    return CpuInfo.fromJS($res);
+    var $res = await $js.chrome.system.cpu.getInfo().toDart;
+    return CpuInfo.fromJS($res! as $js.CpuInfo);
   }
 }
 
@@ -48,11 +46,11 @@ class CpuTime {
     /// user + kernel + idle.
     required double total,
   }) : _wrapped = $js.CpuTime(
-          user: user,
-          kernel: kernel,
-          idle: idle,
-          total: total,
-        );
+         user: user,
+         kernel: kernel,
+         idle: idle,
+         total: total,
+       );
 
   final $js.CpuTime _wrapped;
 
@@ -91,11 +89,10 @@ class CpuTime {
 class ProcessorInfo {
   ProcessorInfo.fromJS(this._wrapped);
 
-  ProcessorInfo(
-      {
-      /// Cumulative usage info for this logical processor.
-      required CpuTime usage})
-      : _wrapped = $js.ProcessorInfo(usage: usage.toJS);
+  ProcessorInfo({
+    /// Cumulative usage info for this logical processor.
+    required CpuTime usage,
+  }) : _wrapped = $js.ProcessorInfo(usage: usage.toJS);
 
   final $js.ProcessorInfo _wrapped;
 
@@ -136,13 +133,13 @@ class CpuInfo {
     /// **Currently supported on Chrome OS only.**
     required List<double> temperatures,
   }) : _wrapped = $js.CpuInfo(
-          numOfProcessors: numOfProcessors,
-          archName: archName,
-          modelName: modelName,
-          features: features.toJSArray((e) => e),
-          processors: processors.toJSArray((e) => e.toJS),
-          temperatures: temperatures.toJSArray((e) => e),
-        );
+         numOfProcessors: numOfProcessors,
+         archName: archName,
+         modelName: modelName,
+         features: features.toJSArray((e) => e),
+         processors: processors.toJSArray((e) => e.toJS),
+         temperatures: temperatures.toJSArray((e) => e),
+       );
 
   final $js.CpuInfo _wrapped;
 
@@ -180,10 +177,11 @@ class CpuInfo {
   }
 
   /// Information about each logical processor.
-  List<ProcessorInfo> get processors => _wrapped.processors.toDart
-      .cast<$js.ProcessorInfo>()
-      .map((e) => ProcessorInfo.fromJS(e))
-      .toList();
+  List<ProcessorInfo> get processors =>
+      _wrapped.processors.toDart
+          .cast<$js.ProcessorInfo>()
+          .map((e) => ProcessorInfo.fromJS(e))
+          .toList();
 
   set processors(List<ProcessorInfo> v) {
     _wrapped.processors = v.toJSArray((e) => e.toJS);

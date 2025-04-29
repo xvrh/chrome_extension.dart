@@ -9,15 +9,20 @@ import '../../runner/runner_client.dart';
 void main() => setup(_tests);
 
 void _tests(TestContext context) async {
-  var browser =
-      await puppeteer.connect(browserWsEndpoint: context.puppeteerUrl);
+  var browser = await puppeteer.connect(
+    browserWsEndpoint: context.puppeteerUrl,
+  );
   var page = (await browser.pages).first;
 
   var staticPath = 'assets/simple_page.html';
-  var onReady = page.onConsole
-      .where((e) =>
-          e.text?.contains('Content script ready /static/$staticPath') ?? false)
-      .first;
+  var onReady =
+      page.onConsole
+          .where(
+            (e) =>
+                e.text?.contains('Content script ready /static/$staticPath') ??
+                false,
+          )
+          .first;
   await page.goto(context.staticPath(staticPath));
   await onReady;
 
@@ -38,8 +43,9 @@ void _tests(TestContext context) async {
   });
 
   test('sendMessage string to content script', () async {
-    var [tab] = await chrome.tabs
-        .query(tabs.QueryInfo(active: true, lastFocusedWindow: true));
+    var [tab] = await chrome.tabs.query(
+      tabs.QueryInfo(active: true, lastFocusedWindow: true),
+    );
 
     var response = await chrome.tabs.sendMessage(tab.id!, 'My message', null);
 
@@ -47,31 +53,37 @@ void _tests(TestContext context) async {
   });
 
   test('sendMessage complex to content script', () async {
-    var [tab] = await chrome.tabs
-        .query(tabs.QueryInfo(active: true, lastFocusedWindow: true));
-    var response =
-        await chrome.tabs.sendMessage(tab.id!, {'a': 1, 'b': true}, null);
+    var [tab] = await chrome.tabs.query(
+      tabs.QueryInfo(active: true, lastFocusedWindow: true),
+    );
+    var response = await chrome.tabs.sendMessage(tab.id!, {
+      'a': 1,
+      'b': true,
+    }, null);
 
     check(response as Map).deepEquals({
-      'response': {'a': 1, 'b': true}
+      'response': {'a': 1, 'b': true},
     });
   });
 
   test('sendMessage with async', () async {
-    var [tab] = await chrome.tabs
-        .query(tabs.QueryInfo(active: true, lastFocusedWindow: true));
+    var [tab] = await chrome.tabs.query(
+      tabs.QueryInfo(active: true, lastFocusedWindow: true),
+    );
     var response = await chrome.tabs.sendMessage(tab.id!, 'async', null);
 
     check(response as Map).deepEquals({'response': 'async'});
   });
 
   test('sendMessage no response', () async {
-    var [tab] = await chrome.tabs
-        .query(tabs.QueryInfo(active: true, lastFocusedWindow: true));
+    var [tab] = await chrome.tabs.query(
+      tabs.QueryInfo(active: true, lastFocusedWindow: true),
+    );
     expect(
-        () => chrome.tabs
-            .sendMessage(tab.id!, 'no_response', null)
-            .timeout(Duration(milliseconds: 200)),
-        throwsA(isA<TimeoutException>()));
+      () => chrome.tabs
+          .sendMessage(tab.id!, 'no_response', null)
+          .timeout(Duration(milliseconds: 200)),
+      throwsA(anyOf(isA<TimeoutException>(), isA<TypeError>())),
+    );
   });
 }

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/web_navigation.dart' as $js;
@@ -27,96 +26,119 @@ class ChromeWebNavigation {
   /// or a <frame> of a web page and is identified by a tab ID and a frame ID.
   /// [details] Information about the frame to retrieve information about.
   Future<GetFrameCallbackDetails?> getFrame(GetFrameDetails details) async {
-    var $res = await promiseToFuture<$js.GetFrameCallbackDetails?>(
-        $js.chrome.webNavigation.getFrame(details.toJS));
-    return $res?.let(GetFrameCallbackDetails.fromJS);
+    var $res = await $js.chrome.webNavigation.getFrame(details.toJS).toDart;
+    return ($res as $js.GetFrameCallbackDetails?)?.let(
+      GetFrameCallbackDetails.fromJS,
+    );
   }
 
   /// Retrieves information about all frames of a given tab.
   /// [details] Information about the tab to retrieve all frames from.
   Future<List<GetAllFramesCallbackDetails>?> getAllFrames(
-      GetAllFramesDetails details) async {
-    var $res = await promiseToFuture<JSArray?>(
-        $js.chrome.webNavigation.getAllFrames(details.toJS));
-    return $res?.toDart
-        .cast<$js.GetAllFramesCallbackDetails>()
-        .map((e) => GetAllFramesCallbackDetails.fromJS(e))
+    GetAllFramesDetails details,
+  ) async {
+    var $res = await $js.chrome.webNavigation.getAllFrames(details.toJS).toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<GetAllFramesCallbackDetails>(
+          (e) => GetAllFramesCallbackDetails.fromJS(
+            e as $js.GetAllFramesCallbackDetails,
+          ),
+        )
         .toList();
   }
 
   /// Fired when a navigation is about to occur.
   EventStream<OnBeforeNavigateDetails> get onBeforeNavigate =>
-      $js.chrome.webNavigation.onBeforeNavigate
-          .asStream(($c) => ($js.OnBeforeNavigateDetails details) {
-                return $c(OnBeforeNavigateDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onBeforeNavigate.asStream(
+        ($c) =>
+            ($js.OnBeforeNavigateDetails details) {
+              return $c(OnBeforeNavigateDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when a navigation is committed. The document (and the resources it
   /// refers to, such as images and subframes) might still be downloading, but
   /// at least part of the document has been received from the server and the
   /// browser has decided to switch to the new document.
   EventStream<OnCommittedDetails> get onCommitted =>
-      $js.chrome.webNavigation.onCommitted
-          .asStream(($c) => ($js.OnCommittedDetails details) {
-                return $c(OnCommittedDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onCommitted.asStream(
+        ($c) =>
+            ($js.OnCommittedDetails details) {
+              return $c(OnCommittedDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when the page's DOM is fully constructed, but the referenced
   /// resources may not finish loading.
   EventStream<OnDomContentLoadedDetails> get onDOMContentLoaded =>
-      $js.chrome.webNavigation.onDOMContentLoaded
-          .asStream(($c) => ($js.OnDomContentLoadedDetails details) {
-                return $c(OnDomContentLoadedDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onDOMContentLoaded.asStream(
+        ($c) =>
+            ($js.OnDomContentLoadedDetails details) {
+              return $c(OnDomContentLoadedDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when a document, including the resources it refers to, is completely
   /// loaded and initialized.
   EventStream<OnCompletedDetails> get onCompleted =>
-      $js.chrome.webNavigation.onCompleted
-          .asStream(($c) => ($js.OnCompletedDetails details) {
-                return $c(OnCompletedDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onCompleted.asStream(
+        ($c) =>
+            ($js.OnCompletedDetails details) {
+              return $c(OnCompletedDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when an error occurs and the navigation is aborted. This can happen
   /// if either a network error occurred, or the user aborted the navigation.
   EventStream<OnErrorOccurredDetails> get onErrorOccurred =>
-      $js.chrome.webNavigation.onErrorOccurred
-          .asStream(($c) => ($js.OnErrorOccurredDetails details) {
-                return $c(OnErrorOccurredDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onErrorOccurred.asStream(
+        ($c) =>
+            ($js.OnErrorOccurredDetails details) {
+              return $c(OnErrorOccurredDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when a new window, or a new tab in an existing window, is created to
   /// host a navigation.
   EventStream<OnCreatedNavigationTargetDetails> get onCreatedNavigationTarget =>
-      $js.chrome.webNavigation.onCreatedNavigationTarget
-          .asStream(($c) => ($js.OnCreatedNavigationTargetDetails details) {
-                return $c(OnCreatedNavigationTargetDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onCreatedNavigationTarget.asStream(
+        ($c) =>
+            ($js.OnCreatedNavigationTargetDetails details) {
+              return $c(OnCreatedNavigationTargetDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when the reference fragment of a frame was updated. All future
   /// events for that frame will use the updated URL.
   EventStream<OnReferenceFragmentUpdatedDetails>
-      get onReferenceFragmentUpdated => $js
-          .chrome.webNavigation.onReferenceFragmentUpdated
-          .asStream(($c) => ($js.OnReferenceFragmentUpdatedDetails details) {
-                return $c(OnReferenceFragmentUpdatedDetails.fromJS(details));
-              }.toJS);
+  get onReferenceFragmentUpdated =>
+      $js.chrome.webNavigation.onReferenceFragmentUpdated.asStream(
+        ($c) =>
+            ($js.OnReferenceFragmentUpdatedDetails details) {
+              return $c(OnReferenceFragmentUpdatedDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when the contents of the tab is replaced by a different (usually
   /// previously pre-rendered) tab.
   EventStream<OnTabReplacedDetails> get onTabReplaced =>
-      $js.chrome.webNavigation.onTabReplaced
-          .asStream(($c) => ($js.OnTabReplacedDetails details) {
-                return $c(OnTabReplacedDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onTabReplaced.asStream(
+        ($c) =>
+            ($js.OnTabReplacedDetails details) {
+              return $c(OnTabReplacedDetails.fromJS(details));
+            }.toJS,
+      );
 
   /// Fired when the frame's history was updated to a new URL. All future events
   /// for that frame will use the updated URL.
   EventStream<OnHistoryStateUpdatedDetails> get onHistoryStateUpdated =>
-      $js.chrome.webNavigation.onHistoryStateUpdated
-          .asStream(($c) => ($js.OnHistoryStateUpdatedDetails details) {
-                return $c(OnHistoryStateUpdatedDetails.fromJS(details));
-              }.toJS);
+      $js.chrome.webNavigation.onHistoryStateUpdated.asStream(
+        ($c) =>
+            ($js.OnHistoryStateUpdatedDetails details) {
+              return $c(OnHistoryStateUpdatedDetails.fromJS(details));
+            }.toJS,
+      );
 }
 
 /// Cause of the navigation. The same transition types as defined in the history
@@ -197,16 +219,16 @@ class OnBeforeNavigateDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.OnBeforeNavigateDetails(
-          tabId: tabId,
-          url: url,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          timeStamp: timeStamp,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         tabId: tabId,
+         url: url,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         timeStamp: timeStamp,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.OnBeforeNavigateDetails _wrapped;
 
@@ -322,19 +344,19 @@ class OnCommittedDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.OnCommittedDetails(
-          tabId: tabId,
-          url: url,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          transitionType: transitionType.toJS,
-          transitionQualifiers: transitionQualifiers.toJSArray((e) => e.toJS),
-          timeStamp: timeStamp,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         tabId: tabId,
+         url: url,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         transitionType: transitionType.toJS,
+         transitionQualifiers: transitionQualifiers.toJSArray((e) => e.toJS),
+         timeStamp: timeStamp,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.OnCommittedDetails _wrapped;
 
@@ -470,17 +492,17 @@ class OnDomContentLoadedDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.OnDomContentLoadedDetails(
-          tabId: tabId,
-          url: url,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          timeStamp: timeStamp,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         tabId: tabId,
+         url: url,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         timeStamp: timeStamp,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.OnDomContentLoadedDetails _wrapped;
 
@@ -597,17 +619,17 @@ class OnCompletedDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.OnCompletedDetails(
-          tabId: tabId,
-          url: url,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          timeStamp: timeStamp,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         tabId: tabId,
+         url: url,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         timeStamp: timeStamp,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.OnCompletedDetails _wrapped;
 
@@ -726,18 +748,18 @@ class OnErrorOccurredDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.OnErrorOccurredDetails(
-          tabId: tabId,
-          url: url,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          error: error,
-          timeStamp: timeStamp,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         tabId: tabId,
+         url: url,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         error: error,
+         timeStamp: timeStamp,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.OnErrorOccurredDetails _wrapped;
 
@@ -848,13 +870,13 @@ class OnCreatedNavigationTargetDetails {
     /// milliseconds since the epoch.
     required double timeStamp,
   }) : _wrapped = $js.OnCreatedNavigationTargetDetails(
-          sourceTabId: sourceTabId,
-          sourceProcessId: sourceProcessId,
-          sourceFrameId: sourceFrameId,
-          url: url,
-          tabId: tabId,
-          timeStamp: timeStamp,
-        );
+         sourceTabId: sourceTabId,
+         sourceProcessId: sourceProcessId,
+         sourceFrameId: sourceFrameId,
+         url: url,
+         tabId: tabId,
+         timeStamp: timeStamp,
+       );
 
   final $js.OnCreatedNavigationTargetDetails _wrapped;
 
@@ -947,19 +969,19 @@ class OnReferenceFragmentUpdatedDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.OnReferenceFragmentUpdatedDetails(
-          tabId: tabId,
-          url: url,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          transitionType: transitionType.toJS,
-          transitionQualifiers: transitionQualifiers.toJSArray((e) => e.toJS),
-          timeStamp: timeStamp,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         tabId: tabId,
+         url: url,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         transitionType: transitionType.toJS,
+         transitionQualifiers: transitionQualifiers.toJSArray((e) => e.toJS),
+         timeStamp: timeStamp,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.OnReferenceFragmentUpdatedDetails _wrapped;
 
@@ -1072,10 +1094,10 @@ class OnTabReplacedDetails {
     /// The time when the replacement happened, in milliseconds since the epoch.
     required double timeStamp,
   }) : _wrapped = $js.OnTabReplacedDetails(
-          replacedTabId: replacedTabId,
-          tabId: tabId,
-          timeStamp: timeStamp,
-        );
+         replacedTabId: replacedTabId,
+         tabId: tabId,
+         timeStamp: timeStamp,
+       );
 
   final $js.OnTabReplacedDetails _wrapped;
 
@@ -1145,19 +1167,19 @@ class OnHistoryStateUpdatedDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.OnHistoryStateUpdatedDetails(
-          tabId: tabId,
-          url: url,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          transitionType: transitionType.toJS,
-          transitionQualifiers: transitionQualifiers.toJSArray((e) => e.toJS),
-          timeStamp: timeStamp,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         tabId: tabId,
+         url: url,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         transitionType: transitionType.toJS,
+         transitionQualifiers: transitionQualifiers.toJSArray((e) => e.toJS),
+         timeStamp: timeStamp,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.OnHistoryStateUpdatedDetails _wrapped;
 
@@ -1287,14 +1309,14 @@ class GetFrameCallbackDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.GetFrameCallbackDetails(
-          errorOccurred: errorOccurred,
-          url: url,
-          parentFrameId: parentFrameId,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         errorOccurred: errorOccurred,
+         url: url,
+         parentFrameId: parentFrameId,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.GetFrameCallbackDetails _wrapped;
 
@@ -1373,11 +1395,11 @@ class GetFrameDetails {
     /// will be validated to match the document found by provided document ID.
     String? documentId,
   }) : _wrapped = $js.GetFrameDetails(
-          tabId: tabId,
-          processId: processId,
-          frameId: frameId,
-          documentId: documentId,
-        );
+         tabId: tabId,
+         processId: processId,
+         frameId: frameId,
+         documentId: documentId,
+       );
 
   final $js.GetFrameDetails _wrapped;
 
@@ -1447,16 +1469,16 @@ class GetAllFramesCallbackDetails {
     /// The type of frame the navigation occurred in.
     required FrameType frameType,
   }) : _wrapped = $js.GetAllFramesCallbackDetails(
-          errorOccurred: errorOccurred,
-          processId: processId,
-          frameId: frameId,
-          parentFrameId: parentFrameId,
-          url: url,
-          documentId: documentId,
-          parentDocumentId: parentDocumentId,
-          documentLifecycle: documentLifecycle.toJS,
-          frameType: frameType.toJS,
-        );
+         errorOccurred: errorOccurred,
+         processId: processId,
+         frameId: frameId,
+         parentFrameId: parentFrameId,
+         url: url,
+         documentId: documentId,
+         parentDocumentId: parentDocumentId,
+         documentLifecycle: documentLifecycle.toJS,
+         frameType: frameType.toJS,
+       );
 
   final $js.GetAllFramesCallbackDetails _wrapped;
 
@@ -1533,11 +1555,10 @@ class GetAllFramesCallbackDetails {
 class GetAllFramesDetails {
   GetAllFramesDetails.fromJS(this._wrapped);
 
-  GetAllFramesDetails(
-      {
-      /// The ID of the tab.
-      required int tabId})
-      : _wrapped = $js.GetAllFramesDetails(tabId: tabId);
+  GetAllFramesDetails({
+    /// The ID of the tab.
+    required int tabId,
+  }) : _wrapped = $js.GetAllFramesDetails(tabId: tabId);
 
   final $js.GetAllFramesDetails _wrapped;
 

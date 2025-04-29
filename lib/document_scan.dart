@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/document_scan.dart' as $js;
@@ -27,9 +26,8 @@ class ChromeDocumentScan {
   /// |options| : Object containing scan parameters.
   /// |callback| : Called with the result and data from the scan.
   Future<ScanResults> scan(ScanOptions options) async {
-    var $res = await promiseToFuture<$js.ScanResults>(
-        $js.chrome.documentScan.scan(options.toJS));
-    return ScanResults.fromJS($res);
+    var $res = await $js.chrome.documentScan.scan(options.toJS).toDart;
+    return ScanResults.fromJS($res! as $js.ScanResults);
   }
 
   /// Gets the list of available scanners.  On success, the list will be
@@ -38,9 +36,8 @@ class ChromeDocumentScan {
   /// should be returned.
   /// |callback| : Called with the result and list of scanners.
   Future<GetScannerListResponse> getScannerList(DeviceFilter filter) async {
-    var $res = await promiseToFuture<$js.GetScannerListResponse>(
-        $js.chrome.documentScan.getScannerList(filter.toJS));
-    return GetScannerListResponse.fromJS($res);
+    var $res = await $js.chrome.documentScan.getScannerList(filter.toJS).toDart;
+    return GetScannerListResponse.fromJS($res! as $js.GetScannerListResponse);
   }
 
   /// Opens a scanner for exclusive access.  On success, the response containing
@@ -49,9 +46,8 @@ class ChromeDocumentScan {
   /// indicating which scanner should be opened.
   /// |callback| : Called with the result.
   Future<OpenScannerResponse> openScanner(String scannerId) async {
-    var $res = await promiseToFuture<$js.OpenScannerResponse>(
-        $js.chrome.documentScan.openScanner(scannerId));
-    return OpenScannerResponse.fromJS($res);
+    var $res = await $js.chrome.documentScan.openScanner(scannerId).toDart;
+    return OpenScannerResponse.fromJS($res! as $js.OpenScannerResponse);
   }
 
   /// Gets the group names and member options from a scanner handle previously
@@ -60,9 +56,9 @@ class ChromeDocumentScan {
   /// `openScanner`.
   /// |callback| : Called with the result.
   Future<GetOptionGroupsResponse> getOptionGroups(String scannerHandle) async {
-    var $res = await promiseToFuture<$js.GetOptionGroupsResponse>(
-        $js.chrome.documentScan.getOptionGroups(scannerHandle));
-    return GetOptionGroupsResponse.fromJS($res);
+    var $res =
+        await $js.chrome.documentScan.getOptionGroups(scannerHandle).toDart;
+    return GetOptionGroupsResponse.fromJS($res! as $js.GetOptionGroupsResponse);
   }
 
   /// Closes a previously opened scanner handle.  A response indicating the
@@ -73,9 +69,8 @@ class ChromeDocumentScan {
   /// `openScanner`.
   /// |callback| : Called with the result.
   Future<CloseScannerResponse> closeScanner(String scannerHandle) async {
-    var $res = await promiseToFuture<$js.CloseScannerResponse>(
-        $js.chrome.documentScan.closeScanner(scannerHandle));
-    return CloseScannerResponse.fromJS($res);
+    var $res = await $js.chrome.documentScan.closeScanner(scannerHandle).toDart;
+    return CloseScannerResponse.fromJS($res! as $js.CloseScannerResponse);
   }
 
   /// Sends the list of new option values in `options` as a bundle
@@ -92,12 +87,11 @@ class ChromeDocumentScan {
     String scannerHandle,
     List<OptionSetting> options,
   ) async {
-    var $res = await promiseToFuture<$js.SetOptionsResponse>(
-        $js.chrome.documentScan.setOptions(
-      scannerHandle,
-      options.toJSArray((e) => e.toJS),
-    ));
-    return SetOptionsResponse.fromJS($res);
+    var $res =
+        await $js.chrome.documentScan
+            .setOptions(scannerHandle, options.toJSArray((e) => e.toJS))
+            .toDart;
+    return SetOptionsResponse.fromJS($res! as $js.SetOptionsResponse);
   }
 
   /// Starts a scan using a previously opened scanner handle.  A response
@@ -114,12 +108,11 @@ class ChromeDocumentScan {
     String scannerHandle,
     StartScanOptions options,
   ) async {
-    var $res = await promiseToFuture<$js.StartScanResponse>(
-        $js.chrome.documentScan.startScan(
-      scannerHandle,
-      options.toJS,
-    ));
-    return StartScanResponse.fromJS($res);
+    var $res =
+        await $js.chrome.documentScan
+            .startScan(scannerHandle, options.toJS)
+            .toDart;
+    return StartScanResponse.fromJS($res! as $js.StartScanResponse);
   }
 
   /// Cancels a scan that was previously started using `startScan`.
@@ -128,9 +121,8 @@ class ChromeDocumentScan {
   /// `startScan`.
   /// |callback| : Called with the result.
   Future<CancelScanResponse> cancelScan(String job) async {
-    var $res = await promiseToFuture<$js.CancelScanResponse>(
-        $js.chrome.documentScan.cancelScan(job));
-    return CancelScanResponse.fromJS($res);
+    var $res = await $js.chrome.documentScan.cancelScan(job).toDart;
+    return CancelScanResponse.fromJS($res! as $js.CancelScanResponse);
   }
 
   /// Reads the next chunk of available image data from an active job handle.
@@ -149,9 +141,8 @@ class ChromeDocumentScan {
   /// `startScan`.
   /// |callback| : Called with the result.
   Future<ReadScanDataResponse> readScanData(String job) async {
-    var $res = await promiseToFuture<$js.ReadScanDataResponse>(
-        $js.chrome.documentScan.readScanData(job));
-    return ReadScanDataResponse.fromJS($res);
+    var $res = await $js.chrome.documentScan.readScanData(job).toDart;
+    return ReadScanDataResponse.fromJS($res! as $js.ReadScanDataResponse);
   }
 }
 
@@ -385,9 +376,9 @@ class ScanOptions {
     /// The number of scanned images allowed (defaults to 1).
     int? maxImages,
   }) : _wrapped = $js.ScanOptions(
-          mimeTypes: mimeTypes?.toJSArray((e) => e),
-          maxImages: maxImages,
-        );
+         mimeTypes: mimeTypes?.toJSArray((e) => e),
+         maxImages: maxImages,
+       );
 
   final $js.ScanOptions _wrapped;
 
@@ -420,9 +411,9 @@ class ScanResults {
     /// The MIME type of `dataUrls`.
     required String mimeType,
   }) : _wrapped = $js.ScanResults(
-          dataUrls: dataUrls.toJSArray((e) => e),
-          mimeType: mimeType,
-        );
+         dataUrls: dataUrls.toJSArray((e) => e),
+         mimeType: mimeType,
+       );
 
   final $js.ScanResults _wrapped;
 
@@ -475,15 +466,15 @@ class ScannerInfo {
     /// MIME types that can be requested for returned scans.
     required List<String> imageFormats,
   }) : _wrapped = $js.ScannerInfo(
-          scannerId: scannerId,
-          name: name,
-          manufacturer: manufacturer,
-          model: model,
-          deviceUuid: deviceUuid,
-          connectionType: connectionType.toJS,
-          secure: secure,
-          imageFormats: imageFormats.toJSArray((e) => e),
-        );
+         scannerId: scannerId,
+         name: name,
+         manufacturer: manufacturer,
+         model: model,
+         deviceUuid: deviceUuid,
+         connectionType: connectionType.toJS,
+         secure: secure,
+         imageFormats: imageFormats.toJSArray((e) => e),
+       );
 
   final $js.ScannerInfo _wrapped;
 
@@ -560,37 +551,45 @@ class OptionConstraint {
     Object? quant,
     Object? list,
   }) : _wrapped = $js.OptionConstraint(
-          type: type.toJS,
-          min: switch (min) {
-            int() => min.jsify()!,
-            double() => min.jsify()!,
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${min.runtimeType}. Supported types are: int, double')
-          },
-          max: switch (max) {
-            int() => max.jsify()!,
-            double() => max.jsify()!,
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${max.runtimeType}. Supported types are: int, double')
-          },
-          quant: switch (quant) {
-            int() => quant.jsify()!,
-            double() => quant.jsify()!,
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${quant.runtimeType}. Supported types are: int, double')
-          },
-          list: switch (list) {
-            List<double>() => list.toJSArray((e) => e),
-            List<int>() => list.toJSArray((e) => e),
-            List() => list.toJSArrayString(),
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${list.runtimeType}. Supported types are: List<double>, List<int>, List<String>')
-          },
-        );
+         type: type.toJS,
+         min: switch (min) {
+           int() => min.jsify()!,
+           double() => min.jsify()!,
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${min.runtimeType}. Supported types are: int, double',
+             ),
+         },
+         max: switch (max) {
+           int() => max.jsify()!,
+           double() => max.jsify()!,
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${max.runtimeType}. Supported types are: int, double',
+             ),
+         },
+         quant: switch (quant) {
+           int() => quant.jsify()!,
+           double() => quant.jsify()!,
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${quant.runtimeType}. Supported types are: int, double',
+             ),
+         },
+         list: switch (list) {
+           List<double>() => list.toJSArray((e) => e),
+           List<int>() => list.toJSArray((e) => e),
+           List() => list.toJSArrayString(),
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${list.runtimeType}. Supported types are: List<double>, List<int>, List<String>',
+             ),
+         },
+       );
 
   final $js.OptionConstraint _wrapped;
 
@@ -602,54 +601,52 @@ class OptionConstraint {
     _wrapped.type = v.toJS;
   }
 
-  Object? get min => _wrapped.min?.when(
-        isInt: (v) => v,
-        isDouble: (v) => v,
-      );
+  Object? get min => _wrapped.min?.when(isInt: (v) => v, isDouble: (v) => v);
 
   set min(Object? v) {
     _wrapped.min = switch (v) {
       int() => v.jsify()!,
       double() => v.jsify()!,
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: int, double')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: int, double',
+        ),
     };
   }
 
-  Object? get max => _wrapped.max?.when(
-        isInt: (v) => v,
-        isDouble: (v) => v,
-      );
+  Object? get max => _wrapped.max?.when(isInt: (v) => v, isDouble: (v) => v);
 
   set max(Object? v) {
     _wrapped.max = switch (v) {
       int() => v.jsify()!,
       double() => v.jsify()!,
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: int, double')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: int, double',
+        ),
     };
   }
 
-  Object? get quant => _wrapped.quant?.when(
-        isInt: (v) => v,
-        isDouble: (v) => v,
-      );
+  Object? get quant =>
+      _wrapped.quant?.when(isInt: (v) => v, isDouble: (v) => v);
 
   set quant(Object? v) {
     _wrapped.quant = switch (v) {
       int() => v.jsify()!,
       double() => v.jsify()!,
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: int, double')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: int, double',
+        ),
     };
   }
 
   Object? get list => _wrapped.list?.when(
-        isArray: (v) => v.toDart.cast<double>().map((e) => e).toList(),
-      );
+    isArray: (v) => v.toDart.cast<double>().map((e) => e).toList(),
+  );
 
   set list(Object? v) {
     _wrapped.list = switch (v) {
@@ -657,8 +654,10 @@ class OptionConstraint {
       List<int>() => v.toJSArray((e) => e),
       List() => v.toJSArrayString(),
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: List<double>, List<int>, List<String>')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: List<double>, List<int>, List<String>',
+        ),
     };
   }
 }
@@ -713,31 +712,33 @@ class ScannerOption {
     /// in the UI.
     required bool isInternal,
   }) : _wrapped = $js.ScannerOption(
-          name: name,
-          title: title,
-          description: description,
-          type: type.toJS,
-          unit: unit.toJS,
-          value: switch (value) {
-            bool() => value.jsify()!,
-            double() => value.jsify()!,
-            List<double>() => value.toJSArray((e) => e),
-            int() => value.jsify()!,
-            List<int>() => value.toJSArray((e) => e),
-            String() => value.jsify()!,
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${value.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String')
-          },
-          constraint: constraint?.toJS,
-          isDetectable: isDetectable,
-          configurability: configurability.toJS,
-          isAutoSettable: isAutoSettable,
-          isEmulated: isEmulated,
-          isActive: isActive,
-          isAdvanced: isAdvanced,
-          isInternal: isInternal,
-        );
+         name: name,
+         title: title,
+         description: description,
+         type: type.toJS,
+         unit: unit.toJS,
+         value: switch (value) {
+           bool() => value.jsify()!,
+           double() => value.jsify()!,
+           List<double>() => value.toJSArray((e) => e),
+           int() => value.jsify()!,
+           List<int>() => value.toJSArray((e) => e),
+           String() => value.jsify()!,
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${value.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String',
+             ),
+         },
+         constraint: constraint?.toJS,
+         isDetectable: isDetectable,
+         configurability: configurability.toJS,
+         isAutoSettable: isAutoSettable,
+         isEmulated: isEmulated,
+         isActive: isActive,
+         isAdvanced: isAdvanced,
+         isInternal: isInternal,
+       );
 
   final $js.ScannerOption _wrapped;
 
@@ -782,12 +783,12 @@ class ScannerOption {
   /// Current value of the option if relevant. Note the type passed here must
   /// match the type specified in `type`.
   Object? get value => _wrapped.value?.when(
-        isBool: (v) => v,
-        isDouble: (v) => v,
-        isArray: (v) => v.toDart.cast<double>().map((e) => e).toList(),
-        isInt: (v) => v,
-        isString: (v) => v,
-      );
+    isBool: (v) => v,
+    isDouble: (v) => v,
+    isArray: (v) => v.toDart.cast<double>().map((e) => e).toList(),
+    isInt: (v) => v,
+    isString: (v) => v,
+  );
 
   set value(Object? v) {
     _wrapped.value = switch (v) {
@@ -798,8 +799,10 @@ class ScannerOption {
       List<int>() => v.toJSArray((e) => e),
       String() => v.jsify()!,
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String',
+        ),
     };
   }
 
@@ -873,10 +876,7 @@ class DeviceFilter {
 
     /// Only return scanners that use a secure transport, such as USB or TLS.
     bool? secure,
-  }) : _wrapped = $js.DeviceFilter(
-          local: local,
-          secure: secure,
-        );
+  }) : _wrapped = $js.DeviceFilter(local: local, secure: secure);
 
   final $js.DeviceFilter _wrapped;
 
@@ -907,9 +907,9 @@ class OptionGroup {
     /// Names of contained options, in backend-provided order.
     required List<String> members,
   }) : _wrapped = $js.OptionGroup(
-          title: title,
-          members: members.toJSArray((e) => e),
-        );
+         title: title,
+         members: members.toJSArray((e) => e),
+       );
 
   final $js.OptionGroup _wrapped;
 
@@ -943,9 +943,9 @@ class GetScannerListResponse {
     /// `DeviceFilter`.
     required List<ScannerInfo> scanners,
   }) : _wrapped = $js.GetScannerListResponse(
-          result: result.toJS,
-          scanners: scanners.toJSArray((e) => e.toJS),
-        );
+         result: result.toJS,
+         scanners: scanners.toJSArray((e) => e.toJS),
+       );
 
   final $js.GetScannerListResponse _wrapped;
 
@@ -961,10 +961,11 @@ class GetScannerListResponse {
 
   /// A possibly-empty list of scanners that match the provided
   /// `DeviceFilter`.
-  List<ScannerInfo> get scanners => _wrapped.scanners.toDart
-      .cast<$js.ScannerInfo>()
-      .map((e) => ScannerInfo.fromJS(e))
-      .toList();
+  List<ScannerInfo> get scanners =>
+      _wrapped.scanners.toDart
+          .cast<$js.ScannerInfo>()
+          .map((e) => ScannerInfo.fromJS(e))
+          .toList();
 
   set scanners(List<ScannerInfo> v) {
     _wrapped.scanners = v.toJSArray((e) => e.toJS);
@@ -989,11 +990,11 @@ class OpenScannerResponse {
     /// key-value mapping from option names to `ScannerOption`.
     Map? options,
   }) : _wrapped = $js.OpenScannerResponse(
-          scannerId: scannerId,
-          result: result.toJS,
-          scannerHandle: scannerHandle,
-          options: options?.jsify(),
-        );
+         scannerId: scannerId,
+         result: result.toJS,
+         scannerHandle: scannerHandle,
+         options: options?.jsify(),
+       );
 
   final $js.OpenScannerResponse _wrapped;
 
@@ -1044,10 +1045,10 @@ class GetOptionGroupsResponse {
     /// option groups in the order supplied by the backend.
     List<OptionGroup>? groups,
   }) : _wrapped = $js.GetOptionGroupsResponse(
-          scannerHandle: scannerHandle,
-          result: result.toJS,
-          groups: groups?.toJSArray((e) => e.toJS),
-        );
+         scannerHandle: scannerHandle,
+         result: result.toJS,
+         groups: groups?.toJSArray((e) => e.toJS),
+       );
 
   final $js.GetOptionGroupsResponse _wrapped;
 
@@ -1069,10 +1070,11 @@ class GetOptionGroupsResponse {
 
   /// If `result` is `OperationResult.SUCCESS`, a list of
   /// option groups in the order supplied by the backend.
-  List<OptionGroup>? get groups => _wrapped.groups?.toDart
-      .cast<$js.OptionGroup>()
-      .map((e) => OptionGroup.fromJS(e))
-      .toList();
+  List<OptionGroup>? get groups =>
+      _wrapped.groups?.toDart
+          .cast<$js.OptionGroup>()
+          .map((e) => OptionGroup.fromJS(e))
+          .toList();
 
   set groups(List<OptionGroup>? v) {
     _wrapped.groups = v?.toJSArray((e) => e.toJS);
@@ -1091,9 +1093,9 @@ class CloseScannerResponse {
     /// should not be used for any further operations.
     required OperationResult result,
   }) : _wrapped = $js.CloseScannerResponse(
-          scannerHandle: scannerHandle,
-          result: result.toJS,
-        );
+         scannerHandle: scannerHandle,
+         result: result.toJS,
+       );
 
   final $js.CloseScannerResponse _wrapped;
 
@@ -1132,20 +1134,22 @@ class OptionSetting {
     /// `value` must match `type`.
     Object? value,
   }) : _wrapped = $js.OptionSetting(
-          name: name,
-          type: type.toJS,
-          value: switch (value) {
-            bool() => value.jsify()!,
-            double() => value.jsify()!,
-            List<double>() => value.toJSArray((e) => e),
-            int() => value.jsify()!,
-            List<int>() => value.toJSArray((e) => e),
-            String() => value.jsify()!,
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${value.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String')
-          },
-        );
+         name: name,
+         type: type.toJS,
+         value: switch (value) {
+           bool() => value.jsify()!,
+           double() => value.jsify()!,
+           List<double>() => value.toJSArray((e) => e),
+           int() => value.jsify()!,
+           List<int>() => value.toJSArray((e) => e),
+           String() => value.jsify()!,
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${value.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String',
+             ),
+         },
+       );
 
   final $js.OptionSetting _wrapped;
 
@@ -1170,12 +1174,12 @@ class OptionSetting {
   /// have `autoSettable` enabled.  The type supplied for
   /// `value` must match `type`.
   Object? get value => _wrapped.value?.when(
-        isBool: (v) => v,
-        isDouble: (v) => v,
-        isArray: (v) => v.toDart.cast<double>().map((e) => e).toList(),
-        isInt: (v) => v,
-        isString: (v) => v,
-      );
+    isBool: (v) => v,
+    isDouble: (v) => v,
+    isArray: (v) => v.toDart.cast<double>().map((e) => e).toList(),
+    isInt: (v) => v,
+    isString: (v) => v,
+  );
 
   set value(Object? v) {
     _wrapped.value = switch (v) {
@@ -1186,8 +1190,10 @@ class OptionSetting {
       List<int>() => v.toJSArray((e) => e),
       String() => v.jsify()!,
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: bool, double, List<double>, int, List<int>, String',
+        ),
     };
   }
 }
@@ -1201,10 +1207,7 @@ class SetOptionResult {
 
     /// Backend result of setting the option.
     required OperationResult result,
-  }) : _wrapped = $js.SetOptionResult(
-          name: name,
-          result: result.toJS,
-        );
+  }) : _wrapped = $js.SetOptionResult(name: name, result: result.toJS);
 
   final $js.SetOptionResult _wrapped;
 
@@ -1245,10 +1248,10 @@ class SetOptionsResponse {
     /// if the scanner is disconnected in the middle).
     Map? options,
   }) : _wrapped = $js.SetOptionsResponse(
-          scannerHandle: scannerHandle,
-          results: results.toJSArray((e) => e.toJS),
-          options: options?.jsify(),
-        );
+         scannerHandle: scannerHandle,
+         results: results.toJSArray((e) => e.toJS),
+         options: options?.jsify(),
+       );
 
   final $js.SetOptionsResponse _wrapped;
 
@@ -1262,10 +1265,11 @@ class SetOptionsResponse {
   }
 
   /// One result per passed-in `OptionSetting`.
-  List<SetOptionResult> get results => _wrapped.results.toDart
-      .cast<$js.SetOptionResult>()
-      .map((e) => SetOptionResult.fromJS(e))
-      .toList();
+  List<SetOptionResult> get results =>
+      _wrapped.results.toDart
+          .cast<$js.SetOptionResult>()
+          .map((e) => SetOptionResult.fromJS(e))
+          .toList();
 
   set results(List<SetOptionResult> v) {
     _wrapped.results = v.toJSArray((e) => e.toJS);
@@ -1289,11 +1293,10 @@ class SetOptionsResponse {
 class StartScanOptions {
   StartScanOptions.fromJS(this._wrapped);
 
-  StartScanOptions(
-      {
-      /// MIME type to return scanned data in.
-      required String format})
-      : _wrapped = $js.StartScanOptions(format: format);
+  StartScanOptions({
+    /// MIME type to return scanned data in.
+    required String format,
+  }) : _wrapped = $js.StartScanOptions(format: format);
 
   final $js.StartScanOptions _wrapped;
 
@@ -1321,10 +1324,10 @@ class StartScanResponse {
     /// that can be used to read scan data or cancel the job.
     String? job,
   }) : _wrapped = $js.StartScanResponse(
-          scannerHandle: scannerHandle,
-          result: result.toJS,
-          job: job,
-        );
+         scannerHandle: scannerHandle,
+         result: result.toJS,
+         job: job,
+       );
 
   final $js.StartScanResponse _wrapped;
 
@@ -1362,10 +1365,7 @@ class CancelScanResponse {
 
     /// The backend's cancel scan result.
     required OperationResult result,
-  }) : _wrapped = $js.CancelScanResponse(
-          job: job,
-          result: result.toJS,
-        );
+  }) : _wrapped = $js.CancelScanResponse(job: job, result: result.toJS);
 
   final $js.CancelScanResponse _wrapped;
 
@@ -1409,11 +1409,11 @@ class ReadScanDataResponse {
     /// 0-100.
     int? estimatedCompletion,
   }) : _wrapped = $js.ReadScanDataResponse(
-          job: job,
-          result: result.toJS,
-          data: data?.toJS,
-          estimatedCompletion: estimatedCompletion,
-        );
+         job: job,
+         result: result.toJS,
+         data: data?.toJS,
+         estimatedCompletion: estimatedCompletion,
+       );
 
   final $js.ReadScanDataResponse _wrapped;
 

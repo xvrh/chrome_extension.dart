@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/power.dart' as $js;
 
@@ -38,7 +37,7 @@ class ChromePower {
   /// turned off state or from a screensaver. Exits the screensaver if it is
   /// currently active.
   Future<void> reportActivity() async {
-    await promiseToFuture<void>($js.chrome.power.reportActivity());
+    await $js.chrome.power.reportActivity().toDart;
   }
 }
 

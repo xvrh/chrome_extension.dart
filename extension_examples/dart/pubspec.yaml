@@ -10,7 +10,7 @@ dependencies:
   chrome_extension:
     path: ../..
   cupertino_icons:
-  web: 0.1.4-beta
+  web: ^1.1.1
 
 dev_dependencies:
   lints:

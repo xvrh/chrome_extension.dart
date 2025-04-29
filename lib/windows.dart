@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/tabs.dart' as $js_tabs;
 import 'src/js/windows.dart' as $js;
@@ -24,63 +23,64 @@ class ChromeWindows {
   bool get isAvailable => $js.chrome.windowsNullable != null && alwaysTrue;
 
   /// Gets details about a window.
-  Future<Window> get(
-    int windowId,
-    QueryOptions? queryOptions,
-  ) async {
-    var $res = await promiseToFuture<$js.Window>($js.chrome.windows.get(
-      windowId,
-      queryOptions?.toJS,
-    ));
-    return Window.fromJS($res);
+  Future<Window> get(int windowId, QueryOptions? queryOptions) async {
+    var $res =
+        await $js.chrome.windows.get(windowId, queryOptions?.toJS).toDart;
+    return Window.fromJS($res! as $js.Window);
   }
 
   /// Gets the [current window](#current-window).
   Future<Window> getCurrent(QueryOptions? queryOptions) async {
-    var $res = await promiseToFuture<$js.Window>(
-        $js.chrome.windows.getCurrent(queryOptions?.toJS));
-    return Window.fromJS($res);
+    var $res = await $js.chrome.windows.getCurrent(queryOptions?.toJS).toDart;
+    return Window.fromJS($res! as $js.Window);
   }
 
   /// Gets the window that was most recently focused - typically the window 'on
   /// top'.
   Future<Window> getLastFocused(QueryOptions? queryOptions) async {
-    var $res = await promiseToFuture<$js.Window>(
-        $js.chrome.windows.getLastFocused(queryOptions?.toJS));
-    return Window.fromJS($res);
+    var $res =
+        await $js.chrome.windows.getLastFocused(queryOptions?.toJS).toDart;
+    return Window.fromJS($res! as $js.Window);
   }
 
   /// Gets all windows.
   Future<List<Window>> getAll(QueryOptions? queryOptions) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.windows.getAll(queryOptions?.toJS));
-    return $res.toDart.cast<$js.Window>().map((e) => Window.fromJS(e)).toList();
+    var $res = await $js.chrome.windows.getAll(queryOptions?.toJS).toDart;
+
+    // Handle the response properly regardless of its type
+    final dartRes = $res.dartify();
+    final dartified = dartRes is List ? dartRes : [];
+
+    // Convert each element to a Window using Map data
+    return dartified.map<Window>((e) {
+      if (e is Map) {
+        // Create Window from Map data instead of casting
+        return Window._fromMap(e);
+      } else {
+        // Fallback for unexpected types
+        return Window.fromJS($js.Window(focused: false));
+      }
+    }).toList();
   }
 
   /// Creates (opens) a new browser window with any optional sizing, position,
   /// or default URL provided.
   Future<Window?> create(CreateData? createData) async {
-    var $res = await promiseToFuture<$js.Window?>(
-        $js.chrome.windows.create(createData?.toJS));
-    return $res?.let(Window.fromJS);
+    var $res = await $js.chrome.windows.create(createData?.toJS).toDart;
+    return ($res as $js.Window?)?.let(Window.fromJS);
   }
 
   /// Updates the properties of a window. Specify only the properties that to be
   /// changed; unspecified properties are unchanged.
-  Future<Window> update(
-    int windowId,
-    UpdateInfo updateInfo,
-  ) async {
-    var $res = await promiseToFuture<$js.Window>($js.chrome.windows.update(
-      windowId,
-      updateInfo.toJS,
-    ));
-    return Window.fromJS($res);
+  Future<Window> update(int windowId, UpdateInfo updateInfo) async {
+    var $res =
+        await $js.chrome.windows.update(windowId, updateInfo.toJS).toDart;
+    return Window.fromJS($res! as $js.Window);
   }
 
   /// Removes (closes) a window and all the tabs inside it.
   Future<void> remove(int windowId) async {
-    await promiseToFuture<void>($js.chrome.windows.remove(windowId));
+    await $js.chrome.windows.remove(windowId).toDart;
   }
 
   /// The windowId value that represents the absence of a Chrome browser window.
@@ -91,32 +91,42 @@ class ChromeWindows {
   int get windowIdCurrent => $js.chrome.windows.WINDOW_ID_CURRENT;
 
   /// Fired when a window is created.
-  EventStream<Window> get onCreated =>
-      $js.chrome.windows.onCreated.asStream(($c) => ($js.Window window) {
-            return $c(Window.fromJS(window));
-          }.toJS);
+  EventStream<Window> get onCreated => $js.chrome.windows.onCreated.asStream(
+    ($c) =>
+        ($js.Window window) {
+          return $c(Window.fromJS(window));
+        }.toJS,
+  );
 
   /// Fired when a window is removed (closed).
-  EventStream<int> get onRemoved =>
-      $js.chrome.windows.onRemoved.asStream(($c) => (int windowId) {
-            return $c(windowId);
-          }.toJS);
+  EventStream<int> get onRemoved => $js.chrome.windows.onRemoved.asStream(
+    ($c) =>
+        (int windowId) {
+          return $c(windowId);
+        }.toJS,
+  );
 
   /// Fired when the currently focused window changes. Returns
   /// `chrome.windows.WINDOW_ID_NONE` if all Chrome windows have lost focus.
   /// **Note:** On some Linux window managers, `WINDOW_ID_NONE` is always sent
   /// immediately preceding a switch from one Chrome window to another.
   EventStream<int> get onFocusChanged =>
-      $js.chrome.windows.onFocusChanged.asStream(($c) => (int windowId) {
-            return $c(windowId);
-          }.toJS);
+      $js.chrome.windows.onFocusChanged.asStream(
+        ($c) =>
+            (int windowId) {
+              return $c(windowId);
+            }.toJS,
+      );
 
   /// Fired when a window has been resized; this event is only dispatched when
   /// the new bounds are committed, and not for in-progress changes.
   EventStream<Window> get onBoundsChanged =>
-      $js.chrome.windows.onBoundsChanged.asStream(($c) => ($js.Window window) {
-            return $c(Window.fromJS(window));
-          }.toJS);
+      $js.chrome.windows.onBoundsChanged.asStream(
+        ($c) =>
+            ($js.Window window) {
+              return $c(Window.fromJS(window));
+            }.toJS,
+      );
 }
 
 /// The type of browser window this is. In some circumstances a window may not
@@ -208,6 +218,85 @@ enum CreateType {
 class Window {
   Window.fromJS(this._wrapped);
 
+  /// Create a Window from a Map (useful for handling JSON responses)
+  static Window _fromMap(Map map) {
+    // Handle tab objects if present
+    List<Tab>? tabs;
+    if (map['tabs'] is List) {
+      final tabsList = map['tabs'] as List;
+      tabs =
+          tabsList.map<Tab>((tabMap) {
+            if (tabMap is Map) {
+              // Create a Tab with required parameters
+              return Tab.fromJS(
+                $js_tabs.Tab(
+                  id: (tabMap['id'] as num?)?.toInt(),
+                  active: tabMap['active'] as bool? ?? false,
+                  highlighted: tabMap['highlighted'] as bool? ?? false,
+                  pinned: tabMap['pinned'] as bool? ?? false,
+                  selected: tabMap['selected'] as bool? ?? true,
+                  discarded: tabMap['discarded'] as bool? ?? false,
+                  autoDiscardable: tabMap['autoDiscardable'] as bool? ?? true,
+                  groupId: (tabMap['groupId'] as num?)?.toInt() ?? -1,
+                  windowId: (tabMap['windowId'] as num?)?.toInt() ?? -1,
+                  openerTabId: (tabMap['openerTabId'] as num?)?.toInt(),
+                  index: (tabMap['index'] as num?)?.toInt() ?? 0,
+                  title: tabMap['title'] as String?,
+                  url: tabMap['url'] as String?,
+                  pendingUrl: tabMap['pendingUrl'] as String?,
+                  favIconUrl: tabMap['favIconUrl'] as String?,
+                  audible: tabMap['audible'] as bool?,
+                  mutedInfo: null,
+                  lastAccessed: (tabMap['lastAccessed'] as num?)?.toDouble(),
+                  status: tabMap['status']?.toString().toJS,
+                  incognito: tabMap['incognito'] as bool? ?? false,
+                  width: (tabMap['width'] as num?)?.toInt(),
+                  height: (tabMap['height'] as num?)?.toInt(),
+                  sessionId: tabMap['sessionId'] as String?,
+                ),
+              );
+            } else {
+              // Fallback for invalid tab data
+              return Tab.fromJS(
+                $js_tabs.Tab(
+                  active: false,
+                  highlighted: false,
+                  pinned: false,
+                  selected: true,
+                  discarded: false,
+                  autoDiscardable: true,
+                  groupId: -1,
+                  windowId: -1,
+                  index: 0,
+                  incognito: false,
+                ),
+              );
+            }
+          }).toList();
+    }
+
+    return Window(
+      id: (map['id'] as num?)?.toInt(),
+      focused: map['focused'] as bool? ?? false,
+      top: (map['top'] as num?)?.toInt(),
+      left: (map['left'] as num?)?.toInt(),
+      width: (map['width'] as num?)?.toInt(),
+      height: (map['height'] as num?)?.toInt(),
+      tabs: tabs,
+      incognito: map['incognito'] as bool? ?? false,
+      type:
+          map['type'] != null
+              ? WindowType.fromJS((map['type'] as String).toJS)
+              : null,
+      state:
+          map['state'] != null
+              ? WindowState.fromJS((map['state'] as String).toJS)
+              : null,
+      alwaysOnTop: map['alwaysOnTop'] as bool? ?? false,
+      sessionId: map['sessionId'] as String?,
+    );
+  }
+
   Window({
     /// The ID of the window. Window IDs are unique within a browser session. In
     /// some circumstances a window may not be assigned an `ID` property; for
@@ -257,19 +346,19 @@ class Window {
     /// [sessions] API.
     String? sessionId,
   }) : _wrapped = $js.Window(
-          id: id,
-          focused: focused,
-          top: top,
-          left: left,
-          width: width,
-          height: height,
-          tabs: tabs?.toJSArray((e) => e.toJS),
-          incognito: incognito,
-          type: type?.toJS,
-          state: state?.toJS,
-          alwaysOnTop: alwaysOnTop,
-          sessionId: sessionId,
-        );
+         id: id,
+         focused: focused,
+         top: top,
+         left: left,
+         width: width,
+         height: height,
+         tabs: tabs?.toJSArray((e) => e.toJS),
+         incognito: incognito,
+         type: type?.toJS,
+         state: state?.toJS,
+         alwaysOnTop: alwaysOnTop,
+         sessionId: sessionId,
+       );
 
   final $js.Window _wrapped;
 
@@ -329,10 +418,11 @@ class Window {
   }
 
   /// Array of [tabs.Tab] objects representing the current tabs in the window.
-  List<Tab>? get tabs => _wrapped.tabs?.toDart
-      .cast<$js_tabs.Tab>()
-      .map((e) => Tab.fromJS(e))
-      .toList();
+  List<Tab>? get tabs =>
+      _wrapped.tabs?.toDart
+          .cast<$js_tabs.Tab>()
+          .map((e) => Tab.fromJS(e))
+          .toList();
 
   set tabs(List<Tab>? v) {
     _wrapped.tabs = v?.toJSArray((e) => e.toJS);
@@ -389,9 +479,9 @@ class QueryOptions {
     /// unset, the default filter is set to `['normal', 'popup']`.
     List<WindowType>? windowTypes,
   }) : _wrapped = $js.QueryOptions(
-          populate: populate,
-          windowTypes: windowTypes?.toJSArray((e) => e.toJS),
-        );
+         populate: populate,
+         windowTypes: windowTypes?.toJSArray((e) => e.toJS),
+       );
 
   final $js.QueryOptions _wrapped;
 
@@ -409,10 +499,11 @@ class QueryOptions {
 
   /// If set, the [windows.Window] returned is filtered based on its type. If
   /// unset, the default filter is set to `['normal', 'popup']`.
-  List<WindowType>? get windowTypes => _wrapped.windowTypes?.toDart
-      .cast<$js.WindowType>()
-      .map((e) => WindowType.fromJS(e))
-      .toList();
+  List<WindowType>? get windowTypes =>
+      _wrapped.windowTypes?.toDart
+          .cast<$js.WindowType>()
+          .map((e) => WindowType.fromJS(e))
+          .toList();
 
   set windowTypes(List<WindowType>? v) {
     _wrapped.windowTypes = v?.toJSArray((e) => e.toJS);
@@ -470,24 +561,26 @@ class CreateData {
     /// as the caller.
     bool? setSelfAsOpener,
   }) : _wrapped = $js.CreateData(
-          url: switch (url) {
-            String() => url.jsify()!,
-            List() => url.toJSArrayString(),
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${url.runtimeType}. Supported types are: String, List<String>')
-          },
-          tabId: tabId,
-          left: left,
-          top: top,
-          width: width,
-          height: height,
-          focused: focused,
-          incognito: incognito,
-          type: type?.toJS,
-          state: state?.toJS,
-          setSelfAsOpener: setSelfAsOpener,
-        );
+         url: switch (url) {
+           String() => url.jsify()!,
+           List() => url.toJSArrayString(),
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${url.runtimeType}. Supported types are: String, List<String>',
+             ),
+         },
+         tabId: tabId,
+         left: left,
+         top: top,
+         width: width,
+         height: height,
+         focused: focused,
+         incognito: incognito,
+         type: type?.toJS,
+         state: state?.toJS,
+         setSelfAsOpener: setSelfAsOpener,
+       );
 
   final $js.CreateData _wrapped;
 
@@ -498,17 +591,19 @@ class CreateData {
   /// 'www.google.com'. Non-fully-qualified URLs are considered relative within
   /// the extension. Defaults to the New Tab Page.
   Object? get url => _wrapped.url?.when(
-        isString: (v) => v,
-        isArray: (v) => v.toDart.cast<String>().map((e) => e).toList(),
-      );
+    isString: (v) => v,
+    isArray: (v) => v.toDart.cast<String>().map((e) => e).toList(),
+  );
 
   set url(Object? v) {
     _wrapped.url = switch (v) {
       String() => v.jsify()!,
       List() => v.toJSArrayString(),
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: String, List<String>')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: String, List<String>',
+        ),
     };
   }
 
@@ -632,14 +727,14 @@ class UpdateInfo {
     /// 'height'.
     WindowState? state,
   }) : _wrapped = $js.UpdateInfo(
-          left: left,
-          top: top,
-          width: width,
-          height: height,
-          focused: focused,
-          drawAttention: drawAttention,
-          state: state?.toJS,
-        );
+         left: left,
+         top: top,
+         width: width,
+         height: height,
+         focused: focused,
+         drawAttention: drawAttention,
+         state: state?.toJS,
+       );
 
   final $js.UpdateInfo _wrapped;
 

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/types.dart' as $js;
 
@@ -82,30 +81,31 @@ class ChromeSetting {
   /// Gets the value of a setting.
   /// [details] Which setting to consider.
   Future<GetCallbackDetails> get(GetDetails details) async {
-    var $res = await promiseToFuture<$js.GetCallbackDetails>(
-        _wrapped.get(details.toJS));
-    return GetCallbackDetails.fromJS($res);
+    var $res = await _wrapped.get(details.toJS).toDart;
+    return GetCallbackDetails.fromJS($res! as $js.GetCallbackDetails);
   }
 
   /// Sets the value of a setting.
   /// [details] Which setting to change.
   /// [returns] Called at the completion of the set operation.
   Future<void> set(SetDetails details) async {
-    await promiseToFuture<void>(_wrapped.set(details.toJS));
+    await _wrapped.set(details.toJS).toDart;
   }
 
   /// Clears the setting, restoring any default value.
   /// [details] Which setting to clear.
   /// [returns] Called at the completion of the clear operation.
   Future<void> clear(ClearDetails details) async {
-    await promiseToFuture<void>(_wrapped.clear(details.toJS));
+    await _wrapped.clear(details.toJS).toDart;
   }
 
   /// Fired after the setting changes.
-  EventStream<OnChangeDetails> get onChange =>
-      _wrapped.onChange.asStream(($c) => ($js.OnChangeDetails details) {
-            return $c(OnChangeDetails.fromJS(details));
-          }.toJS);
+  EventStream<OnChangeDetails> get onChange => _wrapped.onChange.asStream(
+    ($c) =>
+        ($js.OnChangeDetails details) {
+          return $c(OnChangeDetails.fromJS(details));
+        }.toJS,
+  );
 }
 
 class GetCallbackDetails {
@@ -123,10 +123,10 @@ class GetCallbackDetails {
     /// property in the [details] parameter of `get()` was true.
     bool? incognitoSpecific,
   }) : _wrapped = $js.GetCallbackDetails(
-          value: value.jsify()!,
-          levelOfControl: levelOfControl.toJS,
-          incognitoSpecific: incognitoSpecific,
-        );
+         value: value.jsify()!,
+         levelOfControl: levelOfControl.toJS,
+         incognitoSpecific: incognitoSpecific,
+       );
 
   final $js.GetCallbackDetails _wrapped;
 
@@ -160,12 +160,11 @@ class GetCallbackDetails {
 class GetDetails {
   GetDetails.fromJS(this._wrapped);
 
-  GetDetails(
-      {
-      /// Whether to return the value that applies to the incognito session
-      /// (default false).
-      bool? incognito})
-      : _wrapped = $js.GetDetails(incognito: incognito);
+  GetDetails({
+    /// Whether to return the value that applies to the incognito session
+    /// (default false).
+    bool? incognito,
+  }) : _wrapped = $js.GetDetails(incognito: incognito);
 
   final $js.GetDetails _wrapped;
 
@@ -191,10 +190,7 @@ class SetDetails {
 
     /// Where to set the setting (default: regular).
     ChromeSettingScope? scope,
-  }) : _wrapped = $js.SetDetails(
-          value: value.jsify()!,
-          scope: scope?.toJS,
-        );
+  }) : _wrapped = $js.SetDetails(value: value.jsify()!, scope: scope?.toJS);
 
   final $js.SetDetails _wrapped;
 
@@ -221,11 +217,10 @@ class SetDetails {
 class ClearDetails {
   ClearDetails.fromJS(this._wrapped);
 
-  ClearDetails(
-      {
-      /// Where to clear the setting (default: regular).
-      ChromeSettingScope? scope})
-      : _wrapped = $js.ClearDetails(scope: scope?.toJS);
+  ClearDetails({
+    /// Where to clear the setting (default: regular).
+    ChromeSettingScope? scope,
+  }) : _wrapped = $js.ClearDetails(scope: scope?.toJS);
 
   final $js.ClearDetails _wrapped;
 
@@ -255,10 +250,10 @@ class OnChangeDetails {
     /// enabled the extension in incognito mode.
     bool? incognitoSpecific,
   }) : _wrapped = $js.OnChangeDetails(
-          value: value.jsify()!,
-          levelOfControl: levelOfControl.toJS,
-          incognitoSpecific: incognitoSpecific,
-        );
+         value: value.jsify()!,
+         levelOfControl: levelOfControl.toJS,
+         incognitoSpecific: incognitoSpecific,
+       );
 
   final $js.OnChangeDetails _wrapped;
 

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/storage.dart' as $js;
 
@@ -39,15 +38,17 @@ class ChromeStorage {
 
   /// Fired when one or more items change.
   EventStream<OnChangedEvent> get onChanged =>
-      $js.chrome.storage.onChanged.asStream(($c) => (
-            JSAny changes,
-            String areaName,
-          ) {
-            return $c(OnChangedEvent(
-              changes: changes.toDartMap(),
-              areaName: areaName,
-            ));
-          }.toJS);
+      $js.chrome.storage.onChanged.asStream(
+        ($c) =>
+            (JSAny changes, String areaName) {
+              return $c(
+                OnChangedEvent(
+                  changes: changes.toDartMap(),
+                  areaName: areaName,
+                ),
+              );
+            }.toJS,
+      );
 }
 
 /// The storage area's access level.
@@ -79,9 +80,9 @@ class StorageChange {
     /// The new value of the item, if there is a new value.
     Object? newValue,
   }) : _wrapped = $js.StorageChange(
-          oldValue: oldValue?.jsify(),
-          newValue: newValue?.jsify(),
-        );
+         oldValue: oldValue?.jsify(),
+         newValue: newValue?.jsify(),
+       );
 
   final $js.StorageChange _wrapped;
 
@@ -119,15 +120,18 @@ class StorageArea {
   /// [returns] Callback with storage items, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<Map> get(Object? keys) async {
-    var $res = await promiseToFuture<JSAny>(_wrapped.get(switch (keys) {
-      String() => keys.jsify()!,
-      List() => keys.toJSArrayString(),
-      Map() => keys.jsify()!,
-      null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${keys.runtimeType}. Supported types are: String, List<String>, Map')
-    }));
-    return $res.toDartMap();
+    var $res =
+        await _wrapped.get(switch (keys) {
+          String() => keys.jsify()!,
+          List() => keys.toJSArrayString(),
+          Map() => keys.jsify()!,
+          null => null,
+          _ =>
+            throw UnsupportedError(
+              'Received type: ${keys.runtimeType}. Supported types are: String, List<String>, Map',
+            ),
+        }).toDart;
+    return $res!.toDartMap();
   }
 
   /// Gets the amount of space (in bytes) being used by one or more items.
@@ -138,14 +142,16 @@ class StorageArea {
   /// failure (in which case [runtime.lastError] will be set).
   Future<double> getBytesInUse(Object? keys) async {
     var $res =
-        await promiseToFuture<double>(_wrapped.getBytesInUse(switch (keys) {
-      String() => keys.jsify()!,
-      List() => keys.toJSArrayString(),
-      null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')
-    }));
-    return $res;
+        await _wrapped.getBytesInUse(switch (keys) {
+          String() => keys.jsify()!,
+          List() => keys.toJSArrayString(),
+          null => null,
+          _ =>
+            throw UnsupportedError(
+              'Received type: ${keys.runtimeType}. Supported types are: String, List<String>',
+            ),
+        }).toDart;
+    return ($res).dartify() as double? ?? 0;
   }
 
   /// Sets multiple items.
@@ -159,7 +165,7 @@ class StorageArea {
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> set(Map items) async {
-    await promiseToFuture<void>(_wrapped.set(items.jsify()!));
+    await _wrapped.set(items.jsify()!).toDart;
   }
 
   /// Removes one or more items from storage.
@@ -167,19 +173,21 @@ class StorageArea {
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> remove(Object keys) async {
-    await promiseToFuture<void>(_wrapped.remove(switch (keys) {
+    await _wrapped.remove(switch (keys) {
       String() => keys.jsify()!,
       List() => keys.toJSArrayString(),
-      _ => throw UnsupportedError(
-          'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')
-    }));
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${keys.runtimeType}. Supported types are: String, List<String>',
+        ),
+    }).toDart;
   }
 
   /// Removes all items from storage.
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> clear() async {
-    await promiseToFuture<void>(_wrapped.clear());
+    await _wrapped.clear().toDart;
   }
 
   /// Sets the desired access level for the storage area. The default will be
@@ -187,14 +195,16 @@ class StorageArea {
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> setAccessLevel(SetAccessLevelAccessOptions accessOptions) async {
-    await promiseToFuture<void>(_wrapped.setAccessLevel(accessOptions.toJS));
+    await _wrapped.setAccessLevel(accessOptions.toJS).toDart;
   }
 
   /// Fired when one or more items change.
-  EventStream<Map> get onChanged =>
-      _wrapped.onChanged.asStream(($c) => (JSAny changes) {
-            return $c(changes.toDartMap());
-          }.toJS);
+  EventStream<Map> get onChanged => _wrapped.onChanged.asStream(
+    ($c) =>
+        (JSAny changes) {
+          return $c(changes.toDartMap());
+        }.toJS,
+  );
 }
 
 class StorageSync extends StorageArea {
@@ -303,12 +313,12 @@ class StorageSession extends StorageArea {
 class SetAccessLevelAccessOptions {
   SetAccessLevelAccessOptions.fromJS(this._wrapped);
 
-  SetAccessLevelAccessOptions(
-      {
-      /// The access level of the storage area.
-      required AccessLevel accessLevel})
-      : _wrapped =
-            $js.SetAccessLevelAccessOptions(accessLevel: accessLevel.toJS);
+  SetAccessLevelAccessOptions({
+    /// The access level of the storage area.
+    required AccessLevel accessLevel,
+  }) : _wrapped = $js.SetAccessLevelAccessOptions(
+         accessLevel: accessLevel.toJS,
+       );
 
   final $js.SetAccessLevelAccessOptions _wrapped;
 
@@ -323,10 +333,7 @@ class SetAccessLevelAccessOptions {
 }
 
 class OnChangedEvent {
-  OnChangedEvent({
-    required this.changes,
-    required this.areaName,
-  });
+  OnChangedEvent({required this.changes, required this.areaName});
 
   /// Object mapping each key that changed to its corresponding
   /// [storage.StorageChange] for that item.

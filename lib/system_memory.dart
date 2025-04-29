@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/system_memory.dart' as $js;
 import 'system.dart';
@@ -25,9 +24,8 @@ class ChromeSystemMemory {
 
   /// Get physical memory information.
   Future<MemoryInfo> getInfo() async {
-    var $res = await promiseToFuture<$js.MemoryInfo>(
-        $js.chrome.system.memory.getInfo());
-    return MemoryInfo.fromJS($res);
+    var $res = await $js.chrome.system.memory.getInfo().toDart;
+    return MemoryInfo.fromJS($res! as $js.MemoryInfo);
   }
 }
 
@@ -41,9 +39,9 @@ class MemoryInfo {
     /// The amount of available capacity, in bytes.
     required double availableCapacity,
   }) : _wrapped = $js.MemoryInfo(
-          capacity: capacity,
-          availableCapacity: availableCapacity,
-        );
+         capacity: capacity,
+         availableCapacity: availableCapacity,
+       );
 
   final $js.MemoryInfo _wrapped;
 

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/instance_id.dart' as $js;
 
@@ -26,8 +25,8 @@ class ChromeInstanceId {
   /// [returns] Function called when the retrieval completes. It should check
   /// [runtime.lastError] for error when instanceID is empty.
   Future<String> getID() async {
-    var $res = await promiseToFuture<String>($js.chrome.instanceId.getID());
-    return $res;
+    var $res = await $js.chrome.instanceId.getID().toDart;
+    return $res.dartify() as String? ?? '';
   }
 
   /// Retrieves the time when the InstanceID has been generated. The creation
@@ -35,9 +34,8 @@ class ChromeInstanceId {
   /// [returns] Function called when the retrieval completes. It should check
   /// [runtime.lastError] for error when creationTime is zero.
   Future<double> getCreationTime() async {
-    var $res =
-        await promiseToFuture<double>($js.chrome.instanceId.getCreationTime());
-    return $res;
+    var $res = await $js.chrome.instanceId.getCreationTime().toDart;
+    return $res.dartify() as double? ?? 0;
   }
 
   /// Return a token that allows the authorized entity to access the service
@@ -46,9 +44,8 @@ class ChromeInstanceId {
   /// [returns] Function called when the retrieval completes. It should check
   /// [runtime.lastError] for error when token is empty.
   Future<String> getToken(GetTokenParams getTokenParams) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.instanceId.getToken(getTokenParams.toJS));
-    return $res;
+    var $res = await $js.chrome.instanceId.getToken(getTokenParams.toJS).toDart;
+    return $res.dartify() as String? ?? '';
   }
 
   /// Revokes a granted token.
@@ -56,8 +53,7 @@ class ChromeInstanceId {
   /// [returns] Function called when the token deletion completes. The token
   /// was revoked successfully if [runtime.lastError] is not set.
   Future<void> deleteToken(DeleteTokenParams deleteTokenParams) async {
-    await promiseToFuture<void>(
-        $js.chrome.instanceId.deleteToken(deleteTokenParams.toJS));
+    await $js.chrome.instanceId.deleteToken(deleteTokenParams.toJS).toDart;
   }
 
   /// Resets the app instance identifier and revokes all tokens associated with
@@ -65,14 +61,17 @@ class ChromeInstanceId {
   /// [returns] Function called when the deletion completes. The instance
   /// identifier was revoked successfully if [runtime.lastError] is not set.
   Future<void> deleteID() async {
-    await promiseToFuture<void>($js.chrome.instanceId.deleteID());
+    await $js.chrome.instanceId.deleteID().toDart;
   }
 
   /// Fired when all the granted tokens need to be refreshed.
   EventStream<void> get onTokenRefresh =>
-      $js.chrome.instanceId.onTokenRefresh.asStream(($c) => () {
-            return $c(null);
-          }.toJS);
+      $js.chrome.instanceId.onTokenRefresh.asStream(
+        ($c) =>
+            () {
+              return $c(null);
+            }.toJS,
+      );
 }
 
 class GetTokenParams {
@@ -92,10 +91,10 @@ class GetTokenParams {
     /// associated with the token and may be used in processing the request.
     Map? options,
   }) : _wrapped = $js.GetTokenParams(
-          authorizedEntity: authorizedEntity,
-          scope: scope,
-          options: options?.jsify(),
-        );
+         authorizedEntity: authorizedEntity,
+         scope: scope,
+         options: options?.jsify(),
+       );
 
   final $js.GetTokenParams _wrapped;
 
@@ -137,9 +136,9 @@ class DeleteTokenParams {
     /// The scope that is used to obtain the token.
     required String scope,
   }) : _wrapped = $js.DeleteTokenParams(
-          authorizedEntity: authorizedEntity,
-          scope: scope,
-        );
+         authorizedEntity: authorizedEntity,
+         scope: scope,
+       );
 
   final $js.DeleteTokenParams _wrapped;
 

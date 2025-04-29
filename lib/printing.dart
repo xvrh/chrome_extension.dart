@@ -2,10 +2,9 @@
 
 library;
 
-import 'dart:js_util';
-import 'printer_provider.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/printing.dart' as $js;
+import 'printer_provider.dart' show PrintJob;
 
 export 'src/chrome.dart' show chrome, EventStream;
 
@@ -22,45 +21,38 @@ class ChromePrinting {
 
   bool get isAvailable => $js.chrome.printingNullable != null && alwaysTrue;
 
-  /// Submits the job for printing. If the extension is not listed in
-  /// the <a
-  /// href="https://chromeenterprise.google/policies/#PrintingAPIExtensionsAllowlist">
-  /// `PrintingAPIExtensionsAllowlist`</a> policy,
-  /// the user is prompted to accept the print job.<br/>
-  /// Before Chrome 120, this function did not return a promise.
-  Future<SubmitJobResponse> submitJob(SubmitJobRequest request) async {
-    var $res = await promiseToFuture<$js.SubmitJobResponse>(
-        $js.chrome.printing.submitJob(request.toJS));
-    return SubmitJobResponse.fromJS($res);
+  /// Submits the job for printing. If the extension/app doesn't have the
+  /// [printingJobTitle.print] permission, the user will be presented with
+  /// a native printer dialog. The extension can still specify the default
+  /// job parameters, but the user will have a chance to change them. If
+  /// the extension/app has the [printingJobTitle.print] permission, the
+  /// job will be sent directly to the printer without user interaction.
+  Future<String> submitJob($js.SubmitJobRequest request) async {
+    var $res = await $js.chrome.printing.submitJob(request).toDart;
+    return ($res).dartify() as String? ?? '';
   }
 
-  /// Cancels previously submitted job.
-  /// |jobId|: The id of the print job to cancel. This should be the same id
-  /// received in a [SubmitJobResponse].
+  /// Cancels a previously submitted print job.
   Future<void> cancelJob(String jobId) async {
-    await promiseToFuture<void>($js.chrome.printing.cancelJob(jobId));
+    await $js.chrome.printing.cancelJob(jobId).toDart;
   }
 
-  /// Returns the list of available printers on the device. This includes
-  /// manually added, enterprise and discovered printers.
-  Future<List<Printer>> getPrinters() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.printing.getPrinters());
-    return $res.toDart
-        .cast<$js.Printer>()
-        .map((e) => Printer.fromJS(e))
-        .toList();
+  /// Returns the list of available printers on the device, including
+  /// the save to Drive printer. If the extension has the
+  /// [printingPrinters.allTypes] permission, it will receive all printer types. If
+  /// the extension has the [printingPrinters.extension] permission, it will
+  /// only receive extension managed printers. Otherwise, the extension will
+  /// only receive its own printers.
+  Future<List<$js.Printer>> getPrinters() async {
+    var $res = await $js.chrome.printing.getPrinters().toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified.map<$js.Printer>((e) => e as $js.Printer).toList();
   }
 
-  /// Returns the status and capabilities of the printer in
-  /// <a href="https://developers.google.com/cloud-print/docs/cdd#cdd">
-  /// CDD format</a>.
-  /// This call will fail with a runtime error if no printers with given id are
-  /// installed.
-  Future<GetPrinterInfoResponse> getPrinterInfo(String printerId) async {
-    var $res = await promiseToFuture<$js.GetPrinterInfoResponse>(
-        $js.chrome.printing.getPrinterInfo(printerId));
-    return GetPrinterInfoResponse.fromJS($res);
+  /// Returns the status and capabilities of a printer as a [GetPrinterInfoResponse].
+  Future<$js.GetPrinterInfoResponse> getPrinterInfo(String printerId) async {
+    var $res = await $js.chrome.printing.getPrinterInfo(printerId).toDart;
+    return $res! as $js.GetPrinterInfoResponse;
   }
 
   /// The maximum number of times that [submitJob] can be called per
@@ -76,15 +68,17 @@ class ChromePrinting {
   /// Event fired when the status of the job is changed.
   /// This is only fired for the jobs created by this extension.
   EventStream<OnJobStatusChangedEvent> get onJobStatusChanged =>
-      $js.chrome.printing.onJobStatusChanged.asStream(($c) => (
-            String jobId,
-            $js.JobStatus status,
-          ) {
-            return $c(OnJobStatusChangedEvent(
-              jobId: jobId,
-              status: JobStatus.fromJS(status),
-            ));
-          }.toJS);
+      $js.chrome.printing.onJobStatusChanged.asStream(
+        ($c) =>
+            (String jobId, $js.JobStatus status) {
+              return $c(
+                OnJobStatusChangedEvent(
+                  jobId: jobId,
+                  status: JobStatus.fromJS(status),
+                ),
+              );
+            }.toJS,
+      );
 }
 
 /// The status of [submitJob] request.
@@ -218,9 +212,9 @@ class SubmitJobRequest {
     /// shouldn't be populated by the extension.
     String? documentBlobUuid,
   }) : _wrapped = $js.SubmitJobRequest(
-          job: job.toJS,
-          documentBlobUuid: documentBlobUuid,
-        );
+         job: job.toJS,
+         documentBlobUuid: documentBlobUuid,
+       );
 
   final $js.SubmitJobRequest _wrapped;
 
@@ -258,10 +252,7 @@ class SubmitJobResponse {
     /// The id of created print job. This is a unique identifier among all print
     /// jobs on the device. If status is not OK, jobId will be null.
     String? jobId,
-  }) : _wrapped = $js.SubmitJobResponse(
-          status: status.toJS,
-          jobId: jobId,
-        );
+  }) : _wrapped = $js.SubmitJobResponse(status: status.toJS, jobId: jobId);
 
   final $js.SubmitJobResponse _wrapped;
 
@@ -318,14 +309,14 @@ class Printer {
     /// recently. This value is guaranteed to be unique amongst printers.
     int? recentlyUsedRank,
   }) : _wrapped = $js.Printer(
-          id: id,
-          name: name,
-          description: description,
-          uri: uri,
-          source: source.toJS,
-          isDefault: isDefault,
-          recentlyUsedRank: recentlyUsedRank,
-        );
+         id: id,
+         name: name,
+         description: description,
+         uri: uri,
+         source: source.toJS,
+         isDefault: isDefault,
+         recentlyUsedRank: recentlyUsedRank,
+       );
 
   final $js.Printer _wrapped;
 
@@ -403,9 +394,9 @@ class GetPrinterInfoResponse {
     /// The status of the printer.
     required PrinterStatus status,
   }) : _wrapped = $js.GetPrinterInfoResponse(
-          capabilities: capabilities?.jsify(),
-          status: status.toJS,
-        );
+         capabilities: capabilities?.jsify(),
+         status: status.toJS,
+       );
 
   final $js.GetPrinterInfoResponse _wrapped;
 
@@ -430,10 +421,7 @@ class GetPrinterInfoResponse {
 }
 
 class OnJobStatusChangedEvent {
-  OnJobStatusChangedEvent({
-    required this.jobId,
-    required this.status,
-  });
+  OnJobStatusChangedEvent({required this.jobId, required this.status});
 
   final String jobId;
 

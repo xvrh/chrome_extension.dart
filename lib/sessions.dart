@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/sessions.dart' as $js;
 import 'tabs.dart';
@@ -25,19 +24,20 @@ class ChromeSessions {
 
   /// Gets the list of recently closed tabs and/or windows.
   Future<List<Session>> getRecentlyClosed(Filter? filter) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.sessions.getRecentlyClosed(filter?.toJS));
-    return $res.toDart
-        .cast<$js.Session>()
-        .map((e) => Session.fromJS(e))
+    var $res = await $js.chrome.sessions.getRecentlyClosed(filter?.toJS).toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<Session>((e) => Session.fromJS(e as $js.Session))
         .toList();
   }
 
   /// Retrieves all devices with synced sessions.
   Future<List<Device>> getDevices(Filter? filter) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.sessions.getDevices(filter?.toJS));
-    return $res.toDart.cast<$js.Device>().map((e) => Device.fromJS(e)).toList();
+    var $res = await $js.chrome.sessions.getDevices(filter?.toJS).toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<Device>((e) => Device.fromJS(e as $js.Device))
+        .toList();
   }
 
   /// Reopens a [windows.Window] or [tabs.Tab], with an optional callback to run
@@ -46,9 +46,8 @@ class ChromeSessions {
   /// restore. If this parameter is not specified, the most recently closed
   /// session is restored.
   Future<Session> restore(String? sessionId) async {
-    var $res = await promiseToFuture<$js.Session>(
-        $js.chrome.sessions.restore(sessionId));
-    return Session.fromJS($res);
+    var $res = await $js.chrome.sessions.restore(sessionId).toDart;
+    return Session.fromJS($res! as $js.Session);
   }
 
   /// The maximum number of [sessions.Session] that will be included in a
@@ -57,22 +56,23 @@ class ChromeSessions {
 
   /// Fired when recently closed tabs and/or windows are changed. This event
   /// does not monitor synced sessions changes.
-  EventStream<void> get onChanged =>
-      $js.chrome.sessions.onChanged.asStream(($c) => () {
-            return $c(null);
-          }.toJS);
+  EventStream<void> get onChanged => $js.chrome.sessions.onChanged.asStream(
+    ($c) =>
+        () {
+          return $c(null);
+        }.toJS,
+  );
 }
 
 class Filter {
   Filter.fromJS(this._wrapped);
 
-  Filter(
-      {
-      /// The maximum number of entries to be fetched in the requested list. Omit
-      /// this parameter to fetch the maximum number of entries
-      /// ([sessions.MAX_SESSION_RESULTS]).
-      int? maxResults})
-      : _wrapped = $js.Filter(maxResults: maxResults);
+  Filter({
+    /// The maximum number of entries to be fetched in the requested list. Omit
+    /// this parameter to fetch the maximum number of entries
+    /// ([sessions.MAX_SESSION_RESULTS]).
+    int? maxResults,
+  }) : _wrapped = $js.Filter(maxResults: maxResults);
 
   final $js.Filter _wrapped;
 
@@ -104,10 +104,10 @@ class Session {
     /// [sessions.Session.tab] will be set.
     Window? window,
   }) : _wrapped = $js.Session(
-          lastModified: lastModified,
-          tab: tab?.toJS,
-          window: window?.toJS,
-        );
+         lastModified: lastModified,
+         tab: tab?.toJS,
+         window: window?.toJS,
+       );
 
   final $js.Session _wrapped;
 
@@ -151,10 +151,10 @@ class Device {
     /// recently to least recently modified session.
     required List<Session> sessions,
   }) : _wrapped = $js.Device(
-          info: info,
-          deviceName: deviceName,
-          sessions: sessions.toJSArray((e) => e.toJS),
-        );
+         info: info,
+         deviceName: deviceName,
+         sessions: sessions.toJSArray((e) => e.toJS),
+       );
 
   final $js.Device _wrapped;
 
@@ -175,10 +175,11 @@ class Device {
 
   /// A list of open window sessions for the foreign device, sorted from most
   /// recently to least recently modified session.
-  List<Session> get sessions => _wrapped.sessions.toDart
-      .cast<$js.Session>()
-      .map((e) => Session.fromJS(e))
-      .toList();
+  List<Session> get sessions =>
+      _wrapped.sessions.toDart
+          .cast<$js.Session>()
+          .map((e) => Session.fromJS(e))
+          .toList();
 
   set sessions(List<Session> v) {
     _wrapped.sessions = v.toJSArray((e) => e.toJS);

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/content_settings.dart' as $js;
 
@@ -424,10 +423,7 @@ class ResourceIdentifier {
 
     /// A human readable description of the resource.
     String? description,
-  }) : _wrapped = $js.ResourceIdentifier(
-          id: id,
-          description: description,
-        );
+  }) : _wrapped = $js.ResourceIdentifier(id: id, description: description);
 
   final $js.ResourceIdentifier _wrapped;
 
@@ -459,27 +455,27 @@ class ContentSetting {
 
   /// Clear all content setting rules set by this extension.
   Future<void> clear(ClearDetails details) async {
-    await promiseToFuture<void>(_wrapped.clear(details.toJS));
+    await _wrapped.clear(details.toJS).toDart;
   }
 
   /// Gets the current content setting for a given pair of URLs.
   Future<GetCallbackDetails> get(GetDetails details) async {
-    var $res = await promiseToFuture<$js.GetCallbackDetails>(
-        _wrapped.get(details.toJS));
-    return GetCallbackDetails.fromJS($res);
+    var $res = await _wrapped.get(details.toJS).toDart;
+    return GetCallbackDetails.fromJS($res! as $js.GetCallbackDetails);
   }
 
   /// Applies a new content setting rule.
   Future<void> set(SetDetails details) async {
-    await promiseToFuture<void>(_wrapped.set(details.toJS));
+    await _wrapped.set(details.toJS).toDart;
   }
 
   Future<List<ResourceIdentifier>?> getResourceIdentifiers() async {
-    var $res =
-        await promiseToFuture<JSArray?>(_wrapped.getResourceIdentifiers());
-    return $res?.toDart
-        .cast<$js.ResourceIdentifier>()
-        .map((e) => ResourceIdentifier.fromJS(e))
+    var $res = await _wrapped.getResourceIdentifiers().toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<ResourceIdentifier>(
+          (e) => ResourceIdentifier.fromJS(e as $js.ResourceIdentifier),
+        )
         .toList();
   }
 }
@@ -487,11 +483,10 @@ class ContentSetting {
 class ClearDetails {
   ClearDetails.fromJS(this._wrapped);
 
-  ClearDetails(
-      {
-      /// Where to clear the setting (default: regular).
-      Scope? scope})
-      : _wrapped = $js.ClearDetails(scope: scope?.toJS);
+  ClearDetails({
+    /// Where to clear the setting (default: regular).
+    Scope? scope,
+  }) : _wrapped = $js.ClearDetails(scope: scope?.toJS);
 
   final $js.ClearDetails _wrapped;
 
@@ -508,12 +503,11 @@ class ClearDetails {
 class GetCallbackDetails {
   GetCallbackDetails.fromJS(this._wrapped);
 
-  GetCallbackDetails(
-      {
-      /// The content setting. See the description of the individual
-      /// ContentSetting objects for the possible values.
-      required Object setting})
-      : _wrapped = $js.GetCallbackDetails(setting: setting.jsify()!);
+  GetCallbackDetails({
+    /// The content setting. See the description of the individual
+    /// ContentSetting objects for the possible values.
+    required Object setting,
+  }) : _wrapped = $js.GetCallbackDetails(setting: setting.jsify()!);
 
   final $js.GetCallbackDetails _wrapped;
 
@@ -550,11 +544,11 @@ class GetDetails {
     /// false)
     bool? incognito,
   }) : _wrapped = $js.GetDetails(
-          primaryUrl: primaryUrl,
-          secondaryUrl: secondaryUrl,
-          resourceIdentifier: resourceIdentifier?.toJS,
-          incognito: incognito,
-        );
+         primaryUrl: primaryUrl,
+         secondaryUrl: secondaryUrl,
+         resourceIdentifier: resourceIdentifier?.toJS,
+         incognito: incognito,
+       );
 
   final $js.GetDetails _wrapped;
 
@@ -618,12 +612,12 @@ class SetDetails {
     /// Where to set the setting (default: regular).
     Scope? scope,
   }) : _wrapped = $js.SetDetails(
-          primaryPattern: primaryPattern,
-          secondaryPattern: secondaryPattern,
-          resourceIdentifier: resourceIdentifier?.toJS,
-          setting: setting.jsify()!,
-          scope: scope?.toJS,
-        );
+         primaryPattern: primaryPattern,
+         secondaryPattern: secondaryPattern,
+         resourceIdentifier: resourceIdentifier?.toJS,
+         setting: setting.jsify()!,
+         scope: scope?.toJS,
+       );
 
   final $js.SetDetails _wrapped;
 

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/i18n.dart' as $js;
 
@@ -24,9 +23,9 @@ class ChromeI18n {
   /// Gets the accept-languages of the browser. This is different from the
   /// locale used by the browser; to get the locale, use [i18n.getUILanguage].
   Future<List<String>> getAcceptLanguages() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.i18n.getAcceptLanguages());
-    return $res.toDart.cast<$js.LanguageCode>().map((e) => e).toList();
+    var $res = await $js.chrome.i18n.getAcceptLanguages().toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified.map<String>((e) => e as String).toList();
   }
 
   /// Gets the localized string for the specified message. If the message is
@@ -61,9 +60,10 @@ class ChromeI18n {
   /// Detects the language of the provided text using CLD.
   /// [text] User input string to be translated.
   Future<DetectLanguageCallbackResult> detectLanguage(String text) async {
-    var $res = await promiseToFuture<$js.DetectLanguageCallbackResult>(
-        $js.chrome.i18n.detectLanguage(text));
-    return DetectLanguageCallbackResult.fromJS($res);
+    var $res = await $js.chrome.i18n.detectLanguage(text).toDart;
+    return DetectLanguageCallbackResult.fromJS(
+      $res! as $js.DetectLanguageCallbackResult,
+    );
   }
 }
 
@@ -77,14 +77,13 @@ typedef LanguageCode = String;
 class GetMessageOptions {
   GetMessageOptions.fromJS(this._wrapped);
 
-  GetMessageOptions(
-      {
-      /// Escape `<` in translation to `&amp;lt;`. This applies only to the
-      /// message itself, not to the placeholders. Developers might want to use
-      /// this if the translation is used in an HTML context. Closure Templates
-      /// used with Closure Compiler generate this automatically.
-      bool? escapeLt})
-      : _wrapped = $js.GetMessageOptions(escapeLt: escapeLt);
+  GetMessageOptions({
+    /// Escape `<` in translation to `&amp;lt;`. This applies only to the
+    /// message itself, not to the placeholders. Developers might want to use
+    /// this if the translation is used in an HTML context. Closure Templates
+    /// used with Closure Compiler generate this automatically.
+    bool? escapeLt,
+  }) : _wrapped = $js.GetMessageOptions(escapeLt: escapeLt);
 
   final $js.GetMessageOptions _wrapped;
 
@@ -111,9 +110,9 @@ class DetectLanguageCallbackResult {
     /// array of detectedLanguage
     required List<DetectLanguageCallbackResultLanguages> languages,
   }) : _wrapped = $js.DetectLanguageCallbackResult(
-          isReliable: isReliable,
-          languages: languages.toJSArray((e) => e.toJS),
-        );
+         isReliable: isReliable,
+         languages: languages.toJSArray((e) => e.toJS),
+       );
 
   final $js.DetectLanguageCallbackResult _wrapped;
 
@@ -147,9 +146,9 @@ class DetectLanguageCallbackResultLanguages {
     /// The percentage of the detected language
     required int percentage,
   }) : _wrapped = $js.DetectLanguageCallbackResultLanguages(
-          language: language,
-          percentage: percentage,
-        );
+         language: language,
+         percentage: percentage,
+       );
 
   final $js.DetectLanguageCallbackResultLanguages _wrapped;
 

@@ -29,5 +29,4 @@ linter:
     unnecessary_late: true
     unnecessary_parenthesis: true
     unnecessary_statements: true
-    unsafe_html: true
     use_raw_strings: true

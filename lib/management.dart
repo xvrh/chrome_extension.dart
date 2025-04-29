@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/management.dart' as $js;
 
@@ -25,10 +24,10 @@ class ChromeManagement {
 
   /// Returns a list of information about installed extensions and apps.
   Future<List<ExtensionInfo>> getAll() async {
-    var $res = await promiseToFuture<JSArray>($js.chrome.management.getAll());
-    return $res.toDart
-        .cast<$js.ExtensionInfo>()
-        .map((e) => ExtensionInfo.fromJS(e))
+    var $res = await $js.chrome.management.getAll().toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<ExtensionInfo>((e) => ExtensionInfo.fromJS(e as $js.ExtensionInfo))
         .toList();
   }
 
@@ -36,18 +35,16 @@ class ChromeManagement {
   /// the given ID.
   /// [id] The ID from an item of [management.ExtensionInfo].
   Future<ExtensionInfo> get(String id) async {
-    var $res =
-        await promiseToFuture<$js.ExtensionInfo>($js.chrome.management.get(id));
-    return ExtensionInfo.fromJS($res);
+    var $res = await $js.chrome.management.get(id).toDart;
+    return ExtensionInfo.fromJS($res! as $js.ExtensionInfo);
   }
 
   /// Returns information about the calling extension, app, or theme. Note: This
   /// function can be used without requesting the 'management' permission in the
   /// manifest.
   Future<ExtensionInfo> getSelf() async {
-    var $res = await promiseToFuture<$js.ExtensionInfo>(
-        $js.chrome.management.getSelf());
-    return ExtensionInfo.fromJS($res);
+    var $res = await $js.chrome.management.getSelf().toDart;
+    return ExtensionInfo.fromJS($res! as $js.ExtensionInfo);
   }
 
   /// Returns a list of [permission
@@ -55,9 +52,9 @@ class ChromeManagement {
   /// id.
   /// [id] The ID of an already installed extension.
   Future<List<String>> getPermissionWarningsById(String id) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.management.getPermissionWarningsById(id));
-    return $res.toDart.cast<String>().map((e) => e).toList();
+    var $res = await $js.chrome.management.getPermissionWarningsById(id).toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified.map<String>((e) => e as String).toList();
   }
 
   /// Returns a list of [permission
@@ -66,10 +63,14 @@ class ChromeManagement {
   /// 'management' permission in the manifest.
   /// [manifestStr] Extension manifest JSON string.
   Future<List<String>> getPermissionWarningsByManifest(
-      String manifestStr) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.management.getPermissionWarningsByManifest(manifestStr));
-    return $res.toDart.cast<String>().map((e) => e).toList();
+    String manifestStr,
+  ) async {
+    var $res =
+        await $js.chrome.management
+            .getPermissionWarningsByManifest(manifestStr)
+            .toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified.map<String>((e) => e as String).toList();
   }
 
   /// Enables or disables an app or extension. In most cases this function must
@@ -78,14 +79,8 @@ class ChromeManagement {
   /// of preventing abuse.
   /// [id] This should be the id from an item of [management.ExtensionInfo].
   /// [enabled] Whether this item should be enabled or disabled.
-  Future<void> setEnabled(
-    String id,
-    bool enabled,
-  ) async {
-    await promiseToFuture<void>($js.chrome.management.setEnabled(
-      id,
-      enabled,
-    ));
+  Future<void> setEnabled(String id, bool enabled) async {
+    await $js.chrome.management.setEnabled(id, enabled).toDart;
   }
 
   /// Uninstalls a currently installed app or extension. Note: This function
@@ -94,14 +89,8 @@ class ChromeManagement {
   /// user cancels the dialog) the promise will be rejected or the callback will
   /// be called with [runtime.lastError] set.
   /// [id] This should be the id from an item of [management.ExtensionInfo].
-  Future<void> uninstall(
-    String id,
-    UninstallOptions? options,
-  ) async {
-    await promiseToFuture<void>($js.chrome.management.uninstall(
-      id,
-      options?.toJS,
-    ));
+  Future<void> uninstall(String id, UninstallOptions? options) async {
+    await $js.chrome.management.uninstall(id, options?.toJS).toDart;
   }
 
   /// Uninstalls the calling extension. Note: This function can be used without
@@ -109,14 +98,13 @@ class ChromeManagement {
   /// not work in managed environments when the user is not allowed to uninstall
   /// the specified extension/app.
   Future<void> uninstallSelf(UninstallOptions? options) async {
-    await promiseToFuture<void>(
-        $js.chrome.management.uninstallSelf(options?.toJS));
+    await $js.chrome.management.uninstallSelf(options?.toJS).toDart;
   }
 
   /// Launches an application.
   /// [id] The extension id of the application.
   Future<void> launchApp(String id) async {
-    await promiseToFuture<void>($js.chrome.management.launchApp(id));
+    await $js.chrome.management.launchApp(id).toDart;
   }
 
   /// Display options to create shortcuts for an app. On Mac, only packaged app
@@ -124,7 +112,7 @@ class ChromeManagement {
   /// [id] This should be the id from an app item of
   /// [management.ExtensionInfo].
   Future<void> createAppShortcut(String id) async {
-    await promiseToFuture<void>($js.chrome.management.createAppShortcut(id));
+    await $js.chrome.management.createAppShortcut(id).toDart;
   }
 
   /// Set the launch type of an app.
@@ -133,63 +121,61 @@ class ChromeManagement {
   /// [launchType] The target launch type. Always check and make sure this
   /// launch type is in [ExtensionInfo.availableLaunchTypes], because the
   /// available launch types vary on different platforms and configurations.
-  Future<void> setLaunchType(
-    String id,
-    LaunchType launchType,
-  ) async {
-    await promiseToFuture<void>($js.chrome.management.setLaunchType(
-      id,
-      launchType.toJS,
-    ));
+  Future<void> setLaunchType(String id, LaunchType launchType) async {
+    await $js.chrome.management.setLaunchType(id, launchType.toJS).toDart;
   }
 
   /// Generate an app for a URL. Returns the generated bookmark app.
   /// [url] The URL of a web page. The scheme of the URL can only be "http" or
   /// "https".
   /// [title] The title of the generated app.
-  Future<ExtensionInfo> generateAppForLink(
-    String url,
-    String title,
-  ) async {
-    var $res = await promiseToFuture<$js.ExtensionInfo>(
-        $js.chrome.management.generateAppForLink(
-      url,
-      title,
-    ));
-    return ExtensionInfo.fromJS($res);
+  Future<ExtensionInfo> generateAppForLink(String url, String title) async {
+    var $res =
+        await $js.chrome.management.generateAppForLink(url, title).toDart;
+    return ExtensionInfo.fromJS($res! as $js.ExtensionInfo);
   }
 
   /// Launches the replacement_web_app specified in the manifest. Prompts the
   /// user to install if not already installed.
   Future<void> installReplacementWebApp() async {
-    await promiseToFuture<void>(
-        $js.chrome.management.installReplacementWebApp());
+    await $js.chrome.management.installReplacementWebApp().toDart;
   }
 
   /// Fired when an app or extension has been installed.
   EventStream<ExtensionInfo> get onInstalled =>
-      $js.chrome.management.onInstalled
-          .asStream(($c) => ($js.ExtensionInfo info) {
-                return $c(ExtensionInfo.fromJS(info));
-              }.toJS);
+      $js.chrome.management.onInstalled.asStream(
+        ($c) =>
+            ($js.ExtensionInfo info) {
+              return $c(ExtensionInfo.fromJS(info));
+            }.toJS,
+      );
 
   /// Fired when an app or extension has been uninstalled.
   EventStream<String> get onUninstalled =>
-      $js.chrome.management.onUninstalled.asStream(($c) => (String id) {
-            return $c(id);
-          }.toJS);
+      $js.chrome.management.onUninstalled.asStream(
+        ($c) =>
+            (String id) {
+              return $c(id);
+            }.toJS,
+      );
 
   /// Fired when an app or extension has been enabled.
-  EventStream<ExtensionInfo> get onEnabled => $js.chrome.management.onEnabled
-      .asStream(($c) => ($js.ExtensionInfo info) {
-            return $c(ExtensionInfo.fromJS(info));
-          }.toJS);
+  EventStream<ExtensionInfo> get onEnabled =>
+      $js.chrome.management.onEnabled.asStream(
+        ($c) =>
+            ($js.ExtensionInfo info) {
+              return $c(ExtensionInfo.fromJS(info));
+            }.toJS,
+      );
 
   /// Fired when an app or extension has been disabled.
-  EventStream<ExtensionInfo> get onDisabled => $js.chrome.management.onDisabled
-      .asStream(($c) => ($js.ExtensionInfo info) {
-            return $c(ExtensionInfo.fromJS(info));
-          }.toJS);
+  EventStream<ExtensionInfo> get onDisabled =>
+      $js.chrome.management.onDisabled.asStream(
+        ($c) =>
+            ($js.ExtensionInfo info) {
+              return $c(ExtensionInfo.fromJS(info));
+            }.toJS,
+      );
 }
 
 /// These are all possible app launch types.
@@ -282,10 +268,7 @@ class IconInfo {
     /// (to indicate that an extension is disabled, for example), append
     /// `?grayscale=true` to the URL.
     required String url,
-  }) : _wrapped = $js.IconInfo(
-          size: size,
-          url: url,
-        );
+  }) : _wrapped = $js.IconInfo(size: size, url: url);
 
   final $js.IconInfo _wrapped;
 
@@ -390,30 +373,30 @@ class ExtensionInfo {
     /// The currently available launch types (only present for apps).
     List<LaunchType>? availableLaunchTypes,
   }) : _wrapped = $js.ExtensionInfo(
-          id: id,
-          name: name,
-          shortName: shortName,
-          description: description,
-          version: version,
-          versionName: versionName,
-          mayDisable: mayDisable,
-          mayEnable: mayEnable,
-          enabled: enabled,
-          disabledReason: disabledReason?.toJS,
-          isApp: isApp,
-          type: type.toJS,
-          appLaunchUrl: appLaunchUrl,
-          homepageUrl: homepageUrl,
-          updateUrl: updateUrl,
-          offlineEnabled: offlineEnabled,
-          optionsUrl: optionsUrl,
-          icons: icons?.toJSArray((e) => e.toJS),
-          permissions: permissions.toJSArray((e) => e),
-          hostPermissions: hostPermissions.toJSArray((e) => e),
-          installType: installType.toJS,
-          launchType: launchType?.toJS,
-          availableLaunchTypes: availableLaunchTypes?.toJSArray((e) => e.toJS),
-        );
+         id: id,
+         name: name,
+         shortName: shortName,
+         description: description,
+         version: version,
+         versionName: versionName,
+         mayDisable: mayDisable,
+         mayEnable: mayEnable,
+         enabled: enabled,
+         disabledReason: disabledReason?.toJS,
+         isApp: isApp,
+         type: type.toJS,
+         appLaunchUrl: appLaunchUrl,
+         homepageUrl: homepageUrl,
+         updateUrl: updateUrl,
+         offlineEnabled: offlineEnabled,
+         optionsUrl: optionsUrl,
+         icons: icons?.toJSArray((e) => e.toJS),
+         permissions: permissions.toJSArray((e) => e),
+         hostPermissions: hostPermissions.toJSArray((e) => e),
+         installType: installType.toJS,
+         launchType: launchType?.toJS,
+         availableLaunchTypes: availableLaunchTypes?.toJSArray((e) => e.toJS),
+       );
 
   final $js.ExtensionInfo _wrapped;
 
@@ -547,10 +530,11 @@ class ExtensionInfo {
   /// than what was declared, so you might consider using explicit width and
   /// height attributes on img tags referencing these images. See the [manifest
   /// documentation on icons](reference/manifest/icons) for more details.
-  List<IconInfo>? get icons => _wrapped.icons?.toDart
-      .cast<$js.IconInfo>()
-      .map((e) => IconInfo.fromJS(e))
-      .toList();
+  List<IconInfo>? get icons =>
+      _wrapped.icons?.toDart
+          .cast<$js.IconInfo>()
+          .map((e) => IconInfo.fromJS(e))
+          .toList();
 
   set icons(List<IconInfo>? v) {
     _wrapped.icons = v?.toJSArray((e) => e.toJS);
@@ -602,14 +586,13 @@ class ExtensionInfo {
 class UninstallOptions {
   UninstallOptions.fromJS(this._wrapped);
 
-  UninstallOptions(
-      {
-      /// Whether or not a confirm-uninstall dialog should prompt the user.
-      /// Defaults to false for self uninstalls. If an extension uninstalls
-      /// another extension, this parameter is ignored and the dialog is always
-      /// shown.
-      bool? showConfirmDialog})
-      : _wrapped = $js.UninstallOptions(showConfirmDialog: showConfirmDialog);
+  UninstallOptions({
+    /// Whether or not a confirm-uninstall dialog should prompt the user.
+    /// Defaults to false for self uninstalls. If an extension uninstalls
+    /// another extension, this parameter is ignored and the dialog is always
+    /// shown.
+    bool? showConfirmDialog,
+  }) : _wrapped = $js.UninstallOptions(showConfirmDialog: showConfirmDialog);
 
   final $js.UninstallOptions _wrapped;
 

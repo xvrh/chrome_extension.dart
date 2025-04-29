@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/search.dart' as $js;
 
@@ -24,7 +23,7 @@ class ChromeSearch {
   /// In case of an error,
   /// [runtime.lastError] will be set.
   Future<void> query(QueryInfo queryInfo) async {
-    await promiseToFuture<void>($js.chrome.search.query(queryInfo.toJS));
+    await $js.chrome.search.query(queryInfo.toJS).toDart;
   }
 }
 

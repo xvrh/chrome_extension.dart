@@ -37,8 +37,16 @@ extension ListToJsExtension<T> on List<T> {
 extension JSAnyExtension on JSAny {
   Map toDartMap() {
     var map = dartify()! as Map;
-    // TODO: convert inner map and list?
-    return map;
+    return _convertNestedStructures(map) as Map;
+  }
+
+  dynamic _convertNestedStructures(dynamic value) {
+    if (value is Map) {
+      return value.map((k, v) => MapEntry(k, _convertNestedStructures(v)));
+    } else if (value is List) {
+      return value.map((item) => _convertNestedStructures(item)).toList();
+    }
+    return value;
   }
 }
 
@@ -81,7 +89,8 @@ extension JSChoiceExtension<T extends JSAny> on T {
 
 extension EventStreamExtension on js.Event {
   EventStream<T> asStream<T>(
-      JSFunction Function(void Function(T)) callbackFactory) {
+    JSFunction Function(void Function(T)) callbackFactory,
+  ) {
     return EventStream<T>(this, callbackFactory);
   }
 }
@@ -93,19 +102,22 @@ class EventStream<T> extends Stream<T> {
   EventStream(this._target, this._callbackFactory);
 
   @override
-  Stream<T> asBroadcastStream(
-          {void Function(StreamSubscription<T>)? onListen,
-          void Function(StreamSubscription<T>)? onCancel}) =>
-      this;
+  Stream<T> asBroadcastStream({
+    void Function(StreamSubscription<T>)? onListen,
+    void Function(StreamSubscription<T>)? onCancel,
+  }) => this;
 
   @override
   bool get isBroadcast => true;
 
   @pragma('dart2js:tryInline')
   @override
-  StreamSubscription<T> listen(dynamic Function(T)? onData,
-          {Function? onError, void Function()? onDone, bool? cancelOnError}) =>
-      _EventStreamSubscription<T>(this._target, onData, _callbackFactory);
+  StreamSubscription<T> listen(
+    dynamic Function(T)? onData, {
+    Function? onError,
+    void Function()? onDone,
+    bool? cancelOnError,
+  }) => _EventStreamSubscription<T>(this._target, onData, _callbackFactory);
 }
 
 class _EventStreamSubscription<T> implements StreamSubscription<T> {
@@ -114,8 +126,11 @@ class _EventStreamSubscription<T> implements StreamSubscription<T> {
   dynamic Function(T)? _onData;
   late final JSFunction _callback;
 
-  _EventStreamSubscription(this._target, this._onData,
-      JSFunction Function(dynamic Function(T)) callbackFactory) {
+  _EventStreamSubscription(
+    this._target,
+    this._onData,
+    JSFunction Function(dynamic Function(T)) callbackFactory,
+  ) {
     _callback = callbackFactory(_wrapZone(_addData));
     _tryResume();
   }

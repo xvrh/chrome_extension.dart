@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/page_action.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
@@ -29,27 +28,26 @@ class ChromePageAction {
   /// selected.
   /// [tabId] The id of the tab for which you want to modify the page action.
   Future<void> show(int tabId) async {
-    await promiseToFuture<void>($js.chrome.pageAction.show(tabId));
+    await $js.chrome.pageAction.show(tabId).toDart;
   }
 
   /// Hides the page action. Hidden page actions still appear in the Chrome
   /// toolbar, but are grayed out.
   /// [tabId] The id of the tab for which you want to modify the page action.
   Future<void> hide(int tabId) async {
-    await promiseToFuture<void>($js.chrome.pageAction.hide(tabId));
+    await $js.chrome.pageAction.hide(tabId).toDart;
   }
 
   /// Sets the title of the page action. This is displayed in a tooltip over the
   /// page action.
   Future<void> setTitle(SetTitleDetails details) async {
-    await promiseToFuture<void>($js.chrome.pageAction.setTitle(details.toJS));
+    await $js.chrome.pageAction.setTitle(details.toJS).toDart;
   }
 
   /// Gets the title of the page action.
   Future<String> getTitle(TabDetails details) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.pageAction.getTitle(details.toJS));
-    return $res;
+    var $res = await $js.chrome.pageAction.getTitle(details.toJS).toDart;
+    return ($res).dartify() as String? ?? '';
   }
 
   /// Sets the icon for the page action. The icon can be specified either as the
@@ -57,28 +55,29 @@ class ChromePageAction {
   /// dictionary of either one of those. Either the **path** or the
   /// **imageData** property must be specified.
   Future<void> setIcon(SetIconDetails details) async {
-    await promiseToFuture<void>($js.chrome.pageAction.setIcon(details.toJS));
+    await $js.chrome.pageAction.setIcon(details.toJS).toDart;
   }
 
   /// Sets the HTML document to be opened as a popup when the user clicks on the
   /// page action's icon.
   Future<void> setPopup(SetPopupDetails details) async {
-    await promiseToFuture<void>($js.chrome.pageAction.setPopup(details.toJS));
+    await $js.chrome.pageAction.setPopup(details.toJS).toDart;
   }
 
   /// Gets the html document set as the popup for this page action.
   Future<String> getPopup(TabDetails details) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.pageAction.getPopup(details.toJS));
-    return $res;
+    var $res = await $js.chrome.pageAction.getPopup(details.toJS).toDart;
+    return ($res).dartify() as String? ?? '';
   }
 
   /// Fired when a page action icon is clicked.  This event will not fire if the
   /// page action has a popup.
-  EventStream<Tab> get onClicked =>
-      $js.chrome.pageAction.onClicked.asStream(($c) => ($js_tabs.Tab tab) {
-            return $c(Tab.fromJS(tab));
-          }.toJS);
+  EventStream<Tab> get onClicked => $js.chrome.pageAction.onClicked.asStream(
+    ($c) =>
+        ($js_tabs.Tab tab) {
+          return $c(Tab.fromJS(tab));
+        }.toJS,
+  );
 }
 
 /// Pixel data for an image. Must be an ImageData object (for example, from a
@@ -88,12 +87,11 @@ typedef ImageDataType = JSObject;
 class TabDetails {
   TabDetails.fromJS(this._wrapped);
 
-  TabDetails(
-      {
-      /// The ID of the tab to query state for. If no tab is specified, the
-      /// non-tab-specific state is returned.
-      int? tabId})
-      : _wrapped = $js.TabDetails(tabId: tabId);
+  TabDetails({
+    /// The ID of the tab to query state for. If no tab is specified, the
+    /// non-tab-specific state is returned.
+    int? tabId,
+  }) : _wrapped = $js.TabDetails(tabId: tabId);
 
   final $js.TabDetails _wrapped;
 
@@ -117,10 +115,7 @@ class SetTitleDetails {
 
     /// The tooltip string.
     required String title,
-  }) : _wrapped = $js.SetTitleDetails(
-          tabId: tabId,
-          title: title,
-        );
+  }) : _wrapped = $js.SetTitleDetails(tabId: tabId, title: title);
 
   final $js.SetTitleDetails _wrapped;
 
@@ -171,23 +166,27 @@ class SetIconDetails {
     /// **Deprecated.** This argument is ignored.
     int? iconIndex,
   }) : _wrapped = $js.SetIconDetails(
-          tabId: tabId,
-          imageData: switch (imageData) {
-            JSObject() => imageData,
-            Map() => imageData.jsify()!,
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map')
-          },
-          path: switch (path) {
-            String() => path.jsify()!,
-            Map() => path.jsify()!,
-            null => null,
-            _ => throw UnsupportedError(
-                'Received type: ${path.runtimeType}. Supported types are: String, Map')
-          },
-          iconIndex: iconIndex,
-        );
+         tabId: tabId,
+         imageData: switch (imageData) {
+           JSObject() => imageData,
+           Map() => imageData.jsify()!,
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map',
+             ),
+         },
+         path: switch (path) {
+           String() => path.jsify()!,
+           Map() => path.jsify()!,
+           null => null,
+           _ =>
+             throw UnsupportedError(
+               'Received type: ${path.runtimeType}. Supported types are: String, Map',
+             ),
+         },
+         iconIndex: iconIndex,
+       );
 
   final $js.SetIconDetails _wrapped;
 
@@ -209,17 +208,19 @@ class SetIconDetails {
   /// that 'details.imageData = foo' is equivalent to 'details.imageData =
   /// {'16': foo}'
   Object? get imageData => _wrapped.imageData?.when(
-        isOther: (v) => (v as $js.ImageDataType),
-        isMap: (v) => v.toDartMap(),
-      );
+    isOther: (v) => (v as $js.ImageDataType),
+    isMap: (v) => v.toDartMap(),
+  );
 
   set imageData(Object? v) {
     _wrapped.imageData = switch (v) {
       JSObject() => v,
       Map() => v.jsify()!,
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: JSObject, Map')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: JSObject, Map',
+        ),
     };
   }
 
@@ -230,18 +231,18 @@ class SetIconDetails {
   /// `scale`, then image with size `scale` * n will be selected, where n is the
   /// size of the icon in the UI. At least one image must be specified. Note
   /// that 'details.path = foo' is equivalent to 'details.path = {'16': foo}'
-  Object? get path => _wrapped.path?.when(
-        isString: (v) => v,
-        isMap: (v) => v.toDartMap(),
-      );
+  Object? get path =>
+      _wrapped.path?.when(isString: (v) => v, isMap: (v) => v.toDartMap());
 
   set path(Object? v) {
     _wrapped.path = switch (v) {
       String() => v.jsify()!,
       Map() => v.jsify()!,
       null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${v.runtimeType}. Supported types are: String, Map')
+      _ =>
+        throw UnsupportedError(
+          'Received type: ${v.runtimeType}. Supported types are: String, Map',
+        ),
     };
   }
 
@@ -263,10 +264,7 @@ class SetPopupDetails {
     /// The relative path to the HTML file to show in a popup. If set to the
     /// empty string (`''`), no popup is shown.
     required String popup,
-  }) : _wrapped = $js.SetPopupDetails(
-          tabId: tabId,
-          popup: popup,
-        );
+  }) : _wrapped = $js.SetPopupDetails(tabId: tabId, popup: popup);
 
   final $js.SetPopupDetails _wrapped;
 

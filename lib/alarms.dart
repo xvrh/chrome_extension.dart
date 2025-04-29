@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/alarms.dart' as $js;
 
@@ -47,48 +46,62 @@ class ChromeAlarms {
   /// repeating alarm, [periodInMinutes] is used as the default for
   /// [delayInMinutes].
   /// |callback|: Invoked when the alarm has been created.
-  Future<void> create(
-    String? name,
-    AlarmCreateInfo alarmInfo,
-  ) async {
-    await promiseToFuture<void>($js.chrome.alarms.create(
-      name,
-      alarmInfo.toJS,
-    ));
+  Future<void> create(String? name, AlarmCreateInfo alarmInfo) async {
+    await $js.chrome.alarms.create(name, alarmInfo.toJS).toDart;
   }
 
   /// Retrieves details about the specified alarm.
   /// |name|: The name of the alarm to get. Defaults to the empty string.
   Future<Alarm?> get(String? name) async {
-    var $res = await promiseToFuture<$js.Alarm?>($js.chrome.alarms.get(name));
-    return $res?.let(Alarm.fromJS);
+    var $res = await $js.chrome.alarms.get(name).toDart;
+    return ($res as $js.Alarm?)?.let(Alarm.fromJS);
   }
 
   /// Gets an array of all the alarms.
   Future<List<Alarm>> getAll() async {
-    var $res = await promiseToFuture<JSArray>($js.chrome.alarms.getAll());
-    return $res.toDart.cast<$js.Alarm>().map((e) => Alarm.fromJS(e)).toList();
+    var $res = await $js.chrome.alarms.getAll().toDart;
+
+    // Handle the response properly regardless of its type
+    final dartRes = $res.dartify();
+    final dartified = dartRes is List ? dartRes : [];
+
+    // Convert each element to an Alarm using Map data
+    return dartified.map<Alarm>((e) {
+      if (e is Map) {
+        // Create Alarm from Map data
+        return Alarm(
+          name: e['name'] as String? ?? '',
+          scheduledTime: (e['scheduledTime'] as num?)?.toDouble() ?? 0,
+          periodInMinutes: (e['periodInMinutes'] as num?)?.toDouble(),
+        );
+      } else {
+        // Fallback for unexpected types
+        return Alarm(name: '', scheduledTime: 0);
+      }
+    }).toList();
   }
 
   /// Clears the alarm with the given name.
   /// |name|: The name of the alarm to clear. Defaults to the empty string.
   Future<bool> clear(String? name) async {
-    var $res = await promiseToFuture<bool>($js.chrome.alarms.clear(name));
-    return $res;
+    var $res = await $js.chrome.alarms.clear(name).toDart;
+    return $res != null ? ($res.dartify() as bool? ?? false) : false;
   }
 
   /// Clears all alarms.
   Future<bool> clearAll() async {
-    var $res = await promiseToFuture<bool>($js.chrome.alarms.clearAll());
-    return $res;
+    var $res = await $js.chrome.alarms.clearAll().toDart;
+    return $res != null ? ($res.dartify() as bool? ?? false) : false;
   }
 
   /// Fired when an alarm has elapsed. Useful for event pages.
   /// |alarm|: The alarm that has elapsed.
-  EventStream<Alarm> get onAlarm =>
-      $js.chrome.alarms.onAlarm.asStream(($c) => ($js.Alarm alarm) {
-            return $c(Alarm.fromJS(alarm));
-          }.toJS);
+  EventStream<Alarm> get onAlarm => $js.chrome.alarms.onAlarm.asStream(
+    ($c) =>
+        ($js.Alarm alarm) {
+          return $c(Alarm.fromJS(alarm));
+        }.toJS,
+  );
 }
 
 class Alarm {
@@ -107,10 +120,10 @@ class Alarm {
     /// [periodInMinutes] minutes.
     double? periodInMinutes,
   }) : _wrapped = $js.Alarm(
-          name: name,
-          scheduledTime: scheduledTime,
-          periodInMinutes: periodInMinutes,
-        );
+         name: name,
+         scheduledTime: scheduledTime,
+         periodInMinutes: periodInMinutes,
+       );
 
   final $js.Alarm _wrapped;
 
@@ -162,10 +175,10 @@ class AlarmCreateInfo {
     /// <!-- TODO: need minimum=0 -->
     double? periodInMinutes,
   }) : _wrapped = $js.AlarmCreateInfo(
-          when: when,
-          delayInMinutes: delayInMinutes,
-          periodInMinutes: periodInMinutes,
-        );
+         when: when,
+         delayInMinutes: delayInMinutes,
+         periodInMinutes: periodInMinutes,
+       );
 
   final $js.AlarmCreateInfo _wrapped;
 
@@ -179,10 +192,7 @@ class AlarmCreateInfo {
     _wrapped.when = v;
   }
 
-  /// Length of time in minutes after which the `onAlarm` event
-  /// should fire.
-  ///
-  /// <!-- TODO: need minimum=0 -->
+  /// Length of time in minutes after which the `onAlarm` event should fire.
   double? get delayInMinutes => _wrapped.delayInMinutes;
 
   set delayInMinutes(double? v) {

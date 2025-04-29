@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'input.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/input_ime.dart' as $js;
@@ -30,9 +29,9 @@ class ChromeInputIme {
   /// [returns] Called when the operation completes with a boolean indicating
   /// if the text was accepted or not. On failure, [runtime.lastError] is set.
   Future<bool> setComposition(SetCompositionParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setComposition(parameters.toJS));
-    return $res;
+    var $res =
+        await $js.chrome.input.ime.setComposition(parameters.toJS).toDart;
+    return $res.dartify() as bool? ?? false;
   }
 
   /// Clear the current composition. If this extension does not own the active
@@ -40,18 +39,17 @@ class ChromeInputIme {
   /// [returns] Called when the operation completes with a boolean indicating
   /// if the text was accepted or not. On failure, [runtime.lastError] is set.
   Future<bool> clearComposition(ClearCompositionParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.clearComposition(parameters.toJS));
-    return $res;
+    var $res =
+        await $js.chrome.input.ime.clearComposition(parameters.toJS).toDart;
+    return $res.dartify() as bool? ?? false;
   }
 
   /// Commits the provided text to the current input.
   /// [returns] Called when the operation completes with a boolean indicating
   /// if the text was accepted or not. On failure, [runtime.lastError] is set.
   Future<bool> commitText(CommitTextParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.commitText(parameters.toJS));
-    return $res;
+    var $res = await $js.chrome.input.ime.commitText(parameters.toJS).toDart;
+    return $res.dartify() as bool? ?? false;
   }
 
   /// Sends the key events.  This function is expected to be used by virtual
@@ -59,8 +57,7 @@ class ChromeInputIme {
   /// function is used to propagate that event to the system.
   /// [returns] Called when the operation completes.
   Future<void> sendKeyEvents(SendKeyEventsParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.sendKeyEvents(parameters.toJS));
+    await $js.chrome.input.ime.sendKeyEvents(parameters.toJS).toDart;
   }
 
   /// Hides the input view window, which is popped up automatically by system.
@@ -73,67 +70,72 @@ class ChromeInputIme {
   /// doesn't own the active IME
   /// [returns] Called when the operation completes.
   Future<bool> setCandidateWindowProperties(
-      SetCandidateWindowPropertiesParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setCandidateWindowProperties(parameters.toJS));
-    return $res;
+    SetCandidateWindowPropertiesParameters parameters,
+  ) async {
+    var $res =
+        await $js.chrome.input.ime
+            .setCandidateWindowProperties(parameters.toJS)
+            .toDart;
+    return $res.dartify() as bool? ?? false;
   }
 
   /// Sets the current candidate list. This fails if this extension doesn't own
   /// the active IME
   /// [returns] Called when the operation completes.
   Future<bool> setCandidates(SetCandidatesParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setCandidates(parameters.toJS));
-    return $res;
+    var $res = await $js.chrome.input.ime.setCandidates(parameters.toJS).toDart;
+    return $res.dartify() as bool? ?? false;
   }
 
   /// Set the position of the cursor in the candidate window. This is a no-op if
   /// this extension does not own the active IME.
   /// [returns] Called when the operation completes
   Future<bool> setCursorPosition(SetCursorPositionParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setCursorPosition(parameters.toJS));
-    return $res;
+    var $res =
+        await $js.chrome.input.ime.setCursorPosition(parameters.toJS).toDart;
+    return $res.dartify() as bool? ?? false;
   }
 
   /// Shows/Hides an assistive window with the given properties.
   /// [returns] Called when the operation completes.
   Future<bool> setAssistiveWindowProperties(
-      SetAssistiveWindowPropertiesParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setAssistiveWindowProperties(parameters.toJS));
-    return $res;
+    SetAssistiveWindowPropertiesParameters parameters,
+  ) async {
+    var $res =
+        await $js.chrome.input.ime
+            .setAssistiveWindowProperties(parameters.toJS)
+            .toDart;
+    return $res.dartify() as bool? ?? false;
   }
 
   /// Highlights/Unhighlights a button in an assistive window.
   /// [returns] Called when the operation completes. On failure,
   /// [runtime.lastError] is set.
   Future<void> setAssistiveWindowButtonHighlighted(
-      SetAssistiveWindowButtonHighlightedParameters parameters) async {
-    await promiseToFuture<void>($js.chrome.input.ime
-        .setAssistiveWindowButtonHighlighted(parameters.toJS));
+    SetAssistiveWindowButtonHighlightedParameters parameters,
+  ) async {
+    await $js.chrome.input.ime
+        .setAssistiveWindowButtonHighlighted(parameters.toJS)
+        .toDart;
   }
 
   /// Adds the provided menu items to the language menu when this IME is active.
   Future<void> setMenuItems(MenuParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.setMenuItems(parameters.toJS));
+    await $js.chrome.input.ime.setMenuItems(parameters.toJS).toDart;
   }
 
   /// Updates the state of the MenuItems specified
   /// [returns] Called when the operation completes
   Future<void> updateMenuItems(MenuParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.updateMenuItems(parameters.toJS));
+    await $js.chrome.input.ime.updateMenuItems(parameters.toJS).toDart;
   }
 
   /// Deletes the text around the caret.
   /// [returns] Called when the operation completes.
   Future<void> deleteSurroundingText(
-      DeleteSurroundingTextParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.deleteSurroundingText(parameters.toJS));
+    DeleteSurroundingTextParameters parameters,
+  ) async {
+    await $js.chrome.input.ime.deleteSurroundingText(parameters.toJS).toDart;
   }
 
   /// Indicates that the key event received by onKeyEvent is handled.  This
@@ -141,58 +143,64 @@ class ChromeInputIme {
   /// [requestId] Request id of the event that was handled.  This should come
   /// from keyEvent.requestId
   /// [response] True if the keystroke was handled, false if not
-  void keyEventHandled(
-    String requestId,
-    bool response,
-  ) {
-    $js.chrome.input.ime.keyEventHandled(
-      requestId,
-      response,
-    );
+  void keyEventHandled(String requestId, bool response) {
+    $js.chrome.input.ime.keyEventHandled(requestId, response);
   }
 
   /// This event is sent when an IME is activated. It signals that the IME will
   /// be receiving onKeyPress events.
   EventStream<OnActivateEvent> get onActivate =>
-      $js.chrome.input.ime.onActivate.asStream(($c) => (
-            String engineID,
-            $js.ScreenType screen,
-          ) {
-            return $c(OnActivateEvent(
-              engineId: engineID,
-              screen: ScreenType.fromJS(screen),
-            ));
-          }.toJS);
+      $js.chrome.input.ime.onActivate.asStream(
+        ($c) =>
+            (String engineID, $js.ScreenType screen) {
+              return $c(
+                OnActivateEvent(
+                  engineId: engineID,
+                  screen: ScreenType.fromJS(screen),
+                ),
+              );
+            }.toJS,
+      );
 
   /// This event is sent when an IME is deactivated. It signals that the IME
   /// will no longer be receiving onKeyPress events.
   EventStream<String> get onDeactivated =>
-      $js.chrome.input.ime.onDeactivated.asStream(($c) => (String engineId) {
-            return $c(engineId);
-          }.toJS);
+      $js.chrome.input.ime.onDeactivated.asStream(
+        ($c) =>
+            (String engineId) {
+              return $c(engineId);
+            }.toJS,
+      );
 
   /// This event is sent when focus enters a text box. It is sent to all
   /// extensions that are listening to this event, and enabled by the user.
   EventStream<InputContext> get onFocus =>
-      $js.chrome.input.ime.onFocus.asStream(($c) => ($js.InputContext context) {
-            return $c(InputContext.fromJS(context));
-          }.toJS);
+      $js.chrome.input.ime.onFocus.asStream(
+        ($c) =>
+            ($js.InputContext context) {
+              return $c(InputContext.fromJS(context));
+            }.toJS,
+      );
 
   /// This event is sent when focus leaves a text box. It is sent to all
   /// extensions that are listening to this event, and enabled by the user.
-  EventStream<int> get onBlur =>
-      $js.chrome.input.ime.onBlur.asStream(($c) => (int contextId) {
-            return $c(contextId);
-          }.toJS);
+  EventStream<int> get onBlur => $js.chrome.input.ime.onBlur.asStream(
+    ($c) =>
+        (int contextId) {
+          return $c(contextId);
+        }.toJS,
+  );
 
   /// This event is sent when the properties of the current InputContext change,
   /// such as the the type. It is sent to all extensions that are listening to
   /// this event, and enabled by the user.
   EventStream<InputContext> get onInputContextUpdate =>
-      $js.chrome.input.ime.onInputContextUpdate
-          .asStream(($c) => ($js.InputContext context) {
-                return $c(InputContext.fromJS(context));
-              }.toJS);
+      $js.chrome.input.ime.onInputContextUpdate.asStream(
+        ($c) =>
+            ($js.InputContext context) {
+              return $c(InputContext.fromJS(context));
+            }.toJS,
+      );
 
   /// Fired when a key event is sent from the operating system. The event will
   /// be sent to the extension if this extension owns the active IME. The
@@ -201,73 +209,84 @@ class ChromeInputIme {
   /// must return undefined and the IME must later call keyEventHandled() with
   /// the result.
   EventStream<OnKeyEventEvent> get onKeyEvent =>
-      $js.chrome.input.ime.onKeyEvent.asStream(($c) => (
-            String engineID,
-            $js.KeyboardEvent keyData,
-            String requestId,
-          ) {
-            return $c(OnKeyEventEvent(
-              engineId: engineID,
-              keyData: KeyboardEvent.fromJS(keyData),
-              requestId: requestId,
-            ));
-          }.toJS);
+      $js.chrome.input.ime.onKeyEvent.asStream(
+        ($c) =>
+            (String engineID, $js.KeyboardEvent keyData, String requestId) {
+              return $c(
+                OnKeyEventEvent(
+                  engineId: engineID,
+                  keyData: KeyboardEvent.fromJS(keyData),
+                  requestId: requestId,
+                ),
+              );
+            }.toJS,
+      );
 
   /// This event is sent if this extension owns the active IME.
   EventStream<OnCandidateClickedEvent> get onCandidateClicked =>
-      $js.chrome.input.ime.onCandidateClicked.asStream(($c) => (
-            String engineID,
-            int candidateID,
-            $js.MouseButton button,
-          ) {
-            return $c(OnCandidateClickedEvent(
-              engineId: engineID,
-              candidateId: candidateID,
-              button: MouseButton.fromJS(button),
-            ));
-          }.toJS);
+      $js.chrome.input.ime.onCandidateClicked.asStream(
+        ($c) =>
+            (String engineID, int candidateID, $js.MouseButton button) {
+              return $c(
+                OnCandidateClickedEvent(
+                  engineId: engineID,
+                  candidateId: candidateID,
+                  button: MouseButton.fromJS(button),
+                ),
+              );
+            }.toJS,
+      );
 
   /// Called when the user selects a menu item
   EventStream<OnMenuItemActivatedEvent> get onMenuItemActivated =>
-      $js.chrome.input.ime.onMenuItemActivated.asStream(($c) => (
-            String engineID,
-            String name,
-          ) {
-            return $c(OnMenuItemActivatedEvent(
-              engineId: engineID,
-              name: name,
-            ));
-          }.toJS);
+      $js.chrome.input.ime.onMenuItemActivated.asStream(
+        ($c) =>
+            (String engineID, String name) {
+              return $c(
+                OnMenuItemActivatedEvent(engineId: engineID, name: name),
+              );
+            }.toJS,
+      );
 
   /// Called when the editable string around caret is changed or when the caret
   /// position is moved. The text length is limited to 100 characters for each
   /// back and forth direction.
   EventStream<OnSurroundingTextChangedEvent> get onSurroundingTextChanged =>
-      $js.chrome.input.ime.onSurroundingTextChanged.asStream(($c) => (
-            String engineID,
-            $js.OnSurroundingTextChangedSurroundingInfo surroundingInfo,
-          ) {
-            return $c(OnSurroundingTextChangedEvent(
-              engineId: engineID,
-              surroundingInfo: OnSurroundingTextChangedSurroundingInfo.fromJS(
-                  surroundingInfo),
-            ));
-          }.toJS);
+      $js.chrome.input.ime.onSurroundingTextChanged.asStream(
+        ($c) =>
+            (
+              String engineID,
+              $js.OnSurroundingTextChangedSurroundingInfo surroundingInfo,
+            ) {
+              return $c(
+                OnSurroundingTextChangedEvent(
+                  engineId: engineID,
+                  surroundingInfo:
+                      OnSurroundingTextChangedSurroundingInfo.fromJS(
+                        surroundingInfo,
+                      ),
+                ),
+              );
+            }.toJS,
+      );
 
   /// This event is sent when chrome terminates ongoing text input session.
-  EventStream<String> get onReset =>
-      $js.chrome.input.ime.onReset.asStream(($c) => (String engineId) {
-            return $c(engineId);
-          }.toJS);
+  EventStream<String> get onReset => $js.chrome.input.ime.onReset.asStream(
+    ($c) =>
+        (String engineId) {
+          return $c(engineId);
+        }.toJS,
+  );
 
   /// This event is sent when a button in an assistive window is clicked.
   EventStream<OnAssistiveWindowButtonClickedDetails>
-      get onAssistiveWindowButtonClicked =>
-          $js.chrome.input.ime.onAssistiveWindowButtonClicked.asStream(
-              ($c) => ($js.OnAssistiveWindowButtonClickedDetails details) {
-                    return $c(
-                        OnAssistiveWindowButtonClickedDetails.fromJS(details));
-                  }.toJS);
+  get onAssistiveWindowButtonClicked =>
+      $js.chrome.input.ime.onAssistiveWindowButtonClicked.asStream(
+        ($c) =>
+            ($js.OnAssistiveWindowButtonClickedDetails details) {
+              return $c(OnAssistiveWindowButtonClickedDetails.fromJS(details));
+            }.toJS,
+      );
 }
 
 enum KeyboardEventType {
@@ -484,18 +503,18 @@ class KeyboardEvent {
     /// Whether or not the CAPS_LOCK is enabled.
     bool? capsLock,
   }) : _wrapped = $js.KeyboardEvent(
-          type: type.toJS,
-          requestId: requestId,
-          extensionId: extensionId,
-          key: key,
-          code: code,
-          keyCode: keyCode,
-          altKey: altKey,
-          altgrKey: altgrKey,
-          ctrlKey: ctrlKey,
-          shiftKey: shiftKey,
-          capsLock: capsLock,
-        );
+         type: type.toJS,
+         requestId: requestId,
+         extensionId: extensionId,
+         key: key,
+         code: code,
+         keyCode: keyCode,
+         altKey: altKey,
+         altgrKey: altgrKey,
+         ctrlKey: ctrlKey,
+         shiftKey: shiftKey,
+         capsLock: capsLock,
+       );
 
   final $js.KeyboardEvent _wrapped;
 
@@ -610,14 +629,14 @@ class InputContext {
     /// typing suggestions for the user.
     required bool shouldDoLearning,
   }) : _wrapped = $js.InputContext(
-          contextID: contextId,
-          type: type.toJS,
-          autoCorrect: autoCorrect,
-          autoComplete: autoComplete,
-          autoCapitalize: autoCapitalize.toJS,
-          spellCheck: spellCheck,
-          shouldDoLearning: shouldDoLearning,
-        );
+         contextID: contextId,
+         type: type.toJS,
+         autoCorrect: autoCorrect,
+         autoComplete: autoComplete,
+         autoCapitalize: autoCapitalize.toJS,
+         spellCheck: spellCheck,
+         shouldDoLearning: shouldDoLearning,
+       );
 
   final $js.InputContext _wrapped;
 
@@ -698,13 +717,13 @@ class MenuItem {
     /// Indicates this item is enabled.
     bool? enabled,
   }) : _wrapped = $js.MenuItem(
-          id: id,
-          label: label,
-          style: style?.toJS,
-          visible: visible,
-          checked: checked,
-          enabled: enabled,
-        );
+         id: id,
+         label: label,
+         style: style?.toJS,
+         visible: visible,
+         checked: checked,
+         enabled: enabled,
+       );
 
   final $js.MenuItem _wrapped;
 
@@ -765,10 +784,10 @@ class AssistiveWindowProperties {
     /// Strings for ChromeVox to announce.
     String? announceString,
   }) : _wrapped = $js.AssistiveWindowProperties(
-          type: type.toJS,
-          visible: visible,
-          announceString: announceString,
-        );
+         type: type.toJS,
+         visible: visible,
+         announceString: announceString,
+       );
 
   final $js.AssistiveWindowProperties _wrapped;
 
@@ -806,9 +825,9 @@ class MenuParameters {
     /// in the array.
     required List<MenuItem> items,
   }) : _wrapped = $js.MenuParameters(
-          engineID: engineId,
-          items: items.toJSArray((e) => e.toJS),
-        );
+         engineID: engineId,
+         items: items.toJSArray((e) => e.toJS),
+       );
 
   final $js.MenuParameters _wrapped;
 
@@ -823,10 +842,11 @@ class MenuParameters {
 
   /// MenuItems to add or update. They will be added in the order they exist in
   /// the array.
-  List<MenuItem> get items => _wrapped.items.toDart
-      .cast<$js.MenuItem>()
-      .map((e) => MenuItem.fromJS(e))
-      .toList();
+  List<MenuItem> get items =>
+      _wrapped.items.toDart
+          .cast<$js.MenuItem>()
+          .map((e) => MenuItem.fromJS(e))
+          .toList();
 
   set items(List<MenuItem> v) {
     _wrapped.items = v.toJSArray((e) => e.toJS);
@@ -854,11 +874,11 @@ class OnSurroundingTextChangedSurroundingInfo {
     /// first character of `text`.
     required int offset,
   }) : _wrapped = $js.OnSurroundingTextChangedSurroundingInfo(
-          text: text,
-          focus: focus,
-          anchor: anchor,
-          offset: offset,
-        );
+         text: text,
+         focus: focus,
+         anchor: anchor,
+         offset: offset,
+       );
 
   final $js.OnSurroundingTextChangedSurroundingInfo _wrapped;
 
@@ -908,9 +928,9 @@ class OnAssistiveWindowButtonClickedDetails {
     /// The type of the assistive window.
     required AssistiveWindowType windowType,
   }) : _wrapped = $js.OnAssistiveWindowButtonClickedDetails(
-          buttonID: buttonId.toJS,
-          windowType: windowType.toJS,
-        );
+         buttonID: buttonId.toJS,
+         windowType: windowType.toJS,
+       );
 
   final $js.OnAssistiveWindowButtonClickedDetails _wrapped;
 
@@ -955,13 +975,13 @@ class SetCompositionParameters {
     /// List of segments and their associated types.
     List<SetCompositionParametersSegments>? segments,
   }) : _wrapped = $js.SetCompositionParameters(
-          contextID: contextId,
-          text: text,
-          selectionStart: selectionStart,
-          selectionEnd: selectionEnd,
-          cursor: cursor,
-          segments: segments?.toJSArray((e) => e.toJS),
-        );
+         contextID: contextId,
+         text: text,
+         selectionStart: selectionStart,
+         selectionEnd: selectionEnd,
+         cursor: cursor,
+         segments: segments?.toJSArray((e) => e.toJS),
+       );
 
   final $js.SetCompositionParameters _wrapped;
 
@@ -1017,11 +1037,10 @@ class SetCompositionParameters {
 class ClearCompositionParameters {
   ClearCompositionParameters.fromJS(this._wrapped);
 
-  ClearCompositionParameters(
-      {
-      /// ID of the context where the composition will be cleared
-      required int contextId})
-      : _wrapped = $js.ClearCompositionParameters(contextID: contextId);
+  ClearCompositionParameters({
+    /// ID of the context where the composition will be cleared
+    required int contextId,
+  }) : _wrapped = $js.ClearCompositionParameters(contextID: contextId);
 
   final $js.ClearCompositionParameters _wrapped;
 
@@ -1044,10 +1063,7 @@ class CommitTextParameters {
 
     /// The text to commit
     required String text,
-  }) : _wrapped = $js.CommitTextParameters(
-          contextID: contextId,
-          text: text,
-        );
+  }) : _wrapped = $js.CommitTextParameters(contextID: contextId, text: text);
 
   final $js.CommitTextParameters _wrapped;
 
@@ -1079,9 +1095,9 @@ class SendKeyEventsParameters {
     /// Data on the key event.
     required List<KeyboardEvent> keyData,
   }) : _wrapped = $js.SendKeyEventsParameters(
-          contextID: contextId,
-          keyData: keyData.toJSArray((e) => e.toJS),
-        );
+         contextID: contextId,
+         keyData: keyData.toJSArray((e) => e.toJS),
+       );
 
   final $js.SendKeyEventsParameters _wrapped;
 
@@ -1096,10 +1112,11 @@ class SendKeyEventsParameters {
   }
 
   /// Data on the key event.
-  List<KeyboardEvent> get keyData => _wrapped.keyData.toDart
-      .cast<$js.KeyboardEvent>()
-      .map((e) => KeyboardEvent.fromJS(e))
-      .toList();
+  List<KeyboardEvent> get keyData =>
+      _wrapped.keyData.toDart
+          .cast<$js.KeyboardEvent>()
+          .map((e) => KeyboardEvent.fromJS(e))
+          .toList();
 
   set keyData(List<KeyboardEvent> v) {
     _wrapped.keyData = v.toJSArray((e) => e.toJS);
@@ -1114,9 +1131,9 @@ class SetCandidateWindowPropertiesParameters {
     required String engineId,
     required SetCandidateWindowPropertiesParametersProperties properties,
   }) : _wrapped = $js.SetCandidateWindowPropertiesParameters(
-          engineID: engineId,
-          properties: properties.toJS,
-        );
+         engineID: engineId,
+         properties: properties.toJS,
+       );
 
   final $js.SetCandidateWindowPropertiesParameters _wrapped;
 
@@ -1131,7 +1148,8 @@ class SetCandidateWindowPropertiesParameters {
 
   SetCandidateWindowPropertiesParametersProperties get properties =>
       SetCandidateWindowPropertiesParametersProperties.fromJS(
-          _wrapped.properties);
+        _wrapped.properties,
+      );
 
   set properties(SetCandidateWindowPropertiesParametersProperties v) {
     _wrapped.properties = v.toJS;
@@ -1148,9 +1166,9 @@ class SetCandidatesParameters {
     /// List of candidates to show in the candidate window
     required List<SetCandidatesParametersCandidates> candidates,
   }) : _wrapped = $js.SetCandidatesParameters(
-          contextID: contextId,
-          candidates: candidates.toJSArray((e) => e.toJS),
-        );
+         contextID: contextId,
+         candidates: candidates.toJSArray((e) => e.toJS),
+       );
 
   final $js.SetCandidatesParameters _wrapped;
 
@@ -1185,9 +1203,9 @@ class SetCursorPositionParameters {
     /// ID of the candidate to select.
     required int candidateId,
   }) : _wrapped = $js.SetCursorPositionParameters(
-          contextID: contextId,
-          candidateID: candidateId,
-        );
+         contextID: contextId,
+         candidateID: candidateId,
+       );
 
   final $js.SetCursorPositionParameters _wrapped;
 
@@ -1218,9 +1236,9 @@ class SetAssistiveWindowPropertiesParameters {
     /// Properties of the assistive window.
     required AssistiveWindowProperties properties,
   }) : _wrapped = $js.SetAssistiveWindowPropertiesParameters(
-          contextID: contextId,
-          properties: properties.toJS,
-        );
+         contextID: contextId,
+         properties: properties.toJS,
+       );
 
   final $js.SetAssistiveWindowPropertiesParameters _wrapped;
 
@@ -1261,12 +1279,12 @@ class SetAssistiveWindowButtonHighlightedParameters {
     /// Whether the button should be highlighted.
     required bool highlighted,
   }) : _wrapped = $js.SetAssistiveWindowButtonHighlightedParameters(
-          contextID: contextId,
-          buttonID: buttonId.toJS,
-          windowType: windowType.toJS,
-          announceString: announceString,
-          highlighted: highlighted,
-        );
+         contextID: contextId,
+         buttonID: buttonId.toJS,
+         windowType: windowType.toJS,
+         announceString: announceString,
+         highlighted: highlighted,
+       );
 
   final $js.SetAssistiveWindowButtonHighlightedParameters _wrapped;
 
@@ -1327,11 +1345,11 @@ class DeleteSurroundingTextParameters {
     /// The number of characters to be deleted
     required int length,
   }) : _wrapped = $js.DeleteSurroundingTextParameters(
-          engineID: engineId,
-          contextID: contextId,
-          offset: offset,
-          length: length,
-        );
+         engineID: engineId,
+         contextID: contextId,
+         offset: offset,
+         length: length,
+       );
 
   final $js.DeleteSurroundingTextParameters _wrapped;
 
@@ -1380,10 +1398,10 @@ class SetCompositionParametersSegments {
     /// The type of the underline to modify this segment.
     required UnderlineStyle style,
   }) : _wrapped = $js.SetCompositionParametersSegments(
-          start: start,
-          end: end,
-          style: style.toJS,
-        );
+         start: start,
+         end: end,
+         style: style.toJS,
+       );
 
   final $js.SetCompositionParametersSegments _wrapped;
 
@@ -1443,16 +1461,16 @@ class SetCandidateWindowPropertiesParametersProperties {
     /// Where to display the candidate window.
     WindowPosition? windowPosition,
   }) : _wrapped = $js.SetCandidateWindowPropertiesParametersProperties(
-          visible: visible,
-          cursorVisible: cursorVisible,
-          vertical: vertical,
-          pageSize: pageSize,
-          auxiliaryText: auxiliaryText,
-          auxiliaryTextVisible: auxiliaryTextVisible,
-          totalCandidates: totalCandidates,
-          currentCandidateIndex: currentCandidateIndex,
-          windowPosition: windowPosition?.toJS,
-        );
+         visible: visible,
+         cursorVisible: cursorVisible,
+         vertical: vertical,
+         pageSize: pageSize,
+         auxiliaryText: auxiliaryText,
+         auxiliaryTextVisible: auxiliaryTextVisible,
+         totalCandidates: totalCandidates,
+         currentCandidateIndex: currentCandidateIndex,
+         windowPosition: windowPosition?.toJS,
+       );
 
   final $js.SetCandidateWindowPropertiesParametersProperties _wrapped;
 
@@ -1547,13 +1565,13 @@ class SetCandidatesParametersCandidates {
     /// The usage or detail description of word.
     SetCandidatesParametersCandidatesUsage? usage,
   }) : _wrapped = $js.SetCandidatesParametersCandidates(
-          candidate: candidate,
-          id: id,
-          parentId: parentId,
-          label: label,
-          annotation: annotation,
-          usage: usage?.toJS,
-        );
+         candidate: candidate,
+         id: id,
+         parentId: parentId,
+         label: label,
+         annotation: annotation,
+         usage: usage?.toJS,
+       );
 
   final $js.SetCandidatesParametersCandidates _wrapped;
 
@@ -1614,9 +1632,9 @@ class SetCandidatesParametersCandidatesUsage {
     /// The body string of detail description.
     required String body,
   }) : _wrapped = $js.SetCandidatesParametersCandidatesUsage(
-          title: title,
-          body: body,
-        );
+         title: title,
+         body: body,
+       );
 
   final $js.SetCandidatesParametersCandidatesUsage _wrapped;
 
@@ -1638,10 +1656,7 @@ class SetCandidatesParametersCandidatesUsage {
 }
 
 class OnActivateEvent {
-  OnActivateEvent({
-    required this.engineId,
-    required this.screen,
-  });
+  OnActivateEvent({required this.engineId, required this.screen});
 
   /// ID of the engine receiving the event
   final String engineId;
@@ -1686,10 +1701,7 @@ class OnCandidateClickedEvent {
 }
 
 class OnMenuItemActivatedEvent {
-  OnMenuItemActivatedEvent({
-    required this.engineId,
-    required this.name,
-  });
+  OnMenuItemActivatedEvent({required this.engineId, required this.name});
 
   /// ID of the engine receiving the event
   final String engineId;

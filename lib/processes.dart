@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/processes.dart' as $js;
 
@@ -25,18 +24,16 @@ class ChromeProcesses {
   /// |tabId|: The ID of the tab for which the renderer process ID is to be
   /// returned.
   Future<int> getProcessIdForTab(int tabId) async {
-    var $res = await promiseToFuture<int>(
-        $js.chrome.processes.getProcessIdForTab(tabId));
-    return $res;
+    var $res = await $js.chrome.processes.getProcessIdForTab(tabId).toDart;
+    return ($res).dartify() as int? ?? 0;
   }
 
   /// Terminates the specified renderer process. Equivalent to visiting
   /// about:crash, but without changing the tab's URL.
   /// |processId|: The ID of the process to be terminated.
   Future<bool> terminate(int processId) async {
-    var $res =
-        await promiseToFuture<bool>($js.chrome.processes.terminate(processId));
-    return $res;
+    var $res = await $js.chrome.processes.terminate(processId).toDart;
+    return ($res).dartify() as bool? ?? false;
   }
 
   /// Retrieves the process information for each process ID specified.
@@ -46,20 +43,17 @@ class ChromeProcesses {
   /// |includeMemory|: True if detailed memory usage is required. Note,
   /// collecting memory usage information incurs extra CPU usage and should
   /// only be queried for when needed.
-  Future<Map> getProcessInfo(
-    Object processIds,
-    bool includeMemory,
-  ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.processes.getProcessInfo(
-      switch (processIds) {
-        int() => processIds.jsify()!,
-        List<int>() => processIds.toJSArray((e) => e),
-        _ => throw UnsupportedError(
-            'Received type: ${processIds.runtimeType}. Supported types are: int, List<int>')
-      },
-      includeMemory,
-    ));
-    return $res.toDartMap();
+  Future<Map> getProcessInfo(Object processIds, bool includeMemory) async {
+    var $res =
+        await $js.chrome.processes.getProcessInfo(switch (processIds) {
+          int() => processIds.jsify()!,
+          List<int>() => processIds.toJSArray((e) => e),
+          _ =>
+            throw UnsupportedError(
+              'Received type: ${processIds.runtimeType}. Supported types are: int, List<int>',
+            ),
+        }, includeMemory).toDart;
+    return ($res).dartify() as Map? ?? {};
   }
 
   /// Fired each time the Task Manager updates its process statistics,
@@ -68,10 +62,12 @@ class ChromeProcesses {
   /// |processes|: A dictionary of updated [Process] objects for each live
   /// process in the browser, indexed by process ID.  Metrics requiring
   /// aggregation over time will be populated in each Process object.
-  EventStream<Map> get onUpdated =>
-      $js.chrome.processes.onUpdated.asStream(($c) => (JSAny processes) {
-            return $c(processes.toDartMap());
-          }.toJS);
+  EventStream<Map> get onUpdated => $js.chrome.processes.onUpdated.asStream(
+    ($c) =>
+        (JSAny processes) {
+          return $c(processes.toDartMap());
+        }.toJS,
+  );
 
   /// Fired each time the Task Manager updates its process statistics,
   /// providing the dictionary of updated Process objects, indexed by process
@@ -83,29 +79,36 @@ class ChromeProcesses {
   /// process in the browser, indexed by process ID.  Memory usage details will
   /// be included in each Process object.
   EventStream<Map> get onUpdatedWithMemory =>
-      $js.chrome.processes.onUpdatedWithMemory
-          .asStream(($c) => (JSAny processes) {
-                return $c(processes.toDartMap());
-              }.toJS);
+      $js.chrome.processes.onUpdatedWithMemory.asStream(
+        ($c) =>
+            (JSAny processes) {
+              return $c(processes.toDartMap());
+            }.toJS,
+      );
 
   /// Fired each time a process is created, providing the corrseponding Process
   /// object.
   /// |process|: Details of the process that was created. Metrics requiring
   /// aggregation over time will not be populated in the object.
-  EventStream<Process> get onCreated =>
-      $js.chrome.processes.onCreated.asStream(($c) => ($js.Process process) {
-            return $c(Process.fromJS(process));
-          }.toJS);
+  EventStream<Process> get onCreated => $js.chrome.processes.onCreated.asStream(
+    ($c) =>
+        ($js.Process process) {
+          return $c(Process.fromJS(process));
+        }.toJS,
+  );
 
   /// Fired each time a process becomes unresponsive, providing the
   /// corrseponding Process object.
   /// |process|: Details of the unresponsive process. Metrics requiring
   /// aggregation over time will not be populated in the object. Only available
   /// for renderer processes.
-  EventStream<Process> get onUnresponsive => $js.chrome.processes.onUnresponsive
-      .asStream(($c) => ($js.Process process) {
-            return $c(Process.fromJS(process));
-          }.toJS);
+  EventStream<Process> get onUnresponsive =>
+      $js.chrome.processes.onUnresponsive.asStream(
+        ($c) =>
+            ($js.Process process) {
+              return $c(Process.fromJS(process));
+            }.toJS,
+      );
 
   /// Fired each time a process is terminated, providing the type of exit.
   /// |processId|: The ID of the process that exited.
@@ -114,17 +117,18 @@ class ChromeProcesses {
   /// |exitCode|: The exit code if the process exited abnormally. Only
   /// available for renderer processes.
   EventStream<OnExitedEvent> get onExited =>
-      $js.chrome.processes.onExited.asStream(($c) => (
-            int processId,
-            int exitType,
-            int exitCode,
-          ) {
-            return $c(OnExitedEvent(
-              processId: processId,
-              exitType: exitType,
-              exitCode: exitCode,
-            ));
-          }.toJS);
+      $js.chrome.processes.onExited.asStream(
+        ($c) =>
+            (int processId, int exitType, int exitCode) {
+              return $c(
+                OnExitedEvent(
+                  processId: processId,
+                  exitType: exitType,
+                  exitCode: exitCode,
+                ),
+              );
+            }.toJS,
+      );
 }
 
 /// The types of the browser processes.
@@ -162,10 +166,7 @@ class TaskInfo {
     /// Optional tab ID, if this task represents a tab running on a renderer
     /// process.
     int? tabId,
-  }) : _wrapped = $js.TaskInfo(
-          title: title,
-          tabId: tabId,
-        );
+  }) : _wrapped = $js.TaskInfo(title: title, tabId: tabId);
 
   final $js.TaskInfo _wrapped;
 
@@ -196,10 +197,7 @@ class Cache {
 
     /// The part of the cache that is utilized, in bytes.
     required double liveSize,
-  }) : _wrapped = $js.Cache(
-          size: size,
-          liveSize: liveSize,
-        );
+  }) : _wrapped = $js.Cache(size: size, liveSize: liveSize);
 
   final $js.Cache _wrapped;
 
@@ -291,22 +289,22 @@ class Process {
     /// or onUpdatedWithMemory.
     Cache? cssCache,
   }) : _wrapped = $js.Process(
-          id: id,
-          osProcessId: osProcessId,
-          type: type.toJS,
-          profile: profile,
-          naclDebugPort: naclDebugPort,
-          tasks: tasks.toJSArray((e) => e.toJS),
-          cpu: cpu,
-          network: network,
-          privateMemory: privateMemory,
-          jsMemoryAllocated: jsMemoryAllocated,
-          jsMemoryUsed: jsMemoryUsed,
-          sqliteMemory: sqliteMemory,
-          imageCache: imageCache?.toJS,
-          scriptCache: scriptCache?.toJS,
-          cssCache: cssCache?.toJS,
-        );
+         id: id,
+         osProcessId: osProcessId,
+         type: type.toJS,
+         profile: profile,
+         naclDebugPort: naclDebugPort,
+         tasks: tasks.toJSArray((e) => e.toJS),
+         cpu: cpu,
+         network: network,
+         privateMemory: privateMemory,
+         jsMemoryAllocated: jsMemoryAllocated,
+         jsMemoryUsed: jsMemoryUsed,
+         sqliteMemory: sqliteMemory,
+         imageCache: imageCache?.toJS,
+         scriptCache: scriptCache?.toJS,
+         cssCache: cssCache?.toJS,
+       );
 
   final $js.Process _wrapped;
 
@@ -349,10 +347,11 @@ class Process {
   }
 
   /// Array of TaskInfos representing the tasks running on this process.
-  List<TaskInfo> get tasks => _wrapped.tasks.toDart
-      .cast<$js.TaskInfo>()
-      .map((e) => TaskInfo.fromJS(e))
-      .toList();
+  List<TaskInfo> get tasks =>
+      _wrapped.tasks.toDart
+          .cast<$js.TaskInfo>()
+          .map((e) => TaskInfo.fromJS(e))
+          .toList();
 
   set tasks(List<TaskInfo> v) {
     _wrapped.tasks = v.toJSArray((e) => e.toJS);

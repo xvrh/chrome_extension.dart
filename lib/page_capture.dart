@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/page_capture.dart' as $js;
@@ -24,20 +23,18 @@ class ChromePageCapture {
   /// Saves the content of the tab with given id as MHTML.
   /// [returns] Called when the MHTML has been generated.
   Future<ByteBuffer?> saveAsMHTML(SaveAsMhtmlDetails details) async {
-    var $res = await promiseToFuture<JSArrayBuffer?>(
-        $js.chrome.pageCapture.saveAsMHTML(details.toJS));
-    return $res?.toDart;
+    var $res = await $js.chrome.pageCapture.saveAsMHTML(details.toJS).toDart;
+    return $res?.dartify() as ByteBuffer?;
   }
 }
 
 class SaveAsMhtmlDetails {
   SaveAsMhtmlDetails.fromJS(this._wrapped);
 
-  SaveAsMhtmlDetails(
-      {
-      /// The id of the tab to save as MHTML.
-      required int tabId})
-      : _wrapped = $js.SaveAsMhtmlDetails(tabId: tabId);
+  SaveAsMhtmlDetails({
+    /// The id of the tab to save as MHTML.
+    required int tabId,
+  }) : _wrapped = $js.SaveAsMhtmlDetails(tabId: tabId);
 
   final $js.SaveAsMhtmlDetails _wrapped;
 

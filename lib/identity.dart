@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/identity.dart' as $js;
 
@@ -25,11 +24,10 @@ class ChromeIdentity {
   ///
   /// `getAccounts` is only supported on dev channel.
   Future<List<AccountInfo>> getAccounts() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.identity.getAccounts());
-    return $res.toDart
-        .cast<$js.AccountInfo>()
-        .map((e) => AccountInfo.fromJS(e))
+    var $res = await $js.chrome.identity.getAccounts().toDart;
+    final dartified = $res.dartify() as List? ?? [];
+    return dartified
+        .map<AccountInfo>((e) => AccountInfo.fromJS(e as $js.AccountInfo))
         .toList();
   }
 
@@ -60,9 +58,8 @@ class ChromeIdentity {
   /// available, this parameter contains the list of granted scopes
   /// corresponding with the returned token.
   Future<GetAuthTokenResult> getAuthToken(TokenDetails? details) async {
-    var $res = await promiseToFuture<$js.GetAuthTokenResult>(
-        $js.chrome.identity.getAuthToken(details?.toJS));
-    return GetAuthTokenResult.fromJS($res);
+    var $res = await $js.chrome.identity.getAuthToken(details?.toJS).toDart;
+    return GetAuthTokenResult.fromJS($res! as $js.GetAuthTokenResult);
   }
 
   /// Retrieves email address and obfuscated gaia id of the user
@@ -80,9 +77,9 @@ class ChromeIdentity {
   /// Chrome account, of an empty `ProfileUserInfo` if the account
   /// with given `details` doesn't exist.
   Future<ProfileUserInfo> getProfileUserInfo(ProfileDetails? details) async {
-    var $res = await promiseToFuture<$js.ProfileUserInfo>(
-        $js.chrome.identity.getProfileUserInfo(details?.toJS));
-    return ProfileUserInfo.fromJS($res);
+    var $res =
+        await $js.chrome.identity.getProfileUserInfo(details?.toJS).toDart;
+    return ProfileUserInfo.fromJS($res! as $js.ProfileUserInfo);
   }
 
   /// Removes an OAuth2 access token from the Identity API's token cache.
@@ -95,8 +92,7 @@ class ChromeIdentity {
   /// |details| : Token information.
   /// |callback| : Called when the token has been removed from the cache.
   Future<void> removeCachedAuthToken(InvalidTokenDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.identity.removeCachedAuthToken(details.toJS));
+    await $js.chrome.identity.removeCachedAuthToken(details.toJS).toDart;
   }
 
   /// Resets the state of the Identity API:
@@ -108,7 +104,7 @@ class ChromeIdentity {
   ///
   /// |callback| : Called when the state has been cleared.
   Future<void> clearAllCachedAuthTokens() async {
-    await promiseToFuture<void>($js.chrome.identity.clearAllCachedAuthTokens());
+    await $js.chrome.identity.clearAllCachedAuthTokens().toDart;
   }
 
   /// Starts an auth flow at the specified URL.
@@ -130,9 +126,8 @@ class ChromeIdentity {
   /// |details| : WebAuth flow options.
   /// |callback| : Called with the URL redirected back to your application.
   Future<String?> launchWebAuthFlow(WebAuthFlowDetails details) async {
-    var $res = await promiseToFuture<String?>(
-        $js.chrome.identity.launchWebAuthFlow(details.toJS));
-    return $res;
+    var $res = await $js.chrome.identity.launchWebAuthFlow(details.toJS).toDart;
+    return $res.dartify() as String?;
   }
 
   /// Generates a redirect URL to be used in |launchWebAuthFlow|.
@@ -147,15 +142,17 @@ class ChromeIdentity {
 
   /// Fired when signin state changes for an account on the user's profile.
   EventStream<OnSignInChangedEvent> get onSignInChanged =>
-      $js.chrome.identity.onSignInChanged.asStream(($c) => (
-            $js.AccountInfo account,
-            bool signedIn,
-          ) {
-            return $c(OnSignInChangedEvent(
-              account: AccountInfo.fromJS(account),
-              signedIn: signedIn,
-            ));
-          }.toJS);
+      $js.chrome.identity.onSignInChanged.asStream(
+        ($c) =>
+            ($js.AccountInfo account, bool signedIn) {
+              return $c(
+                OnSignInChangedEvent(
+                  account: AccountInfo.fromJS(account),
+                  signedIn: signedIn,
+                ),
+              );
+            }.toJS,
+      );
 }
 
 enum AccountStatus {
@@ -179,12 +176,11 @@ enum AccountStatus {
 class AccountInfo {
   AccountInfo.fromJS(this._wrapped);
 
-  AccountInfo(
-      {
-      /// A unique identifier for the account. This ID will not change
-      /// for the lifetime of the account.
-      required String id})
-      : _wrapped = $js.AccountInfo(id: id);
+  AccountInfo({
+    /// A unique identifier for the account. This ID will not change
+    /// for the lifetime of the account.
+    required String id,
+  }) : _wrapped = $js.AccountInfo(id: id);
 
   final $js.AccountInfo _wrapped;
 
@@ -202,13 +198,12 @@ class AccountInfo {
 class ProfileDetails {
   ProfileDetails.fromJS(this._wrapped);
 
-  ProfileDetails(
-      {
-      /// A status of the primary account signed into a profile whose
-      /// `ProfileUserInfo` should be returned. Defaults to
-      /// `SYNC` account status.
-      AccountStatus? accountStatus})
-      : _wrapped = $js.ProfileDetails(accountStatus: accountStatus?.toJS);
+  ProfileDetails({
+    /// A status of the primary account signed into a profile whose
+    /// `ProfileUserInfo` should be returned. Defaults to
+    /// `SYNC` account status.
+    AccountStatus? accountStatus,
+  }) : _wrapped = $js.ProfileDetails(accountStatus: accountStatus?.toJS);
 
   final $js.ProfileDetails _wrapped;
 
@@ -240,10 +235,7 @@ class ProfileUserInfo {
     /// signed in or (in M41+) the `identity.email`
     /// manifest permission is not specified.
     required String id,
-  }) : _wrapped = $js.ProfileUserInfo(
-          email: email,
-          id: id,
-        );
+  }) : _wrapped = $js.ProfileUserInfo(email: email, id: id);
 
   final $js.ProfileUserInfo _wrapped;
 
@@ -299,11 +291,11 @@ class TokenDetails {
     /// requested permissions are granted or denied individually.
     bool? enableGranularPermissions,
   }) : _wrapped = $js.TokenDetails(
-          interactive: interactive,
-          account: account?.toJS,
-          scopes: scopes?.toJSArray((e) => e),
-          enableGranularPermissions: enableGranularPermissions,
-        );
+         interactive: interactive,
+         account: account?.toJS,
+         scopes: scopes?.toJSArray((e) => e),
+         enableGranularPermissions: enableGranularPermissions,
+       );
 
   final $js.TokenDetails _wrapped;
 
@@ -354,11 +346,10 @@ class TokenDetails {
 class InvalidTokenDetails {
   InvalidTokenDetails.fromJS(this._wrapped);
 
-  InvalidTokenDetails(
-      {
-      /// The specific token that should be removed from the cache.
-      required String token})
-      : _wrapped = $js.InvalidTokenDetails(token: token);
+  InvalidTokenDetails({
+    /// The specific token that should be removed from the cache.
+    required String token,
+  }) : _wrapped = $js.InvalidTokenDetails(token: token);
 
   final $js.InvalidTokenDetails _wrapped;
 
@@ -416,11 +407,11 @@ class WebAuthFlowDetails {
     /// `false`.
     int? timeoutMsForNonInteractive,
   }) : _wrapped = $js.WebAuthFlowDetails(
-          url: url,
-          interactive: interactive,
-          abortOnLoadForNonInteractive: abortOnLoadForNonInteractive,
-          timeoutMsForNonInteractive: timeoutMsForNonInteractive,
-        );
+         url: url,
+         interactive: interactive,
+         abortOnLoadForNonInteractive: abortOnLoadForNonInteractive,
+         timeoutMsForNonInteractive: timeoutMsForNonInteractive,
+       );
 
   final $js.WebAuthFlowDetails _wrapped;
 
@@ -493,9 +484,9 @@ class GetAuthTokenResult {
     /// A list of OAuth2 scopes granted to the extension.
     List<String>? grantedScopes,
   }) : _wrapped = $js.GetAuthTokenResult(
-          token: token,
-          grantedScopes: grantedScopes?.toJSArray((e) => e),
-        );
+         token: token,
+         grantedScopes: grantedScopes?.toJSArray((e) => e),
+       );
 
   final $js.GetAuthTokenResult _wrapped;
 
@@ -518,10 +509,7 @@ class GetAuthTokenResult {
 }
 
 class OnSignInChangedEvent {
-  OnSignInChangedEvent({
-    required this.account,
-    required this.signedIn,
-  });
+  OnSignInChangedEvent({required this.account, required this.signedIn});
 
   final AccountInfo account;
 

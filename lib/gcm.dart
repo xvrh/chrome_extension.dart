@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/gcm.dart' as $js;
 
@@ -31,16 +30,16 @@ class ChromeGcm {
   /// [returns] Function called when registration completes. It should check
   /// [runtime.lastError] for error when `registrationId` is empty.
   Future<String> register(List<String> senderIds) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.gcm.register(senderIds.toJSArray((e) => e)));
-    return $res;
+    var $res =
+        await $js.chrome.gcm.register(senderIds.toJSArray((e) => e)).toDart;
+    return $res.dartify() as String? ?? '';
   }
 
   /// Unregisters the application from FCM.
   /// [returns] A function called after the unregistration completes.
   /// Unregistration was successful if [runtime.lastError] is not set.
   Future<void> unregister() async {
-    await promiseToFuture<void>($js.chrome.gcm.unregister());
+    await $js.chrome.gcm.unregister().toDart;
   }
 
   /// Sends a message according to its contents.
@@ -49,8 +48,8 @@ class ChromeGcm {
   /// sending. [runtime.lastError] should be checked, to ensure a message was
   /// sent without problems.
   Future<String> send(SendMessage message) async {
-    var $res = await promiseToFuture<String>($js.chrome.gcm.send(message.toJS));
-    return $res;
+    var $res = await $js.chrome.gcm.send(message.toJS).toDart;
+    return $res.dartify() as String? ?? '';
   }
 
   /// The maximum size (in bytes) of all key/value pairs in a message.
@@ -58,24 +57,33 @@ class ChromeGcm {
 
   /// Fired when a message is received through FCM.
   EventStream<OnMessageMessage> get onMessage =>
-      $js.chrome.gcm.onMessage.asStream(($c) => ($js.OnMessageMessage message) {
-            return $c(OnMessageMessage.fromJS(message));
-          }.toJS);
+      $js.chrome.gcm.onMessage.asStream(
+        ($c) =>
+            ($js.OnMessageMessage message) {
+              return $c(OnMessageMessage.fromJS(message));
+            }.toJS,
+      );
 
   /// Fired when a FCM server had to delete messages sent by an app server to
   /// the application. See [Lifetime of a
   /// message](https://firebase.google.com/docs/cloud-messaging/concept-options#lifetime)
   /// for details on handling this event.
   EventStream<void> get onMessagesDeleted =>
-      $js.chrome.gcm.onMessagesDeleted.asStream(($c) => () {
-            return $c(null);
-          }.toJS);
+      $js.chrome.gcm.onMessagesDeleted.asStream(
+        ($c) =>
+            () {
+              return $c(null);
+            }.toJS,
+      );
 
   /// Fired when it was not possible to send a message to the FCM server.
   EventStream<OnSendErrorError> get onSendError =>
-      $js.chrome.gcm.onSendError.asStream(($c) => ($js.OnSendErrorError error) {
-            return $c(OnSendErrorError.fromJS(error));
-          }.toJS);
+      $js.chrome.gcm.onSendError.asStream(
+        ($c) =>
+            ($js.OnSendErrorError error) {
+              return $c(OnSendErrorError.fromJS(error));
+            }.toJS,
+      );
 }
 
 class OnMessageMessage {
@@ -93,10 +101,10 @@ class OnMessageMessage {
     /// and collapsible messages</a> for details.
     String? collapseKey,
   }) : _wrapped = $js.OnMessageMessage(
-          data: data.jsify()!,
-          from: from,
-          collapseKey: collapseKey,
-        );
+         data: data.jsify()!,
+         from: from,
+         collapseKey: collapseKey,
+       );
 
   final $js.OnMessageMessage _wrapped;
 
@@ -140,10 +148,10 @@ class OnSendErrorError {
     /// Additional details related to the error, when available.
     required Map details,
   }) : _wrapped = $js.OnSendErrorError(
-          errorMessage: errorMessage,
-          messageId: messageId,
-          details: details.jsify()!,
-        );
+         errorMessage: errorMessage,
+         messageId: messageId,
+         details: details.jsify()!,
+       );
 
   final $js.OnSendErrorError _wrapped;
 
@@ -200,11 +208,11 @@ class SendMessage {
     /// [gcm.MAX_MESSAGE_SIZE].
     required Map data,
   }) : _wrapped = $js.SendMessage(
-          destinationId: destinationId,
-          messageId: messageId,
-          timeToLive: timeToLive,
-          data: data.jsify()!,
-        );
+         destinationId: destinationId,
+         messageId: messageId,
+         timeToLive: timeToLive,
+         data: data.jsify()!,
+       );
 
   final $js.SendMessage _wrapped;
 

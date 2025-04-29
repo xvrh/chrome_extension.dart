@@ -1,3 +1,7 @@
+## 0.5.0
+
+- Fix the package to work with Dart 3.7 & Flutter 3.29
+
 ## 0.4.0
 
 - Fix the package to work with Dart 3.5 & Flutter 3.24

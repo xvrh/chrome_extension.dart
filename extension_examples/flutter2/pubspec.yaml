@@ -14,7 +14,7 @@ dependencies:
   qr_flutter: ^4.0.0
   chrome_extension: 
     path: ../..
-  web: ^0.5.1
+  web: ^1.1.1
 
 dev_dependencies:
   flutter_test:

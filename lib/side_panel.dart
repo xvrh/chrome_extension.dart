@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/side_panel.dart' as $js;
 
@@ -25,16 +24,15 @@ class ChromeSidePanel {
   /// |options|: The configuration options to apply to the panel.
   /// |callback|: Invoked when the options have been set.
   Future<void> setOptions(PanelOptions options) async {
-    await promiseToFuture<void>($js.chrome.sidePanel.setOptions(options.toJS));
+    await $js.chrome.sidePanel.setOptions(options.toJS).toDart;
   }
 
   /// Returns the active panel configuration.
   /// |options|: Specifies the context to return the configuration for.
   /// |callback|: Called with the active panel configuration.
   Future<PanelOptions> getOptions(GetPanelOptions options) async {
-    var $res = await promiseToFuture<$js.PanelOptions>(
-        $js.chrome.sidePanel.getOptions(options.toJS));
-    return PanelOptions.fromJS($res);
+    var $res = await $js.chrome.sidePanel.getOptions(options.toJS).toDart;
+    return PanelOptions.fromJS($res! as $js.PanelOptions);
   }
 
   /// Configures the extension's side panel behavior. This is an upsert
@@ -42,16 +40,14 @@ class ChromeSidePanel {
   /// |behavior|: The new behavior to be set.
   /// |callback|: Called when the new behavior has been set.
   Future<void> setPanelBehavior(PanelBehavior behavior) async {
-    await promiseToFuture<void>(
-        $js.chrome.sidePanel.setPanelBehavior(behavior.toJS));
+    await $js.chrome.sidePanel.setPanelBehavior(behavior.toJS).toDart;
   }
 
   /// Returns the extension's current side panel behavior.
   /// |callback|: Called with the extension's side panel behavior.
   Future<PanelBehavior> getPanelBehavior() async {
-    var $res = await promiseToFuture<$js.PanelBehavior>(
-        $js.chrome.sidePanel.getPanelBehavior());
-    return PanelBehavior.fromJS($res);
+    var $res = await $js.chrome.sidePanel.getPanelBehavior().toDart;
+    return PanelBehavior.fromJS($res! as $js.PanelBehavior);
   }
 
   /// Opens the side panel for the extension.
@@ -59,18 +55,17 @@ class ChromeSidePanel {
   /// |options|: Specifies the context in which to open the side panel.
   /// |callback|: Called when the side panel has been opened.
   Future<void> open(OpenOptions options) async {
-    await promiseToFuture<void>($js.chrome.sidePanel.open(options.toJS));
+    await $js.chrome.sidePanel.open(options.toJS).toDart;
   }
 }
 
 class SidePanel {
   SidePanel.fromJS(this._wrapped);
 
-  SidePanel(
-      {
-      /// Developer specified path for side panel display.
-      required String defaultPath})
-      : _wrapped = $js.SidePanel(default_path: defaultPath);
+  SidePanel({
+    /// Developer specified path for side panel display.
+    required String defaultPath,
+  }) : _wrapped = $js.SidePanel(default_path: defaultPath);
 
   final $js.SidePanel _wrapped;
 
@@ -88,7 +83,7 @@ class ManifestKeys {
   ManifestKeys.fromJS(this._wrapped);
 
   ManifestKeys({required SidePanel sidePanel})
-      : _wrapped = $js.ManifestKeys(side_panel: sidePanel.toJS);
+    : _wrapped = $js.ManifestKeys(side_panel: sidePanel.toJS);
 
   final $js.ManifestKeys _wrapped;
 
@@ -120,11 +115,7 @@ class PanelOptions {
     /// Whether the side panel should be enabled. This is optional. The default
     /// value is true.
     bool? enabled,
-  }) : _wrapped = $js.PanelOptions(
-          tabId: tabId,
-          path: path,
-          enabled: enabled,
-        );
+  }) : _wrapped = $js.PanelOptions(tabId: tabId, path: path, enabled: enabled);
 
   final $js.PanelOptions _wrapped;
 
@@ -161,14 +152,14 @@ class PanelOptions {
 class PanelBehavior {
   PanelBehavior.fromJS(this._wrapped);
 
-  PanelBehavior(
-      {
-      /// Whether clicking the extension's icon will toggle showing the
-      /// extension's
-      /// entry in the side panel. Defaults to false.
-      bool? openPanelOnActionClick})
-      : _wrapped =
-            $js.PanelBehavior(openPanelOnActionClick: openPanelOnActionClick);
+  PanelBehavior({
+    /// Whether clicking the extension's icon will toggle showing the
+    /// extension's
+    /// entry in the side panel. Defaults to false.
+    bool? openPanelOnActionClick,
+  }) : _wrapped = $js.PanelBehavior(
+         openPanelOnActionClick: openPanelOnActionClick,
+       );
 
   final $js.PanelBehavior _wrapped;
 
@@ -186,13 +177,12 @@ class PanelBehavior {
 class GetPanelOptions {
   GetPanelOptions.fromJS(this._wrapped);
 
-  GetPanelOptions(
-      {
-      /// If specified, the side panel options for the given tab will be returned.
-      /// Otherwise, returns the default side panel options (used for any tab that
-      /// doesn't have specific settings).
-      int? tabId})
-      : _wrapped = $js.GetPanelOptions(tabId: tabId);
+  GetPanelOptions({
+    /// If specified, the side panel options for the given tab will be returned.
+    /// Otherwise, returns the default side panel options (used for any tab that
+    /// doesn't have specific settings).
+    int? tabId,
+  }) : _wrapped = $js.GetPanelOptions(tabId: tabId);
 
   final $js.GetPanelOptions _wrapped;
 
@@ -227,10 +217,7 @@ class OpenOptions {
     /// (global or tab-specific) in the corresponding tab. At least one of this
     /// or `windowId` must be provided.
     int? tabId,
-  }) : _wrapped = $js.OpenOptions(
-          windowId: windowId,
-          tabId: tabId,
-        );
+  }) : _wrapped = $js.OpenOptions(windowId: windowId, tabId: tabId);
 
   final $js.OpenOptions _wrapped;
 
