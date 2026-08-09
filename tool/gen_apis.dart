@@ -50,6 +50,9 @@ ChromeApi _createApi(Context context, String apiName) {
     if (p.basename(idlFile.path) == 'tabs.json') {
       _fixTabsModel(jsonModel);
     }
+    if (p.basename(idlFile.path) == 'extension.json') {
+      _fixExtensionModel(jsonModel);
+    }
     model = JsonModelConverter(context, jsonModel).convert();
   } else {
     model = idl.IdlModelConverter.fromString(context, content).convert();
@@ -106,4 +109,10 @@ void _fixTabsModel(json.JsonNamespace model) {
     var function = model.functions.firstWhere((f) => f.name == name);
     function.returnsAsync!.parameters!.single.optional = true;
   }
+}
+
+// Same fix as _fixRuntimeModel for the deprecated extension.sendRequest.
+void _fixExtensionModel(json.JsonNamespace model) {
+  var function = model.functions.firstWhere((f) => f.name == 'sendRequest');
+  function.returnsAsync!.parameters!.single.optional = true;
 }
