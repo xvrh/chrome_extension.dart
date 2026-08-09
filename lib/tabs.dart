@@ -61,15 +61,15 @@ class ChromeTabs {
   /// [extension.onRequest] event is fired in each content script running in the
   /// specified tab for the current extension.
   @Deprecated(r'Please use $(ref:runtime.sendMessage).')
-  Future<Object> sendRequest(
+  Future<Object?> sendRequest(
     int tabId,
     Object request,
   ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.tabs.sendRequest(
+    var $res = await promiseToFuture<JSAny?>($js.chrome.tabs.sendRequest(
       tabId,
       request.jsify()!,
     ));
-    return $res.dartify()!;
+    return $res?.dartify();
   }
 
   /// Sends a single message to the content script(s) in the specified tab, with
@@ -78,17 +78,17 @@ class ChromeTabs {
   /// specified tab for the current extension.
   /// [message] The message to send. This message should be a JSON-ifiable
   /// object.
-  Future<Object> sendMessage(
+  Future<Object?> sendMessage(
     int tabId,
     Object message,
     SendMessageOptions? options,
   ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.tabs.sendMessage(
+    var $res = await promiseToFuture<JSAny?>($js.chrome.tabs.sendMessage(
       tabId,
       message.jsify()!,
       options?.toJS,
     ));
-    return $res.dartify()!;
+    return $res?.dartify();
   }
 
   /// Gets the tab that is selected in the specified window.
