@@ -47,6 +47,12 @@ ChromeApi _createApi(Context context, String apiName) {
     if (p.basename(idlFile.path) == 'runtime.json') {
       _fixRuntimeModel(jsonModel);
     }
+    if (p.basename(idlFile.path) == 'tabs.json') {
+      _fixTabsModel(jsonModel);
+    }
+    if (p.basename(idlFile.path) == 'extension.json') {
+      _fixExtensionModel(jsonModel);
+    }
     model = JsonModelConverter(context, jsonModel).convert();
   } else {
     model = idl.IdlModelConverter.fromString(context, content).convert();
@@ -93,5 +99,20 @@ File _locateDefinitionFile(String apiName) {
 
 void _fixRuntimeModel(json.JsonNamespace model) {
   var function = model.functions.firstWhere((f) => f.name == 'sendMessage');
+  function.returnsAsync!.parameters!.single.optional = true;
+}
+
+// Same fix as _fixRuntimeModel: the promise resolves with undefined when the
+// receiving end doesn't call sendResponse (https://github.com/xvrh/chrome_extension.dart/issues/43).
+void _fixTabsModel(json.JsonNamespace model) {
+  for (var name in ['sendMessage', 'sendRequest']) {
+    var function = model.functions.firstWhere((f) => f.name == name);
+    function.returnsAsync!.parameters!.single.optional = true;
+  }
+}
+
+// Same fix as _fixRuntimeModel for the deprecated extension.sendRequest.
+void _fixExtensionModel(json.JsonNamespace model) {
+  var function = model.functions.firstWhere((f) => f.name == 'sendRequest');
   function.returnsAsync!.parameters!.single.optional = true;
 }

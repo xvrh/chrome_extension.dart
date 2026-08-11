@@ -32,15 +32,15 @@ class ChromeExtension {
   /// [extensionId] The extension ID of the extension you want to connect to.
   /// If omitted, default is your own extension.
   @Deprecated(r'Please use $(ref:runtime.sendMessage).')
-  Future<Object> sendRequest(
+  Future<Object?> sendRequest(
     String? extensionId,
     Object request,
   ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.extension.sendRequest(
+    var $res = await promiseToFuture<JSAny?>($js.chrome.extension.sendRequest(
       extensionId,
       request.jsify()!,
     ));
-    return $res.dartify()!;
+    return $res?.dartify();
   }
 
   /// Converts a relative path within an extension install directory to a
