@@ -28,7 +28,7 @@ extension type JSIdentity._(JSObject _) {
   /// present on the profile.
   ///
   /// `getAccounts` is only supported on dev channel.
-  external JSPromise getAccounts();
+  external JSPromise<JSArray> getAccounts();
 
   /// Gets an OAuth2 access token using the client ID and scopes
   /// specified in the <a
@@ -56,7 +56,7 @@ extension type JSIdentity._(JSObject _) {
   /// `grantedScopes` parameter is populated since Chrome 87. When
   /// available, this parameter contains the list of granted scopes
   /// corresponding with the returned token.
-  external JSPromise getAuthToken(TokenDetails? details);
+  external JSPromise<GetAuthTokenResult> getAuthToken(TokenDetails? details);
 
   /// Retrieves email address and obfuscated gaia id of the user
   /// signed into a profile.
@@ -72,7 +72,8 @@ extension type JSIdentity._(JSObject _) {
   /// |callback|: Called with the `ProfileUserInfo` of the primary
   /// Chrome account, of an empty `ProfileUserInfo` if the account
   /// with given `details` doesn't exist.
-  external JSPromise getProfileUserInfo(ProfileDetails? details);
+  external JSPromise<ProfileUserInfo> getProfileUserInfo(
+      ProfileDetails? details);
 
   /// Removes an OAuth2 access token from the Identity API's token cache.
   ///
@@ -113,7 +114,7 @@ extension type JSIdentity._(JSObject _) {
   ///
   /// |details| : WebAuth flow options.
   /// |callback| : Called with the URL redirected back to your application.
-  external JSPromise launchWebAuthFlow(WebAuthFlowDetails details);
+  external JSPromise<JSString?> launchWebAuthFlow(WebAuthFlowDetails details);
 
   /// Generates a redirect URL to be used in |launchWebAuthFlow|.
   ///

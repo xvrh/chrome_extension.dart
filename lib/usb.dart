@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/usb.dart' as $js;
@@ -32,8 +31,7 @@ class ChromeUsb {
   /// Enumerates connected USB devices.
   /// |options|: The properties to search for on target devices.
   Future<List<Device>> getDevices(EnumerateDevicesOptions options) async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.usb.getDevices(options.toJS));
+    var $res = await $js.chrome.usb.getDevices(options.toJS).toDart;
     return $res.toDart.cast<$js.Device>().map((e) => Device.fromJS(e)).toList();
   }
 
@@ -46,16 +44,14 @@ class ChromeUsb {
   /// |callback|: Invoked with a list of chosen [Device]s.
   Future<List<Device>> getUserSelectedDevices(
       DevicePromptOptions options) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.usb.getUserSelectedDevices(options.toJS));
+    var $res = await $js.chrome.usb.getUserSelectedDevices(options.toJS).toDart;
     return $res.toDart.cast<$js.Device>().map((e) => Device.fromJS(e)).toList();
   }
 
   /// Returns the full set of device configuration descriptors.
   /// |device|: The [Device] to fetch descriptors from.
   Future<List<ConfigDescriptor>> getConfigurations(Device device) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.usb.getConfigurations(device.toJS));
+    var $res = await $js.chrome.usb.getConfigurations(device.toJS).toDart;
     return $res.toDart
         .cast<$js.ConfigDescriptor>()
         .map((e) => ConfigDescriptor.fromJS(e))
@@ -73,18 +69,19 @@ class ChromeUsb {
     Device device,
     int interfaceId,
   ) async {
-    var $res = await promiseToFuture<bool>($js.chrome.usb.requestAccess(
-      device.toJS,
-      interfaceId,
-    ));
-    return $res;
+    var $res = await $js.chrome.usb
+        .requestAccess(
+          device.toJS,
+          interfaceId,
+        )
+        .toDart;
+    return $res.toDart;
   }
 
   /// Opens a USB device returned by [getDevices].
   /// |device|: The [Device] to open.
   Future<ConnectionHandle> openDevice(Device device) async {
-    var $res = await promiseToFuture<$js.ConnectionHandle>(
-        $js.chrome.usb.openDevice(device.toJS));
+    var $res = await $js.chrome.usb.openDevice(device.toJS).toDart;
     return ConnectionHandle.fromJS($res);
   }
 
@@ -100,8 +97,7 @@ class ChromeUsb {
   /// |options|: The properties to search for on target devices.
   Future<List<ConnectionHandle>> findDevices(
       EnumerateDevicesAndRequestAccessOptions options) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.usb.findDevices(options.toJS));
+    var $res = await $js.chrome.usb.findDevices(options.toJS).toDart;
     return $res.toDart
         .cast<$js.ConnectionHandle>()
         .map((e) => ConnectionHandle.fromJS(e))
@@ -112,7 +108,7 @@ class ChromeUsb {
   /// has been closed is a safe operation but causes no action to be taken.
   /// |handle|: The [ConnectionHandle] to close.
   Future<void> closeDevice(ConnectionHandle handle) async {
-    await promiseToFuture<void>($js.chrome.usb.closeDevice(handle.toJS));
+    await $js.chrome.usb.closeDevice(handle.toJS).toDart;
   }
 
   /// Select a device configuration.
@@ -126,18 +122,19 @@ class ChromeUsb {
     ConnectionHandle handle,
     int configurationValue,
   ) async {
-    await promiseToFuture<void>($js.chrome.usb.setConfiguration(
-      handle.toJS,
-      configurationValue,
-    ));
+    await $js.chrome.usb
+        .setConfiguration(
+          handle.toJS,
+          configurationValue,
+        )
+        .toDart;
   }
 
   /// Gets the configuration descriptor for the currently selected
   /// configuration.
   /// |handle|: An open connection to the device.
   Future<ConfigDescriptor> getConfiguration(ConnectionHandle handle) async {
-    var $res = await promiseToFuture<$js.ConfigDescriptor>(
-        $js.chrome.usb.getConfiguration(handle.toJS));
+    var $res = await $js.chrome.usb.getConfiguration(handle.toJS).toDart;
     return ConfigDescriptor.fromJS($res);
   }
 
@@ -145,8 +142,7 @@ class ChromeUsb {
   /// |handle|: An open connection to the device.
   Future<List<InterfaceDescriptor>> listInterfaces(
       ConnectionHandle handle) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.usb.listInterfaces(handle.toJS));
+    var $res = await $js.chrome.usb.listInterfaces(handle.toJS).toDart;
     return $res.toDart
         .cast<$js.InterfaceDescriptor>()
         .map((e) => InterfaceDescriptor.fromJS(e))
@@ -168,10 +164,12 @@ class ChromeUsb {
     ConnectionHandle handle,
     int interfaceNumber,
   ) async {
-    await promiseToFuture<void>($js.chrome.usb.claimInterface(
-      handle.toJS,
-      interfaceNumber,
-    ));
+    await $js.chrome.usb
+        .claimInterface(
+          handle.toJS,
+          interfaceNumber,
+        )
+        .toDart;
   }
 
   /// Releases a claimed interface.
@@ -181,10 +179,12 @@ class ChromeUsb {
     ConnectionHandle handle,
     int interfaceNumber,
   ) async {
-    await promiseToFuture<void>($js.chrome.usb.releaseInterface(
-      handle.toJS,
-      interfaceNumber,
-    ));
+    await $js.chrome.usb
+        .releaseInterface(
+          handle.toJS,
+          interfaceNumber,
+        )
+        .toDart;
   }
 
   /// Selects an alternate setting on a previously claimed interface.
@@ -197,11 +197,13 @@ class ChromeUsb {
     int interfaceNumber,
     int alternateSetting,
   ) async {
-    await promiseToFuture<void>($js.chrome.usb.setInterfaceAlternateSetting(
-      handle.toJS,
-      interfaceNumber,
-      alternateSetting,
-    ));
+    await $js.chrome.usb
+        .setInterfaceAlternateSetting(
+          handle.toJS,
+          interfaceNumber,
+          alternateSetting,
+        )
+        .toDart;
   }
 
   /// Performs a control transfer on the specified device.
@@ -215,11 +217,12 @@ class ChromeUsb {
     ConnectionHandle handle,
     ControlTransferInfo transferInfo,
   ) async {
-    var $res = await promiseToFuture<$js.TransferResultInfo>(
-        $js.chrome.usb.controlTransfer(
-      handle.toJS,
-      transferInfo.toJS,
-    ));
+    var $res = await $js.chrome.usb
+        .controlTransfer(
+          handle.toJS,
+          transferInfo.toJS,
+        )
+        .toDart;
     return TransferResultInfo.fromJS($res);
   }
 
@@ -230,11 +233,12 @@ class ChromeUsb {
     ConnectionHandle handle,
     GenericTransferInfo transferInfo,
   ) async {
-    var $res = await promiseToFuture<$js.TransferResultInfo>(
-        $js.chrome.usb.bulkTransfer(
-      handle.toJS,
-      transferInfo.toJS,
-    ));
+    var $res = await $js.chrome.usb
+        .bulkTransfer(
+          handle.toJS,
+          transferInfo.toJS,
+        )
+        .toDart;
     return TransferResultInfo.fromJS($res);
   }
 
@@ -245,11 +249,12 @@ class ChromeUsb {
     ConnectionHandle handle,
     GenericTransferInfo transferInfo,
   ) async {
-    var $res = await promiseToFuture<$js.TransferResultInfo>(
-        $js.chrome.usb.interruptTransfer(
-      handle.toJS,
-      transferInfo.toJS,
-    ));
+    var $res = await $js.chrome.usb
+        .interruptTransfer(
+          handle.toJS,
+          transferInfo.toJS,
+        )
+        .toDart;
     return TransferResultInfo.fromJS($res);
   }
 
@@ -259,11 +264,12 @@ class ChromeUsb {
     ConnectionHandle handle,
     IsochronousTransferInfo transferInfo,
   ) async {
-    var $res = await promiseToFuture<$js.TransferResultInfo>(
-        $js.chrome.usb.isochronousTransfer(
-      handle.toJS,
-      transferInfo.toJS,
-    ));
+    var $res = await $js.chrome.usb
+        .isochronousTransfer(
+          handle.toJS,
+          transferInfo.toJS,
+        )
+        .toDart;
     return TransferResultInfo.fromJS($res);
   }
 
@@ -275,9 +281,8 @@ class ChromeUsb {
   ///
   /// |handle|: A connection handle to reset.
   Future<bool> resetDevice(ConnectionHandle handle) async {
-    var $res =
-        await promiseToFuture<bool>($js.chrome.usb.resetDevice(handle.toJS));
-    return $res;
+    var $res = await $js.chrome.usb.resetDevice(handle.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Event generated when a device is added to the system. Events are only
@@ -309,6 +314,7 @@ enum Direction {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Direction fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -326,6 +332,7 @@ enum Recipient {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Recipient fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -343,6 +350,7 @@ enum RequestType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static RequestType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -360,6 +368,7 @@ enum TransferType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static TransferType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -378,6 +387,7 @@ enum SynchronizationType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static SynchronizationType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -396,6 +406,7 @@ enum UsageType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static UsageType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

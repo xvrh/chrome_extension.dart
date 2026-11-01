@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/identity.dart' as $js;
 
@@ -25,8 +24,7 @@ class ChromeIdentity {
   ///
   /// `getAccounts` is only supported on dev channel.
   Future<List<AccountInfo>> getAccounts() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.identity.getAccounts());
+    var $res = await $js.chrome.identity.getAccounts().toDart;
     return $res.toDart
         .cast<$js.AccountInfo>()
         .map((e) => AccountInfo.fromJS(e))
@@ -60,8 +58,7 @@ class ChromeIdentity {
   /// available, this parameter contains the list of granted scopes
   /// corresponding with the returned token.
   Future<GetAuthTokenResult> getAuthToken(TokenDetails? details) async {
-    var $res = await promiseToFuture<$js.GetAuthTokenResult>(
-        $js.chrome.identity.getAuthToken(details?.toJS));
+    var $res = await $js.chrome.identity.getAuthToken(details?.toJS).toDart;
     return GetAuthTokenResult.fromJS($res);
   }
 
@@ -80,8 +77,8 @@ class ChromeIdentity {
   /// Chrome account, of an empty `ProfileUserInfo` if the account
   /// with given `details` doesn't exist.
   Future<ProfileUserInfo> getProfileUserInfo(ProfileDetails? details) async {
-    var $res = await promiseToFuture<$js.ProfileUserInfo>(
-        $js.chrome.identity.getProfileUserInfo(details?.toJS));
+    var $res =
+        await $js.chrome.identity.getProfileUserInfo(details?.toJS).toDart;
     return ProfileUserInfo.fromJS($res);
   }
 
@@ -95,8 +92,7 @@ class ChromeIdentity {
   /// |details| : Token information.
   /// |callback| : Called when the token has been removed from the cache.
   Future<void> removeCachedAuthToken(InvalidTokenDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.identity.removeCachedAuthToken(details.toJS));
+    await $js.chrome.identity.removeCachedAuthToken(details.toJS).toDart;
   }
 
   /// Resets the state of the Identity API:
@@ -108,7 +104,7 @@ class ChromeIdentity {
   ///
   /// |callback| : Called when the state has been cleared.
   Future<void> clearAllCachedAuthTokens() async {
-    await promiseToFuture<void>($js.chrome.identity.clearAllCachedAuthTokens());
+    await $js.chrome.identity.clearAllCachedAuthTokens().toDart;
   }
 
   /// Starts an auth flow at the specified URL.
@@ -130,9 +126,8 @@ class ChromeIdentity {
   /// |details| : WebAuth flow options.
   /// |callback| : Called with the URL redirected back to your application.
   Future<String?> launchWebAuthFlow(WebAuthFlowDetails details) async {
-    var $res = await promiseToFuture<String?>(
-        $js.chrome.identity.launchWebAuthFlow(details.toJS));
-    return $res;
+    var $res = await $js.chrome.identity.launchWebAuthFlow(details.toJS).toDart;
+    return $res?.toDart;
   }
 
   /// Generates a redirect URL to be used in |launchWebAuthFlow|.
@@ -170,6 +165,7 @@ enum AccountStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static AccountStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -301,7 +297,7 @@ class TokenDetails {
   }) : _wrapped = $js.TokenDetails(
           interactive: interactive,
           account: account?.toJS,
-          scopes: scopes?.toJSArray((e) => e),
+          scopes: scopes?.toJSArray((e) => e.toJS),
           enableGranularPermissions: enableGranularPermissions,
         );
 
@@ -335,10 +331,10 @@ class TokenDetails {
   /// When the `scopes` field is present, it overrides the
   /// list of scopes specified in manifest.json.
   List<String>? get scopes =>
-      _wrapped.scopes?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.scopes?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set scopes(List<String>? v) {
-    _wrapped.scopes = v?.toJSArray((e) => e);
+    _wrapped.scopes = v?.toJSArray((e) => e.toJS);
   }
 
   /// The `enableGranularPermissions` flag allows extensions to
@@ -494,7 +490,7 @@ class GetAuthTokenResult {
     List<String>? grantedScopes,
   }) : _wrapped = $js.GetAuthTokenResult(
           token: token,
-          grantedScopes: grantedScopes?.toJSArray((e) => e),
+          grantedScopes: grantedScopes?.toJSArray((e) => e.toJS),
         );
 
   final $js.GetAuthTokenResult _wrapped;
@@ -509,11 +505,13 @@ class GetAuthTokenResult {
   }
 
   /// A list of OAuth2 scopes granted to the extension.
-  List<String>? get grantedScopes =>
-      _wrapped.grantedScopes?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get grantedScopes => _wrapped.grantedScopes?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set grantedScopes(List<String>? v) {
-    _wrapped.grantedScopes = v?.toJSArray((e) => e);
+    _wrapped.grantedScopes = v?.toJSArray((e) => e.toJS);
   }
 }
 

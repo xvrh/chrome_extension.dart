@@ -41,7 +41,7 @@ extension type JSOffscreen._(JSObject _) {
   /// alternative. But this is pretty useful in testing environments.
   /// |callback|: Invoked with the result of whether the extension has an
   /// active offscreen document.
-  external JSPromise hasDocument();
+  external JSPromise<JSBoolean> hasDocument();
 }
 
 typedef Reason = JSString;

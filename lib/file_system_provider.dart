@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/file_system_provider.dart' as $js;
@@ -36,8 +35,7 @@ class ChromeFileSystemProvider {
   /// In case of an error, [runtime.lastError] will be set with a
   /// corresponding error code.
   Future<void> mount(MountOptions options) async {
-    await promiseToFuture<void>(
-        $js.chrome.fileSystemProvider.mount(options.toJS));
+    await $js.chrome.fileSystemProvider.mount(options.toJS).toDart;
   }
 
   /// Unmounts a file system with the given `fileSystemId`. It
@@ -48,14 +46,12 @@ class ChromeFileSystemProvider {
   /// In case of an error, [runtime.lastError] will be set with a
   /// corresponding error code.
   Future<void> unmount(UnmountOptions options) async {
-    await promiseToFuture<void>(
-        $js.chrome.fileSystemProvider.unmount(options.toJS));
+    await $js.chrome.fileSystemProvider.unmount(options.toJS).toDart;
   }
 
   /// Returns all file systems mounted by the extension.
   Future<List<FileSystemInfo>> getAll() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.fileSystemProvider.getAll());
+    var $res = await $js.chrome.fileSystemProvider.getAll().toDart;
     return $res.toDart
         .cast<$js.FileSystemInfo>()
         .map((e) => FileSystemInfo.fromJS(e))
@@ -65,8 +61,7 @@ class ChromeFileSystemProvider {
   /// Returns information about a file system with the passed
   /// `fileSystemId`.
   Future<FileSystemInfo> get(String fileSystemId) async {
-    var $res = await promiseToFuture<$js.FileSystemInfo>(
-        $js.chrome.fileSystemProvider.get(fileSystemId));
+    var $res = await $js.chrome.fileSystemProvider.get(fileSystemId).toDart;
     return FileSystemInfo.fromJS($res);
   }
 
@@ -100,8 +95,7 @@ class ChromeFileSystemProvider {
   /// In case of an error, [runtime.lastError] will be set
   /// will a corresponding error code.
   Future<void> notify(NotifyOptions options) async {
-    await promiseToFuture<void>(
-        $js.chrome.fileSystemProvider.notify(options.toJS));
+    await $js.chrome.fileSystemProvider.notify(options.toJS).toDart;
   }
 
   /// Raised when unmounting for the file system with the
@@ -187,7 +181,7 @@ class ChromeFileSystemProvider {
               options: ReadDirectoryRequestedOptions.fromJS(options),
               successCallback: (List<EntryMetadata> entries, bool hasMore) {
                 successCallback.callAsFunction(
-                    null, entries.toJSArray((e) => e.toJS), hasMore.jsify()!);
+                    null, entries.toJSArray((e) => e.toJS), hasMore.toJS);
               },
               errorCallback: (ProviderError error) {
                 errorCallback.callAsFunction(null, error.toJS);
@@ -251,8 +245,7 @@ class ChromeFileSystemProvider {
             return $c(OnReadFileRequestedEvent(
               options: ReadFileRequestedOptions.fromJS(options),
               successCallback: (ByteBuffer data, bool hasMore) {
-                successCallback.callAsFunction(
-                    null, data.toJS, hasMore.jsify()!);
+                successCallback.callAsFunction(null, data.toJS, hasMore.toJS);
               },
               errorCallback: (ProviderError error) {
                 errorCallback.callAsFunction(null, error.toJS);
@@ -576,6 +569,7 @@ enum ProviderError {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ProviderError fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -592,6 +586,7 @@ enum OpenFileMode {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OpenFileMode fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -608,6 +603,7 @@ enum ChangeType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ChangeType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -629,6 +625,7 @@ enum CommonActionId {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static CommonActionId fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -1282,7 +1279,7 @@ class GetActionsRequestedOptions {
   }) : _wrapped = $js.GetActionsRequestedOptions(
           fileSystemId: fileSystemId,
           requestId: requestId,
-          entryPaths: entryPaths.toJSArray((e) => e),
+          entryPaths: entryPaths.toJSArray((e) => e.toJS),
         );
 
   final $js.GetActionsRequestedOptions _wrapped;
@@ -1305,10 +1302,10 @@ class GetActionsRequestedOptions {
 
   /// List of paths of entries for the list of actions.
   List<String> get entryPaths =>
-      _wrapped.entryPaths.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.entryPaths.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set entryPaths(List<String> v) {
-    _wrapped.entryPaths = v.toJSArray((e) => e);
+    _wrapped.entryPaths = v.toJSArray((e) => e.toJS);
   }
 }
 
@@ -2186,7 +2183,7 @@ class ExecuteActionRequestedOptions {
   }) : _wrapped = $js.ExecuteActionRequestedOptions(
           fileSystemId: fileSystemId,
           requestId: requestId,
-          entryPaths: entryPaths.toJSArray((e) => e),
+          entryPaths: entryPaths.toJSArray((e) => e.toJS),
           actionId: actionId,
         );
 
@@ -2210,10 +2207,10 @@ class ExecuteActionRequestedOptions {
 
   /// The set of paths of the entries to be used for the action.
   List<String> get entryPaths =>
-      _wrapped.entryPaths.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.entryPaths.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set entryPaths(List<String> v) {
-    _wrapped.entryPaths = v.toJSArray((e) => e);
+    _wrapped.entryPaths = v.toJSArray((e) => e.toJS);
   }
 
   /// The identifier of the action to be executed.

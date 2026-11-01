@@ -34,7 +34,7 @@ extension type JSScripting._(JSObject _) {
   /// |callback|: Invoked upon completion of the injection. The resulting
   /// array contains the result of execution for each frame where the
   /// injection succeeded.
-  external JSPromise executeScript(ScriptInjection injection);
+  external JSPromise<JSArray> executeScript(ScriptInjection injection);
 
   /// Inserts a CSS stylesheet into a target context.
   /// If multiple frames are specified, unsuccessful injections are ignored.
@@ -63,7 +63,8 @@ extension type JSScripting._(JSObject _) {
   /// that match the given filter.
   /// |filter|: An object to filter the extension's dynamically registered
   /// scripts.
-  external JSPromise getRegisteredContentScripts(ContentScriptFilter? filter);
+  external JSPromise<JSArray> getRegisteredContentScripts(
+      ContentScriptFilter? filter);
 
   /// Unregisters content scripts for this extension.
   /// |filter|: If specified, only unregisters dynamic content scripts which

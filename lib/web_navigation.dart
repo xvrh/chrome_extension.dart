@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/web_navigation.dart' as $js;
@@ -27,8 +26,7 @@ class ChromeWebNavigation {
   /// or a <frame> of a web page and is identified by a tab ID and a frame ID.
   /// [details] Information about the frame to retrieve information about.
   Future<GetFrameCallbackDetails?> getFrame(GetFrameDetails details) async {
-    var $res = await promiseToFuture<$js.GetFrameCallbackDetails?>(
-        $js.chrome.webNavigation.getFrame(details.toJS));
+    var $res = await $js.chrome.webNavigation.getFrame(details.toJS).toDart;
     return $res?.let(GetFrameCallbackDetails.fromJS);
   }
 
@@ -36,8 +34,7 @@ class ChromeWebNavigation {
   /// [details] Information about the tab to retrieve all frames from.
   Future<List<GetAllFramesCallbackDetails>?> getAllFrames(
       GetAllFramesDetails details) async {
-    var $res = await promiseToFuture<JSArray?>(
-        $js.chrome.webNavigation.getAllFrames(details.toJS));
+    var $res = await $js.chrome.webNavigation.getAllFrames(details.toJS).toDart;
     return $res?.toDart
         .cast<$js.GetAllFramesCallbackDetails>()
         .map((e) => GetAllFramesCallbackDetails.fromJS(e))
@@ -141,6 +138,7 @@ enum TransitionType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static TransitionType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -158,6 +156,7 @@ enum TransitionQualifier {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static TransitionQualifier fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

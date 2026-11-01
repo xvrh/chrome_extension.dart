@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/page_action.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
@@ -29,27 +28,26 @@ class ChromePageAction {
   /// selected.
   /// [tabId] The id of the tab for which you want to modify the page action.
   Future<void> show(int tabId) async {
-    await promiseToFuture<void>($js.chrome.pageAction.show(tabId));
+    await $js.chrome.pageAction.show(tabId).toDart;
   }
 
   /// Hides the page action. Hidden page actions still appear in the Chrome
   /// toolbar, but are grayed out.
   /// [tabId] The id of the tab for which you want to modify the page action.
   Future<void> hide(int tabId) async {
-    await promiseToFuture<void>($js.chrome.pageAction.hide(tabId));
+    await $js.chrome.pageAction.hide(tabId).toDart;
   }
 
   /// Sets the title of the page action. This is displayed in a tooltip over the
   /// page action.
   Future<void> setTitle(SetTitleDetails details) async {
-    await promiseToFuture<void>($js.chrome.pageAction.setTitle(details.toJS));
+    await $js.chrome.pageAction.setTitle(details.toJS).toDart;
   }
 
   /// Gets the title of the page action.
   Future<String> getTitle(TabDetails details) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.pageAction.getTitle(details.toJS));
-    return $res;
+    var $res = await $js.chrome.pageAction.getTitle(details.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Sets the icon for the page action. The icon can be specified either as the
@@ -57,20 +55,19 @@ class ChromePageAction {
   /// dictionary of either one of those. Either the **path** or the
   /// **imageData** property must be specified.
   Future<void> setIcon(SetIconDetails details) async {
-    await promiseToFuture<void>($js.chrome.pageAction.setIcon(details.toJS));
+    await $js.chrome.pageAction.setIcon(details.toJS).toDart;
   }
 
   /// Sets the HTML document to be opened as a popup when the user clicks on the
   /// page action's icon.
   Future<void> setPopup(SetPopupDetails details) async {
-    await promiseToFuture<void>($js.chrome.pageAction.setPopup(details.toJS));
+    await $js.chrome.pageAction.setPopup(details.toJS).toDart;
   }
 
   /// Gets the html document set as the popup for this page action.
   Future<String> getPopup(TabDetails details) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.pageAction.getPopup(details.toJS));
-    return $res;
+    var $res = await $js.chrome.pageAction.getPopup(details.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Fired when a page action icon is clicked.  This event will not fire if the
@@ -180,7 +177,7 @@ class SetIconDetails {
                 'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map')
           },
           path: switch (path) {
-            String() => path.jsify()!,
+            String() => path.toJS,
             Map() => path.jsify()!,
             null => null,
             _ => throw UnsupportedError(
@@ -237,7 +234,7 @@ class SetIconDetails {
 
   set path(Object? v) {
     _wrapped.path = switch (v) {
-      String() => v.jsify()!,
+      String() => v.toJS,
       Map() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(

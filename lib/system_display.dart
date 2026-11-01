@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/system_display.dart' as $js;
 import 'system.dart';
@@ -27,8 +26,7 @@ class ChromeSystemDisplay {
   /// |flags|: Options affecting how the information is returned.
   /// |callback|: The callback to invoke with the results.
   Future<List<DisplayUnitInfo>> getInfo(GetInfoFlags? flags) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.system.display.getInfo(flags?.toJS));
+    var $res = await $js.chrome.system.display.getInfo(flags?.toJS).toDart;
     return $res.toDart
         .cast<$js.DisplayUnitInfo>()
         .map((e) => DisplayUnitInfo.fromJS(e))
@@ -39,8 +37,7 @@ class ChromeSystemDisplay {
   /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
   /// |callback|: The callback to invoke with the results.
   Future<List<DisplayLayout>> getDisplayLayout() async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.system.display.getDisplayLayout());
+    var $res = await $js.chrome.system.display.getDisplayLayout().toDart;
     return $res.toDart
         .cast<$js.DisplayLayout>()
         .map((e) => DisplayLayout.fromJS(e))
@@ -62,10 +59,12 @@ class ChromeSystemDisplay {
     String id,
     DisplayProperties info,
   ) async {
-    await promiseToFuture<void>($js.chrome.system.display.setDisplayProperties(
-      id,
-      info.toJS,
-    ));
+    await $js.chrome.system.display
+        .setDisplayProperties(
+          id,
+          info.toJS,
+        )
+        .toDart;
   }
 
   /// Set the layout for all displays. Any display not included will use the
@@ -79,8 +78,9 @@ class ChromeSystemDisplay {
   ///     whether the function succeeded, [runtime.lastError] should be
   ///     queried.
   Future<void> setDisplayLayout(List<DisplayLayout> layouts) async {
-    await promiseToFuture<void>($js.chrome.system.display
-        .setDisplayLayout(layouts.toJSArray((e) => e.toJS)));
+    await $js.chrome.system.display
+        .setDisplayLayout(layouts.toJSArray((e) => e.toJS))
+        .toDart;
   }
 
   /// Enables/disables the unified desktop feature. If enabled while mirroring
@@ -140,9 +140,9 @@ class ChromeSystemDisplay {
   ///      calibration has ended. The argument of the callback informs if the
   ///      calibration was a success or not.
   Future<bool> showNativeTouchCalibration(String id) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.system.display.showNativeTouchCalibration(id));
-    return $res;
+    var $res =
+        await $js.chrome.system.display.showNativeTouchCalibration(id).toDart;
+    return $res.toDart;
   }
 
   /// Starts custom touch calibration for a display. This should be called when
@@ -189,8 +189,7 @@ class ChromeSystemDisplay {
   ///     whether the function succeeded, [runtime.lastError] should be
   ///     queried.
   Future<void> setMirrorMode(MirrorModeInfo info) async {
-    await promiseToFuture<void>(
-        $js.chrome.system.display.setMirrorMode(info.toJS));
+    await $js.chrome.system.display.setMirrorMode(info.toJS).toDart;
   }
 
   /// Fired when anything changes to the display configuration.
@@ -212,6 +211,7 @@ enum LayoutPosition {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static LayoutPosition fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -233,6 +233,7 @@ enum ActiveState {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ActiveState fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -259,6 +260,7 @@ enum MirrorMode {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static MirrorMode fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -817,7 +819,8 @@ class DisplayUnitInfo {
           name: name,
           edid: edid?.toJS,
           mirroringSourceId: mirroringSourceId,
-          mirroringDestinationIds: mirroringDestinationIds.toJSArray((e) => e),
+          mirroringDestinationIds:
+              mirroringDestinationIds.toJSArray((e) => e.toJS),
           isPrimary: isPrimary,
           isInternal: isInternal,
           isEnabled: isEnabled,
@@ -834,7 +837,7 @@ class DisplayUnitInfo {
           hasTouchSupport: hasTouchSupport,
           hasAccelerometerSupport: hasAccelerometerSupport,
           availableDisplayZoomFactors:
-              availableDisplayZoomFactors.toJSArray((e) => e),
+              availableDisplayZoomFactors.toJSArray((e) => e.toJS),
           displayZoomFactor: displayZoomFactor,
         );
 
@@ -878,12 +881,12 @@ class DisplayUnitInfo {
   /// |mirroringSourceId|.
   List<String> get mirroringDestinationIds =>
       _wrapped.mirroringDestinationIds.toDart
-          .cast<String>()
-          .map((e) => e)
+          .cast<JSString>()
+          .map((e) => e.toDart)
           .toList();
 
   set mirroringDestinationIds(List<String> v) {
-    _wrapped.mirroringDestinationIds = v.toJSArray((e) => e);
+    _wrapped.mirroringDestinationIds = v.toJSArray((e) => e.toJS);
   }
 
   /// True if this is the primary display.
@@ -1013,12 +1016,12 @@ class DisplayUnitInfo {
   /// A list of zoom factor values that can be set for the display.
   List<double> get availableDisplayZoomFactors =>
       _wrapped.availableDisplayZoomFactors.toDart
-          .cast<double>()
-          .map((e) => e)
+          .cast<JSNumber>()
+          .map((e) => e.toDartDouble)
           .toList();
 
   set availableDisplayZoomFactors(List<double> v) {
-    _wrapped.availableDisplayZoomFactors = v.toJSArray((e) => e);
+    _wrapped.availableDisplayZoomFactors = v.toJSArray((e) => e.toJS);
   }
 
   /// The ratio between the display's current and default zoom.
@@ -1234,7 +1237,8 @@ class MirrorModeInfo {
   }) : _wrapped = $js.MirrorModeInfo(
           mode: mode.toJS,
           mirroringSourceId: mirroringSourceId,
-          mirroringDestinationIds: mirroringDestinationIds?.toJSArray((e) => e),
+          mirroringDestinationIds:
+              mirroringDestinationIds?.toJSArray((e) => e.toJS),
         );
 
   final $js.MirrorModeInfo _wrapped;
@@ -1259,11 +1263,11 @@ class MirrorModeInfo {
   /// 'mixed'.
   List<String>? get mirroringDestinationIds =>
       _wrapped.mirroringDestinationIds?.toDart
-          .cast<String>()
-          .map((e) => e)
+          .cast<JSString>()
+          .map((e) => e.toDart)
           .toList();
 
   set mirroringDestinationIds(List<String>? v) {
-    _wrapped.mirroringDestinationIds = v?.toJSArray((e) => e);
+    _wrapped.mirroringDestinationIds = v?.toJSArray((e) => e.toJS);
   }
 }

@@ -25,7 +25,7 @@ extension JSChromeJSPageCaptureExtension on JSChrome {
 
 extension type JSPageCapture._(JSObject _) {
   /// Saves the content of the tab with given id as MHTML.
-  external JSPromise saveAsMHTML(SaveAsMhtmlDetails details);
+  external JSPromise<JSArrayBuffer?> saveAsMHTML(SaveAsMhtmlDetails details);
 }
 extension type SaveAsMhtmlDetails._(JSObject _) implements JSObject {
   external factory SaveAsMhtmlDetails(

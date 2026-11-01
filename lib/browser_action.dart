@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/browser_action.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
@@ -28,15 +27,13 @@ class ChromeBrowserAction {
 
   /// Sets the title of the browser action. This title appears in the tooltip.
   Future<void> setTitle(SetTitleDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.browserAction.setTitle(details.toJS));
+    await $js.chrome.browserAction.setTitle(details.toJS).toDart;
   }
 
   /// Gets the title of the browser action.
   Future<String> getTitle(TabDetails details) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.browserAction.getTitle(details.toJS));
-    return $res;
+    var $res = await $js.chrome.browserAction.getTitle(details.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Sets the icon for the browser action. The icon can be specified as the
@@ -44,69 +41,64 @@ class ChromeBrowserAction {
   /// dictionary of one of those. Either the `path` or the `imageData` property
   /// must be specified.
   Future<void> setIcon(SetIconDetails details) async {
-    await promiseToFuture<void>($js.chrome.browserAction.setIcon(details.toJS));
+    await $js.chrome.browserAction.setIcon(details.toJS).toDart;
   }
 
   /// Sets the HTML document to be opened as a popup when the user clicks the
   /// browser action icon.
   Future<void> setPopup(SetPopupDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.browserAction.setPopup(details.toJS));
+    await $js.chrome.browserAction.setPopup(details.toJS).toDart;
   }
 
   /// Gets the HTML document that is set as the popup for this browser action.
   Future<String> getPopup(TabDetails details) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.browserAction.getPopup(details.toJS));
-    return $res;
+    var $res = await $js.chrome.browserAction.getPopup(details.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Sets the badge text for the browser action. The badge is displayed on top
   /// of the icon.
   Future<void> setBadgeText(SetBadgeTextDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.browserAction.setBadgeText(details.toJS));
+    await $js.chrome.browserAction.setBadgeText(details.toJS).toDart;
   }
 
   /// Gets the badge text of the browser action. If no tab is specified, the
   /// non-tab-specific badge text is returned.
   Future<String> getBadgeText(TabDetails details) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.browserAction.getBadgeText(details.toJS));
-    return $res;
+    var $res = await $js.chrome.browserAction.getBadgeText(details.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Sets the background color for the badge.
   Future<void> setBadgeBackgroundColor(
       SetBadgeBackgroundColorDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.browserAction.setBadgeBackgroundColor(details.toJS));
+    await $js.chrome.browserAction.setBadgeBackgroundColor(details.toJS).toDart;
   }
 
   /// Gets the background color of the browser action.
   Future<List<int>> getBadgeBackgroundColor(TabDetails details) async {
-    var $res = await promiseToFuture<$js.ColorArray>(
-        $js.chrome.browserAction.getBadgeBackgroundColor(details.toJS));
-    return $res.toDart.cast<int>().map((e) => e).toList();
+    var $res = await $js.chrome.browserAction
+        .getBadgeBackgroundColor(details.toJS)
+        .toDart;
+    return $res.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList();
   }
 
   /// Enables the browser action for a tab. Defaults to enabled.
   /// [tabId] The ID of the tab for which to modify the browser action.
   Future<void> enable(int? tabId) async {
-    await promiseToFuture<void>($js.chrome.browserAction.enable(tabId));
+    await $js.chrome.browserAction.enable(tabId).toDart;
   }
 
   /// Disables the browser action for a tab.
   /// [tabId] The ID of the tab for which to modify the browser action.
   Future<void> disable(int? tabId) async {
-    await promiseToFuture<void>($js.chrome.browserAction.disable(tabId));
+    await $js.chrome.browserAction.disable(tabId).toDart;
   }
 
   /// Opens the extension popup window in the active window but does not grant
   /// tab permissions.
   Future<Map?> openPopup() async {
-    var $res =
-        await promiseToFuture<JSAny?>($js.chrome.browserAction.openPopup());
+    var $res = await $js.chrome.browserAction.openPopup().toDart;
     return $res?.toDartMap();
   }
 
@@ -218,7 +210,7 @@ class SetIconDetails {
                 'Received type: ${imageData.runtimeType}. Supported types are: JSObject, Map')
           },
           path: switch (path) {
-            String() => path.jsify()!,
+            String() => path.toJS,
             Map() => path.jsify()!,
             null => null,
             _ => throw UnsupportedError(
@@ -268,7 +260,7 @@ class SetIconDetails {
 
   set path(Object? v) {
     _wrapped.path = switch (v) {
-      String() => v.jsify()!,
+      String() => v.toJS,
       Map() => v.jsify()!,
       null => null,
       _ => throw UnsupportedError(
@@ -377,8 +369,8 @@ class SetBadgeBackgroundColorDetails {
     int? tabId,
   }) : _wrapped = $js.SetBadgeBackgroundColorDetails(
           color: switch (color) {
-            String() => color.jsify()!,
-            List<int>() => color.toJSArray((e) => e),
+            String() => color.toJS,
+            List<int>() => color.toJSArray((e) => e.toJS),
             _ => throw UnsupportedError(
                 'Received type: ${color.runtimeType}. Supported types are: String, List<int>')
           },
@@ -394,14 +386,17 @@ class SetBadgeBackgroundColorDetails {
   /// example, `#FF0000` or `#F00` (red). Renders colors at full opacity.
   Object get color => _wrapped.color.when(
         isString: (v) => v,
-        isOther: (v) =>
-            (v as $js.ColorArray).toDart.cast<int>().map((e) => e).toList(),
+        isOther: (v) => (v as $js.ColorArray)
+            .toDart
+            .cast<JSNumber>()
+            .map((e) => e.toDartInt)
+            .toList(),
       );
 
   set color(Object v) {
     _wrapped.color = switch (v) {
-      String() => v.jsify()!,
-      List<int>() => v.toJSArray((e) => e),
+      String() => v.toJS,
+      List<int>() => v.toJSArray((e) => e.toJS),
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: String, List<int>')
     };

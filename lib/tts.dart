@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/tts.dart' as $js;
 
@@ -36,10 +35,12 @@ class ChromeTts {
     String utterance,
     TtsOptions? options,
   ) async {
-    await promiseToFuture<void>($js.chrome.tts.speak(
-      utterance,
-      options?.toJS,
-    ));
+    await $js.chrome.tts
+        .speak(
+          utterance,
+          options?.toJS,
+        )
+        .toDart;
   }
 
   /// Stops any current speech and flushes the queue of any pending utterances.
@@ -64,13 +65,13 @@ class ChromeTts {
   /// is true whenever the system speech engine is speaking, even if the speech
   /// wasn't initiated by Chrome.
   Future<bool> isSpeaking() async {
-    var $res = await promiseToFuture<bool>($js.chrome.tts.isSpeaking());
-    return $res;
+    var $res = await $js.chrome.tts.isSpeaking().toDart;
+    return $res.toDart;
   }
 
   /// Gets an array of all available voices.
   Future<List<TtsVoice>> getVoices() async {
-    var $res = await promiseToFuture<JSArray>($js.chrome.tts.getVoices());
+    var $res = await $js.chrome.tts.getVoices().toDart;
     return $res.toDart
         .cast<$js.TtsVoice>()
         .map((e) => TtsVoice.fromJS(e))
@@ -101,6 +102,7 @@ enum EventType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static EventType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -116,6 +118,7 @@ enum VoiceGender {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static VoiceGender fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -181,8 +184,8 @@ class TtsOptions {
           rate: rate,
           pitch: pitch,
           volume: volume,
-          requiredEventTypes: requiredEventTypes?.toJSArray((e) => e),
-          desiredEventTypes: desiredEventTypes?.toJSArray((e) => e),
+          requiredEventTypes: requiredEventTypes?.toJSArray((e) => e.toJS),
+          desiredEventTypes: desiredEventTypes?.toJSArray((e) => e.toJS),
           onEvent: onEvent,
         );
 
@@ -258,20 +261,24 @@ class TtsOptions {
   }
 
   /// The TTS event types the voice must support.
-  List<String>? get requiredEventTypes =>
-      _wrapped.requiredEventTypes?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get requiredEventTypes => _wrapped.requiredEventTypes?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set requiredEventTypes(List<String>? v) {
-    _wrapped.requiredEventTypes = v?.toJSArray((e) => e);
+    _wrapped.requiredEventTypes = v?.toJSArray((e) => e.toJS);
   }
 
   /// The TTS event types that you are interested in listening to. If missing,
   /// all event types may be sent.
-  List<String>? get desiredEventTypes =>
-      _wrapped.desiredEventTypes?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get desiredEventTypes => _wrapped.desiredEventTypes?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set desiredEventTypes(List<String>? v) {
-    _wrapped.desiredEventTypes = v?.toJSArray((e) => e);
+    _wrapped.desiredEventTypes = v?.toJSArray((e) => e.toJS);
   }
 
   /// This function is called with events that occur in the process of speaking

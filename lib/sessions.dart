@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/sessions.dart' as $js;
 import 'tabs.dart';
@@ -25,8 +24,7 @@ class ChromeSessions {
 
   /// Gets the list of recently closed tabs and/or windows.
   Future<List<Session>> getRecentlyClosed(Filter? filter) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.sessions.getRecentlyClosed(filter?.toJS));
+    var $res = await $js.chrome.sessions.getRecentlyClosed(filter?.toJS).toDart;
     return $res.toDart
         .cast<$js.Session>()
         .map((e) => Session.fromJS(e))
@@ -35,8 +33,7 @@ class ChromeSessions {
 
   /// Retrieves all devices with synced sessions.
   Future<List<Device>> getDevices(Filter? filter) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.sessions.getDevices(filter?.toJS));
+    var $res = await $js.chrome.sessions.getDevices(filter?.toJS).toDart;
     return $res.toDart.cast<$js.Device>().map((e) => Device.fromJS(e)).toList();
   }
 
@@ -46,8 +43,7 @@ class ChromeSessions {
   /// restore. If this parameter is not specified, the most recently closed
   /// session is restored.
   Future<Session> restore(String? sessionId) async {
-    var $res = await promiseToFuture<$js.Session>(
-        $js.chrome.sessions.restore(sessionId));
+    var $res = await $js.chrome.sessions.restore(sessionId).toDart;
     return Session.fromJS($res);
   }
 

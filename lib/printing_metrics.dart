@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'printing.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/printing_metrics.dart' as $js;
@@ -25,8 +24,7 @@ class ChromePrintingMetrics {
 
   /// Returns the list of the finished print jobs.
   Future<List<PrintJobInfo>> getPrintJobs() async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.printingMetrics.getPrintJobs());
+    var $res = await $js.chrome.printingMetrics.getPrintJobs().toDart;
     return $res.toDart
         .cast<$js.PrintJobInfo>()
         .map((e) => PrintJobInfo.fromJS(e))
@@ -62,6 +60,7 @@ enum PrintJobSource {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PrintJobSource fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -84,6 +83,7 @@ enum PrintJobStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PrintJobStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -103,6 +103,7 @@ enum PrinterSource {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PrinterSource fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -121,6 +122,7 @@ enum ColorMode {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ColorMode fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -142,6 +144,7 @@ enum DuplexMode {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static DuplexMode fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

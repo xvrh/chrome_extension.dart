@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/side_panel.dart' as $js;
 
@@ -25,15 +24,14 @@ class ChromeSidePanel {
   /// |options|: The configuration options to apply to the panel.
   /// |callback|: Invoked when the options have been set.
   Future<void> setOptions(PanelOptions options) async {
-    await promiseToFuture<void>($js.chrome.sidePanel.setOptions(options.toJS));
+    await $js.chrome.sidePanel.setOptions(options.toJS).toDart;
   }
 
   /// Returns the active panel configuration.
   /// |options|: Specifies the context to return the configuration for.
   /// |callback|: Called with the active panel configuration.
   Future<PanelOptions> getOptions(GetPanelOptions options) async {
-    var $res = await promiseToFuture<$js.PanelOptions>(
-        $js.chrome.sidePanel.getOptions(options.toJS));
+    var $res = await $js.chrome.sidePanel.getOptions(options.toJS).toDart;
     return PanelOptions.fromJS($res);
   }
 
@@ -42,15 +40,13 @@ class ChromeSidePanel {
   /// |behavior|: The new behavior to be set.
   /// |callback|: Called when the new behavior has been set.
   Future<void> setPanelBehavior(PanelBehavior behavior) async {
-    await promiseToFuture<void>(
-        $js.chrome.sidePanel.setPanelBehavior(behavior.toJS));
+    await $js.chrome.sidePanel.setPanelBehavior(behavior.toJS).toDart;
   }
 
   /// Returns the extension's current side panel behavior.
   /// |callback|: Called with the extension's side panel behavior.
   Future<PanelBehavior> getPanelBehavior() async {
-    var $res = await promiseToFuture<$js.PanelBehavior>(
-        $js.chrome.sidePanel.getPanelBehavior());
+    var $res = await $js.chrome.sidePanel.getPanelBehavior().toDart;
     return PanelBehavior.fromJS($res);
   }
 
@@ -59,7 +55,7 @@ class ChromeSidePanel {
   /// |options|: Specifies the context in which to open the side panel.
   /// |callback|: Called when the side panel has been opened.
   Future<void> open(OpenOptions options) async {
-    await promiseToFuture<void>($js.chrome.sidePanel.open(options.toJS));
+    await $js.chrome.sidePanel.open(options.toJS).toDart;
   }
 }
 

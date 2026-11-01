@@ -13,6 +13,4 @@ extension JSChromeSystemExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSChromeSystem {}
+extension type JSChromeSystem._(JSObject _) implements JSObject {}

@@ -32,7 +32,7 @@ extension type JSExtension._(JSObject _) {
   /// response. The [extension.onRequest] event is fired in each page of the
   /// extension.
   @Deprecated(r'Please use $(ref:runtime.sendMessage).')
-  external JSPromise sendRequest(
+  external JSPromise<JSAny?> sendRequest(
     /// The extension ID of the extension you want to connect to. If omitted,
     /// default is your own extension.
     String? extensionId,
@@ -67,12 +67,12 @@ extension type JSExtension._(JSObject _) {
   /// Retrieves the state of the extension's access to Incognito-mode. This
   /// corresponds to the user-controlled per-extension 'Allowed in Incognito'
   /// setting accessible via the chrome://extensions page.
-  external JSPromise isAllowedIncognitoAccess();
+  external JSPromise<JSBoolean> isAllowedIncognitoAccess();
 
   /// Retrieves the state of the extension's access to the 'file://' scheme.
   /// This corresponds to the user-controlled per-extension 'Allow access to
   /// File URLs' setting accessible via the chrome://extensions page.
-  external JSPromise isAllowedFileSchemeAccess();
+  external JSPromise<JSBoolean> isAllowedFileSchemeAccess();
 
   /// Sets the value of the ap CGI parameter used in the extension's update URL.
   ///  This value is ignored for extensions that are hosted in the Chrome

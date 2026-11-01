@@ -13,6 +13,4 @@ extension JSChromeDevtoolsExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSChromeDevtools {}
+extension type JSChromeDevtools._(JSObject _) implements JSObject {}

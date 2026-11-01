@@ -26,28 +26,28 @@ extension JSChromeJSWindowsExtension on JSChrome {
 
 extension type JSWindows._(JSObject _) {
   /// Gets details about a window.
-  external JSPromise get(
+  external JSPromise<Window> get(
     int windowId,
     QueryOptions? queryOptions,
   );
 
   /// Gets the [current window](#current-window).
-  external JSPromise getCurrent(QueryOptions? queryOptions);
+  external JSPromise<Window> getCurrent(QueryOptions? queryOptions);
 
   /// Gets the window that was most recently focused - typically the window 'on
   /// top'.
-  external JSPromise getLastFocused(QueryOptions? queryOptions);
+  external JSPromise<Window> getLastFocused(QueryOptions? queryOptions);
 
   /// Gets all windows.
-  external JSPromise getAll(QueryOptions? queryOptions);
+  external JSPromise<JSArray> getAll(QueryOptions? queryOptions);
 
   /// Creates (opens) a new browser window with any optional sizing, position,
   /// or default URL provided.
-  external JSPromise create(CreateData? createData);
+  external JSPromise<Window?> create(CreateData? createData);
 
   /// Updates the properties of a window. Specify only the properties that to be
   /// changed; unspecified properties are unchanged.
-  external JSPromise update(
+  external JSPromise<Window> update(
     int windowId,
     UpdateInfo updateInfo,
   );

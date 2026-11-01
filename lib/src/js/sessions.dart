@@ -28,14 +28,14 @@ extension JSChromeJSSessionsExtension on JSChrome {
 
 extension type JSSessions._(JSObject _) {
   /// Gets the list of recently closed tabs and/or windows.
-  external JSPromise getRecentlyClosed(Filter? filter);
+  external JSPromise<JSArray> getRecentlyClosed(Filter? filter);
 
   /// Retrieves all devices with synced sessions.
-  external JSPromise getDevices(Filter? filter);
+  external JSPromise<JSArray> getDevices(Filter? filter);
 
   /// Reopens a [windows.Window] or [tabs.Tab], with an optional callback to run
   /// when the entry has been restored.
-  external JSPromise restore(
+  external JSPromise<Session> restore(
 
       /// The [windows.Window.sessionId], or [tabs.Tab.sessionId] to restore. If
       /// this parameter is not specified, the most recently closed session is

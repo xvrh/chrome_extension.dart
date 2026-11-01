@@ -11,7 +11,7 @@ To use this project as a Chrome extension, follow the steps below:
 1. From the project directory, run:
 
    ```sh
-   flutter build web --web-renderer html --csp
+   flutter build web --wasm --csp --no-web-resources-cdn
    ```
 
 2. Go to the following URL from Chrome browser:

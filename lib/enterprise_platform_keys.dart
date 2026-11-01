@@ -260,6 +260,7 @@ enum Scope {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Scope fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -276,6 +277,7 @@ enum Algorithm {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Algorithm fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

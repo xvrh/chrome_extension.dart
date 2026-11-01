@@ -2,12 +2,10 @@
 
 library;
 
-import 'dart:js_util';
 import 'extension_types.dart';
 import 'runtime.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/tabs.dart' as $js;
-import 'src/js/windows.dart' as $js_windows;
 import 'windows.dart';
 
 export 'src/chrome.dart' show chrome, EventStream;
@@ -27,7 +25,7 @@ class ChromeTabs {
 
   /// Retrieves details about the specified tab.
   Future<Tab> get(int tabId) async {
-    var $res = await promiseToFuture<$js.Tab>($js.chrome.tabs.get(tabId));
+    var $res = await $js.chrome.tabs.get(tabId).toDart;
     return Tab.fromJS($res);
   }
 
@@ -35,7 +33,7 @@ class ChromeTabs {
   /// if called from a non-tab context (for example, a background page or popup
   /// view).
   Future<Tab?> getCurrent() async {
-    var $res = await promiseToFuture<$js.Tab?>($js.chrome.tabs.getCurrent());
+    var $res = await $js.chrome.tabs.getCurrent().toDart;
     return $res?.let(Tab.fromJS);
   }
 
@@ -65,10 +63,12 @@ class ChromeTabs {
     int tabId,
     Object request,
   ) async {
-    var $res = await promiseToFuture<JSAny?>($js.chrome.tabs.sendRequest(
-      tabId,
-      request.jsify()!,
-    ));
+    var $res = await $js.chrome.tabs
+        .sendRequest(
+          tabId,
+          request.jsify()!,
+        )
+        .toDart;
     return $res?.dartify();
   }
 
@@ -83,11 +83,13 @@ class ChromeTabs {
     Object message,
     SendMessageOptions? options,
   ) async {
-    var $res = await promiseToFuture<JSAny?>($js.chrome.tabs.sendMessage(
-      tabId,
-      message.jsify()!,
-      options?.toJS,
-    ));
+    var $res = await $js.chrome.tabs
+        .sendMessage(
+          tabId,
+          message.jsify()!,
+          options?.toJS,
+        )
+        .toDart;
     return $res?.dartify();
   }
 
@@ -95,8 +97,7 @@ class ChromeTabs {
   /// [windowId] Defaults to the [current window](windows#current-window).
   @Deprecated(r'Please use $(ref:tabs.query) <code>{active: true}</code>.')
   Future<Tab> getSelected(int? windowId) async {
-    var $res =
-        await promiseToFuture<$js.Tab>($js.chrome.tabs.getSelected(windowId));
+    var $res = await $js.chrome.tabs.getSelected(windowId).toDart;
     return Tab.fromJS($res);
   }
 
@@ -105,39 +106,34 @@ class ChromeTabs {
   @Deprecated(
       r'Please use $(ref:tabs.query) <code>{windowId: windowId}</code>.')
   Future<List<Tab>> getAllInWindow(int? windowId) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.tabs.getAllInWindow(windowId));
+    var $res = await $js.chrome.tabs.getAllInWindow(windowId).toDart;
     return $res.toDart.cast<$js.Tab>().map((e) => Tab.fromJS(e)).toList();
   }
 
   /// Creates a new tab.
   Future<Tab> create(CreateProperties createProperties) async {
-    var $res = await promiseToFuture<$js.Tab>(
-        $js.chrome.tabs.create(createProperties.toJS));
+    var $res = await $js.chrome.tabs.create(createProperties.toJS).toDart;
     return Tab.fromJS($res);
   }
 
   /// Duplicates a tab.
   /// [tabId] The ID of the tab to duplicate.
   Future<Tab?> duplicate(int tabId) async {
-    var $res =
-        await promiseToFuture<$js.Tab?>($js.chrome.tabs.duplicate(tabId));
+    var $res = await $js.chrome.tabs.duplicate(tabId).toDart;
     return $res?.let(Tab.fromJS);
   }
 
   /// Gets all tabs that have the specified properties, or all tabs if no
   /// properties are specified.
   Future<List<Tab>> query(QueryInfo queryInfo) async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.tabs.query(queryInfo.toJS));
+    var $res = await $js.chrome.tabs.query(queryInfo.toJS).toDart;
     return $res.toDart.cast<$js.Tab>().map((e) => Tab.fromJS(e)).toList();
   }
 
   /// Highlights the given tabs and focuses on the first of group. Will appear
   /// to do nothing if the specified tab is currently active.
   Future<Window> highlight(HighlightInfo highlightInfo) async {
-    var $res = await promiseToFuture<$js_windows.Window>(
-        $js.chrome.tabs.highlight(highlightInfo.toJS));
+    var $res = await $js.chrome.tabs.highlight(highlightInfo.toJS).toDart;
     return Window.fromJS($res);
   }
 
@@ -149,10 +145,12 @@ class ChromeTabs {
     int? tabId,
     UpdateProperties updateProperties,
   ) async {
-    var $res = await promiseToFuture<$js.Tab?>($js.chrome.tabs.update(
-      tabId,
-      updateProperties.toJS,
-    ));
+    var $res = await $js.chrome.tabs
+        .update(
+          tabId,
+          updateProperties.toJS,
+        )
+        .toDart;
     return $res?.let(Tab.fromJS);
   }
 
@@ -164,15 +162,17 @@ class ChromeTabs {
     Object tabIds,
     MoveProperties moveProperties,
   ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.tabs.move(
-      switch (tabIds) {
-        int() => tabIds.jsify()!,
-        List<int>() => tabIds.toJSArray((e) => e),
-        _ => throw UnsupportedError(
-            'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
-      },
-      moveProperties.toJS,
-    ));
+    var $res = await $js.chrome.tabs
+        .move(
+          switch (tabIds) {
+            int() => tabIds.toJS,
+            List<int>() => tabIds.toJSArray((e) => e.toJS),
+            _ => throw UnsupportedError(
+                'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
+          },
+          moveProperties.toJS,
+        )
+        .toDart;
     return $res.when(
       isOther: (v) => Tab.fromJS((v as $js.Tab)),
       isArray: (v) =>
@@ -187,28 +187,32 @@ class ChromeTabs {
     int? tabId,
     ReloadProperties? reloadProperties,
   ) async {
-    await promiseToFuture<void>($js.chrome.tabs.reload(
-      tabId,
-      reloadProperties?.toJS,
-    ));
+    await $js.chrome.tabs
+        .reload(
+          tabId,
+          reloadProperties?.toJS,
+        )
+        .toDart;
   }
 
   /// Closes one or more tabs.
   /// [tabIds] The tab ID or list of tab IDs to close.
   Future<void> remove(Object tabIds) async {
-    await promiseToFuture<void>($js.chrome.tabs.remove(switch (tabIds) {
-      int() => tabIds.jsify()!,
-      List<int>() => tabIds.toJSArray((e) => e),
-      _ => throw UnsupportedError(
-          'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
-    }));
+    await $js.chrome.tabs
+        .remove(switch (tabIds) {
+          int() => tabIds.toJS,
+          List<int>() => tabIds.toJSArray((e) => e.toJS),
+          _ => throw UnsupportedError(
+              'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
+        })
+        .toDart;
   }
 
   /// Adds one or more tabs to a specified group, or if no group is specified,
   /// adds the given tabs to a newly created group.
   Future<int> group(GroupOptions options) async {
-    var $res = await promiseToFuture<int>($js.chrome.tabs.group(options.toJS));
-    return $res;
+    var $res = await $js.chrome.tabs.group(options.toJS).toDart;
+    return $res.toDartInt;
   }
 
   /// Removes one or more tabs from their respective groups. If any groups
@@ -216,21 +220,22 @@ class ChromeTabs {
   /// [tabIds] The tab ID or list of tab IDs to remove from their respective
   /// groups.
   Future<void> ungroup(Object tabIds) async {
-    await promiseToFuture<void>($js.chrome.tabs.ungroup(switch (tabIds) {
-      int() => tabIds.jsify()!,
-      List<int>() => tabIds.toJSArray((e) => e),
-      _ => throw UnsupportedError(
-          'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
-    }));
+    await $js.chrome.tabs
+        .ungroup(switch (tabIds) {
+          int() => tabIds.toJS,
+          List<int>() => tabIds.toJSArray((e) => e.toJS),
+          _ => throw UnsupportedError(
+              'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
+        })
+        .toDart;
   }
 
   /// Detects the primary language of the content in a tab.
   /// [tabId] Defaults to the active tab of the [current
   /// window](windows#current-window).
   Future<String> detectLanguage(int? tabId) async {
-    var $res =
-        await promiseToFuture<String>($js.chrome.tabs.detectLanguage(tabId));
-    return $res;
+    var $res = await $js.chrome.tabs.detectLanguage(tabId).toDart;
+    return $res.toDart;
   }
 
   /// Captures the visible area of the currently active tab in the specified
@@ -248,11 +253,13 @@ class ChromeTabs {
     int? windowId,
     ImageDetails? options,
   ) async {
-    var $res = await promiseToFuture<String>($js.chrome.tabs.captureVisibleTab(
-      windowId,
-      options?.toJS,
-    ));
-    return $res;
+    var $res = await $js.chrome.tabs
+        .captureVisibleTab(
+          windowId,
+          options?.toJS,
+        )
+        .toDart;
+    return $res.toDart;
   }
 
   /// Injects JavaScript code into a page. For details, see the [programmatic
@@ -268,10 +275,12 @@ class ChromeTabs {
     int? tabId,
     InjectDetails details,
   ) async {
-    var $res = await promiseToFuture<JSArray?>($js.chrome.tabs.executeScript(
-      tabId,
-      details.toJS,
-    ));
+    var $res = await $js.chrome.tabs
+        .executeScript(
+          tabId,
+          details.toJS,
+        )
+        .toDart;
     return $res?.toDart.cast<JSAny>().map((e) => e.dartify()!).toList();
   }
 
@@ -289,10 +298,12 @@ class ChromeTabs {
     int? tabId,
     InjectDetails details,
   ) async {
-    await promiseToFuture<void>($js.chrome.tabs.insertCSS(
-      tabId,
-      details.toJS,
-    ));
+    await $js.chrome.tabs
+        .insertCSS(
+          tabId,
+          details.toJS,
+        )
+        .toDart;
   }
 
   /// Removes from a page CSS that was previously injected by a call to
@@ -307,10 +318,12 @@ class ChromeTabs {
     int? tabId,
     DeleteInjectionDetails details,
   ) async {
-    await promiseToFuture<void>($js.chrome.tabs.removeCSS(
-      tabId,
-      details.toJS,
-    ));
+    await $js.chrome.tabs
+        .removeCSS(
+          tabId,
+          details.toJS,
+        )
+        .toDart;
   }
 
   /// Zooms a specified tab.
@@ -324,10 +337,12 @@ class ChromeTabs {
     int? tabId,
     double zoomFactor,
   ) async {
-    await promiseToFuture<void>($js.chrome.tabs.setZoom(
-      tabId,
-      zoomFactor,
-    ));
+    await $js.chrome.tabs
+        .setZoom(
+          tabId,
+          zoomFactor,
+        )
+        .toDart;
   }
 
   /// Gets the current zoom factor of a specified tab.
@@ -336,8 +351,8 @@ class ChromeTabs {
   /// [returns] Called with the tab's current zoom factor after it has been
   /// fetched.
   Future<double> getZoom(int? tabId) async {
-    var $res = await promiseToFuture<double>($js.chrome.tabs.getZoom(tabId));
-    return $res;
+    var $res = await $js.chrome.tabs.getZoom(tabId).toDart;
+    return $res.toDartDouble;
   }
 
   /// Sets the zoom settings for a specified tab, which define how zoom changes
@@ -350,10 +365,12 @@ class ChromeTabs {
     int? tabId,
     ZoomSettings zoomSettings,
   ) async {
-    await promiseToFuture<void>($js.chrome.tabs.setZoomSettings(
-      tabId,
-      zoomSettings.toJS,
-    ));
+    await $js.chrome.tabs
+        .setZoomSettings(
+          tabId,
+          zoomSettings.toJS,
+        )
+        .toDart;
   }
 
   /// Gets the current zoom settings of a specified tab.
@@ -361,8 +378,7 @@ class ChromeTabs {
   /// defaults to the active tab of the current window.
   /// [returns] Called with the tab's current zoom settings.
   Future<ZoomSettings> getZoomSettings(int? tabId) async {
-    var $res = await promiseToFuture<$js.ZoomSettings>(
-        $js.chrome.tabs.getZoomSettings(tabId));
+    var $res = await $js.chrome.tabs.getZoomSettings(tabId).toDart;
     return ZoomSettings.fromJS($res);
   }
 
@@ -374,7 +390,7 @@ class ChromeTabs {
   /// discardable tabs exist.
   /// [returns] Called after the operation is completed.
   Future<Tab?> discard(int? tabId) async {
-    var $res = await promiseToFuture<$js.Tab?>($js.chrome.tabs.discard(tabId));
+    var $res = await $js.chrome.tabs.discard(tabId).toDart;
     return $res?.let(Tab.fromJS);
   }
 
@@ -382,14 +398,14 @@ class ChromeTabs {
   /// [tabId] The ID of the tab to navigate forward; defaults to the selected
   /// tab of the current window.
   Future<void> goForward(int? tabId) async {
-    await promiseToFuture<void>($js.chrome.tabs.goForward(tabId));
+    await $js.chrome.tabs.goForward(tabId).toDart;
   }
 
   /// Go back to the previous page, if one is available.
   /// [tabId] The ID of the tab to navigate back; defaults to the selected tab
   /// of the current window.
   Future<void> goBack(int? tabId) async {
-    await promiseToFuture<void>($js.chrome.tabs.goBack(tabId));
+    await $js.chrome.tabs.goBack(tabId).toDart;
   }
 
   /// The maximum number of times that [captureVisibleTab] can be called per
@@ -559,6 +575,7 @@ enum TabStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static TabStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -581,6 +598,7 @@ enum MutedInfoReason {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static MutedInfoReason fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -609,6 +627,7 @@ enum ZoomSettingsMode {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ZoomSettingsMode fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -637,6 +656,7 @@ enum ZoomSettingsScope {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ZoomSettingsScope fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -656,6 +676,7 @@ enum WindowType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static WindowType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -1315,7 +1336,7 @@ class OnHighlightChangedSelectInfo {
     required List<int> tabIds,
   }) : _wrapped = $js.OnHighlightChangedSelectInfo(
           windowId: windowId,
-          tabIds: tabIds.toJSArray((e) => e),
+          tabIds: tabIds.toJSArray((e) => e.toJS),
         );
 
   final $js.OnHighlightChangedSelectInfo _wrapped;
@@ -1331,10 +1352,10 @@ class OnHighlightChangedSelectInfo {
 
   /// All highlighted tabs in the window.
   List<int> get tabIds =>
-      _wrapped.tabIds.toDart.cast<int>().map((e) => e).toList();
+      _wrapped.tabIds.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList();
 
   set tabIds(List<int> v) {
-    _wrapped.tabIds = v.toJSArray((e) => e);
+    _wrapped.tabIds = v.toJSArray((e) => e.toJS);
   }
 }
 
@@ -1349,7 +1370,7 @@ class OnHighlightedHighlightInfo {
     required List<int> tabIds,
   }) : _wrapped = $js.OnHighlightedHighlightInfo(
           windowId: windowId,
-          tabIds: tabIds.toJSArray((e) => e),
+          tabIds: tabIds.toJSArray((e) => e.toJS),
         );
 
   final $js.OnHighlightedHighlightInfo _wrapped;
@@ -1365,10 +1386,10 @@ class OnHighlightedHighlightInfo {
 
   /// All highlighted tabs in the window.
   List<int> get tabIds =>
-      _wrapped.tabIds.toDart.cast<int>().map((e) => e).toList();
+      _wrapped.tabIds.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList();
 
   set tabIds(List<int> v) {
-    _wrapped.tabIds = v.toJSArray((e) => e);
+    _wrapped.tabIds = v.toJSArray((e) => e.toJS);
   }
 }
 
@@ -1770,7 +1791,7 @@ class QueryInfo {
           status: status?.toJS,
           title: title,
           url: switch (url) {
-            String() => url.jsify()!,
+            String() => url.toJS,
             List() => url.toJSArrayString(),
             null => null,
             _ => throw UnsupportedError(
@@ -1872,12 +1893,12 @@ class QueryInfo {
   /// does not have the `"tabs"` permission.
   Object? get url => _wrapped.url?.when(
         isString: (v) => v,
-        isArray: (v) => v.toDart.cast<String>().map((e) => e).toList(),
+        isArray: (v) => v.toDart.cast<JSString>().map((e) => e.toDart).toList(),
       );
 
   set url(Object? v) {
     _wrapped.url = switch (v) {
-      String() => v.jsify()!,
+      String() => v.toJS,
       List() => v.toJSArrayString(),
       null => null,
       _ => throw UnsupportedError(
@@ -1928,8 +1949,8 @@ class HighlightInfo {
   }) : _wrapped = $js.HighlightInfo(
           windowId: windowId,
           tabs: switch (tabs) {
-            List<int>() => tabs.toJSArray((e) => e),
-            int() => tabs.jsify()!,
+            List<int>() => tabs.toJSArray((e) => e.toJS),
+            int() => tabs.toJS,
             _ => throw UnsupportedError(
                 'Received type: ${tabs.runtimeType}. Supported types are: List<int>, int')
           },
@@ -1948,14 +1969,15 @@ class HighlightInfo {
 
   /// One or more tab indices to highlight.
   Object get tabs => _wrapped.tabs.when(
-        isArray: (v) => v.toDart.cast<int>().map((e) => e).toList(),
+        isArray: (v) =>
+            v.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList(),
         isInt: (v) => v,
       );
 
   set tabs(Object v) {
     _wrapped.tabs = switch (v) {
-      List<int>() => v.toJSArray((e) => e),
-      int() => v.jsify()!,
+      List<int>() => v.toJSArray((e) => e.toJS),
+      int() => v.toJS,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: List<int>, int')
     };
@@ -2141,8 +2163,8 @@ class GroupOptions {
     GroupOptionsCreateProperties? createProperties,
   }) : _wrapped = $js.GroupOptions(
           tabIds: switch (tabIds) {
-            int() => tabIds.jsify()!,
-            List<int>() => tabIds.toJSArray((e) => e),
+            int() => tabIds.toJS,
+            List<int>() => tabIds.toJSArray((e) => e.toJS),
             _ => throw UnsupportedError(
                 'Received type: ${tabIds.runtimeType}. Supported types are: int, List<int>')
           },
@@ -2157,13 +2179,14 @@ class GroupOptions {
   /// The tab ID or list of tab IDs to add to the specified group.
   Object get tabIds => _wrapped.tabIds.when(
         isInt: (v) => v,
-        isArray: (v) => v.toDart.cast<int>().map((e) => e).toList(),
+        isArray: (v) =>
+            v.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList(),
       );
 
   set tabIds(Object v) {
     _wrapped.tabIds = switch (v) {
-      int() => v.jsify()!,
-      List<int>() => v.toJSArray((e) => e),
+      int() => v.toJS,
+      List<int>() => v.toJSArray((e) => e.toJS),
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, List<int>')
     };

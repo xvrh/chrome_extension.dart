@@ -47,6 +47,7 @@ enum Scheme {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Scheme fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -65,6 +66,7 @@ enum Mode {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Mode fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -148,7 +150,7 @@ class ProxyRules {
           proxyForHttps: proxyForHttps?.toJS,
           proxyForFtp: proxyForFtp?.toJS,
           fallbackProxy: fallbackProxy?.toJS,
-          bypassList: bypassList?.toJSArray((e) => e),
+          bypassList: bypassList?.toJSArray((e) => e.toJS),
         );
 
   final $js.ProxyRules _wrapped;
@@ -196,11 +198,13 @@ class ProxyRules {
   }
 
   /// List of servers to connect to without a proxy server.
-  List<String>? get bypassList =>
-      _wrapped.bypassList?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get bypassList => _wrapped.bypassList?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set bypassList(List<String>? v) {
-    _wrapped.bypassList = v?.toJSArray((e) => e);
+    _wrapped.bypassList = v?.toJSArray((e) => e.toJS);
   }
 }
 

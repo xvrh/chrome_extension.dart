@@ -47,7 +47,7 @@ extension type ChromeSetting._(JSObject _) implements JSObject {
   external factory ChromeSetting();
 
   /// Gets the value of a setting.
-  external JSPromise get(
+  external JSPromise<GetCallbackDetails> get(
 
       /// Which setting to consider.
       GetDetails details);

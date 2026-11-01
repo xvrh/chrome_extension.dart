@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/scripting.dart' as $js;
@@ -31,8 +30,7 @@ class ChromeScripting {
   /// array contains the result of execution for each frame where the
   /// injection succeeded.
   Future<List<InjectionResult>> executeScript(ScriptInjection injection) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.scripting.executeScript(injection.toJS));
+    var $res = await $js.chrome.scripting.executeScript(injection.toJS).toDart;
     return $res.toDart
         .cast<$js.InjectionResult>()
         .map((e) => InjectionResult.fromJS(e))
@@ -44,7 +42,7 @@ class ChromeScripting {
   /// |injection|: The details of the styles to insert.
   /// |callback|: Invoked upon completion of the insertion.
   Future<void> insertCSS(CSSInjection injection) async {
-    await promiseToFuture<void>($js.chrome.scripting.insertCSS(injection.toJS));
+    await $js.chrome.scripting.insertCSS(injection.toJS).toDart;
   }
 
   /// Removes a CSS stylesheet that was previously inserted by this extension
@@ -55,7 +53,7 @@ class ChromeScripting {
   /// Attempting to remove a non-existent stylesheet is a no-op.
   /// |callback|: A callback to be invoked upon the completion of the removal.
   Future<void> removeCSS(CSSInjection injection) async {
-    await promiseToFuture<void>($js.chrome.scripting.removeCSS(injection.toJS));
+    await $js.chrome.scripting.removeCSS(injection.toJS).toDart;
   }
 
   /// Registers one or more content scripts for this extension.
@@ -66,8 +64,9 @@ class ChromeScripting {
   /// registered or if an error has occurred.
   Future<void> registerContentScripts(
       List<RegisteredContentScript> scripts) async {
-    await promiseToFuture<void>($js.chrome.scripting
-        .registerContentScripts(scripts.toJSArray((e) => e.toJS)));
+    await $js.chrome.scripting
+        .registerContentScripts(scripts.toJSArray((e) => e.toJS))
+        .toDart;
   }
 
   /// Returns all dynamically registered content scripts for this extension
@@ -76,8 +75,9 @@ class ChromeScripting {
   /// scripts.
   Future<List<RegisteredContentScript>> getRegisteredContentScripts(
       ContentScriptFilter? filter) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.scripting.getRegisteredContentScripts(filter?.toJS));
+    var $res = await $js.chrome.scripting
+        .getRegisteredContentScripts(filter?.toJS)
+        .toDart;
     return $res.toDart
         .cast<$js.RegisteredContentScript>()
         .map((e) => RegisteredContentScript.fromJS(e))
@@ -91,8 +91,7 @@ class ChromeScripting {
   /// |callback|: A callback to be invoked once scripts have been unregistered
   /// or if an error has occurred.
   Future<void> unregisterContentScripts(ContentScriptFilter? filter) async {
-    await promiseToFuture<void>(
-        $js.chrome.scripting.unregisterContentScripts(filter?.toJS));
+    await $js.chrome.scripting.unregisterContentScripts(filter?.toJS).toDart;
   }
 
   /// Updates one or more content scripts for this extension.
@@ -105,8 +104,9 @@ class ChromeScripting {
   /// if an error has occurred.
   Future<void> updateContentScripts(
       List<RegisteredContentScript> scripts) async {
-    await promiseToFuture<void>($js.chrome.scripting
-        .updateContentScripts(scripts.toJSArray((e) => e.toJS)));
+    await $js.chrome.scripting
+        .updateContentScripts(scripts.toJSArray((e) => e.toJS))
+        .toDart;
   }
 
   /// An object available for content scripts running in isolated worlds to use
@@ -130,6 +130,7 @@ enum StyleOrigin {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static StyleOrigin fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -151,6 +152,7 @@ enum ExecutionWorld {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ExecutionWorld fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -182,8 +184,8 @@ class InjectionTarget {
     bool? allFrames,
   }) : _wrapped = $js.InjectionTarget(
           tabId: tabId,
-          frameIds: frameIds?.toJSArray((e) => e),
-          documentIds: documentIds?.toJSArray((e) => e),
+          frameIds: frameIds?.toJSArray((e) => e.toJS),
+          documentIds: documentIds?.toJSArray((e) => e.toJS),
           allFrames: allFrames,
         );
 
@@ -200,22 +202,26 @@ class InjectionTarget {
 
   /// The [IDs](https://developer.chrome.com/extensions/webNavigation#frame_ids)
   /// of specific frames to inject into.
-  List<int>? get frameIds =>
-      _wrapped.frameIds?.toDart.cast<int>().map((e) => e).toList();
+  List<int>? get frameIds => _wrapped.frameIds?.toDart
+      .cast<JSNumber>()
+      .map((e) => e.toDartInt)
+      .toList();
 
   set frameIds(List<int>? v) {
-    _wrapped.frameIds = v?.toJSArray((e) => e);
+    _wrapped.frameIds = v?.toJSArray((e) => e.toJS);
   }
 
   /// The
   /// [IDs](https://developer.chrome.com/extensions/webNavigation#document_ids)
   /// of specific documentIds to inject into. This must not be set if
   /// `frameIds` is set.
-  List<String>? get documentIds =>
-      _wrapped.documentIds?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get documentIds => _wrapped.documentIds?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set documentIds(List<String>? v) {
-    _wrapped.documentIds = v?.toJSArray((e) => e);
+    _wrapped.documentIds = v?.toJSArray((e) => e.toJS);
   }
 
   /// Whether the script should inject into all frames within the tab. Defaults
@@ -273,7 +279,7 @@ class ScriptInjection {
           func: func,
           args: args?.toJSArray((e) => e.jsify()!),
           function: function,
-          files: files?.toJSArray((e) => e),
+          files: files?.toJSArray((e) => e.toJS),
           target: target.toJS,
           world: world?.toJS,
           injectImmediately: injectImmediately,
@@ -320,10 +326,10 @@ class ScriptInjection {
   /// Exactly one of `files` or `func` must be
   /// specified.
   List<String>? get files =>
-      _wrapped.files?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.files?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set files(List<String>? v) {
-    _wrapped.files = v?.toJSArray((e) => e);
+    _wrapped.files = v?.toJSArray((e) => e.toJS);
   }
 
   /// Details specifying the target into which to inject the script.
@@ -375,7 +381,7 @@ class CSSInjection {
   }) : _wrapped = $js.CSSInjection(
           target: target.toJS,
           css: css,
-          files: files?.toJSArray((e) => e),
+          files: files?.toJSArray((e) => e.toJS),
           origin: origin?.toJS,
         );
 
@@ -404,10 +410,10 @@ class CSSInjection {
   /// Exactly one of `files` and `css` must be
   /// specified.
   List<String>? get files =>
-      _wrapped.files?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.files?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set files(List<String>? v) {
-    _wrapped.files = v?.toJSArray((e) => e);
+    _wrapped.files = v?.toJSArray((e) => e.toJS);
   }
 
   /// The style origin for the injection. Defaults to `'AUTHOR'`.
@@ -520,10 +526,10 @@ class RegisteredContentScript {
     ExecutionWorld? world,
   }) : _wrapped = $js.RegisteredContentScript(
           id: id,
-          matches: matches?.toJSArray((e) => e),
-          excludeMatches: excludeMatches?.toJSArray((e) => e),
-          css: css?.toJSArray((e) => e),
-          js: js?.toJSArray((e) => e),
+          matches: matches?.toJSArray((e) => e.toJS),
+          excludeMatches: excludeMatches?.toJSArray((e) => e.toJS),
+          css: css?.toJSArray((e) => e.toJS),
+          js: js?.toJSArray((e) => e.toJS),
           allFrames: allFrames,
           matchOriginAsFallback: matchOriginAsFallback,
           runAt: runAt?.toJS,
@@ -548,39 +554,41 @@ class RegisteredContentScript {
   /// details on the syntax of these strings. Must be specified for
   /// [registerContentScripts].
   List<String>? get matches =>
-      _wrapped.matches?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.matches?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set matches(List<String>? v) {
-    _wrapped.matches = v?.toJSArray((e) => e);
+    _wrapped.matches = v?.toJSArray((e) => e.toJS);
   }
 
   /// Excludes pages that this content script would otherwise be injected into.
   /// See [Match Patterns](develop/concepts/match-patterns) for
   /// more details on the syntax of these strings.
-  List<String>? get excludeMatches =>
-      _wrapped.excludeMatches?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get excludeMatches => _wrapped.excludeMatches?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set excludeMatches(List<String>? v) {
-    _wrapped.excludeMatches = v?.toJSArray((e) => e);
+    _wrapped.excludeMatches = v?.toJSArray((e) => e.toJS);
   }
 
   /// The list of CSS files to be injected into matching pages. These are
   /// injected in the order they appear in this array, before any DOM is
   /// constructed or displayed for the page.
   List<String>? get css =>
-      _wrapped.css?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.css?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set css(List<String>? v) {
-    _wrapped.css = v?.toJSArray((e) => e);
+    _wrapped.css = v?.toJSArray((e) => e.toJS);
   }
 
   /// The list of JavaScript files to be injected into matching pages. These
   /// are injected in the order they appear in this array.
   List<String>? get js =>
-      _wrapped.js?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.js?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set js(List<String>? v) {
-    _wrapped.js = v?.toJSArray((e) => e);
+    _wrapped.js = v?.toJSArray((e) => e.toJS);
   }
 
   /// If specified true, it will inject into all frames, even if the frame is
@@ -640,7 +648,7 @@ class ContentScriptFilter {
       /// If specified, [getRegisteredContentScripts] will only return scripts
       /// with an id specified in this list.
       List<String>? ids})
-      : _wrapped = $js.ContentScriptFilter(ids: ids?.toJSArray((e) => e));
+      : _wrapped = $js.ContentScriptFilter(ids: ids?.toJSArray((e) => e.toJS));
 
   final $js.ContentScriptFilter _wrapped;
 
@@ -649,9 +657,9 @@ class ContentScriptFilter {
   /// If specified, [getRegisteredContentScripts] will only return scripts
   /// with an id specified in this list.
   List<String>? get ids =>
-      _wrapped.ids?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.ids?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set ids(List<String>? v) {
-    _wrapped.ids = v?.toJSArray((e) => e);
+    _wrapped.ids = v?.toJSArray((e) => e.toJS);
   }
 }

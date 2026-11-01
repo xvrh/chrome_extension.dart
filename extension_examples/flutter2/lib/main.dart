@@ -22,9 +22,9 @@ void sizePopUp({int? heightPx, int? widthPx}) {
 }
 
 final Map<String, Widget Function(BuildContext)> routes = {
-  'options': (_) {
+  'options': (context) {
     sizePopUp(heightPx: 400, widthPx: 400);
-    return buildOptionsPage(_);
+    return buildOptionsPage(context);
   },
   'popup': (_) {
     sizePopUp(heightPx: 350, widthPx: 650);
@@ -54,7 +54,7 @@ Widget buildOptionsPage(BuildContext context) {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

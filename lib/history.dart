@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/history.dart' as $js;
 
@@ -26,8 +25,7 @@ class ChromeHistory {
   /// Searches the history for the last visit time of each page matching the
   /// query.
   Future<List<HistoryItem>> search(SearchQuery query) async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.history.search(query.toJS));
+    var $res = await $js.chrome.history.search(query.toJS).toDart;
     return $res.toDart
         .cast<$js.HistoryItem>()
         .map((e) => HistoryItem.fromJS(e))
@@ -36,8 +34,7 @@ class ChromeHistory {
 
   /// Retrieves information about visits to a URL.
   Future<List<VisitItem>> getVisits(UrlDetails details) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.history.getVisits(details.toJS));
+    var $res = await $js.chrome.history.getVisits(details.toJS).toDart;
     return $res.toDart
         .cast<$js.VisitItem>()
         .map((e) => VisitItem.fromJS(e))
@@ -47,24 +44,24 @@ class ChromeHistory {
   /// Adds a URL to the history at the current time with a [transition
   /// type](#transition_types) of "link".
   Future<void> addUrl(UrlDetails details) async {
-    await promiseToFuture<void>($js.chrome.history.addUrl(details.toJS));
+    await $js.chrome.history.addUrl(details.toJS).toDart;
   }
 
   /// Removes all occurrences of the given URL from the history.
   Future<void> deleteUrl(UrlDetails details) async {
-    await promiseToFuture<void>($js.chrome.history.deleteUrl(details.toJS));
+    await $js.chrome.history.deleteUrl(details.toJS).toDart;
   }
 
   /// Removes all items within the specified date range from the history.  Pages
   /// will not be removed from the history unless all visits fall within the
   /// range.
   Future<void> deleteRange(DeleteRangeRange range) async {
-    await promiseToFuture<void>($js.chrome.history.deleteRange(range.toJS));
+    await $js.chrome.history.deleteRange(range.toJS).toDart;
   }
 
   /// Deletes all items from the history.
   Future<void> deleteAll() async {
-    await promiseToFuture<void>($js.chrome.history.deleteAll());
+    await $js.chrome.history.deleteAll().toDart;
   }
 
   /// Fired when a URL is visited, providing the HistoryItem data for that URL.
@@ -102,6 +99,7 @@ enum TransitionType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static TransitionType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -301,7 +299,7 @@ class OnVisitRemovedRemoved {
     List<String>? urls,
   }) : _wrapped = $js.OnVisitRemovedRemoved(
           allHistory: allHistory,
-          urls: urls?.toJSArray((e) => e),
+          urls: urls?.toJSArray((e) => e.toJS),
         );
 
   final $js.OnVisitRemovedRemoved _wrapped;
@@ -316,10 +314,10 @@ class OnVisitRemovedRemoved {
   }
 
   List<String>? get urls =>
-      _wrapped.urls?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.urls?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set urls(List<String>? v) {
-    _wrapped.urls = v?.toJSArray((e) => e);
+    _wrapped.urls = v?.toJSArray((e) => e.toJS);
   }
 }
 

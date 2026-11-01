@@ -33,7 +33,7 @@ extension type JSSidePanel._(JSObject _) {
   /// Returns the active panel configuration.
   /// |options|: Specifies the context to return the configuration for.
   /// |callback|: Called with the active panel configuration.
-  external JSPromise getOptions(GetPanelOptions options);
+  external JSPromise<PanelOptions> getOptions(GetPanelOptions options);
 
   /// Configures the extension's side panel behavior. This is an upsert
   /// operation.
@@ -43,7 +43,7 @@ extension type JSSidePanel._(JSObject _) {
 
   /// Returns the extension's current side panel behavior.
   /// |callback|: Called with the extension's side panel behavior.
-  external JSPromise getPanelBehavior();
+  external JSPromise<PanelBehavior> getPanelBehavior();
 
   /// Opens the side panel for the extension.
   /// This may only be called in response to a user action.

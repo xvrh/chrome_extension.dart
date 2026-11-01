@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/runtime.dart' as $js;
 import 'tabs.dart';
@@ -29,8 +28,7 @@ class ChromeRuntime {
   /// the system will ensure it is loaded before calling the callback. If there
   /// is no background page, an error is set.
   Future<JSObject?> getBackgroundPage() async {
-    var $res = await promiseToFuture<JSObject?>(
-        $js.chrome.runtime.getBackgroundPage());
+    var $res = await $js.chrome.runtime.getBackgroundPage().toDart;
     return $res;
   }
 
@@ -45,7 +43,7 @@ class ChromeRuntime {
   /// If your Extension does not declare an options page, or Chrome failed to
   /// create one for some other reason, the callback will set [lastError].
   Future<void> openOptionsPage() async {
-    await promiseToFuture<void>($js.chrome.runtime.openOptionsPage());
+    await $js.chrome.runtime.openOptionsPage().toDart;
   }
 
   /// Returns details about the app or extension from the manifest. The object
@@ -74,7 +72,7 @@ class ChromeRuntime {
   /// [returns] Called when the uninstall URL is set. If the given URL is
   /// invalid, [runtime.lastError] will be set.
   Future<void> setUninstallURL(String url) async {
-    await promiseToFuture<void>($js.chrome.runtime.setUninstallURL(url));
+    await $js.chrome.runtime.setUninstallURL(url).toDart;
   }
 
   /// Reloads the app or extension. This method is not supported in kiosk mode.
@@ -101,8 +99,7 @@ class ChromeRuntime {
   /// function will return the two properties as separate arguments passed to
   /// the callback.
   Future<RequestUpdateCheckCallbackResult> requestUpdateCheck() async {
-    var $res = await promiseToFuture<$js.RequestUpdateCheckCallbackResult>(
-        $js.chrome.runtime.requestUpdateCheck());
+    var $res = await $js.chrome.runtime.requestUpdateCheck().toDart;
     return RequestUpdateCheckCallbackResult.fromJS($res);
   }
 
@@ -122,7 +119,7 @@ class ChromeRuntime {
   /// [returns] A callback to be invoked when a restart request was
   /// successfully rescheduled.
   Future<void> restartAfterDelay(int seconds) async {
-    await promiseToFuture<void>($js.chrome.runtime.restartAfterDelay(seconds));
+    await $js.chrome.runtime.restartAfterDelay(seconds).toDart;
   }
 
   /// Attempts to connect listeners within an extension/app (such as the
@@ -177,11 +174,13 @@ class ChromeRuntime {
     Object message,
     SendMessageOptions? options,
   ) async {
-    var $res = await promiseToFuture<JSAny?>($js.chrome.runtime.sendMessage(
-      extensionId,
-      message.jsify()!,
-      options?.toJS,
-    ));
+    var $res = await $js.chrome.runtime
+        .sendMessage(
+          extensionId,
+          message.jsify()!,
+          options?.toJS,
+        )
+        .toDart;
     return $res?.dartify();
   }
 
@@ -192,26 +191,25 @@ class ChromeRuntime {
     String application,
     Map message,
   ) async {
-    var $res =
-        await promiseToFuture<JSAny>($js.chrome.runtime.sendNativeMessage(
-      application,
-      message.jsify()!,
-    ));
+    var $res = await $js.chrome.runtime
+        .sendNativeMessage(
+          application,
+          message.jsify()!,
+        )
+        .toDart;
     return $res.toDartMap();
   }
 
   /// Returns information about the current platform.
   /// [returns] Called with results
   Future<PlatformInfo> getPlatformInfo() async {
-    var $res = await promiseToFuture<$js.PlatformInfo>(
-        $js.chrome.runtime.getPlatformInfo());
+    var $res = await $js.chrome.runtime.getPlatformInfo().toDart;
     return PlatformInfo.fromJS($res);
   }
 
   /// Returns a DirectoryEntry for the package directory.
   Future<JSObject> getPackageDirectoryEntry() async {
-    var $res = await promiseToFuture<JSObject>(
-        $js.chrome.runtime.getPackageDirectoryEntry());
+    var $res = await $js.chrome.runtime.getPackageDirectoryEntry().toDart;
     return $res;
   }
 
@@ -221,8 +219,7 @@ class ChromeRuntime {
   /// filter matches all contexts.
   /// [returns] Invoked with the matching contexts, if any.
   Future<List<ExtensionContext>> getContexts(ContextFilter filter) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.runtime.getContexts(filter.toJS));
+    var $res = await $js.chrome.runtime.getContexts(filter.toJS).toDart;
     return $res.toDart
         .cast<$js.ExtensionContext>()
         .map((e) => ExtensionContext.fromJS(e))
@@ -409,6 +406,7 @@ enum PlatformOs {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PlatformOs fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -440,6 +438,7 @@ enum PlatformArch {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PlatformArch fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -469,6 +468,7 @@ enum PlatformNaclArch {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PlatformNaclArch fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -492,6 +492,7 @@ enum RequestUpdateCheckStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static RequestUpdateCheckStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -517,6 +518,7 @@ enum OnInstalledReason {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnInstalledReason fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -543,6 +545,7 @@ enum OnRestartRequiredReason {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnRestartRequiredReason fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -570,6 +573,7 @@ enum ContextType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ContextType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -1010,13 +1014,13 @@ class ContextFilter {
     bool? incognito,
   }) : _wrapped = $js.ContextFilter(
           contextTypes: contextTypes?.toJSArray((e) => e.toJS),
-          contextIds: contextIds?.toJSArray((e) => e),
-          tabIds: tabIds?.toJSArray((e) => e),
-          windowIds: windowIds?.toJSArray((e) => e),
-          documentIds: documentIds?.toJSArray((e) => e),
-          frameIds: frameIds?.toJSArray((e) => e),
-          documentUrls: documentUrls?.toJSArray((e) => e),
-          documentOrigins: documentOrigins?.toJSArray((e) => e),
+          contextIds: contextIds?.toJSArray((e) => e.toJS),
+          tabIds: tabIds?.toJSArray((e) => e.toJS),
+          windowIds: windowIds?.toJSArray((e) => e.toJS),
+          documentIds: documentIds?.toJSArray((e) => e.toJS),
+          frameIds: frameIds?.toJSArray((e) => e.toJS),
+          documentUrls: documentUrls?.toJSArray((e) => e.toJS),
+          documentOrigins: documentOrigins?.toJSArray((e) => e.toJS),
           incognito: incognito,
         );
 
@@ -1033,53 +1037,65 @@ class ContextFilter {
     _wrapped.contextTypes = v?.toJSArray((e) => e.toJS);
   }
 
-  List<String>? get contextIds =>
-      _wrapped.contextIds?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get contextIds => _wrapped.contextIds?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set contextIds(List<String>? v) {
-    _wrapped.contextIds = v?.toJSArray((e) => e);
+    _wrapped.contextIds = v?.toJSArray((e) => e.toJS);
   }
 
   List<int>? get tabIds =>
-      _wrapped.tabIds?.toDart.cast<int>().map((e) => e).toList();
+      _wrapped.tabIds?.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList();
 
   set tabIds(List<int>? v) {
-    _wrapped.tabIds = v?.toJSArray((e) => e);
+    _wrapped.tabIds = v?.toJSArray((e) => e.toJS);
   }
 
-  List<int>? get windowIds =>
-      _wrapped.windowIds?.toDart.cast<int>().map((e) => e).toList();
+  List<int>? get windowIds => _wrapped.windowIds?.toDart
+      .cast<JSNumber>()
+      .map((e) => e.toDartInt)
+      .toList();
 
   set windowIds(List<int>? v) {
-    _wrapped.windowIds = v?.toJSArray((e) => e);
+    _wrapped.windowIds = v?.toJSArray((e) => e.toJS);
   }
 
-  List<String>? get documentIds =>
-      _wrapped.documentIds?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get documentIds => _wrapped.documentIds?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set documentIds(List<String>? v) {
-    _wrapped.documentIds = v?.toJSArray((e) => e);
+    _wrapped.documentIds = v?.toJSArray((e) => e.toJS);
   }
 
-  List<int>? get frameIds =>
-      _wrapped.frameIds?.toDart.cast<int>().map((e) => e).toList();
+  List<int>? get frameIds => _wrapped.frameIds?.toDart
+      .cast<JSNumber>()
+      .map((e) => e.toDartInt)
+      .toList();
 
   set frameIds(List<int>? v) {
-    _wrapped.frameIds = v?.toJSArray((e) => e);
+    _wrapped.frameIds = v?.toJSArray((e) => e.toJS);
   }
 
-  List<String>? get documentUrls =>
-      _wrapped.documentUrls?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get documentUrls => _wrapped.documentUrls?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set documentUrls(List<String>? v) {
-    _wrapped.documentUrls = v?.toJSArray((e) => e);
+    _wrapped.documentUrls = v?.toJSArray((e) => e.toJS);
   }
 
-  List<String>? get documentOrigins =>
-      _wrapped.documentOrigins?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get documentOrigins => _wrapped.documentOrigins?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set documentOrigins(List<String>? v) {
-    _wrapped.documentOrigins = v?.toJSArray((e) => e);
+    _wrapped.documentOrigins = v?.toJSArray((e) => e.toJS);
   }
 
   bool? get incognito => _wrapped.incognito;

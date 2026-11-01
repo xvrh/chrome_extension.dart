@@ -13,6 +13,4 @@ extension JSChromeEnterpriseExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSChromeEnterprise {}
+extension type JSChromeEnterprise._(JSObject _) implements JSObject {}

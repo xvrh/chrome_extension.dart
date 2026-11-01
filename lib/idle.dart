@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/idle.dart' as $js;
 
@@ -27,8 +26,8 @@ class ChromeIdle {
   /// detectionIntervalInSeconds seconds have elapsed since the last user
   /// input detected.
   Future<IdleState> queryState(int detectionIntervalInSeconds) async {
-    var $res = await promiseToFuture<$js.IdleState>(
-        $js.chrome.idle.queryState(detectionIntervalInSeconds));
+    var $res =
+        await $js.chrome.idle.queryState(detectionIntervalInSeconds).toDart;
     return IdleState.fromJS($res);
   }
 
@@ -44,8 +43,8 @@ class ChromeIdle {
   /// automatically while idle. Returns a zero duration if the screen is never
   /// locked automatically. Currently supported on Chrome OS only.
   Future<int> getAutoLockDelay() async {
-    var $res = await promiseToFuture<int>($js.chrome.idle.getAutoLockDelay());
-    return $res;
+    var $res = await $js.chrome.idle.getAutoLockDelay().toDart;
+    return $res.toDartInt;
   }
 
   /// Fired when the system changes to an active, idle or locked state. The
@@ -69,6 +68,7 @@ enum IdleState {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static IdleState fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

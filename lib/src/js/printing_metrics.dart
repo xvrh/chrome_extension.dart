@@ -27,7 +27,7 @@ extension JSChromeJSPrintingMetricsExtension on JSChrome {
 
 extension type JSPrintingMetrics._(JSObject _) {
   /// Returns the list of the finished print jobs.
-  external JSPromise getPrintJobs();
+  external JSPromise<JSArray> getPrintJobs();
 
   /// Event fired when the print job is finished.
   /// This includes any of termination statuses: FAILED, CANCELED and PRINTED.

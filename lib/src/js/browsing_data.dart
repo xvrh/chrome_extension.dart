@@ -29,7 +29,7 @@ extension type JSBrowsingData._(JSObject _) {
   /// data' settings UI.  Note: some of the data types included in this API are
   /// not available in the settings UI, and some UI settings control more than
   /// one data type listed here.
-  external JSPromise settings();
+  external JSPromise<SettingsCallbackResult> settings();
 
   /// Clears various types of browsing data stored in a user's profile.
   external JSPromise remove(

@@ -43,7 +43,7 @@ class Rule {
     int? priority,
   }) : _wrapped = $js.Rule(
           id: id,
-          tags: tags?.toJSArray((e) => e),
+          tags: tags?.toJSArray((e) => e.toJS),
           conditions: conditions.toJSArray((e) => e.jsify()!),
           actions: actions.toJSArray((e) => e.jsify()!),
           priority: priority,
@@ -63,10 +63,10 @@ class Rule {
   /// Tags can be used to annotate rules and perform operations on sets of
   /// rules.
   List<String>? get tags =>
-      _wrapped.tags?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.tags?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set tags(List<String>? v) {
-    _wrapped.tags = v?.toJSArray((e) => e);
+    _wrapped.tags = v?.toJSArray((e) => e.toJS);
   }
 
   /// List of conditions that can trigger the actions.
@@ -173,7 +173,7 @@ class Event {
     _wrapped.getRules(
       eventName,
       webViewInstanceId,
-      ruleIdentifiers?.toJSArray((e) => e),
+      ruleIdentifiers?.toJSArray((e) => e.toJS),
       (JSArray rules) {
         if (checkRuntimeLastError($completer)) {
           $completer.complete(rules.toDart
@@ -202,7 +202,7 @@ class Event {
     _wrapped.removeRules(
       eventName,
       webViewInstanceId,
-      ruleIdentifiers?.toJSArray((e) => e),
+      ruleIdentifiers?.toJSArray((e) => e.toJS),
       () {
         if (checkRuntimeLastError($completer)) {
           $completer.complete(null);
@@ -319,10 +319,10 @@ class UrlFilter {
           originAndPathMatches: originAndPathMatches,
           urlPrefix: urlPrefix,
           urlSuffix: urlSuffix,
-          schemes: schemes?.toJSArray((e) => e),
+          schemes: schemes?.toJSArray((e) => e.toJS),
           ports: ports?.toJSArray((e) => switch (e) {
-                int() => e.jsify()!,
-                List<int>() => e.toJSArray((e) => e),
+                int() => e.toJS,
+                List<int>() => e.toJSArray((e) => e.toJS),
                 _ => throw UnsupportedError(
                     'Received type: ${e.runtimeType}. Supported types are: int, List<int>')
               }),
@@ -482,10 +482,10 @@ class UrlFilter {
   /// Matches if the scheme of the URL is equal to any of the schemes specified
   /// in the array.
   List<String>? get schemes =>
-      _wrapped.schemes?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.schemes?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set schemes(List<String>? v) {
-    _wrapped.schemes = v?.toJSArray((e) => e);
+    _wrapped.schemes = v?.toJSArray((e) => e.toJS);
   }
 
   /// Matches if the port of the URL is contained in any of the specified port
@@ -495,14 +495,15 @@ class UrlFilter {
       .cast<JSAny>()
       .map((e) => e.when(
             isInt: (v) => v,
-            isArray: (v) => v.toDart.cast<int>().map((e) => e).toList(),
+            isArray: (v) =>
+                v.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList(),
           ))
       .toList();
 
   set ports(List<Object>? v) {
     _wrapped.ports = v?.toJSArray((e) => switch (e) {
-          int() => e.jsify()!,
-          List<int>() => e.toJSArray((e) => e),
+          int() => e.toJS,
+          List<int>() => e.toJSArray((e) => e.toJS),
           _ => throw UnsupportedError(
               'Received type: ${e.runtimeType}. Supported types are: int, List<int>')
         });

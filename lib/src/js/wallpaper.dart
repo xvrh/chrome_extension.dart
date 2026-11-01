@@ -26,7 +26,7 @@ extension JSChromeJSWallpaperExtension on JSChrome {
 extension type JSWallpaper._(JSObject _) {
   /// Sets wallpaper to the image at _url_ or _wallpaperData_ with the specified
   /// _layout_
-  external JSPromise setWallpaper(SetWallpaperDetails details);
+  external JSPromise<JSArrayBuffer?> setWallpaper(SetWallpaperDetails details);
 }
 
 /// The supported wallpaper layouts.

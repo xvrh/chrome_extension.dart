@@ -38,7 +38,7 @@ extension type JSNotifications._(JSObject _) {
   /// that represents the created notification.
   ///
   /// The callback is required before Chrome 42.
-  external JSPromise create(
+  external JSPromise<JSString> create(
     String? notificationId,
     NotificationOptions options,
   );
@@ -50,7 +50,7 @@ extension type JSNotifications._(JSObject _) {
   /// |callback|: Called to indicate whether a matching notification existed.
   ///
   /// The callback is required before Chrome 42.
-  external JSPromise update(
+  external JSPromise<JSBoolean> update(
     String notificationId,
     NotificationOptions options,
   );
@@ -61,16 +61,16 @@ extension type JSNotifications._(JSObject _) {
   /// |callback|: Called to indicate whether a matching notification existed.
   ///
   /// The callback is required before Chrome 42.
-  external JSPromise clear(String notificationId);
+  external JSPromise<JSBoolean> clear(String notificationId);
 
   /// Retrieves all the notifications of this app or extension.
   /// |callback|: Returns the set of notification_ids currently in the system.
-  external JSPromise getAll();
+  external JSPromise<JSAny> getAll();
 
   /// Retrieves whether the user has enabled notifications from this app
   /// or extension.
   /// |callback|: Returns the current permission level.
-  external JSPromise getPermissionLevel();
+  external JSPromise<PermissionLevel> getPermissionLevel();
 
   /// The notification closed, either by the system or by user action.
   external Event get onClosed;

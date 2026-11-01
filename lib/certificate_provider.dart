@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/certificate_provider.dart' as $js;
@@ -32,8 +31,8 @@ class ChromeCertificateProvider {
   /// when the dialog request finishes unsuccessfully (e.g. the dialog was
   /// canceled by the user or was not allowed to be shown).
   Future<PinResponseDetails?> requestPin(RequestPinDetails details) async {
-    var $res = await promiseToFuture<$js.PinResponseDetails?>(
-        $js.chrome.certificateProvider.requestPin(details.toJS));
+    var $res =
+        await $js.chrome.certificateProvider.requestPin(details.toJS).toDart;
     return $res?.let(PinResponseDetails.fromJS);
   }
 
@@ -43,8 +42,7 @@ class ChromeCertificateProvider {
   /// |callback|: To be used by Chrome to send to the extension the status from
   /// their request to close PIN dialog for user.
   Future<void> stopPinRequest(StopPinRequestDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.certificateProvider.stopPinRequest(details.toJS));
+    await $js.chrome.certificateProvider.stopPinRequest(details.toJS).toDart;
   }
 
   /// Sets a list of certificates to use in the browser.
@@ -56,8 +54,7 @@ class ChromeCertificateProvider {
   /// |details|: The certificates to set. Invalid certificates will be ignored.
   /// |callback|: Called upon completion.
   Future<void> setCertificates(SetCertificatesDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.certificateProvider.setCertificates(details.toJS));
+    await $js.chrome.certificateProvider.setCertificates(details.toJS).toDart;
   }
 
   /// Should be called as a response to [onSignatureRequested].
@@ -66,8 +63,7 @@ class ChromeCertificateProvider {
   /// waiting for this call after some time and respond with a timeout
   /// error when this function is called.
   Future<void> reportSignature(ReportSignatureDetails details) async {
-    await promiseToFuture<void>(
-        $js.chrome.certificateProvider.reportSignature(details.toJS));
+    await $js.chrome.certificateProvider.reportSignature(details.toJS).toDart;
   }
 
   /// This event fires if the certificates set via [setCertificates]
@@ -184,6 +180,7 @@ enum Algorithm {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Algorithm fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -201,6 +198,7 @@ enum Error {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Error fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -229,6 +227,7 @@ enum Hash {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Hash fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -248,6 +247,7 @@ enum PinRequestType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PinRequestType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -274,6 +274,7 @@ enum PinRequestErrorType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PinRequestErrorType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

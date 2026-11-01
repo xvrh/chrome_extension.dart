@@ -28,22 +28,22 @@ extension JSChromeJSTabGroupsExtension on JSChrome {
 
 extension type JSTabGroups._(JSObject _) {
   /// Retrieves details about the specified group.
-  external JSPromise get(int groupId);
+  external JSPromise<TabGroup> get(int groupId);
 
   /// Gets all groups that have the specified properties, or all groups if no
   /// properties are specified.
-  external JSPromise query(QueryInfo queryInfo);
+  external JSPromise<JSArray> query(QueryInfo queryInfo);
 
   /// Modifies the properties of a group. Properties that are not specified in
   /// [updateProperties] are not modified.
-  external JSPromise update(
+  external JSPromise<TabGroup?> update(
     /// The ID of the group to modify.
     int groupId,
     UpdateProperties updateProperties,
   );
 
   /// Moves the group and all its tabs within its window, or to a new window.
-  external JSPromise move(
+  external JSPromise<TabGroup?> move(
     /// The ID of the group to move.
     int groupId,
     MoveProperties moveProperties,

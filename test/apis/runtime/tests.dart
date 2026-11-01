@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:checks/checks.dart';
 import 'package:chrome_extension/runtime.dart';
 import 'package:chrome_extension/tabs.dart' as tabs;
@@ -43,7 +42,7 @@ void _tests(TestContext context) async {
 
     var response = await chrome.tabs.sendMessage(tab.id!, 'My message', null);
 
-    check(response as Map).deepEquals({'response': 'My message'});
+    check(response).isA<Map>().deepEquals({'response': 'My message'});
   });
 
   test('sendMessage complex to content script', () async {
@@ -52,7 +51,7 @@ void _tests(TestContext context) async {
     var response =
         await chrome.tabs.sendMessage(tab.id!, {'a': 1, 'b': true}, null);
 
-    check(response as Map).deepEquals({
+    check(response).isA<Map>().deepEquals({
       'response': {'a': 1, 'b': true}
     });
   });
@@ -62,16 +61,13 @@ void _tests(TestContext context) async {
         .query(tabs.QueryInfo(active: true, lastFocusedWindow: true));
     var response = await chrome.tabs.sendMessage(tab.id!, 'async', null);
 
-    check(response as Map).deepEquals({'response': 'async'});
+    check(response).isA<Map>().deepEquals({'response': 'async'});
   });
 
   test('sendMessage no response', () async {
     var [tab] = await chrome.tabs
         .query(tabs.QueryInfo(active: true, lastFocusedWindow: true));
-    expect(
-        () => chrome.tabs
-            .sendMessage(tab.id!, 'no_response', null)
-            .timeout(Duration(milliseconds: 200)),
-        throwsA(isA<TimeoutException>()));
+    var response = await chrome.tabs.sendMessage(tab.id!, 'no_response', null);
+    check(response).isNull();
   });
 }

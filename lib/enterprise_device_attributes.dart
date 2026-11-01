@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'enterprise.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/enterprise_device_attributes.dart' as $js;
@@ -38,9 +37,10 @@ class ChromeEnterpriseDeviceAttributes {
   /// |callback| : Called with the device identifier of the directory API when
   /// received.
   Future<String> getDirectoryDeviceId() async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.enterprise.deviceAttributes.getDirectoryDeviceId());
-    return $res;
+    var $res = await $js.chrome.enterprise.deviceAttributes
+        .getDirectoryDeviceId()
+        .toDart;
+    return $res.toDart;
   }
 
   /// Fetches the device's serial number. Please note the purpose of this API
@@ -50,9 +50,10 @@ class ChromeEnterpriseDeviceAttributes {
   /// If the current user is not affiliated, returns an empty string.
   /// |callback| : Called with the serial number of the device.
   Future<String> getDeviceSerialNumber() async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.enterprise.deviceAttributes.getDeviceSerialNumber());
-    return $res;
+    var $res = await $js.chrome.enterprise.deviceAttributes
+        .getDeviceSerialNumber()
+        .toDart;
+    return $res.toDart;
   }
 
   /// Fetches the administrator-annotated Asset Id.
@@ -60,9 +61,9 @@ class ChromeEnterpriseDeviceAttributes {
   /// administrator, returns an empty string.
   /// |callback| : Called with the Asset ID of the device.
   Future<String> getDeviceAssetId() async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.enterprise.deviceAttributes.getDeviceAssetId());
-    return $res;
+    var $res =
+        await $js.chrome.enterprise.deviceAttributes.getDeviceAssetId().toDart;
+    return $res.toDart;
   }
 
   /// Fetches the administrator-annotated Location.
@@ -70,9 +71,10 @@ class ChromeEnterpriseDeviceAttributes {
   /// set by the administrator, returns an empty string.
   /// |callback| : Called with the Annotated Location of the device.
   Future<String> getDeviceAnnotatedLocation() async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.enterprise.deviceAttributes.getDeviceAnnotatedLocation());
-    return $res;
+    var $res = await $js.chrome.enterprise.deviceAttributes
+        .getDeviceAnnotatedLocation()
+        .toDart;
+    return $res.toDart;
   }
 
   /// Fetches the device's hostname as set by DeviceHostnameTemplate policy.
@@ -80,8 +82,8 @@ class ChromeEnterpriseDeviceAttributes {
   /// enterprise policy, returns an empty string.
   /// |callback| : Called with hostname of the device.
   Future<String> getDeviceHostname() async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.enterprise.deviceAttributes.getDeviceHostname());
-    return $res;
+    var $res =
+        await $js.chrome.enterprise.deviceAttributes.getDeviceHostname().toDart;
+    return $res.toDart;
   }
 }

@@ -27,7 +27,7 @@ extension JSChromeJSTopSitesExtension on JSChrome {
 
 extension type JSTopSites._(JSObject _) {
   /// Gets a list of top sites.
-  external JSPromise get();
+  external JSPromise<JSArray> get();
 }
 extension type MostVisitedURL._(JSObject _) implements JSObject {
   external factory MostVisitedURL({

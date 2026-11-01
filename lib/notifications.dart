@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/notifications.dart' as $js;
@@ -40,11 +39,13 @@ class ChromeNotifications {
     String? notificationId,
     NotificationOptions options,
   ) async {
-    var $res = await promiseToFuture<String>($js.chrome.notifications.create(
-      notificationId,
-      options.toJS,
-    ));
-    return $res;
+    var $res = await $js.chrome.notifications
+        .create(
+          notificationId,
+          options.toJS,
+        )
+        .toDart;
+    return $res.toDart;
   }
 
   /// Updates an existing notification.
@@ -58,11 +59,13 @@ class ChromeNotifications {
     String notificationId,
     NotificationOptions options,
   ) async {
-    var $res = await promiseToFuture<bool>($js.chrome.notifications.update(
-      notificationId,
-      options.toJS,
-    ));
-    return $res;
+    var $res = await $js.chrome.notifications
+        .update(
+          notificationId,
+          options.toJS,
+        )
+        .toDart;
+    return $res.toDart;
   }
 
   /// Clears the specified notification.
@@ -72,15 +75,14 @@ class ChromeNotifications {
   ///
   /// The callback is required before Chrome 42.
   Future<bool> clear(String notificationId) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.notifications.clear(notificationId));
-    return $res;
+    var $res = await $js.chrome.notifications.clear(notificationId).toDart;
+    return $res.toDart;
   }
 
   /// Retrieves all the notifications of this app or extension.
   /// |callback|: Returns the set of notification_ids currently in the system.
   Future<Map> getAll() async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.notifications.getAll());
+    var $res = await $js.chrome.notifications.getAll().toDart;
     return $res.toDartMap();
   }
 
@@ -88,8 +90,7 @@ class ChromeNotifications {
   /// or extension.
   /// |callback|: Returns the current permission level.
   Future<PermissionLevel> getPermissionLevel() async {
-    var $res = await promiseToFuture<$js.PermissionLevel>(
-        $js.chrome.notifications.getPermissionLevel());
+    var $res = await $js.chrome.notifications.getPermissionLevel().toDart;
     return PermissionLevel.fromJS($res);
   }
 
@@ -161,6 +162,7 @@ enum TemplateType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static TemplateType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -181,6 +183,7 @@ enum PermissionLevel {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PermissionLevel fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

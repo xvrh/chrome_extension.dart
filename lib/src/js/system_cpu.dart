@@ -27,7 +27,7 @@ extension JSChromeJSSystemCpuExtension on JSChromeSystem {
 
 extension type JSSystemCpu._(JSObject _) {
   /// Queries basic CPU information of the system.
-  external JSPromise getInfo();
+  external JSPromise<CpuInfo> getInfo();
 }
 extension type CpuTime._(JSObject _) implements JSObject {
   external factory CpuTime({

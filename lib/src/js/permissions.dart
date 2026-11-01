@@ -28,10 +28,10 @@ extension JSChromeJSPermissionsExtension on JSChrome {
 
 extension type JSPermissions._(JSObject _) {
   /// Gets the extension's current set of permissions.
-  external JSPromise getAll();
+  external JSPromise<Permissions> getAll();
 
   /// Checks if the extension has the specified permissions.
-  external JSPromise contains(Permissions permissions);
+  external JSPromise<JSBoolean> contains(Permissions permissions);
 
   /// Requests access to the specified permissions, displaying a prompt to the
   /// user if necessary. These permissions must either be defined in the
@@ -41,11 +41,11 @@ extension type JSPermissions._(JSObject _) {
   /// you specify `*://*/*` in the `optional_permissions` section of the
   /// manifest, you can request `http://example.com/`. If there are any problems
   /// requesting the permissions, [runtime.lastError] will be set.
-  external JSPromise request(Permissions permissions);
+  external JSPromise<JSBoolean> request(Permissions permissions);
 
   /// Removes access to the specified permissions. If there are any problems
   /// removing the permissions, [runtime.lastError] will be set.
-  external JSPromise remove(Permissions permissions);
+  external JSPromise<JSBoolean> remove(Permissions permissions);
 
   /// Fired when the extension acquires new permissions.
   external Event get onAdded;

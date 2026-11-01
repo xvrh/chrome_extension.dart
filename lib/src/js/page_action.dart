@@ -46,7 +46,7 @@ extension type JSPageAction._(JSObject _) {
   external JSPromise setTitle(SetTitleDetails details);
 
   /// Gets the title of the page action.
-  external JSPromise getTitle(TabDetails details);
+  external JSPromise<JSString> getTitle(TabDetails details);
 
   /// Sets the icon for the page action. The icon can be specified either as the
   /// path to an image file or as the pixel data from a canvas element, or as
@@ -59,7 +59,7 @@ extension type JSPageAction._(JSObject _) {
   external JSPromise setPopup(SetPopupDetails details);
 
   /// Gets the html document set as the popup for this page action.
-  external JSPromise getPopup(TabDetails details);
+  external JSPromise<JSString> getPopup(TabDetails details);
 
   /// Fired when a page action icon is clicked.  This event will not fire if the
   /// page action has a popup.

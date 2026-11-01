@@ -30,14 +30,16 @@ extension JSChromeJSInputImeExtension on JSChromeInput {
 extension type JSInputIme._(JSObject _) {
   /// Set the current composition. If this extension does not own the active
   /// IME, this fails.
-  external JSPromise setComposition(SetCompositionParameters parameters);
+  external JSPromise<JSBoolean> setComposition(
+      SetCompositionParameters parameters);
 
   /// Clear the current composition. If this extension does not own the active
   /// IME, this fails.
-  external JSPromise clearComposition(ClearCompositionParameters parameters);
+  external JSPromise<JSBoolean> clearComposition(
+      ClearCompositionParameters parameters);
 
   /// Commits the provided text to the current input.
-  external JSPromise commitText(CommitTextParameters parameters);
+  external JSPromise<JSBoolean> commitText(CommitTextParameters parameters);
 
   /// Sends the key events.  This function is expected to be used by virtual
   /// keyboards.  When key(s) on a virtual keyboard is pressed by a user, this
@@ -50,19 +52,21 @@ extension type JSInputIme._(JSObject _) {
 
   /// Sets the properties of the candidate window. This fails if the extension
   /// doesn't own the active IME
-  external JSPromise setCandidateWindowProperties(
+  external JSPromise<JSBoolean> setCandidateWindowProperties(
       SetCandidateWindowPropertiesParameters parameters);
 
   /// Sets the current candidate list. This fails if this extension doesn't own
   /// the active IME
-  external JSPromise setCandidates(SetCandidatesParameters parameters);
+  external JSPromise<JSBoolean> setCandidates(
+      SetCandidatesParameters parameters);
 
   /// Set the position of the cursor in the candidate window. This is a no-op if
   /// this extension does not own the active IME.
-  external JSPromise setCursorPosition(SetCursorPositionParameters parameters);
+  external JSPromise<JSBoolean> setCursorPosition(
+      SetCursorPositionParameters parameters);
 
   /// Shows/Hides an assistive window with the given properties.
-  external JSPromise setAssistiveWindowProperties(
+  external JSPromise<JSBoolean> setAssistiveWindowProperties(
       SetAssistiveWindowPropertiesParameters parameters);
 
   /// Highlights/Unhighlights a button in an assistive window.

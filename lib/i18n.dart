@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/i18n.dart' as $js;
 
@@ -24,9 +23,8 @@ class ChromeI18n {
   /// Gets the accept-languages of the browser. This is different from the
   /// locale used by the browser; to get the locale, use [i18n.getUILanguage].
   Future<List<String>> getAcceptLanguages() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.i18n.getAcceptLanguages());
-    return $res.toDart.cast<$js.LanguageCode>().map((e) => e).toList();
+    var $res = await $js.chrome.i18n.getAcceptLanguages().toDart;
+    return $res.toDart.cast<JSString>().map((e) => e.toDart).toList();
   }
 
   /// Gets the localized string for the specified message. If the message is
@@ -61,8 +59,7 @@ class ChromeI18n {
   /// Detects the language of the provided text using CLD.
   /// [text] User input string to be translated.
   Future<DetectLanguageCallbackResult> detectLanguage(String text) async {
-    var $res = await promiseToFuture<$js.DetectLanguageCallbackResult>(
-        $js.chrome.i18n.detectLanguage(text));
+    var $res = await $js.chrome.i18n.detectLanguage(text).toDart;
     return DetectLanguageCallbackResult.fromJS($res);
   }
 }

@@ -49,7 +49,7 @@ extension type JSDebugger._(JSObject _) {
       Debuggee target);
 
   /// Sends given command to the debugging target.
-  external JSPromise sendCommand(
+  external JSPromise<JSAny?> sendCommand(
     /// Debugging target to which you want to send the command.
     Debuggee target,
 
@@ -64,7 +64,7 @@ extension type JSDebugger._(JSObject _) {
   );
 
   /// Returns the list of available debug targets.
-  external JSPromise getTargets();
+  external JSPromise<JSArray> getTargets();
 
   /// Fired whenever debugging target issues instrumentation event.
   external Event get onEvent;

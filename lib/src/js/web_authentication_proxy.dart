@@ -63,7 +63,7 @@ extension type JSWebAuthenticationProxy._(JSObject _) {
   /// Refer to the `onRemoteSessionStateChange` event for signaling
   /// a change of remote session attachment from a native application to to
   /// the (possibly suspended) extension.
-  external JSPromise attach();
+  external JSPromise<JSString?> attach();
 
   /// Removes this extension from being the active Web Authentication API
   /// request proxy.
@@ -75,7 +75,7 @@ extension type JSWebAuthenticationProxy._(JSObject _) {
   /// Refer to the `onRemoteSessionStateChange` event for signaling
   /// a change of remote session attachment from a native application to to
   /// the (possibly suspended) extension.
-  external JSPromise detach();
+  external JSPromise<JSString?> detach();
 
   /// A native application associated with this extension can cause this
   /// event to be fired by writing to a file with a name equal to the

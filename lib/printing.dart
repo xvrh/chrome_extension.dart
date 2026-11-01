@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'printer_provider.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/printing.dart' as $js;
@@ -29,8 +28,7 @@ class ChromePrinting {
   /// the user is prompted to accept the print job.<br/>
   /// Before Chrome 120, this function did not return a promise.
   Future<SubmitJobResponse> submitJob(SubmitJobRequest request) async {
-    var $res = await promiseToFuture<$js.SubmitJobResponse>(
-        $js.chrome.printing.submitJob(request.toJS));
+    var $res = await $js.chrome.printing.submitJob(request.toJS).toDart;
     return SubmitJobResponse.fromJS($res);
   }
 
@@ -38,14 +36,13 @@ class ChromePrinting {
   /// |jobId|: The id of the print job to cancel. This should be the same id
   /// received in a [SubmitJobResponse].
   Future<void> cancelJob(String jobId) async {
-    await promiseToFuture<void>($js.chrome.printing.cancelJob(jobId));
+    await $js.chrome.printing.cancelJob(jobId).toDart;
   }
 
   /// Returns the list of available printers on the device. This includes
   /// manually added, enterprise and discovered printers.
   Future<List<Printer>> getPrinters() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.printing.getPrinters());
+    var $res = await $js.chrome.printing.getPrinters().toDart;
     return $res.toDart
         .cast<$js.Printer>()
         .map((e) => Printer.fromJS(e))
@@ -58,8 +55,7 @@ class ChromePrinting {
   /// This call will fail with a runtime error if no printers with given id are
   /// installed.
   Future<GetPrinterInfoResponse> getPrinterInfo(String printerId) async {
-    var $res = await promiseToFuture<$js.GetPrinterInfoResponse>(
-        $js.chrome.printing.getPrinterInfo(printerId));
+    var $res = await $js.chrome.printing.getPrinterInfo(printerId).toDart;
     return GetPrinterInfoResponse.fromJS($res);
   }
 
@@ -100,6 +96,7 @@ enum SubmitJobStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static SubmitJobStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -119,6 +116,7 @@ enum PrinterSource {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PrinterSource fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -166,6 +164,7 @@ enum PrinterStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PrinterStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -194,6 +193,7 @@ enum JobStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static JobStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

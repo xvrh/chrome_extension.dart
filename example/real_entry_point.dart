@@ -22,14 +22,14 @@ abstract class BookmarkService {
   Future<List<Bookmark>> getBookmarks();
 }
 
-void runApp(widget) {}
+void runApp(Object widget) {}
 
 class MyExtensionPopup {
-  MyExtensionPopup(service);
+  MyExtensionPopup(Object service);
 }
 
 class FakeServiceForDesktop {}
 
 class Bookmark {
-  Bookmark(tree);
+  Bookmark(Object tree);
 }

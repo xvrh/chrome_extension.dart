@@ -37,6 +37,7 @@ enum PageStateMatcherInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PageStateMatcherInstanceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -51,6 +52,7 @@ enum ShowPageActionInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ShowPageActionInstanceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -65,6 +67,7 @@ enum ShowActionInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ShowActionInstanceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -79,6 +82,7 @@ enum SetIconInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static SetIconInstanceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -94,6 +98,7 @@ enum RequestContentScriptInstanceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static RequestContentScriptInstanceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -127,7 +132,7 @@ class PageStateMatcher {
     required PageStateMatcherInstanceType instanceType,
   }) : _wrapped = $js.PageStateMatcher(
           pageUrl: pageUrl?.toJS,
-          css: css?.toJSArray((e) => e),
+          css: css?.toJSArray((e) => e.toJS),
           isBookmarked: isBookmarked,
           instanceType: instanceType.toJS,
         );
@@ -151,10 +156,10 @@ class PageStateMatcher {
   /// matching. Note: Listing hundreds of CSS selectors or listing CSS selectors
   /// that match hundreds of times per page can slow down web sites.
   List<String>? get css =>
-      _wrapped.css?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.css?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set css(List<String>? v) {
-    _wrapped.css = v?.toJSArray((e) => e);
+    _wrapped.css = v?.toJSArray((e) => e.toJS);
   }
 
   /// Matches if the bookmarked state of the page is equal to the specified
@@ -291,8 +296,8 @@ class RequestContentScript {
     bool? matchAboutBlank,
     required RequestContentScriptInstanceType instanceType,
   }) : _wrapped = $js.RequestContentScript(
-          css: css?.toJSArray((e) => e),
-          js: js?.toJSArray((e) => e),
+          css: css?.toJSArray((e) => e.toJS),
+          js: js?.toJSArray((e) => e.toJS),
           allFrames: allFrames,
           matchAboutBlank: matchAboutBlank,
           instanceType: instanceType.toJS,
@@ -304,18 +309,18 @@ class RequestContentScript {
 
   /// Names of CSS files to be injected as a part of the content script.
   List<String>? get css =>
-      _wrapped.css?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.css?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set css(List<String>? v) {
-    _wrapped.css = v?.toJSArray((e) => e);
+    _wrapped.css = v?.toJSArray((e) => e.toJS);
   }
 
   /// Names of JavaScript files to be injected as a part of the content script.
   List<String>? get js =>
-      _wrapped.js?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.js?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set js(List<String>? v) {
-    _wrapped.js = v?.toJSArray((e) => e);
+    _wrapped.js = v?.toJSArray((e) => e.toJS);
   }
 
   /// Whether the content script runs in all frames of the matching page, or in
