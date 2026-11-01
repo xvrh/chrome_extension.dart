@@ -18,10 +18,10 @@ class FakeBookmarkService implements BookmarkService {
 
 // ----
 
-void runApp(widget) {}
+void runApp(Object widget) {}
 
 class MyExtensionPopup {
-  MyExtensionPopup(service);
+  MyExtensionPopup(Object service);
 }
 
 class FakeServiceForDesktop {}

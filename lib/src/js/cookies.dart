@@ -29,30 +29,30 @@ extension type JSCookies._(JSObject _) {
   /// the same name exists for the given URL, the one with the longest path will
   /// be returned. For cookies with the same path length, the cookie with the
   /// earliest creation time will be returned.
-  external JSPromise get(CookieDetails details);
+  external JSPromise<Cookie?> get(CookieDetails details);
 
   /// Retrieves all cookies from a single cookie store that match the given
   /// information. The cookies returned will be sorted, with those with the
   /// longest path first. If multiple cookies have the same path length, those
   /// with the earliest creation time will be first. This method only retrieves
   /// cookies for domains that the extension has host permissions to.
-  external JSPromise getAll(
+  external JSPromise<JSArray> getAll(
 
       /// Information to filter the cookies being retrieved.
       GetAllDetails details);
 
   /// Sets a cookie with the given cookie data; may overwrite equivalent cookies
   /// if they exist.
-  external JSPromise set(
+  external JSPromise<Cookie?> set(
 
       /// Details about the cookie being set.
       SetDetails details);
 
   /// Deletes a cookie by name.
-  external JSPromise remove(CookieDetails details);
+  external JSPromise<RemoveCallbackDetails?> remove(CookieDetails details);
 
   /// Lists all existing cookie stores.
-  external JSPromise getAllCookieStores();
+  external JSPromise<JSArray> getAllCookieStores();
 
   /// Fired when a cookie is set or removed. As a special case, note that
   /// updating a cookie's properties is implemented as a two step process: the

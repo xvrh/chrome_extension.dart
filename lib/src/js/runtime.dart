@@ -32,7 +32,7 @@ extension type JSRuntime._(JSObject _) {
   /// inside the current extension/app. If the background page is an event page,
   /// the system will ensure it is loaded before calling the callback. If there
   /// is no background page, an error is set.
-  external JSPromise getBackgroundPage();
+  external JSPromise<JSObject?> getBackgroundPage();
 
   /// Open your Extension's options page, if possible.
   ///
@@ -90,7 +90,7 @@ extension type JSRuntime._(JSObject _) {
   /// Note: When called with a callback, instead of returning an object this
   /// function will return the two properties as separate arguments passed to
   /// the callback.
-  external JSPromise requestUpdateCheck();
+  external JSPromise<RequestUpdateCheckCallbackResult> requestUpdateCheck();
 
   /// Restart the ChromeOS device when the app runs in kiosk mode. Otherwise,
   /// it's no-op.
@@ -138,7 +138,7 @@ extension type JSRuntime._(JSObject _) {
   /// if a different extension. Note that extensions cannot send messages to
   /// content scripts using this method. To send messages to content scripts,
   /// use [tabs.sendMessage].
-  external JSPromise sendMessage(
+  external JSPromise<JSAny?> sendMessage(
     /// The ID of the extension/app to send the message to. If omitted, the
     /// message will be sent to your own extension/app. Required if sending
     /// messages from a web page for [web
@@ -151,7 +151,7 @@ extension type JSRuntime._(JSObject _) {
   );
 
   /// Send a single message to a native application.
-  external JSPromise sendNativeMessage(
+  external JSPromise<JSAny> sendNativeMessage(
     /// The name of the native messaging host.
     String application,
 
@@ -160,13 +160,13 @@ extension type JSRuntime._(JSObject _) {
   );
 
   /// Returns information about the current platform.
-  external JSPromise getPlatformInfo();
+  external JSPromise<PlatformInfo> getPlatformInfo();
 
   /// Returns a DirectoryEntry for the package directory.
-  external JSPromise getPackageDirectoryEntry();
+  external JSPromise<JSObject> getPackageDirectoryEntry();
 
   /// Fetches information about active contexts associated with this extension
-  external JSPromise getContexts(
+  external JSPromise<JSArray> getContexts(
 
       /// A filter to find matching contexts. A context matches if it matches all
       /// specified fields in the filter. Any unspecified field in the filter

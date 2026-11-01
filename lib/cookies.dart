@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/cookies.dart' as $js;
 
@@ -26,8 +25,7 @@ class ChromeCookies {
   /// be returned. For cookies with the same path length, the cookie with the
   /// earliest creation time will be returned.
   Future<Cookie?> get(CookieDetails details) async {
-    var $res = await promiseToFuture<$js.Cookie?>(
-        $js.chrome.cookies.get(details.toJS));
+    var $res = await $js.chrome.cookies.get(details.toJS).toDart;
     return $res?.let(Cookie.fromJS);
   }
 
@@ -38,8 +36,7 @@ class ChromeCookies {
   /// cookies for domains that the extension has host permissions to.
   /// [details] Information to filter the cookies being retrieved.
   Future<List<Cookie>> getAll(GetAllDetails details) async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.cookies.getAll(details.toJS));
+    var $res = await $js.chrome.cookies.getAll(details.toJS).toDart;
     return $res.toDart.cast<$js.Cookie>().map((e) => Cookie.fromJS(e)).toList();
   }
 
@@ -47,22 +44,19 @@ class ChromeCookies {
   /// if they exist.
   /// [details] Details about the cookie being set.
   Future<Cookie?> set(SetDetails details) async {
-    var $res = await promiseToFuture<$js.Cookie?>(
-        $js.chrome.cookies.set(details.toJS));
+    var $res = await $js.chrome.cookies.set(details.toJS).toDart;
     return $res?.let(Cookie.fromJS);
   }
 
   /// Deletes a cookie by name.
   Future<RemoveCallbackDetails?> remove(CookieDetails details) async {
-    var $res = await promiseToFuture<$js.RemoveCallbackDetails?>(
-        $js.chrome.cookies.remove(details.toJS));
+    var $res = await $js.chrome.cookies.remove(details.toJS).toDart;
     return $res?.let(RemoveCallbackDetails.fromJS);
   }
 
   /// Lists all existing cookie stores.
   Future<List<CookieStore>> getAllCookieStores() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.cookies.getAllCookieStores());
+    var $res = await $js.chrome.cookies.getAllCookieStores().toDart;
     return $res.toDart
         .cast<$js.CookieStore>()
         .map((e) => CookieStore.fromJS(e))
@@ -97,6 +91,7 @@ enum SameSiteStatus {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static SameSiteStatus fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -124,6 +119,7 @@ enum OnChangedCause {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnChangedCause fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -322,7 +318,7 @@ class CookieStore {
     required List<int> tabIds,
   }) : _wrapped = $js.CookieStore(
           id: id,
-          tabIds: tabIds.toJSArray((e) => e),
+          tabIds: tabIds.toJSArray((e) => e.toJS),
         );
 
   final $js.CookieStore _wrapped;
@@ -338,10 +334,10 @@ class CookieStore {
 
   /// Identifiers of all the browser tabs that share this cookie store.
   List<int> get tabIds =>
-      _wrapped.tabIds.toDart.cast<int>().map((e) => e).toList();
+      _wrapped.tabIds.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList();
 
   set tabIds(List<int> v) {
-    _wrapped.tabIds = v.toJSArray((e) => e);
+    _wrapped.tabIds = v.toJSArray((e) => e.toJS);
   }
 }
 

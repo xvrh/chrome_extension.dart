@@ -5,6 +5,7 @@
 library;
 
 import 'dart:js_interop';
+import 'browser_action.dart';
 import 'chrome.dart';
 
 export 'chrome.dart';
@@ -29,7 +30,7 @@ extension type JSAction._(JSObject _) {
   external JSPromise setTitle(SetTitleDetails details);
 
   /// Gets the title of the action.
-  external JSPromise getTitle(TabDetails details);
+  external JSPromise<JSString> getTitle(TabDetails details);
 
   /// Sets the icon for the action. The icon can be specified either as the path
   /// to an image file or as the pixel data from a canvas element, or as
@@ -42,7 +43,7 @@ extension type JSAction._(JSObject _) {
   external JSPromise setPopup(SetPopupDetails details);
 
   /// Gets the html document set as the popup for this action.
-  external JSPromise getPopup(TabDetails details);
+  external JSPromise<JSString> getPopup(TabDetails details);
 
   /// Sets the badge text for the action. The badge is displayed on top of the
   /// icon.
@@ -54,20 +55,20 @@ extension type JSAction._(JSObject _) {
   /// is enabled, a placeholder text will be returned unless the
   /// [declarativeNetRequestFeedback](/docs/extensions/develop/concepts/declare-permissions#declarativeNetRequestFeedback)
   /// permission is present or tab-specific badge text was provided.
-  external JSPromise getBadgeText(TabDetails details);
+  external JSPromise<JSString> getBadgeText(TabDetails details);
 
   /// Sets the background color for the badge.
   external JSPromise setBadgeBackgroundColor(
       SetBadgeBackgroundColorDetails details);
 
   /// Gets the background color of the action.
-  external JSPromise getBadgeBackgroundColor(TabDetails details);
+  external JSPromise<ColorArray> getBadgeBackgroundColor(TabDetails details);
 
   /// Sets the text color for the badge.
   external JSPromise setBadgeTextColor(SetBadgeTextColorDetails details);
 
   /// Gets the text color of the action.
-  external JSPromise getBadgeTextColor(TabDetails details);
+  external JSPromise<ColorArray> getBadgeTextColor(TabDetails details);
 
   /// Enables the action for a tab. By default, actions are enabled.
   external JSPromise enable(
@@ -84,13 +85,13 @@ extension type JSAction._(JSObject _) {
   /// Indicates whether the extension action is enabled for a tab (or globally
   /// if no `tabId` is provided). Actions enabled using only
   /// [declarativeContent] always return false.
-  external JSPromise isEnabled(
+  external JSPromise<JSBoolean> isEnabled(
 
       /// The id of the tab for which you want check enabled status.
       int? tabId);
 
   /// Returns the user-specified settings relating to an extension's action.
-  external JSPromise getUserSettings();
+  external JSPromise<UserSettings> getUserSettings();
 
   /// Opens the extension's popup.
   external JSPromise openPopup(

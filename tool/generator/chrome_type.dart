@@ -50,11 +50,24 @@ sealed class ChromeType {
   // TODO: remove this hack
   code.Reference get jsTypeReferencedFromDart => jsType;
 
+  /// The type to use as a type argument of a JS type (`JSPromise<T>`,
+  /// `JSArray<T>`...). Dart primitives are not allowed there, they need to be
+  /// boxed in their JS counterpart (e.g. `JSString` instead of `String`).
+  code.Reference get jsTypeArgument => jsType;
+
+  code.Reference get jsTypeArgumentReferencedFromDart =>
+      jsTypeReferencedFromDart;
+
   code.Expression toJS(code.Expression accessor);
 
+  /// Converts a Dart value to a value of type [jsTypeArgument].
   code.Expression toJSAny(code.Expression accessor) => toJS(accessor);
 
   code.Expression toDart(code.Expression accessor);
+
+  /// Converts a value of type [jsTypeArgument] to Dart.
+  code.Expression jsTypeArgumentToDart(code.Expression accessor) =>
+      toDart(accessor);
 
   String get questionMark => isNullable ? '?' : '';
 
@@ -162,11 +175,26 @@ class LazyType extends ChromeType {
       _resolved!.jsTypeReferencedFromDart;
 
   @override
+  code.Reference get jsTypeArgument => _resolved!.jsTypeArgument;
+
+  @override
+  code.Reference get jsTypeArgumentReferencedFromDart =>
+      _resolved!.jsTypeArgumentReferencedFromDart;
+
+  @override
   code.Expression toDart(code.Expression accessor) =>
       _resolved!.toDart(accessor);
 
   @override
+  code.Expression jsTypeArgumentToDart(code.Expression accessor) =>
+      _resolved!.jsTypeArgumentToDart(accessor);
+
+  @override
   code.Expression toJS(code.Expression accessor) => _resolved!.toJS(accessor);
+
+  @override
+  code.Expression toJSAny(code.Expression accessor) =>
+      _resolved!.toJSAny(accessor);
 }
 
 sealed class _PrimitiveType extends ChromeType {
@@ -187,6 +215,8 @@ sealed class _PrimitiveType extends ChromeType {
 
   String get dartTypeWithoutNullable;
 
+  String get jsTypeArgumentWithoutNullable;
+
   @override
   code.Reference get dartType => code.TypeReference((b) => b
     ..symbol = dartTypeWithoutNullable
@@ -197,8 +227,21 @@ sealed class _PrimitiveType extends ChromeType {
   code.Reference get jsType => dartType;
 
   @override
+  code.Reference get jsTypeArgument => code.TypeReference((b) => b
+    ..symbol = jsTypeArgumentWithoutNullable
+    ..isNullable = isNullable);
+
+  @override
+  code.Reference get jsTypeArgumentReferencedFromDart => jsTypeArgument;
+
+  @override
   code.Expression toDart(code.Expression accessor) {
     return accessor;
+  }
+
+  @override
+  code.Expression jsTypeArgumentToDart(code.Expression accessor) {
+    return accessor.nullSafePropertyIf(toDartMethod, isNullable);
   }
 
   @override
@@ -208,7 +251,7 @@ sealed class _PrimitiveType extends ChromeType {
 
   @override
   code.Expression toJSAny(code.Expression accessor) {
-    return accessor.property('jsify').call([]).nullChecked;
+    return accessor.nullSafePropertyIf('toJS', isNullable);
   }
 }
 
@@ -217,6 +260,9 @@ class _StringType extends _PrimitiveType {
 
   @override
   String get dartTypeWithoutNullable => 'String';
+
+  @override
+  String get jsTypeArgumentWithoutNullable => 'JSString';
 
   @override
   ChromeType copyWith({required bool isNullable}) =>
@@ -233,6 +279,9 @@ class _IntegerType extends _PrimitiveType {
   String get dartTypeWithoutNullable => 'int';
 
   @override
+  String get jsTypeArgumentWithoutNullable => 'JSNumber';
+
+  @override
   ChromeType copyWith({required bool isNullable}) =>
       _IntegerType(isNullable: isNullable);
 }
@@ -247,6 +296,9 @@ class _DoubleType extends _PrimitiveType {
   String get dartTypeWithoutNullable => 'double';
 
   @override
+  String get jsTypeArgumentWithoutNullable => 'JSNumber';
+
+  @override
   ChromeType copyWith({required bool isNullable}) =>
       _DoubleType(isNullable: isNullable);
 }
@@ -256,6 +308,9 @@ class _BooleanType extends _PrimitiveType {
 
   @override
   String get dartTypeWithoutNullable => 'bool';
+
+  @override
+  String get jsTypeArgumentWithoutNullable => 'JSBoolean';
 
   @override
   ChromeType copyWith({required bool isNullable}) =>
@@ -484,11 +539,6 @@ abstract class _LocalType extends ChromeType {
   code.Expression toJS(code.Expression accessor) {
     return accessor.nullSafePropertyIf('toJS', isNullable);
   }
-
-  @override
-  code.Expression toJSAny(code.Expression accessor) {
-    return toJS(accessor).asA(code.refer('JSAny${isNullable ? '?' : ''}'));
-  }
 }
 
 class DictionaryType extends _LocalType {
@@ -536,20 +586,18 @@ class ListType extends ChromeType {
     return accessor
         .nullSafePropertyIf('toDart', isNullable)
         .property('cast')
-        .call([], {}, [item.jsTypeReferencedFromDart])
+        .call([], {}, [item.jsTypeArgumentReferencedFromDart])
         .property('map')
         .call([
           code.Method((b) => b
             ..requiredParameters.add(code.Parameter((b) => b..name = 'e'))
             ..lambda = true
-            ..body = item.toDart(code.refer('e')).code).closure
+            ..body = item.jsTypeArgumentToDart(code.refer('e')).code).closure
         ])
         .property('toList')
         .call([]);
 
-    // TODO:
-    // remove map((e) => e)
-    // try to tear-off result (when end with (e))
+    // TODO: try to tear-off result (when end with (e))
   }
 
   @override
@@ -558,7 +606,7 @@ class ListType extends ChromeType {
       code.Method((b) => b
         ..requiredParameters.add(code.Parameter((b) => b..name = 'e'))
         ..lambda = true
-        ..body = item.toJS(code.refer('e')).code).closure
+        ..body = item.toJSAny(code.refer('e')).code).closure
     ]);
   }
 }
@@ -582,7 +630,9 @@ class AliasedType extends ChromeType {
   code.Reference get jsType {
     var originalType = original.jsType;
     if (originalType is code.TypeReference) {
-      return originalType.rebuild((b) => b.symbol = alias);
+      return originalType.rebuild((b) => b
+        ..symbol = alias
+        ..url = url);
     }
     return originalType;
   }
@@ -598,6 +648,18 @@ class AliasedType extends ChromeType {
     return originalType;
   }
 
+  // The typedef can't be used as a type argument when it aliases a primitive.
+  bool get _isPrimitiveAlias => original is _PrimitiveType;
+
+  @override
+  code.Reference get jsTypeArgument =>
+      _isPrimitiveAlias ? original.jsTypeArgument : jsType;
+
+  @override
+  code.Reference get jsTypeArgumentReferencedFromDart => _isPrimitiveAlias
+      ? original.jsTypeArgumentReferencedFromDart
+      : jsTypeReferencedFromDart;
+
   @override
   code.Reference get dartType => original.dartType;
 
@@ -605,7 +667,15 @@ class AliasedType extends ChromeType {
   code.Expression toDart(code.Expression accessor) => original.toDart(accessor);
 
   @override
+  code.Expression jsTypeArgumentToDart(code.Expression accessor) =>
+      original.jsTypeArgumentToDart(accessor);
+
+  @override
   code.Expression toJS(code.Expression accessor) => original.toJS(accessor);
+
+  @override
+  code.Expression toJSAny(code.Expression accessor) =>
+      original.toJSAny(accessor);
 }
 
 class DynamicFunctionType extends ChromeType {
@@ -779,10 +849,7 @@ class ChoiceType extends ChromeType {
 
       var previousWhenMethods = <String>{};
       for (var choice in choices) {
-        var jsTypeName = emit(choice.jsType);
-        if (jsTypeName.endsWith('?')) {
-          jsTypeName = jsTypeName.substring(0, jsTypeName.length - 2);
-        }
+        var jsTypeName = choice.jsType.symbol;
         var whenMethod = const {
           'bool': 'isBool',
           'double': 'isDouble',

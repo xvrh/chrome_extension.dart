@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/gcm.dart' as $js;
 
@@ -31,16 +30,17 @@ class ChromeGcm {
   /// [returns] Function called when registration completes. It should check
   /// [runtime.lastError] for error when `registrationId` is empty.
   Future<String> register(List<String> senderIds) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.gcm.register(senderIds.toJSArray((e) => e)));
-    return $res;
+    var $res = await $js.chrome.gcm
+        .register(senderIds.toJSArray((e) => e.toJS))
+        .toDart;
+    return $res.toDart;
   }
 
   /// Unregisters the application from FCM.
   /// [returns] A function called after the unregistration completes.
   /// Unregistration was successful if [runtime.lastError] is not set.
   Future<void> unregister() async {
-    await promiseToFuture<void>($js.chrome.gcm.unregister());
+    await $js.chrome.gcm.unregister().toDart;
   }
 
   /// Sends a message according to its contents.
@@ -49,8 +49,8 @@ class ChromeGcm {
   /// sending. [runtime.lastError] should be checked, to ensure a message was
   /// sent without problems.
   Future<String> send(SendMessage message) async {
-    var $res = await promiseToFuture<String>($js.chrome.gcm.send(message.toJS));
-    return $res;
+    var $res = await $js.chrome.gcm.send(message.toJS).toDart;
+    return $res.toDart;
   }
 
   /// The maximum size (in bytes) of all key/value pairs in a message.

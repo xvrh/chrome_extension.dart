@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/system_storage.dart' as $js;
 import 'system.dart';
@@ -29,8 +28,7 @@ class ChromeSystemStorage {
   /// Get the storage information from the system. The argument passed to the
   /// callback is an array of StorageUnitInfo objects.
   Future<List<StorageUnitInfo>> getInfo() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.system.storage.getInfo());
+    var $res = await $js.chrome.system.storage.getInfo().toDart;
     return $res.toDart
         .cast<$js.StorageUnitInfo>()
         .map((e) => StorageUnitInfo.fromJS(e))
@@ -39,16 +37,14 @@ class ChromeSystemStorage {
 
   /// Ejects a removable storage device.
   Future<EjectDeviceResultCode> ejectDevice(String id) async {
-    var $res = await promiseToFuture<$js.EjectDeviceResultCode>(
-        $js.chrome.system.storage.ejectDevice(id));
+    var $res = await $js.chrome.system.storage.ejectDevice(id).toDart;
     return EjectDeviceResultCode.fromJS($res);
   }
 
   /// Get the available capacity of a specified |id| storage device.
   /// The |id| is the transient device ID from StorageUnitInfo.
   Future<StorageAvailableCapacityInfo> getAvailableCapacity(String id) async {
-    var $res = await promiseToFuture<$js.StorageAvailableCapacityInfo>(
-        $js.chrome.system.storage.getAvailableCapacity(id));
+    var $res = await $js.chrome.system.storage.getAvailableCapacity(id).toDart;
     return StorageAvailableCapacityInfo.fromJS($res);
   }
 
@@ -81,6 +77,7 @@ enum StorageUnitType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static StorageUnitType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -108,6 +105,7 @@ enum EjectDeviceResultCode {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static EjectDeviceResultCode fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

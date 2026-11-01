@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/types.dart' as $js;
 
@@ -42,6 +41,7 @@ enum ChromeSettingScope {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ChromeSettingScope fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -64,6 +64,7 @@ enum LevelOfControl {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static LevelOfControl fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -82,8 +83,7 @@ class ChromeSetting {
   /// Gets the value of a setting.
   /// [details] Which setting to consider.
   Future<GetCallbackDetails> get(GetDetails details) async {
-    var $res = await promiseToFuture<$js.GetCallbackDetails>(
-        _wrapped.get(details.toJS));
+    var $res = await _wrapped.get(details.toJS).toDart;
     return GetCallbackDetails.fromJS($res);
   }
 
@@ -91,14 +91,14 @@ class ChromeSetting {
   /// [details] Which setting to change.
   /// [returns] Called at the completion of the set operation.
   Future<void> set(SetDetails details) async {
-    await promiseToFuture<void>(_wrapped.set(details.toJS));
+    await _wrapped.set(details.toJS).toDart;
   }
 
   /// Clears the setting, restoring any default value.
   /// [details] Which setting to clear.
   /// [returns] Called at the completion of the clear operation.
   Future<void> clear(ClearDetails details) async {
-    await promiseToFuture<void>(_wrapped.clear(details.toJS));
+    await _wrapped.clear(details.toJS).toDart;
   }
 
   /// Fired after the setting changes.

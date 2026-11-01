@@ -27,25 +27,25 @@ extension JSChromeJSBookmarksExtension on JSChrome {
 
 extension type JSBookmarks._(JSObject _) {
   /// Retrieves the specified BookmarkTreeNode(s).
-  external JSPromise get(
+  external JSPromise<JSArray> get(
 
       /// A single string-valued id, or an array of string-valued ids
       JSAny idOrIdList);
 
   /// Retrieves the children of the specified BookmarkTreeNode id.
-  external JSPromise getChildren(String id);
+  external JSPromise<JSArray> getChildren(String id);
 
   /// Retrieves the recently added bookmarks.
-  external JSPromise getRecent(
+  external JSPromise<JSArray> getRecent(
 
       /// The maximum number of items to return.
       int numberOfItems);
 
   /// Retrieves the entire Bookmarks hierarchy.
-  external JSPromise getTree();
+  external JSPromise<JSArray> getTree();
 
   /// Retrieves part of the Bookmarks hierarchy, starting at the specified node.
-  external JSPromise getSubTree(
+  external JSPromise<JSArray> getSubTree(
 
       /// The ID of the root of the subtree to retrieve.
       String id);
@@ -53,7 +53,7 @@ extension type JSBookmarks._(JSObject _) {
   /// Searches for BookmarkTreeNodes matching the given query. Queries specified
   /// with an object produce BookmarkTreeNodes matching all specified
   /// properties.
-  external JSPromise search(
+  external JSPromise<JSArray> search(
 
       /// Either a string of words and quoted phrases that are matched against
       /// bookmark URLs and titles, or an object. If an object, the properties
@@ -63,10 +63,10 @@ extension type JSBookmarks._(JSObject _) {
 
   /// Creates a bookmark or folder under the specified parentId.  If url is NULL
   /// or missing, it will be a folder.
-  external JSPromise create(CreateDetails bookmark);
+  external JSPromise<BookmarkTreeNode> create(CreateDetails bookmark);
 
   /// Moves the specified BookmarkTreeNode to the provided location.
-  external JSPromise move(
+  external JSPromise<BookmarkTreeNode> move(
     String id,
     MoveDestination destination,
   );
@@ -74,7 +74,7 @@ extension type JSBookmarks._(JSObject _) {
   /// Updates the properties of a bookmark or folder. Specify only the
   /// properties that you want to change; unspecified properties will be left
   /// unchanged.  **Note:** Currently, only 'title' and 'url' are supported.
-  external JSPromise update(
+  external JSPromise<BookmarkTreeNode> update(
     String id,
     UpdateChanges changes,
   );

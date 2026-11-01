@@ -1,13 +1,14 @@
 # chrome_extension.dart
 
-[![pub package](https://img.shields.io/pub/v/chrome_extension.svg)](https://pub.dartlang.org/packages/chrome_extension)
-[![Build Status](https://github.com/xvrh/chrome_extension.dart/workflows/Build/badge.svg?branch=main)](https://github.com/xvrh/chrome_extension.dart)
+[![pub package](https://img.shields.io/pub/v/chrome_extension.svg)](https://pub.dev/packages/chrome_extension)
+[![pub points](https://img.shields.io/pub/points/chrome_extension)](https://pub.dev/packages/chrome_extension/score)
+[![Build Status](https://github.com/xvrh/chrome_extension.dart/actions/workflows/build.yaml/badge.svg?branch=main)](https://github.com/xvrh/chrome_extension.dart/actions/workflows/build.yaml)
 
 A library for accessing the `chrome.*` [APIs](https://developer.chrome.com/docs/extensions/reference/) available in Chrome extensions.
 
-This allows to build [Chrome extension](https://developer.chrome.com/docs/extensions/) with [Dart](https://dart.dev) & [Flutter](https://flutter.dev) and to interop with the native APIs easily with a high-level type-safe interface.
+It lets you build [Chrome extensions](https://developer.chrome.com/docs/extensions/) with [Dart](https://dart.dev) & [Flutter](https://flutter.dev) and use the native APIs through a high-level, type-safe interface.
 
-The JS interop is build on top of `dart:js_interop` (static interop) which make it ready for future WASM compilation.
+The JS interop is built on top of `dart:js_interop`, so the library works when compiled to JavaScript and to WebAssembly (`dart compile wasm`, `flutter build web --wasm`).
 
 <a href="https://www.buymeacoffee.com/xvrh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="60" width="217"></a>
 
@@ -164,11 +165,11 @@ void main() async {
 ## Documentation
 
 * [Chrome Extensions API reference](https://developer.chrome.com/docs/extensions/reference/)
-* See [example folder](https://github.com/xvrh/chrome_extension/tree/main/extension_examples) for some examples of Flutter and Dart Chrome extensions
+* See [example folder](https://github.com/xvrh/chrome_extension.dart/tree/main/extension_examples) for some examples of Flutter and Dart Chrome extensions
 
 ## Tips to build Chrome extensions with Flutter
 
-Here are some personal tips to build Chrome extension using the Flutter UI framework.
+Here are some personal tips to build Chrome extensions using the Flutter UI framework.
 
 #### Develop the app using Flutter Desktop
 
@@ -254,7 +255,7 @@ void main() async {
     '-t',
     'web/popup.dart',
     '--csp',
-    '--web-renderer=canvaskit',
+    '--wasm',
     '--no-web-resources-cdn',
   ]);
   for (var script in [
@@ -277,9 +278,20 @@ void main() async {
 It builds the flutter app and compiles all the other Dart scripts
 (for example: options.dart.js, popup.dart.js, background.dart.js)
 
+With `--wasm`, the Flutter app is compiled to WebAssembly (with a fallback to JavaScript).
+`web/index.html` needs to load it with `<script src="flutter_bootstrap.js" async></script>`,
+loading `main.dart.js` directly always uses the JavaScript build.
+
+Keep compiling the background service worker and the content scripts to JavaScript:
+content scripts can't be ES modules, and a Wasm module is instantiated asynchronously while Chrome
+only dispatches the event that woke up the service worker to the listeners registered synchronously.
+
 #### Testing
 
 Write tests for the extension using [`puppeteer-dart`](https://pub.dev/packages/puppeteer).
+
+Google Chrome ignores the `--load-extension` flag since version 137. `puppeteer.launch()` uses
+[Chrome for Testing](https://developer.chrome.com/blog/chrome-for-testing) by default, which still supports it.
 
 ```dart
 import 'package:collection/collection.dart';

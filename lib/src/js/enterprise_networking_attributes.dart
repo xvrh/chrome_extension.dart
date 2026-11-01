@@ -36,7 +36,7 @@ extension type JSEnterpriseNetworkingAttributes._(JSObject _) {
   /// network, [runtime.lastError] will be set with a failure reason.
   /// |callback| : Called with the device's default network's
   /// [NetworkDetails].
-  external JSPromise getNetworkDetails();
+  external JSPromise<NetworkDetails> getNetworkDetails();
 }
 extension type NetworkDetails._(JSObject _) implements JSObject {
   external factory NetworkDetails({

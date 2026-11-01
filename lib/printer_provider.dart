@@ -120,6 +120,7 @@ enum PrintError {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PrintError fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

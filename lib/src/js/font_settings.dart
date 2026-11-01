@@ -28,13 +28,13 @@ extension type JSFontSettings._(JSObject _) {
   external JSPromise clearFont(ClearFontDetails details);
 
   /// Gets the font for a given script and generic font family.
-  external JSPromise getFont(GetFontDetails details);
+  external JSPromise<GetFontCallbackDetails> getFont(GetFontDetails details);
 
   /// Sets the font for a given script and generic font family.
   external JSPromise setFont(SetFontDetails details);
 
   /// Gets a list of fonts on the system.
-  external JSPromise getFontList();
+  external JSPromise<JSArray> getFontList();
 
   /// Clears the default font size set by this extension, if any.
   external JSPromise clearDefaultFontSize(
@@ -43,7 +43,7 @@ extension type JSFontSettings._(JSObject _) {
       ClearDefaultFontSizeDetails? details);
 
   /// Gets the default font size.
-  external JSPromise getDefaultFontSize(
+  external JSPromise<GetDefaultFontSizeCallbackDetails> getDefaultFontSize(
 
       /// This parameter is currently unused.
       GetDefaultFontSizeDetails? details);
@@ -58,10 +58,11 @@ extension type JSFontSettings._(JSObject _) {
       ClearDefaultFixedFontSizeDetails? details);
 
   /// Gets the default size for fixed width fonts.
-  external JSPromise getDefaultFixedFontSize(
+  external JSPromise<GetDefaultFixedFontSizeCallbackDetails>
+      getDefaultFixedFontSize(
 
-      /// This parameter is currently unused.
-      GetDefaultFixedFontSizeDetails? details);
+          /// This parameter is currently unused.
+          GetDefaultFixedFontSizeDetails? details);
 
   /// Sets the default size for fixed width fonts.
   external JSPromise setDefaultFixedFontSize(
@@ -74,7 +75,7 @@ extension type JSFontSettings._(JSObject _) {
       ClearMinimumFontSizeDetails? details);
 
   /// Gets the minimum font size.
-  external JSPromise getMinimumFontSize(
+  external JSPromise<GetMinimumFontSizeCallbackDetails> getMinimumFontSize(
 
       /// This parameter is currently unused.
       GetMinimumFontSizeDetails? details);

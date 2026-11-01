@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/downloads.dart' as $js;
 
@@ -35,9 +34,8 @@ class ChromeDownloads {
   /// |options|: What to download and how.
   /// |callback|: Called with the id of the new [DownloadItem].
   Future<int> download(DownloadOptions options) async {
-    var $res =
-        await promiseToFuture<int>($js.chrome.downloads.download(options.toJS));
-    return $res;
+    var $res = await $js.chrome.downloads.download(options.toJS).toDart;
+    return $res.toDartInt;
   }
 
   /// Find [DownloadItem]. Set `query` to the empty object to get
@@ -47,8 +45,7 @@ class ChromeDownloads {
   /// number of items per page, and set `startedAfter` to the
   /// `startTime` of the last item from the last page.
   Future<List<DownloadItem>> search(DownloadQuery query) async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.downloads.search(query.toJS));
+    var $res = await $js.chrome.downloads.search(query.toJS).toDart;
     return $res.toDart
         .cast<$js.DownloadItem>()
         .map((e) => DownloadItem.fromJS(e))
@@ -61,7 +58,7 @@ class ChromeDownloads {
   /// |downloadId|: The id of the download to pause.
   /// |callback|: Called when the pause request is completed.
   Future<void> pause(int downloadId) async {
-    await promiseToFuture<void>($js.chrome.downloads.pause(downloadId));
+    await $js.chrome.downloads.pause(downloadId).toDart;
   }
 
   /// Resume a paused download. If the request was successful the download is
@@ -70,7 +67,7 @@ class ChromeDownloads {
   /// |downloadId|: The id of the download to resume.
   /// |callback|: Called when the resume request is completed.
   Future<void> resume(int downloadId) async {
-    await promiseToFuture<void>($js.chrome.downloads.resume(downloadId));
+    await $js.chrome.downloads.resume(downloadId).toDart;
   }
 
   /// Cancel a download. When `callback` is run, the download is
@@ -78,7 +75,7 @@ class ChromeDownloads {
   /// |downloadId|: The id of the download to cancel.
   /// |callback|: Called when the cancel request is completed.
   Future<void> cancel(int downloadId) async {
-    await promiseToFuture<void>($js.chrome.downloads.cancel(downloadId));
+    await $js.chrome.downloads.cancel(downloadId).toDart;
   }
 
   /// Retrieve an icon for the specified download. For new downloads, file
@@ -96,11 +93,13 @@ class ChromeDownloads {
     int downloadId,
     GetFileIconOptions? options,
   ) async {
-    var $res = await promiseToFuture<String?>($js.chrome.downloads.getFileIcon(
-      downloadId,
-      options?.toJS,
-    ));
-    return $res;
+    var $res = await $js.chrome.downloads
+        .getFileIcon(
+          downloadId,
+          options?.toJS,
+        )
+        .toDart;
+    return $res?.toDart;
   }
 
   /// Opens the downloaded file now if the [DownloadItem] is complete;
@@ -130,15 +129,14 @@ class ChromeDownloads {
   /// [DownloadItem] that matches `query`, then
   /// `callback` will be called.
   Future<List<int>> erase(DownloadQuery query) async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.downloads.erase(query.toJS));
-    return $res.toDart.cast<int>().map((e) => e).toList();
+    var $res = await $js.chrome.downloads.erase(query.toJS).toDart;
+    return $res.toDart.cast<JSNumber>().map((e) => e.toDartInt).toList();
   }
 
   /// Remove the downloaded file if it exists and the [DownloadItem] is
   /// complete; otherwise return an error through [runtime.lastError].
   Future<void> removeFile(int downloadId) async {
-    await promiseToFuture<void>($js.chrome.downloads.removeFile(downloadId));
+    await $js.chrome.downloads.removeFile(downloadId).toDart;
   }
 
   /// Prompt the user to accept a dangerous download. Can only be called from a
@@ -152,7 +150,7 @@ class ChromeDownloads {
   /// |downloadId|: The identifier for the [DownloadItem].
   /// |callback|: Called when the danger prompt dialog closes.
   Future<void> acceptDanger(int downloadId) async {
-    await promiseToFuture<void>($js.chrome.downloads.acceptDanger(downloadId));
+    await $js.chrome.downloads.acceptDanger(downloadId).toDart;
   }
 
   /// Enable or disable the gray shelf at the bottom of every window associated
@@ -176,8 +174,7 @@ class ChromeDownloads {
   /// |options|: Encapsulate a change to the download UI.
   /// |callback|: Called when the UI update is completed.
   Future<void> setUiOptions(UiOptions options) async {
-    await promiseToFuture<void>(
-        $js.chrome.downloads.setUiOptions(options.toJS));
+    await $js.chrome.downloads.setUiOptions(options.toJS).toDart;
   }
 
   /// This event fires with the [DownloadItem] object when a download
@@ -258,6 +255,7 @@ enum FilenameConflictAction {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static FilenameConflictAction fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -273,6 +271,7 @@ enum HttpMethod {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static HttpMethod fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -315,6 +314,7 @@ enum InterruptReason {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static InterruptReason fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -370,6 +370,7 @@ enum DangerType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static DangerType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -393,6 +394,7 @@ enum State {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static State fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -1012,7 +1014,7 @@ class DownloadQuery {
     /// Whether the downloaded file exists;
     bool? exists,
   }) : _wrapped = $js.DownloadQuery(
-          query: query?.toJSArray((e) => e),
+          query: query?.toJSArray((e) => e.toJS),
           startedBefore: startedBefore,
           startedAfter: startedAfter,
           endedBefore: endedBefore,
@@ -1023,7 +1025,7 @@ class DownloadQuery {
           urlRegex: urlRegex,
           finalUrlRegex: finalUrlRegex,
           limit: limit,
-          orderBy: orderBy?.toJSArray((e) => e),
+          orderBy: orderBy?.toJSArray((e) => e.toJS),
           id: id,
           url: url,
           finalUrl: finalUrl,
@@ -1050,10 +1052,10 @@ class DownloadQuery {
   /// contain all of the search terms that do not begin with a dash '-' and
   /// none of the search terms that do begin with a dash.
   List<String>? get query =>
-      _wrapped.query?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.query?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set query(List<String>? v) {
-    _wrapped.query = v?.toJSArray((e) => e);
+    _wrapped.query = v?.toJSArray((e) => e.toJS);
   }
 
   /// Limits results to [DownloadItem] that
@@ -1143,10 +1145,10 @@ class DownloadQuery {
   /// start time in ascending order. To specify descending order, prefix with a
   /// hyphen: '-startTime'.
   List<String>? get orderBy =>
-      _wrapped.orderBy?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.orderBy?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set orderBy(List<String>? v) {
-    _wrapped.orderBy = v?.toJSArray((e) => e);
+    _wrapped.orderBy = v?.toJSArray((e) => e.toJS);
   }
 
   /// The `id` of the [DownloadItem] to query.

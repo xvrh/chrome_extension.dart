@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'input.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/input_ime.dart' as $js;
@@ -30,9 +29,9 @@ class ChromeInputIme {
   /// [returns] Called when the operation completes with a boolean indicating
   /// if the text was accepted or not. On failure, [runtime.lastError] is set.
   Future<bool> setComposition(SetCompositionParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setComposition(parameters.toJS));
-    return $res;
+    var $res =
+        await $js.chrome.input.ime.setComposition(parameters.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Clear the current composition. If this extension does not own the active
@@ -40,18 +39,17 @@ class ChromeInputIme {
   /// [returns] Called when the operation completes with a boolean indicating
   /// if the text was accepted or not. On failure, [runtime.lastError] is set.
   Future<bool> clearComposition(ClearCompositionParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.clearComposition(parameters.toJS));
-    return $res;
+    var $res =
+        await $js.chrome.input.ime.clearComposition(parameters.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Commits the provided text to the current input.
   /// [returns] Called when the operation completes with a boolean indicating
   /// if the text was accepted or not. On failure, [runtime.lastError] is set.
   Future<bool> commitText(CommitTextParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.commitText(parameters.toJS));
-    return $res;
+    var $res = await $js.chrome.input.ime.commitText(parameters.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Sends the key events.  This function is expected to be used by virtual
@@ -59,8 +57,7 @@ class ChromeInputIme {
   /// function is used to propagate that event to the system.
   /// [returns] Called when the operation completes.
   Future<void> sendKeyEvents(SendKeyEventsParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.sendKeyEvents(parameters.toJS));
+    await $js.chrome.input.ime.sendKeyEvents(parameters.toJS).toDart;
   }
 
   /// Hides the input view window, which is popped up automatically by system.
@@ -74,36 +71,37 @@ class ChromeInputIme {
   /// [returns] Called when the operation completes.
   Future<bool> setCandidateWindowProperties(
       SetCandidateWindowPropertiesParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setCandidateWindowProperties(parameters.toJS));
-    return $res;
+    var $res = await $js.chrome.input.ime
+        .setCandidateWindowProperties(parameters.toJS)
+        .toDart;
+    return $res.toDart;
   }
 
   /// Sets the current candidate list. This fails if this extension doesn't own
   /// the active IME
   /// [returns] Called when the operation completes.
   Future<bool> setCandidates(SetCandidatesParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setCandidates(parameters.toJS));
-    return $res;
+    var $res = await $js.chrome.input.ime.setCandidates(parameters.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Set the position of the cursor in the candidate window. This is a no-op if
   /// this extension does not own the active IME.
   /// [returns] Called when the operation completes
   Future<bool> setCursorPosition(SetCursorPositionParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setCursorPosition(parameters.toJS));
-    return $res;
+    var $res =
+        await $js.chrome.input.ime.setCursorPosition(parameters.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Shows/Hides an assistive window with the given properties.
   /// [returns] Called when the operation completes.
   Future<bool> setAssistiveWindowProperties(
       SetAssistiveWindowPropertiesParameters parameters) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.input.ime.setAssistiveWindowProperties(parameters.toJS));
-    return $res;
+    var $res = await $js.chrome.input.ime
+        .setAssistiveWindowProperties(parameters.toJS)
+        .toDart;
+    return $res.toDart;
   }
 
   /// Highlights/Unhighlights a button in an assistive window.
@@ -111,29 +109,27 @@ class ChromeInputIme {
   /// [runtime.lastError] is set.
   Future<void> setAssistiveWindowButtonHighlighted(
       SetAssistiveWindowButtonHighlightedParameters parameters) async {
-    await promiseToFuture<void>($js.chrome.input.ime
-        .setAssistiveWindowButtonHighlighted(parameters.toJS));
+    await $js.chrome.input.ime
+        .setAssistiveWindowButtonHighlighted(parameters.toJS)
+        .toDart;
   }
 
   /// Adds the provided menu items to the language menu when this IME is active.
   Future<void> setMenuItems(MenuParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.setMenuItems(parameters.toJS));
+    await $js.chrome.input.ime.setMenuItems(parameters.toJS).toDart;
   }
 
   /// Updates the state of the MenuItems specified
   /// [returns] Called when the operation completes
   Future<void> updateMenuItems(MenuParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.updateMenuItems(parameters.toJS));
+    await $js.chrome.input.ime.updateMenuItems(parameters.toJS).toDart;
   }
 
   /// Deletes the text around the caret.
   /// [returns] Called when the operation completes.
   Future<void> deleteSurroundingText(
       DeleteSurroundingTextParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.input.ime.deleteSurroundingText(parameters.toJS));
+    await $js.chrome.input.ime.deleteSurroundingText(parameters.toJS).toDart;
   }
 
   /// Indicates that the key event received by onKeyEvent is handled.  This
@@ -279,6 +275,7 @@ enum KeyboardEventType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static KeyboardEventType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -301,6 +298,7 @@ enum InputContextType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static InputContextType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -318,6 +316,7 @@ enum AutoCapitalizeType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static AutoCapitalizeType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -336,6 +335,7 @@ enum MenuItemStyle {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static MenuItemStyle fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -353,6 +353,7 @@ enum UnderlineStyle {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static UnderlineStyle fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -371,6 +372,7 @@ enum WindowPosition {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static WindowPosition fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -389,6 +391,7 @@ enum ScreenType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ScreenType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -406,6 +409,7 @@ enum MouseButton {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static MouseButton fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -421,6 +425,7 @@ enum AssistiveWindowType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static AssistiveWindowType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -437,6 +442,7 @@ enum AssistiveWindowButton {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static AssistiveWindowButton fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

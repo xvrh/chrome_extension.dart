@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'dart:typed_data';
 import 'src/internal_helpers.dart';
 import 'src/js/vpn_provider.dart' as $js;
@@ -28,9 +27,8 @@ class ChromeVpnProvider {
   /// |callback|: Called when the configuration is created or if there is an
   /// error.
   Future<String> createConfig(String name) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.vpnProvider.createConfig(name));
-    return $res;
+    var $res = await $js.chrome.vpnProvider.createConfig(name).toDart;
+    return $res.toDart;
   }
 
   /// Destroys a VPN configuration created by the extension.
@@ -38,7 +36,7 @@ class ChromeVpnProvider {
   /// |callback|: Called when the configuration is destroyed or if there is an
   /// error.
   Future<void> destroyConfig(String id) async {
-    await promiseToFuture<void>($js.chrome.vpnProvider.destroyConfig(id));
+    await $js.chrome.vpnProvider.destroyConfig(id).toDart;
   }
 
   /// Sets the parameters for the VPN session. This should be called
@@ -47,8 +45,7 @@ class ChromeVpnProvider {
   /// |parameters|: The parameters for the VPN session.
   /// |callback|: Called when the parameters are set or if there is an error.
   Future<void> setParameters(Parameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.vpnProvider.setParameters(parameters.toJS));
+    await $js.chrome.vpnProvider.setParameters(parameters.toJS).toDart;
   }
 
   /// Sends an IP packet through the tunnel created for the VPN session.
@@ -56,7 +53,7 @@ class ChromeVpnProvider {
   /// |data|: The IP packet to be sent to the platform.
   /// |callback|: Called when the packet is sent or if there is an error.
   Future<void> sendPacket(ByteBuffer data) async {
-    await promiseToFuture<void>($js.chrome.vpnProvider.sendPacket(data.toJS));
+    await $js.chrome.vpnProvider.sendPacket(data.toJS).toDart;
   }
 
   /// Notifies the VPN session state to the platform.
@@ -65,8 +62,9 @@ class ChromeVpnProvider {
   /// |callback|: Called when the notification is complete or if there is an
   /// error.
   Future<void> notifyConnectionStateChanged(VpnConnectionState state) async {
-    await promiseToFuture<void>(
-        $js.chrome.vpnProvider.notifyConnectionStateChanged(state.toJS));
+    await $js.chrome.vpnProvider
+        .notifyConnectionStateChanged(state.toJS)
+        .toDart;
   }
 
   /// Triggered when a message is received from the platform for a
@@ -182,6 +180,7 @@ enum PlatformMessage {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PlatformMessage fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -203,6 +202,7 @@ enum VpnConnectionState {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static VpnConnectionState fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -225,6 +225,7 @@ enum UIEvent {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static UIEvent fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -294,10 +295,10 @@ class Parameters {
           address: address,
           broadcastAddress: broadcastAddress,
           mtu: mtu,
-          exclusionList: exclusionList.toJSArray((e) => e),
-          inclusionList: inclusionList.toJSArray((e) => e),
-          domainSearch: domainSearch?.toJSArray((e) => e),
-          dnsServers: dnsServers.toJSArray((e) => e),
+          exclusionList: exclusionList.toJSArray((e) => e.toJS),
+          inclusionList: inclusionList.toJSArray((e) => e.toJS),
+          domainSearch: domainSearch?.toJSArray((e) => e.toJS),
+          dnsServers: dnsServers.toJSArray((e) => e.toJS),
           reconnect: reconnect,
         );
 
@@ -337,11 +338,13 @@ class Parameters {
   /// Such duplicates in the collated (exclusionList + inclusionList) list are
   /// eliminated and the exact duplicate entry that will be eliminated is
   /// undefined.
-  List<String> get exclusionList =>
-      _wrapped.exclusionList.toDart.cast<String>().map((e) => e).toList();
+  List<String> get exclusionList => _wrapped.exclusionList.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set exclusionList(List<String> v) {
-    _wrapped.exclusionList = v.toJSArray((e) => e);
+    _wrapped.exclusionList = v.toJSArray((e) => e.toJS);
   }
 
   /// Include network traffic to the list of IP blocks in CIDR notation to the
@@ -354,27 +357,31 @@ class Parameters {
   /// Such duplicates in the collated (exclusionList + inclusionList) list are
   /// eliminated and the exact duplicate entry that will be eliminated is
   /// undefined.
-  List<String> get inclusionList =>
-      _wrapped.inclusionList.toDart.cast<String>().map((e) => e).toList();
+  List<String> get inclusionList => _wrapped.inclusionList.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set inclusionList(List<String> v) {
-    _wrapped.inclusionList = v.toJSArray((e) => e);
+    _wrapped.inclusionList = v.toJSArray((e) => e.toJS);
   }
 
   /// A list of search domains. (default: no search domain)
-  List<String>? get domainSearch =>
-      _wrapped.domainSearch?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get domainSearch => _wrapped.domainSearch?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set domainSearch(List<String>? v) {
-    _wrapped.domainSearch = v?.toJSArray((e) => e);
+    _wrapped.domainSearch = v?.toJSArray((e) => e.toJS);
   }
 
   /// A list of IPs for the DNS servers.
   List<String> get dnsServers =>
-      _wrapped.dnsServers.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.dnsServers.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set dnsServers(List<String> v) {
-    _wrapped.dnsServers = v.toJSArray((e) => e);
+    _wrapped.dnsServers = v.toJSArray((e) => e.toJS);
   }
 
   /// Whether or not the VPN extension implements auto-reconnection.

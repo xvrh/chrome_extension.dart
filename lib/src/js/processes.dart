@@ -28,12 +28,12 @@ extension type JSProcesses._(JSObject _) {
   /// Returns the ID of the renderer process for the specified tab.
   /// |tabId|: The ID of the tab for which the renderer process ID is to be
   /// returned.
-  external JSPromise getProcessIdForTab(int tabId);
+  external JSPromise<JSNumber> getProcessIdForTab(int tabId);
 
   /// Terminates the specified renderer process. Equivalent to visiting
   /// about:crash, but without changing the tab's URL.
   /// |processId|: The ID of the process to be terminated.
-  external JSPromise terminate(int processId);
+  external JSPromise<JSBoolean> terminate(int processId);
 
   /// Retrieves the process information for each process ID specified.
   /// |processIds|: The list of process IDs or single process ID for which
@@ -42,7 +42,7 @@ extension type JSProcesses._(JSObject _) {
   /// |includeMemory|: True if detailed memory usage is required. Note,
   /// collecting memory usage information incurs extra CPU usage and should
   /// only be queried for when needed.
-  external JSPromise getProcessInfo(
+  external JSPromise<JSAny> getProcessInfo(
     JSAny processIds,
     bool includeMemory,
   );

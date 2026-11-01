@@ -38,7 +38,7 @@ extension type JSDownloads._(JSObject _) {
   /// backwards compatible between releases. Extensions must not parse it.
   /// |options|: What to download and how.
   /// |callback|: Called with the id of the new [DownloadItem].
-  external JSPromise download(DownloadOptions options);
+  external JSPromise<JSNumber> download(DownloadOptions options);
 
   /// Find [DownloadItem]. Set `query` to the empty object to get
   /// all [DownloadItem]. To get a specific [DownloadItem], set only the
@@ -46,7 +46,7 @@ extension type JSDownloads._(JSObject _) {
   /// `orderBy: ['-startTime']`, set `limit` to the
   /// number of items per page, and set `startedAfter` to the
   /// `startTime` of the last item from the last page.
-  external JSPromise search(DownloadQuery query);
+  external JSPromise<JSArray> search(DownloadQuery query);
 
   /// Pause the download. If the request was successful the download is in a
   /// paused state. Otherwise [runtime.lastError] contains an error message.
@@ -79,7 +79,7 @@ extension type JSDownloads._(JSObject _) {
   /// determined, [runtime.lastError] will contain an error message.
   /// |downloadId|: The identifier for the download.
   /// |callback|: A URL to an image that represents the download.
-  external JSPromise getFileIcon(
+  external JSPromise<JSString?> getFileIcon(
     int downloadId,
     GetFileIconOptions? options,
   );
@@ -104,7 +104,7 @@ extension type JSDownloads._(JSObject _) {
   /// downloaded file. An [onErased] event will fire for each
   /// [DownloadItem] that matches `query`, then
   /// `callback` will be called.
-  external JSPromise erase(DownloadQuery query);
+  external JSPromise<JSArray> erase(DownloadQuery query);
 
   /// Remove the downloaded file if it exists and the [DownloadItem] is
   /// complete; otherwise return an error through [runtime.lastError].

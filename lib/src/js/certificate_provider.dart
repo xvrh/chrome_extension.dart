@@ -33,7 +33,7 @@ extension type JSCertificateProvider._(JSObject _) {
   /// |callback|: Is called when the dialog is resolved with the user input, or
   /// when the dialog request finishes unsuccessfully (e.g. the dialog was
   /// canceled by the user or was not allowed to be shown).
-  external JSPromise requestPin(RequestPinDetails details);
+  external JSPromise<PinResponseDetails?> requestPin(RequestPinDetails details);
 
   /// Stops the pin request started by the [requestPin] function.
   /// |details|: Contains the details about the reason for stopping the

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/tab_capture.dart' as $js;
 
@@ -54,8 +53,7 @@ class ChromeTabCapture {
   /// to prevent redundant requests for the same tab).
   /// |callback| : Callback invoked with CaptureInfo[] for captured tabs.
   Future<List<CaptureInfo>> getCapturedTabs() async {
-    var $res =
-        await promiseToFuture<JSArray>($js.chrome.tabCapture.getCapturedTabs());
+    var $res = await $js.chrome.tabCapture.getCapturedTabs().toDart;
     return $res.toDart
         .cast<$js.CaptureInfo>()
         .map((e) => CaptureInfo.fromJS(e))
@@ -73,9 +71,9 @@ class ChromeTabCapture {
   /// corresponds to the target tab. The created `streamId` can
   /// only be used once and expires after a few seconds if it is not used.
   Future<String> getMediaStreamId(GetMediaStreamOptions? options) async {
-    var $res = await promiseToFuture<String>(
-        $js.chrome.tabCapture.getMediaStreamId(options?.toJS));
-    return $res;
+    var $res =
+        await $js.chrome.tabCapture.getMediaStreamId(options?.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Event fired when the capture status of a tab changes.
@@ -100,6 +98,7 @@ enum TabCaptureState {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static TabCaptureState fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

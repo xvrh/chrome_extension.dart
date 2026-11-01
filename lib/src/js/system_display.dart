@@ -29,12 +29,12 @@ extension type JSSystemDisplay._(JSObject _) {
   /// Requests the information for all attached display devices.
   /// |flags|: Options affecting how the information is returned.
   /// |callback|: The callback to invoke with the results.
-  external JSPromise getInfo(GetInfoFlags? flags);
+  external JSPromise<JSArray> getInfo(GetInfoFlags? flags);
 
   /// Requests the layout info for all displays.
   /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
   /// |callback|: The callback to invoke with the results.
-  external JSPromise getDisplayLayout();
+  external JSPromise<JSArray> getDisplayLayout();
 
   /// Updates the properties for the display specified by |id|, according to
   /// the information provided in |info|. On failure, [runtime.lastError]
@@ -107,7 +107,7 @@ extension type JSSystemDisplay._(JSObject _) {
   /// |callback|: Optional callback to inform the caller that the touch
   ///      calibration has ended. The argument of the callback informs if the
   ///      calibration was a success or not.
-  external JSPromise showNativeTouchCalibration(String id);
+  external JSPromise<JSBoolean> showNativeTouchCalibration(String id);
 
   /// Starts custom touch calibration for a display. This should be called when
   /// using a custom UX for collecting calibration data. If another touch

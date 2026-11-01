@@ -213,12 +213,12 @@ extension type ContentSetting._(JSObject _) implements JSObject {
   external JSPromise clear(ClearDetails details);
 
   /// Gets the current content setting for a given pair of URLs.
-  external JSPromise get(GetDetails details);
+  external JSPromise<GetCallbackDetails> get(GetDetails details);
 
   /// Applies a new content setting rule.
   external JSPromise set(SetDetails details);
 
-  external JSPromise getResourceIdentifiers();
+  external JSPromise<JSArray?> getResourceIdentifiers();
 }
 extension type ClearDetails._(JSObject _) implements JSObject {
   external factory ClearDetails(

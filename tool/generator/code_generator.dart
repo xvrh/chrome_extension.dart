@@ -1,5 +1,4 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:collection/collection.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:path/path.dart' as p;
 import 'chrome_model.dart' as model;
@@ -114,7 +113,13 @@ return ${api.nameWithoutGroup.lowerCamel}Nullable;
     Reference returns;
     if (method.returns.type case model.AsyncReturnType asyncType) {
       if (asyncType.supportsPromises) {
-        returns = refer('JSPromise');
+        returns = TypeReference((b) => b
+          ..symbol = 'JSPromise'
+          ..types.addAll([
+            if (asyncType.jsCallback.positionalParameters
+                case [var singleParam])
+              singleParam.type.jsTypeArgument
+          ]));
       } else {
         returns = refer('void');
         parameters.add(Parameter((b) => b
@@ -425,18 +430,16 @@ class DartApiGenerator extends _GeneratorBase {
     }
 
     var resultVariable = r'$res';
-    var callJsExpression = refer('promiseToFuture', 'dart:js_util').call([
-      referTo.call(callParameters)
-    ], {}, [
-      asyncReturn.jsCallback.positionalParameters.firstOrNull?.type
-              .jsTypeReferencedFromDart ??
-          refer('void')
-    ]).awaited;
+    var callJsExpression =
+        referTo.call(callParameters).property('toDart').awaited;
 
     if (jsReturnType != null) {
       return Block.of([
         declareVar(resultVariable).assign(callJsExpression).statement,
-        jsReturnType.toDart(refer(resultVariable)).returned.statement,
+        jsReturnType
+            .jsTypeArgumentToDart(refer(resultVariable))
+            .returned
+            .statement,
       ]);
     } else {
       return callJsExpression.statement;
@@ -706,9 +709,13 @@ if (${group}Nullable == null) {
 return ${group}Nullable;            
 '''))
         ])),
-      Class((b) => b
-        ..annotations.addAll([_jsAnnotation(), _staticInteropAnnotation()])
-        ..name = groupClass),
+      ExtensionType((b) => b
+        ..primaryConstructorName = '_'
+        ..representationDeclaration = RepresentationDeclaration((r) => r
+          ..declaredRepresentationType = refer('JSObject')
+          ..name = '_')
+        ..name = groupClass
+        ..implements.add(refer('JSObject'))),
     ]));
 
   return _emitCode(library);
@@ -766,9 +773,6 @@ String _emitCode(Spec spec, {Allocator? allocator}) {
       orderDirectives: true);
   return _formatter.format('${spec.accept(emitter)}');
 }
-
-Expression _staticInteropAnnotation() =>
-    refer('staticInterop', _dartInteropUrl);
 
 Expression _jsAnnotation([String? name]) =>
     refer('JS', _dartInteropUrl).call([if (name != null) literalString(name)]);

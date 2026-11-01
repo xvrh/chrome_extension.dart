@@ -13,6 +13,4 @@ extension JSChromeInputExtension on JSChrome {
   }
 }
 
-@JS()
-@staticInterop
-class JSChromeInput {}
+extension type JSChromeInput._(JSObject _) implements JSObject {}

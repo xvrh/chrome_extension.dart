@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/commands.dart' as $js;
 import 'src/js/tabs.dart' as $js_tabs;
@@ -29,7 +28,7 @@ class ChromeCommands {
   /// `_execute_action`.
   /// [returns] Called to return the registered commands.
   Future<List<Command>> getAll() async {
-    var $res = await promiseToFuture<JSArray>($js.chrome.commands.getAll());
+    var $res = await $js.chrome.commands.getAll().toDart;
     return $res.toDart
         .cast<$js.Command>()
         .map((e) => Command.fromJS(e))

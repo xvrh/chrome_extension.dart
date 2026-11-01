@@ -3,7 +3,8 @@ import 'package:path/path.dart' as p;
 import 'communication.dart';
 import 'communication_client.dart';
 
-final _endDetector = RegExp(r'[0-9]{2}:[0-9]{2}.*:(.*)');
+final _endDetector = RegExp(r'^(?:[0-9]{2}:[0-9]{2} )?\+[0-9]+.*:(.*)');
+final _ansiEscape = RegExp(r'\x1B\[[0-9;]*m');
 
 Future<void> setup(void Function(TestContext) callback) async {
   try {
@@ -16,11 +17,13 @@ Future<void> setup(void Function(TestContext) callback) async {
     }, zoneSpecification: ZoneSpecification(print: (self, parent, zone, line) {
       client.log(line);
 
-      if (_endDetector.firstMatch(line) case var match?) {
+      if (_endDetector.firstMatch(line.replaceAll(_ansiEscape, ''))
+          case var match?) {
         var testName = match.group(1)!.trim();
         if (testName.contains('Some tests failed.')) {
           client.terminate(success: false);
-        } else if (testName.startsWith('All tests passed!')) {
+        } else if (testName.startsWith('All tests passed!') ||
+            testName.startsWith('All other tests passed!')) {
           client.terminate(success: true);
         } else if (testName.startsWith('All tests skipped.')) {
           client.terminate(success: true);

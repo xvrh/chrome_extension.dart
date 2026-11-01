@@ -28,11 +28,11 @@ extension JSChromeJSManagementExtension on JSChrome {
 
 extension type JSManagement._(JSObject _) {
   /// Returns a list of information about installed extensions and apps.
-  external JSPromise getAll();
+  external JSPromise<JSArray> getAll();
 
   /// Returns information about the installed extension, app, or theme that has
   /// the given ID.
-  external JSPromise get(
+  external JSPromise<ExtensionInfo> get(
 
       /// The ID from an item of [management.ExtensionInfo].
       String id);
@@ -40,12 +40,12 @@ extension type JSManagement._(JSObject _) {
   /// Returns information about the calling extension, app, or theme. Note: This
   /// function can be used without requesting the 'management' permission in the
   /// manifest.
-  external JSPromise getSelf();
+  external JSPromise<ExtensionInfo> getSelf();
 
   /// Returns a list of [permission
   /// warnings](develop/concepts/permission-warnings) for the given extension
   /// id.
-  external JSPromise getPermissionWarningsById(
+  external JSPromise<JSArray> getPermissionWarningsById(
 
       /// The ID of an already installed extension.
       String id);
@@ -54,7 +54,7 @@ extension type JSManagement._(JSObject _) {
   /// warnings](develop/concepts/permission-warnings) for the given extension
   /// manifest string. Note: This function can be used without requesting the
   /// 'management' permission in the manifest.
-  external JSPromise getPermissionWarningsByManifest(
+  external JSPromise<JSArray> getPermissionWarningsByManifest(
 
       /// Extension manifest JSON string.
       String manifestStr);
@@ -113,7 +113,7 @@ extension type JSManagement._(JSObject _) {
   );
 
   /// Generate an app for a URL. Returns the generated bookmark app.
-  external JSPromise generateAppForLink(
+  external JSPromise<ExtensionInfo> generateAppForLink(
     /// The URL of a web page. The scheme of the URL can only be "http" or
     /// "https".
     String url,

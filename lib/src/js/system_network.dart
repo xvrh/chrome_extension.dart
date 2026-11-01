@@ -28,7 +28,7 @@ extension JSChromeJSSystemNetworkExtension on JSChromeSystem {
 extension type JSSystemNetwork._(JSObject _) {
   /// Retrieves information about local adapters on this system.
   /// |callback| : Called when local adapter information is available.
-  external JSPromise getNetworkInterfaces();
+  external JSPromise<JSArray> getNetworkInterfaces();
 }
 extension type NetworkInterface._(JSObject _) implements JSObject {
   external factory NetworkInterface({

@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/offscreen.dart' as $js;
 
@@ -25,14 +24,13 @@ class ChromeOffscreen {
   /// |callback|: Invoked when the offscreen document is created and has
   /// completed its initial page load.
   Future<void> createDocument(CreateParameters parameters) async {
-    await promiseToFuture<void>(
-        $js.chrome.offscreen.createDocument(parameters.toJS));
+    await $js.chrome.offscreen.createDocument(parameters.toJS).toDart;
   }
 
   /// Closes the currently-open offscreen document for the extension.
   /// |callback|: Invoked when the offscreen document has been closed.
   Future<void> closeDocument() async {
-    await promiseToFuture<void>($js.chrome.offscreen.closeDocument());
+    await $js.chrome.offscreen.closeDocument().toDart;
   }
 
   /// Determines whether the extension has an active document.
@@ -43,8 +41,8 @@ class ChromeOffscreen {
   /// |callback|: Invoked with the result of whether the extension has an
   /// active offscreen document.
   Future<bool> hasDocument() async {
-    var $res = await promiseToFuture<bool>($js.chrome.offscreen.hasDocument());
-    return $res;
+    var $res = await $js.chrome.offscreen.hasDocument().toDart;
+    return $res.toDart;
   }
 }
 
@@ -120,6 +118,7 @@ enum Reason {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Reason fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

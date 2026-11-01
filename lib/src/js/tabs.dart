@@ -8,6 +8,7 @@ import 'dart:js_interop';
 import 'chrome.dart';
 import 'extension_types.dart';
 import 'runtime.dart';
+import 'windows.dart';
 
 export 'chrome.dart';
 
@@ -28,12 +29,12 @@ extension JSChromeJSTabsExtension on JSChrome {
 
 extension type JSTabs._(JSObject _) {
   /// Retrieves details about the specified tab.
-  external JSPromise get(int tabId);
+  external JSPromise<Tab> get(int tabId);
 
   /// Gets the tab that this script call is being made from. Returns `undefined`
   /// if called from a non-tab context (for example, a background page or popup
   /// view).
-  external JSPromise getCurrent();
+  external JSPromise<Tab?> getCurrent();
 
   /// Connects to the content script(s) in the specified tab. The
   /// [runtime.onConnect] event is fired in each content script running in the
@@ -49,7 +50,7 @@ extension type JSTabs._(JSObject _) {
   /// [extension.onRequest] event is fired in each content script running in the
   /// specified tab for the current extension.
   @Deprecated(r'Please use $(ref:runtime.sendMessage).')
-  external JSPromise sendRequest(
+  external JSPromise<JSAny?> sendRequest(
     int tabId,
     JSAny request,
   );
@@ -58,7 +59,7 @@ extension type JSTabs._(JSObject _) {
   /// an optional callback to run when a response is sent back.  The
   /// [runtime.onMessage] event is fired in each content script running in the
   /// specified tab for the current extension.
-  external JSPromise sendMessage(
+  external JSPromise<JSAny?> sendMessage(
     int tabId,
 
     /// The message to send. This message should be a JSON-ifiable object.
@@ -68,7 +69,7 @@ extension type JSTabs._(JSObject _) {
 
   /// Gets the tab that is selected in the specified window.
   @Deprecated(r'Please use $(ref:tabs.query) <code>{active: true}</code>.')
-  external JSPromise getSelected(
+  external JSPromise<Tab> getSelected(
 
       /// Defaults to the [current window](windows#current-window).
       int? windowId);
@@ -76,31 +77,31 @@ extension type JSTabs._(JSObject _) {
   /// Gets details about all tabs in the specified window.
   @Deprecated(
       r'Please use $(ref:tabs.query) <code>{windowId: windowId}</code>.')
-  external JSPromise getAllInWindow(
+  external JSPromise<JSArray> getAllInWindow(
 
       /// Defaults to the [current window](windows#current-window).
       int? windowId);
 
   /// Creates a new tab.
-  external JSPromise create(CreateProperties createProperties);
+  external JSPromise<Tab> create(CreateProperties createProperties);
 
   /// Duplicates a tab.
-  external JSPromise duplicate(
+  external JSPromise<Tab?> duplicate(
 
       /// The ID of the tab to duplicate.
       int tabId);
 
   /// Gets all tabs that have the specified properties, or all tabs if no
   /// properties are specified.
-  external JSPromise query(QueryInfo queryInfo);
+  external JSPromise<JSArray> query(QueryInfo queryInfo);
 
   /// Highlights the given tabs and focuses on the first of group. Will appear
   /// to do nothing if the specified tab is currently active.
-  external JSPromise highlight(HighlightInfo highlightInfo);
+  external JSPromise<Window> highlight(HighlightInfo highlightInfo);
 
   /// Modifies the properties of a tab. Properties that are not specified in
   /// [updateProperties] are not modified.
-  external JSPromise update(
+  external JSPromise<Tab?> update(
     /// Defaults to the selected tab of the [current
     /// window](windows#current-window).
     int? tabId,
@@ -110,7 +111,7 @@ extension type JSTabs._(JSObject _) {
   /// Moves one or more tabs to a new position within its window, or to a new
   /// window. Note that tabs can only be moved to and from normal (window.type
   /// === "normal") windows.
-  external JSPromise move(
+  external JSPromise<JSAny> move(
     /// The tab ID or list of tab IDs to move.
     JSAny tabIds,
     MoveProperties moveProperties,
@@ -132,7 +133,7 @@ extension type JSTabs._(JSObject _) {
 
   /// Adds one or more tabs to a specified group, or if no group is specified,
   /// adds the given tabs to a newly created group.
-  external JSPromise group(GroupOptions options);
+  external JSPromise<JSNumber> group(GroupOptions options);
 
   /// Removes one or more tabs from their respective groups. If any groups
   /// become empty, they are deleted.
@@ -142,7 +143,7 @@ extension type JSTabs._(JSObject _) {
       JSAny tabIds);
 
   /// Detects the primary language of the content in a tab.
-  external JSPromise detectLanguage(
+  external JSPromise<JSString> detectLanguage(
 
       /// Defaults to the active tab of the [current
       /// window](windows#current-window).
@@ -157,7 +158,7 @@ extension type JSTabs._(JSObject _) {
   /// chrome:-scheme pages, other extensions' pages, and data: URLs. These
   /// sensitive sites can only be captured with the activeTab permission. File
   /// URLs may be captured only if the extension has been granted file access.
-  external JSPromise captureVisibleTab(
+  external JSPromise<JSString> captureVisibleTab(
     /// The target window. Defaults to the [current
     /// window](windows#current-window).
     int? windowId,
@@ -168,7 +169,7 @@ extension type JSTabs._(JSObject _) {
   /// injection](develop/concepts/content-scripts#programmatic) section of the
   /// content scripts doc.
   @Deprecated(r'Replaced by $(ref:scripting.executeScript) in Manifest V3.')
-  external JSPromise executeScript(
+  external JSPromise<JSArray?> executeScript(
     /// The ID of the tab in which to run the script; defaults to the active tab
     /// of the current window.
     int? tabId,
@@ -219,7 +220,7 @@ extension type JSTabs._(JSObject _) {
   );
 
   /// Gets the current zoom factor of a specified tab.
-  external JSPromise getZoom(
+  external JSPromise<JSNumber> getZoom(
 
       /// The ID of the tab to get the current zoom factor from; defaults to the
       /// active tab of the current window.
@@ -237,7 +238,7 @@ extension type JSTabs._(JSObject _) {
   );
 
   /// Gets the current zoom settings of a specified tab.
-  external JSPromise getZoomSettings(
+  external JSPromise<ZoomSettings> getZoomSettings(
 
       /// The ID of the tab to get the current zoom settings from; defaults to the
       /// active tab of the current window.
@@ -245,7 +246,7 @@ extension type JSTabs._(JSObject _) {
 
   /// Discards a tab from memory. Discarded tabs are still visible on the tab
   /// strip and are reloaded when activated.
-  external JSPromise discard(
+  external JSPromise<Tab?> discard(
 
       /// The ID of the tab to be discarded. If specified, the tab is discarded
       /// unless it is active or already discarded. If omitted, the browser

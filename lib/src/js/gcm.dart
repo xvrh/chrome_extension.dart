@@ -29,7 +29,7 @@ extension type JSGcm._(JSObject _) {
   /// Registers the application with FCM. The registration ID will be returned
   /// by the `callback`. If `register` is called again with the same list of
   /// `senderIds`, the same registration ID will be returned.
-  external JSPromise register(
+  external JSPromise<JSString> register(
 
       /// A list of server IDs that are allowed to send messages to the
       /// application. It should contain at least one and no more than 100 sender
@@ -40,7 +40,7 @@ extension type JSGcm._(JSObject _) {
   external JSPromise unregister();
 
   /// Sends a message according to its contents.
-  external JSPromise send(
+  external JSPromise<JSString> send(
 
       /// A message to send to the other party via FCM.
       SendMessage message);

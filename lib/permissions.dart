@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/permissions.dart' as $js;
 
@@ -25,16 +24,14 @@ class ChromePermissions {
 
   /// Gets the extension's current set of permissions.
   Future<Permissions> getAll() async {
-    var $res =
-        await promiseToFuture<$js.Permissions>($js.chrome.permissions.getAll());
+    var $res = await $js.chrome.permissions.getAll().toDart;
     return Permissions.fromJS($res);
   }
 
   /// Checks if the extension has the specified permissions.
   Future<bool> contains(Permissions permissions) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.permissions.contains(permissions.toJS));
-    return $res;
+    var $res = await $js.chrome.permissions.contains(permissions.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Requests access to the specified permissions, displaying a prompt to the
@@ -46,17 +43,15 @@ class ChromePermissions {
   /// manifest, you can request `http://example.com/`. If there are any problems
   /// requesting the permissions, [runtime.lastError] will be set.
   Future<bool> request(Permissions permissions) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.permissions.request(permissions.toJS));
-    return $res;
+    var $res = await $js.chrome.permissions.request(permissions.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Removes access to the specified permissions. If there are any problems
   /// removing the permissions, [runtime.lastError] will be set.
   Future<bool> remove(Permissions permissions) async {
-    var $res = await promiseToFuture<bool>(
-        $js.chrome.permissions.remove(permissions.toJS));
-    return $res;
+    var $res = await $js.chrome.permissions.remove(permissions.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Fired when the extension acquires new permissions.
@@ -84,8 +79,8 @@ class Permissions {
     /// associated with [Content Scripts](content_scripts).
     List<String>? origins,
   }) : _wrapped = $js.Permissions(
-          permissions: permissions?.toJSArray((e) => e),
-          origins: origins?.toJSArray((e) => e),
+          permissions: permissions?.toJSArray((e) => e.toJS),
+          origins: origins?.toJSArray((e) => e.toJS),
         );
 
   final $js.Permissions _wrapped;
@@ -93,20 +88,22 @@ class Permissions {
   $js.Permissions get toJS => _wrapped;
 
   /// List of named permissions (does not include hosts or origins).
-  List<String>? get permissions =>
-      _wrapped.permissions?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get permissions => _wrapped.permissions?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set permissions(List<String>? v) {
-    _wrapped.permissions = v?.toJSArray((e) => e);
+    _wrapped.permissions = v?.toJSArray((e) => e.toJS);
   }
 
   /// The list of host permissions, including those specified in the
   /// `optional_permissions` or `permissions` keys in the manifest, and those
   /// associated with [Content Scripts](content_scripts).
   List<String>? get origins =>
-      _wrapped.origins?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.origins?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set origins(List<String>? v) {
-    _wrapped.origins = v?.toJSArray((e) => e);
+    _wrapped.origins = v?.toJSArray((e) => e.toJS);
   }
 }

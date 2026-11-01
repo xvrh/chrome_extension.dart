@@ -31,7 +31,7 @@ extension type JSBrowserAction._(JSObject _) {
   external JSPromise setTitle(SetTitleDetails details);
 
   /// Gets the title of the browser action.
-  external JSPromise getTitle(TabDetails details);
+  external JSPromise<JSString> getTitle(TabDetails details);
 
   /// Sets the icon for the browser action. The icon can be specified as the
   /// path to an image file, as the pixel data from a canvas element, or as a
@@ -44,7 +44,7 @@ extension type JSBrowserAction._(JSObject _) {
   external JSPromise setPopup(SetPopupDetails details);
 
   /// Gets the HTML document that is set as the popup for this browser action.
-  external JSPromise getPopup(TabDetails details);
+  external JSPromise<JSString> getPopup(TabDetails details);
 
   /// Sets the badge text for the browser action. The badge is displayed on top
   /// of the icon.
@@ -52,14 +52,14 @@ extension type JSBrowserAction._(JSObject _) {
 
   /// Gets the badge text of the browser action. If no tab is specified, the
   /// non-tab-specific badge text is returned.
-  external JSPromise getBadgeText(TabDetails details);
+  external JSPromise<JSString> getBadgeText(TabDetails details);
 
   /// Sets the background color for the badge.
   external JSPromise setBadgeBackgroundColor(
       SetBadgeBackgroundColorDetails details);
 
   /// Gets the background color of the browser action.
-  external JSPromise getBadgeBackgroundColor(TabDetails details);
+  external JSPromise<ColorArray> getBadgeBackgroundColor(TabDetails details);
 
   /// Enables the browser action for a tab. Defaults to enabled.
   external JSPromise enable(
@@ -75,7 +75,7 @@ extension type JSBrowserAction._(JSObject _) {
 
   /// Opens the extension popup window in the active window but does not grant
   /// tab permissions.
-  external JSPromise openPopup();
+  external JSPromise<JSAny?> openPopup();
 
   /// Fired when a browser action icon is clicked. Does not fire if the browser
   /// action has a popup.

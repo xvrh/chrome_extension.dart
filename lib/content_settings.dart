@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/content_settings.dart' as $js;
 
@@ -181,6 +180,7 @@ enum Scope {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Scope fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -196,6 +196,7 @@ enum AutoVerifyContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static AutoVerifyContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -212,6 +213,7 @@ enum ClipboardContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ClipboardContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -228,6 +230,7 @@ enum CookiesContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static CookiesContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -243,6 +246,7 @@ enum ImagesContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ImagesContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -258,6 +262,7 @@ enum JavascriptContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static JavascriptContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -274,6 +279,7 @@ enum LocationContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static LocationContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -288,6 +294,7 @@ enum PluginsContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PluginsContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -303,6 +310,7 @@ enum PopupsContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PopupsContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -319,6 +327,7 @@ enum NotificationsContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static NotificationsContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -333,6 +342,7 @@ enum FullscreenContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static FullscreenContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -347,6 +357,7 @@ enum MouselockContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static MouselockContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -363,6 +374,7 @@ enum MicrophoneContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static MicrophoneContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -379,6 +391,7 @@ enum CameraContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static CameraContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -393,6 +406,7 @@ enum PpapiBrokerContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static PpapiBrokerContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -409,6 +423,7 @@ enum MultipleAutomaticDownloadsContentSetting {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static MultipleAutomaticDownloadsContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -459,24 +474,22 @@ class ContentSetting {
 
   /// Clear all content setting rules set by this extension.
   Future<void> clear(ClearDetails details) async {
-    await promiseToFuture<void>(_wrapped.clear(details.toJS));
+    await _wrapped.clear(details.toJS).toDart;
   }
 
   /// Gets the current content setting for a given pair of URLs.
   Future<GetCallbackDetails> get(GetDetails details) async {
-    var $res = await promiseToFuture<$js.GetCallbackDetails>(
-        _wrapped.get(details.toJS));
+    var $res = await _wrapped.get(details.toJS).toDart;
     return GetCallbackDetails.fromJS($res);
   }
 
   /// Applies a new content setting rule.
   Future<void> set(SetDetails details) async {
-    await promiseToFuture<void>(_wrapped.set(details.toJS));
+    await _wrapped.set(details.toJS).toDart;
   }
 
   Future<List<ResourceIdentifier>?> getResourceIdentifiers() async {
-    var $res =
-        await promiseToFuture<JSArray?>(_wrapped.getResourceIdentifiers());
+    var $res = await _wrapped.getResourceIdentifiers().toDart;
     return $res?.toDart
         .cast<$js.ResourceIdentifier>()
         .map((e) => ResourceIdentifier.fromJS(e))

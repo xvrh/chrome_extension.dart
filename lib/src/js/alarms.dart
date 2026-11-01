@@ -58,17 +58,17 @@ extension type JSAlarms._(JSObject _) {
 
   /// Retrieves details about the specified alarm.
   /// |name|: The name of the alarm to get. Defaults to the empty string.
-  external JSPromise get(String? name);
+  external JSPromise<Alarm?> get(String? name);
 
   /// Gets an array of all the alarms.
-  external JSPromise getAll();
+  external JSPromise<JSArray> getAll();
 
   /// Clears the alarm with the given name.
   /// |name|: The name of the alarm to clear. Defaults to the empty string.
-  external JSPromise clear(String? name);
+  external JSPromise<JSBoolean> clear(String? name);
 
   /// Clears all alarms.
-  external JSPromise clearAll();
+  external JSPromise<JSBoolean> clearAll();
 
   /// Fired when an alarm has elapsed. Useful for event pages.
   /// |alarm|: The alarm that has elapsed.

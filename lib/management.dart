@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/management.dart' as $js;
 
@@ -25,7 +24,7 @@ class ChromeManagement {
 
   /// Returns a list of information about installed extensions and apps.
   Future<List<ExtensionInfo>> getAll() async {
-    var $res = await promiseToFuture<JSArray>($js.chrome.management.getAll());
+    var $res = await $js.chrome.management.getAll().toDart;
     return $res.toDart
         .cast<$js.ExtensionInfo>()
         .map((e) => ExtensionInfo.fromJS(e))
@@ -36,8 +35,7 @@ class ChromeManagement {
   /// the given ID.
   /// [id] The ID from an item of [management.ExtensionInfo].
   Future<ExtensionInfo> get(String id) async {
-    var $res =
-        await promiseToFuture<$js.ExtensionInfo>($js.chrome.management.get(id));
+    var $res = await $js.chrome.management.get(id).toDart;
     return ExtensionInfo.fromJS($res);
   }
 
@@ -45,8 +43,7 @@ class ChromeManagement {
   /// function can be used without requesting the 'management' permission in the
   /// manifest.
   Future<ExtensionInfo> getSelf() async {
-    var $res = await promiseToFuture<$js.ExtensionInfo>(
-        $js.chrome.management.getSelf());
+    var $res = await $js.chrome.management.getSelf().toDart;
     return ExtensionInfo.fromJS($res);
   }
 
@@ -55,9 +52,8 @@ class ChromeManagement {
   /// id.
   /// [id] The ID of an already installed extension.
   Future<List<String>> getPermissionWarningsById(String id) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.management.getPermissionWarningsById(id));
-    return $res.toDart.cast<String>().map((e) => e).toList();
+    var $res = await $js.chrome.management.getPermissionWarningsById(id).toDart;
+    return $res.toDart.cast<JSString>().map((e) => e.toDart).toList();
   }
 
   /// Returns a list of [permission
@@ -67,9 +63,10 @@ class ChromeManagement {
   /// [manifestStr] Extension manifest JSON string.
   Future<List<String>> getPermissionWarningsByManifest(
       String manifestStr) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.management.getPermissionWarningsByManifest(manifestStr));
-    return $res.toDart.cast<String>().map((e) => e).toList();
+    var $res = await $js.chrome.management
+        .getPermissionWarningsByManifest(manifestStr)
+        .toDart;
+    return $res.toDart.cast<JSString>().map((e) => e.toDart).toList();
   }
 
   /// Enables or disables an app or extension. In most cases this function must
@@ -82,10 +79,12 @@ class ChromeManagement {
     String id,
     bool enabled,
   ) async {
-    await promiseToFuture<void>($js.chrome.management.setEnabled(
-      id,
-      enabled,
-    ));
+    await $js.chrome.management
+        .setEnabled(
+          id,
+          enabled,
+        )
+        .toDart;
   }
 
   /// Uninstalls a currently installed app or extension. Note: This function
@@ -98,10 +97,12 @@ class ChromeManagement {
     String id,
     UninstallOptions? options,
   ) async {
-    await promiseToFuture<void>($js.chrome.management.uninstall(
-      id,
-      options?.toJS,
-    ));
+    await $js.chrome.management
+        .uninstall(
+          id,
+          options?.toJS,
+        )
+        .toDart;
   }
 
   /// Uninstalls the calling extension. Note: This function can be used without
@@ -109,14 +110,13 @@ class ChromeManagement {
   /// not work in managed environments when the user is not allowed to uninstall
   /// the specified extension/app.
   Future<void> uninstallSelf(UninstallOptions? options) async {
-    await promiseToFuture<void>(
-        $js.chrome.management.uninstallSelf(options?.toJS));
+    await $js.chrome.management.uninstallSelf(options?.toJS).toDart;
   }
 
   /// Launches an application.
   /// [id] The extension id of the application.
   Future<void> launchApp(String id) async {
-    await promiseToFuture<void>($js.chrome.management.launchApp(id));
+    await $js.chrome.management.launchApp(id).toDart;
   }
 
   /// Display options to create shortcuts for an app. On Mac, only packaged app
@@ -124,7 +124,7 @@ class ChromeManagement {
   /// [id] This should be the id from an app item of
   /// [management.ExtensionInfo].
   Future<void> createAppShortcut(String id) async {
-    await promiseToFuture<void>($js.chrome.management.createAppShortcut(id));
+    await $js.chrome.management.createAppShortcut(id).toDart;
   }
 
   /// Set the launch type of an app.
@@ -137,10 +137,12 @@ class ChromeManagement {
     String id,
     LaunchType launchType,
   ) async {
-    await promiseToFuture<void>($js.chrome.management.setLaunchType(
-      id,
-      launchType.toJS,
-    ));
+    await $js.chrome.management
+        .setLaunchType(
+          id,
+          launchType.toJS,
+        )
+        .toDart;
   }
 
   /// Generate an app for a URL. Returns the generated bookmark app.
@@ -151,19 +153,19 @@ class ChromeManagement {
     String url,
     String title,
   ) async {
-    var $res = await promiseToFuture<$js.ExtensionInfo>(
-        $js.chrome.management.generateAppForLink(
-      url,
-      title,
-    ));
+    var $res = await $js.chrome.management
+        .generateAppForLink(
+          url,
+          title,
+        )
+        .toDart;
     return ExtensionInfo.fromJS($res);
   }
 
   /// Launches the replacement_web_app specified in the manifest. Prompts the
   /// user to install if not already installed.
   Future<void> installReplacementWebApp() async {
-    await promiseToFuture<void>(
-        $js.chrome.management.installReplacementWebApp());
+    await $js.chrome.management.installReplacementWebApp().toDart;
   }
 
   /// Fired when an app or extension has been installed.
@@ -204,6 +206,7 @@ enum LaunchType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static LaunchType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -220,6 +223,7 @@ enum ExtensionDisabledReason {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ExtensionDisabledReason fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -240,6 +244,7 @@ enum ExtensionType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ExtensionType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -264,6 +269,7 @@ enum ExtensionInstallType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ExtensionInstallType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -408,8 +414,8 @@ class ExtensionInfo {
           offlineEnabled: offlineEnabled,
           optionsUrl: optionsUrl,
           icons: icons?.toJSArray((e) => e.toJS),
-          permissions: permissions.toJSArray((e) => e),
-          hostPermissions: hostPermissions.toJSArray((e) => e),
+          permissions: permissions.toJSArray((e) => e.toJS),
+          hostPermissions: hostPermissions.toJSArray((e) => e.toJS),
           installType: installType.toJS,
           launchType: launchType?.toJS,
           availableLaunchTypes: availableLaunchTypes?.toJSArray((e) => e.toJS),
@@ -557,19 +563,23 @@ class ExtensionInfo {
   }
 
   /// Returns a list of API based permissions.
-  List<String> get permissions =>
-      _wrapped.permissions.toDart.cast<String>().map((e) => e).toList();
+  List<String> get permissions => _wrapped.permissions.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set permissions(List<String> v) {
-    _wrapped.permissions = v.toJSArray((e) => e);
+    _wrapped.permissions = v.toJSArray((e) => e.toJS);
   }
 
   /// Returns a list of host based permissions.
-  List<String> get hostPermissions =>
-      _wrapped.hostPermissions.toDart.cast<String>().map((e) => e).toList();
+  List<String> get hostPermissions => _wrapped.hostPermissions.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set hostPermissions(List<String> v) {
-    _wrapped.hostPermissions = v.toJSArray((e) => e);
+    _wrapped.hostPermissions = v.toJSArray((e) => e.toJS);
   }
 
   /// How the extension was installed.

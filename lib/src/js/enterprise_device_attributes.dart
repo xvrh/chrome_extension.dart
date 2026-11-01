@@ -38,7 +38,7 @@ extension type JSEnterpriseDeviceAttributes._(JSObject _) {
   /// If the current user is not affiliated, returns an empty string.
   /// |callback| : Called with the device identifier of the directory API when
   /// received.
-  external JSPromise getDirectoryDeviceId();
+  external JSPromise<JSString> getDirectoryDeviceId();
 
   /// Fetches the device's serial number. Please note the purpose of this API
   /// is to administrate the device (e.g. generating Certificate Sign Requests
@@ -46,23 +46,23 @@ extension type JSEnterpriseDeviceAttributes._(JSObject _) {
   /// devices without the consent of the device's administrator.
   /// If the current user is not affiliated, returns an empty string.
   /// |callback| : Called with the serial number of the device.
-  external JSPromise getDeviceSerialNumber();
+  external JSPromise<JSString> getDeviceSerialNumber();
 
   /// Fetches the administrator-annotated Asset Id.
   /// If the current user is not affiliated or no Asset Id has been set by the
   /// administrator, returns an empty string.
   /// |callback| : Called with the Asset ID of the device.
-  external JSPromise getDeviceAssetId();
+  external JSPromise<JSString> getDeviceAssetId();
 
   /// Fetches the administrator-annotated Location.
   /// If the current user is not affiliated or no Annotated Location has been
   /// set by the administrator, returns an empty string.
   /// |callback| : Called with the Annotated Location of the device.
-  external JSPromise getDeviceAnnotatedLocation();
+  external JSPromise<JSString> getDeviceAnnotatedLocation();
 
   /// Fetches the device's hostname as set by DeviceHostnameTemplate policy.
   /// If the current user is not affiliated or no hostname has been set by the
   /// enterprise policy, returns an empty string.
   /// |callback| : Called with hostname of the device.
-  external JSPromise getDeviceHostname();
+  external JSPromise<JSString> getDeviceHostname();
 }

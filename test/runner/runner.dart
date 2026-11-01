@@ -44,6 +44,7 @@ Future<void> runTests(String source,
       })).addHandler(server.router.call),
       InternetAddress.loopbackIPv4,
       0);
+  addTearDown(httpServer.close);
 
   var serverUrl = 'http://${httpServer.address.host}:${httpServer.port}';
 
@@ -64,7 +65,13 @@ Future<void> runTests(String source,
       'extension_pages':
           "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
     };
-  manifestFile.writeAsStringSync(jsonEncode(manifest));
+
+  var background = manifest['background'] as Map<String, dynamic>?;
+  var serviceWorker = background?['service_worker'] as String?;
+  var contentScripts = {
+    for (var script in manifest['content_scripts'] as List? ?? [])
+      ...(script as Map)['js'] as List
+  };
 
   for (var dartFile in sourceDir
       .listSync(recursive: true)
@@ -72,10 +79,22 @@ Future<void> runTests(String source,
       .where((f) => f.path.endsWith('.dart'))) {
     var relativePath = p.relative(dartFile.path, from: source);
     var outputPath = '${p.join(extensionPath, relativePath)}.js';
+    var outputUrl = '${p.posix.joinAll(p.split(relativePath))}.js';
+    var defines = {'server-url': serverUrl};
 
-    await _compileJs(dartFile.path, outputPath,
-        defines: {'server-url': serverUrl});
+    // Content scripts can't be ES modules, they are always compiled to JS.
+    if (_compiler == _Compiler.wasm && !contentScripts.contains(outputUrl)) {
+      var isServiceWorker = outputUrl == serviceWorker;
+      if (isServiceWorker) {
+        background!['type'] = 'module';
+      }
+      await _compileWasm(dartFile.path, outputPath,
+          isServiceWorker: isServiceWorker, defines: defines);
+    } else {
+      await _compileJs(dartFile.path, outputPath, defines: defines);
+    }
   }
+  manifestFile.writeAsStringSync(jsonEncode(manifest));
 
   browser = await puppeteer.launch(
     headless: false,
@@ -87,18 +106,72 @@ Future<void> runTests(String source,
     ],
     devTools: devtools,
   );
+  // Tear-downs also run when the test times out, which would otherwise leave
+  // the browser open.
+  addTearDown(browser.close);
   futureBrowser.complete(browser);
   await afterBrowserOpen
       ?.call(RunnerTestContext(browser: browser, serverUrl: serverUrl));
 
   var endResult = await testCompleter.future;
 
-  await browser.close();
-  await httpServer.close();
-
   if (!endResult.success) {
     fail('Some tests failed.');
   }
+}
+
+enum _Compiler { js, wasm }
+
+/// Run the tests with `TEST_COMPILER=wasm dart test` to compile the extension
+/// with dart2wasm instead of dart2js.
+final _compiler = Platform.environment['TEST_COMPILER'] == 'wasm'
+    ? _Compiler.wasm
+    : _Compiler.js;
+
+/// Compiles [input] to Wasm and writes a JS loader at [output] so the file can
+/// be referenced the same way as the dart2js output.
+Future<void> _compileWasm(String input, String output,
+    {required bool isServiceWorker, Map<String, String>? defines}) async {
+  var base = p.withoutExtension(output);
+  var compileResult = await Process.run(Platform.resolvedExecutable, [
+    'compile',
+    'wasm',
+    input,
+    '--enable-asserts',
+    '--output',
+    '$base.wasm',
+    if (defines != null)
+      for (var e in defines.entries) '--define=${e.key}=${e.value}',
+  ]);
+  if (compileResult.exitCode != 0) {
+    throw Exception(
+        'Error when compiling Wasm (${compileResult.exitCode}).\n${compileResult.stdout}\n${compileResult.stderr}');
+  }
+
+  var name = p.basename(base);
+  // Service workers don't support dynamic import() and top-level await, while
+  // classic scripts in extension pages don't support static imports.
+  String loader;
+  if (isServiceWorker) {
+    loader = '''
+import { compileStreaming } from './$name.mjs';
+compileStreaming(fetch(new URL('./$name.wasm', import.meta.url)))
+  .then((app) => app.instantiate())
+  .then((instance) => instance.invokeMain());
+''';
+  } else {
+    loader = '''
+(() => {
+  const base = document.currentScript.src;
+  import(new URL('./$name.mjs', base))
+    .then(({ compileStreaming }) =>
+      compileStreaming(fetch(new URL('./$name.wasm', base))))
+    .then((app) => app.instantiate())
+    .then((instance) => instance.invokeMain());
+})();
+''';
+  }
+  File(output).writeAsStringSync(loader);
 }
 
 Future<void> _compileJs(String input, String output,

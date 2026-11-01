@@ -29,28 +29,30 @@ extension type JSDocumentScan._(JSObject _) {
   /// sent to the callback.
   /// |options| : Object containing scan parameters.
   /// |callback| : Called with the result and data from the scan.
-  external JSPromise scan(ScanOptions options);
+  external JSPromise<ScanResults> scan(ScanOptions options);
 
   /// Gets the list of available scanners.  On success, the list will be
   /// sent to the callback.
   /// |filter| : `DeviceFilter` indicating which types of scanners
   /// should be returned.
   /// |callback| : Called with the result and list of scanners.
-  external JSPromise getScannerList(DeviceFilter filter);
+  external JSPromise<GetScannerListResponse> getScannerList(
+      DeviceFilter filter);
 
   /// Opens a scanner for exclusive access.  On success, the response containing
   /// a scanner handle and configuration will be sent to the callback.
   /// |scannerId| : Scanner id previously returned from `getScannerList`
   /// indicating which scanner should be opened.
   /// |callback| : Called with the result.
-  external JSPromise openScanner(String scannerId);
+  external JSPromise<OpenScannerResponse> openScanner(String scannerId);
 
   /// Gets the group names and member options from a scanner handle previously
   /// opened by `openScanner`.
   /// |scannerHandle| : Open scanner handle previously returned from
   /// `openScanner`.
   /// |callback| : Called with the result.
-  external JSPromise getOptionGroups(String scannerHandle);
+  external JSPromise<GetOptionGroupsResponse> getOptionGroups(
+      String scannerHandle);
 
   /// Closes a previously opened scanner handle.  A response indicating the
   /// outcome will be sent to the callback.  Even if the response is not a
@@ -59,7 +61,7 @@ extension type JSDocumentScan._(JSObject _) {
   /// |scannerHandle| : Open scanner handle previously returned from
   /// `openScanner`.
   /// |callback| : Called with the result.
-  external JSPromise closeScanner(String scannerHandle);
+  external JSPromise<CloseScannerResponse> closeScanner(String scannerHandle);
 
   /// Sends the list of new option values in `options` as a bundle
   /// to be set on `scannerHandle`.  Each option will be set by the
@@ -71,7 +73,7 @@ extension type JSDocumentScan._(JSObject _) {
   /// |options| : A list of `OptionSetting`s that will be applied to
   /// `scannerHandle`.
   /// |callback| : Called with the result.
-  external JSPromise setOptions(
+  external JSPromise<SetOptionsResponse> setOptions(
     String scannerHandle,
     JSArray options,
   );
@@ -86,7 +88,7 @@ extension type JSDocumentScan._(JSObject _) {
   /// be used for the scan.  `StartScanOptions.format` must match
   /// one of the entries returned in the scanner's `ScannerInfo`.
   /// |callback| : Called with the result.
-  external JSPromise startScan(
+  external JSPromise<StartScanResponse> startScan(
     String scannerHandle,
     StartScanOptions options,
   );
@@ -96,7 +98,7 @@ extension type JSDocumentScan._(JSObject _) {
   /// |job| : An active scan job previously returned from
   /// `startScan`.
   /// |callback| : Called with the result.
-  external JSPromise cancelScan(String job);
+  external JSPromise<CancelScanResponse> cancelScan(String job);
 
   /// Reads the next chunk of available image data from an active job handle.
   /// A response indicating the outcome will be sent to the callback.
@@ -113,7 +115,7 @@ extension type JSDocumentScan._(JSObject _) {
   /// |job| : Active job handle previously returned from
   /// `startScan`.
   /// |callback| : Called with the result.
-  external JSPromise readScanData(String job);
+  external JSPromise<ReadScanDataResponse> readScanData(String job);
 }
 
 /// OperationResult is an enum that indicates the result of each operation

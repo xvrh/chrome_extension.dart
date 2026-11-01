@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/processes.dart' as $js;
 
@@ -25,18 +24,16 @@ class ChromeProcesses {
   /// |tabId|: The ID of the tab for which the renderer process ID is to be
   /// returned.
   Future<int> getProcessIdForTab(int tabId) async {
-    var $res = await promiseToFuture<int>(
-        $js.chrome.processes.getProcessIdForTab(tabId));
-    return $res;
+    var $res = await $js.chrome.processes.getProcessIdForTab(tabId).toDart;
+    return $res.toDartInt;
   }
 
   /// Terminates the specified renderer process. Equivalent to visiting
   /// about:crash, but without changing the tab's URL.
   /// |processId|: The ID of the process to be terminated.
   Future<bool> terminate(int processId) async {
-    var $res =
-        await promiseToFuture<bool>($js.chrome.processes.terminate(processId));
-    return $res;
+    var $res = await $js.chrome.processes.terminate(processId).toDart;
+    return $res.toDart;
   }
 
   /// Retrieves the process information for each process ID specified.
@@ -50,15 +47,17 @@ class ChromeProcesses {
     Object processIds,
     bool includeMemory,
   ) async {
-    var $res = await promiseToFuture<JSAny>($js.chrome.processes.getProcessInfo(
-      switch (processIds) {
-        int() => processIds.jsify()!,
-        List<int>() => processIds.toJSArray((e) => e),
-        _ => throw UnsupportedError(
-            'Received type: ${processIds.runtimeType}. Supported types are: int, List<int>')
-      },
-      includeMemory,
-    ));
+    var $res = await $js.chrome.processes
+        .getProcessInfo(
+          switch (processIds) {
+            int() => processIds.toJS,
+            List<int>() => processIds.toJSArray((e) => e.toJS),
+            _ => throw UnsupportedError(
+                'Received type: ${processIds.runtimeType}. Supported types are: int, List<int>')
+          },
+          includeMemory,
+        )
+        .toDart;
     return $res.toDartMap();
   }
 
@@ -146,6 +145,7 @@ enum ProcessType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ProcessType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

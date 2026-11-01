@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/audio.dart' as $js;
 
@@ -29,8 +28,7 @@ class ChromeAudio {
   ///     returned device list will contain all available audio devices.
   /// |callback|: Reports the requested list of audio devices.
   Future<List<AudioDeviceInfo>> getDevices(DeviceFilter? filter) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.audio.getDevices(filter?.toJS));
+    var $res = await $js.chrome.audio.getDevices(filter?.toJS).toDart;
     return $res.toDart
         .cast<$js.AudioDeviceInfo>()
         .map((e) => AudioDeviceInfo.fromJS(e))
@@ -44,7 +42,7 @@ class ChromeAudio {
   ///
   ///     It is an error to pass in a non-existent device ID.
   Future<void> setActiveDevices(DeviceIdLists ids) async {
-    await promiseToFuture<void>($js.chrome.audio.setActiveDevices(ids.toJS));
+    await $js.chrome.audio.setActiveDevices(ids.toJS).toDart;
   }
 
   /// Sets the properties for the input or output device.
@@ -52,10 +50,12 @@ class ChromeAudio {
     String id,
     DeviceProperties properties,
   ) async {
-    await promiseToFuture<void>($js.chrome.audio.setProperties(
-      id,
-      properties.toJS,
-    ));
+    await $js.chrome.audio
+        .setProperties(
+          id,
+          properties.toJS,
+        )
+        .toDart;
   }
 
   /// Gets the system-wide mute state for the specified stream type.
@@ -63,9 +63,8 @@ class ChromeAudio {
   /// |callback|: Callback reporting whether mute is set or not for specified
   /// stream type.
   Future<bool> getMute(StreamType streamType) async {
-    var $res =
-        await promiseToFuture<bool>($js.chrome.audio.getMute(streamType.toJS));
-    return $res;
+    var $res = await $js.chrome.audio.getMute(streamType.toJS).toDart;
+    return $res.toDart;
   }
 
   /// Sets mute state for a stream type. The mute state will apply to all audio
@@ -76,10 +75,12 @@ class ChromeAudio {
     StreamType streamType,
     bool isMuted,
   ) async {
-    await promiseToFuture<void>($js.chrome.audio.setMute(
-      streamType.toJS,
-      isMuted,
-    ));
+    await $js.chrome.audio
+        .setMute(
+          streamType.toJS,
+          isMuted,
+        )
+        .toDart;
   }
 
   /// Fired when sound level changes for an active audio device.
@@ -120,6 +121,7 @@ enum StreamType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static StreamType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -150,6 +152,7 @@ enum DeviceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static DeviceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -340,8 +343,8 @@ class DeviceIdLists {
     ///   unset.
     List<String>? output,
   }) : _wrapped = $js.DeviceIdLists(
-          input: input?.toJSArray((e) => e),
-          output: output?.toJSArray((e) => e),
+          input: input?.toJSArray((e) => e.toJS),
+          output: output?.toJSArray((e) => e.toJS),
         );
 
   final $js.DeviceIdLists _wrapped;
@@ -352,20 +355,20 @@ class DeviceIdLists {
   /// To indicate input devices should be unaffected, leave this property
   ///   unset.
   List<String>? get input =>
-      _wrapped.input?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.input?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set input(List<String>? v) {
-    _wrapped.input = v?.toJSArray((e) => e);
+    _wrapped.input = v?.toJSArray((e) => e.toJS);
   }
 
   /// List of output devices specified by their ID.
   /// To indicate output devices should be unaffected, leave this property
   ///   unset.
   List<String>? get output =>
-      _wrapped.output?.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.output?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set output(List<String>? v) {
-    _wrapped.output = v?.toJSArray((e) => e);
+    _wrapped.output = v?.toJSArray((e) => e.toJS);
   }
 }
 

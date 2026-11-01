@@ -57,8 +57,8 @@ class ChromeContextMenus {
     var $completer = Completer<void>();
     $js.chrome.contextMenus.update(
       switch (id) {
-        int() => id.jsify()!,
-        String() => id.jsify()!,
+        int() => id.toJS,
+        String() => id.toJS,
         _ => throw UnsupportedError(
             'Received type: ${id.runtimeType}. Supported types are: int, String')
       },
@@ -79,8 +79,8 @@ class ChromeContextMenus {
     var $completer = Completer<void>();
     $js.chrome.contextMenus.remove(
       switch (menuItemId) {
-        int() => menuItemId.jsify()!,
-        String() => menuItemId.jsify()!,
+        int() => menuItemId.toJS,
+        String() => menuItemId.toJS,
         _ => throw UnsupportedError(
             'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
       },
@@ -150,6 +150,7 @@ enum ContextType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ContextType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -168,6 +169,7 @@ enum ItemType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ItemType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -223,14 +225,14 @@ class OnClickData {
     bool? checked,
   }) : _wrapped = $js.OnClickData(
           menuItemId: switch (menuItemId) {
-            int() => menuItemId.jsify()!,
-            String() => menuItemId.jsify()!,
+            int() => menuItemId.toJS,
+            String() => menuItemId.toJS,
             _ => throw UnsupportedError(
                 'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
           },
           parentMenuItemId: switch (parentMenuItemId) {
-            int() => parentMenuItemId.jsify()!,
-            String() => parentMenuItemId.jsify()!,
+            int() => parentMenuItemId.toJS,
+            String() => parentMenuItemId.toJS,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentMenuItemId.runtimeType}. Supported types are: int, String')
@@ -259,8 +261,8 @@ class OnClickData {
 
   set menuItemId(Object v) {
     _wrapped.menuItemId = switch (v) {
-      int() => v.jsify()!,
-      String() => v.jsify()!,
+      int() => v.toJS,
+      String() => v.toJS,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
     };
@@ -274,8 +276,8 @@ class OnClickData {
 
   set parentMenuItemId(Object? v) {
     _wrapped.parentMenuItemId = switch (v) {
-      int() => v.jsify()!,
-      String() => v.jsify()!,
+      int() => v.toJS,
+      String() => v.toJS,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -421,14 +423,14 @@ class CreateProperties {
           visible: visible,
           onclick: onclick,
           parentId: switch (parentId) {
-            int() => parentId.jsify()!,
-            String() => parentId.jsify()!,
+            int() => parentId.toJS,
+            String() => parentId.toJS,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentId.runtimeType}. Supported types are: int, String')
           },
-          documentUrlPatterns: documentUrlPatterns?.toJSArray((e) => e),
-          targetUrlPatterns: targetUrlPatterns?.toJSArray((e) => e),
+          documentUrlPatterns: documentUrlPatterns?.toJSArray((e) => e.toJS),
+          targetUrlPatterns: targetUrlPatterns?.toJSArray((e) => e.toJS),
           enabled: enabled,
         );
 
@@ -506,8 +508,8 @@ class CreateProperties {
 
   set parentId(Object? v) {
     _wrapped.parentId = switch (v) {
-      int() => v.jsify()!,
-      String() => v.jsify()!,
+      int() => v.toJS,
+      String() => v.toJS,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -518,21 +520,23 @@ class CreateProperties {
   /// one of the given patterns. For details on pattern formats, see [Match
   /// Patterns](/docs/extensions/develop/concepts/match-patterns).
   List<String>? get documentUrlPatterns => _wrapped.documentUrlPatterns?.toDart
-      .cast<String>()
-      .map((e) => e)
+      .cast<JSString>()
+      .map((e) => e.toDart)
       .toList();
 
   set documentUrlPatterns(List<String>? v) {
-    _wrapped.documentUrlPatterns = v?.toJSArray((e) => e);
+    _wrapped.documentUrlPatterns = v?.toJSArray((e) => e.toJS);
   }
 
   /// Similar to `documentUrlPatterns`, filters based on the `src` attribute of
   /// `img`, `audio`, and `video` tags and the `href` attribute of `a` tags.
-  List<String>? get targetUrlPatterns =>
-      _wrapped.targetUrlPatterns?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get targetUrlPatterns => _wrapped.targetUrlPatterns?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set targetUrlPatterns(List<String>? v) {
-    _wrapped.targetUrlPatterns = v?.toJSArray((e) => e);
+    _wrapped.targetUrlPatterns = v?.toJSArray((e) => e.toJS);
   }
 
   /// Whether this context menu item is enabled or disabled. Defaults to `true`.
@@ -570,14 +574,14 @@ class UpdateProperties {
           visible: visible,
           onclick: onclick,
           parentId: switch (parentId) {
-            int() => parentId.jsify()!,
-            String() => parentId.jsify()!,
+            int() => parentId.toJS,
+            String() => parentId.toJS,
             null => null,
             _ => throw UnsupportedError(
                 'Received type: ${parentId.runtimeType}. Supported types are: int, String')
           },
-          documentUrlPatterns: documentUrlPatterns?.toJSArray((e) => e),
-          targetUrlPatterns: targetUrlPatterns?.toJSArray((e) => e),
+          documentUrlPatterns: documentUrlPatterns?.toJSArray((e) => e.toJS),
+          targetUrlPatterns: targetUrlPatterns?.toJSArray((e) => e.toJS),
           enabled: enabled,
         );
 
@@ -634,8 +638,8 @@ class UpdateProperties {
 
   set parentId(Object? v) {
     _wrapped.parentId = switch (v) {
-      int() => v.jsify()!,
-      String() => v.jsify()!,
+      int() => v.toJS,
+      String() => v.toJS,
       null => null,
       _ => throw UnsupportedError(
           'Received type: ${v.runtimeType}. Supported types are: int, String')
@@ -643,19 +647,21 @@ class UpdateProperties {
   }
 
   List<String>? get documentUrlPatterns => _wrapped.documentUrlPatterns?.toDart
-      .cast<String>()
-      .map((e) => e)
+      .cast<JSString>()
+      .map((e) => e.toDart)
       .toList();
 
   set documentUrlPatterns(List<String>? v) {
-    _wrapped.documentUrlPatterns = v?.toJSArray((e) => e);
+    _wrapped.documentUrlPatterns = v?.toJSArray((e) => e.toJS);
   }
 
-  List<String>? get targetUrlPatterns =>
-      _wrapped.targetUrlPatterns?.toDart.cast<String>().map((e) => e).toList();
+  List<String>? get targetUrlPatterns => _wrapped.targetUrlPatterns?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set targetUrlPatterns(List<String>? v) {
-    _wrapped.targetUrlPatterns = v?.toJSArray((e) => e);
+    _wrapped.targetUrlPatterns = v?.toJSArray((e) => e.toJS);
   }
 
   bool? get enabled => _wrapped.enabled;

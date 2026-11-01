@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/system_cpu.dart' as $js;
 import 'system.dart';
@@ -25,8 +24,7 @@ class ChromeSystemCpu {
 
   /// Queries basic CPU information of the system.
   Future<CpuInfo> getInfo() async {
-    var $res =
-        await promiseToFuture<$js.CpuInfo>($js.chrome.system.cpu.getInfo());
+    var $res = await $js.chrome.system.cpu.getInfo().toDart;
     return CpuInfo.fromJS($res);
   }
 }
@@ -139,9 +137,9 @@ class CpuInfo {
           numOfProcessors: numOfProcessors,
           archName: archName,
           modelName: modelName,
-          features: features.toJSArray((e) => e),
+          features: features.toJSArray((e) => e.toJS),
           processors: processors.toJSArray((e) => e.toJS),
-          temperatures: temperatures.toJSArray((e) => e),
+          temperatures: temperatures.toJSArray((e) => e.toJS),
         );
 
   final $js.CpuInfo _wrapped;
@@ -173,10 +171,10 @@ class CpuInfo {
   /// The currently supported codes are "mmx", "sse", "sse2", "sse3", "ssse3",
   /// "sse4_1", "sse4_2", and "avx".
   List<String> get features =>
-      _wrapped.features.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.features.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set features(List<String> v) {
-    _wrapped.features = v.toJSArray((e) => e);
+    _wrapped.features = v.toJSArray((e) => e.toJS);
   }
 
   /// Information about each logical processor.
@@ -193,10 +191,12 @@ class CpuInfo {
   /// Temperatures are in degrees Celsius.
   ///
   /// **Currently supported on Chrome OS only.**
-  List<double> get temperatures =>
-      _wrapped.temperatures.toDart.cast<double>().map((e) => e).toList();
+  List<double> get temperatures => _wrapped.temperatures.toDart
+      .cast<JSNumber>()
+      .map((e) => e.toDartDouble)
+      .toList();
 
   set temperatures(List<double> v) {
-    _wrapped.temperatures = v.toJSArray((e) => e);
+    _wrapped.temperatures = v.toJSArray((e) => e.toJS);
   }
 }

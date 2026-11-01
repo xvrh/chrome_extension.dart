@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/web_request.dart' as $js;
@@ -26,7 +25,7 @@ class ChromeWebRequest {
   /// changed to prevent incorrect handling due to caching. This function call
   /// is expensive. Don't call it often.
   Future<void> handlerBehaviorChanged() async {
-    await promiseToFuture<void>($js.chrome.webRequest.handlerBehaviorChanged());
+    await $js.chrome.webRequest.handlerBehaviorChanged().toDart;
   }
 
   /// The maximum number of times that `handlerBehaviorChanged` can be called
@@ -172,6 +171,7 @@ enum ResourceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ResourceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -193,6 +193,7 @@ enum OnBeforeRequestOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnBeforeRequestOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -214,6 +215,7 @@ enum OnBeforeSendHeadersOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnBeforeSendHeadersOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -232,6 +234,7 @@ enum OnSendHeadersOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnSendHeadersOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -253,6 +256,7 @@ enum OnHeadersReceivedOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnHeadersReceivedOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -277,6 +281,7 @@ enum OnAuthRequiredOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnAuthRequiredOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -295,6 +300,7 @@ enum OnResponseStartedOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnResponseStartedOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -313,6 +319,7 @@ enum OnBeforeRedirectOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnBeforeRedirectOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -331,6 +338,7 @@ enum OnCompletedOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnCompletedOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -346,6 +354,7 @@ enum OnErrorOccurredOptions {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static OnErrorOccurredOptions fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -363,6 +372,7 @@ enum IgnoredActionType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static IgnoredActionType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -387,7 +397,7 @@ class RequestFilter {
     int? tabId,
     int? windowId,
   }) : _wrapped = $js.RequestFilter(
-          urls: urls.toJSArray((e) => e),
+          urls: urls.toJSArray((e) => e.toJS),
           types: types?.toJSArray((e) => e.toJS),
           tabId: tabId,
           windowId: windowId,
@@ -400,10 +410,10 @@ class RequestFilter {
   /// A list of URLs or URL patterns. Requests that cannot match any of the URLs
   /// will be filtered out.
   List<String> get urls =>
-      _wrapped.urls.toDart.cast<String>().map((e) => e).toList();
+      _wrapped.urls.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
   set urls(List<String> v) {
-    _wrapped.urls = v.toJSArray((e) => e);
+    _wrapped.urls = v.toJSArray((e) => e.toJS);
   }
 
   /// A list of request types. Requests that cannot match any of the types will
@@ -2583,7 +2593,7 @@ class HttpHeadersItems {
   }) : _wrapped = $js.HttpHeadersItems(
           name: name,
           value: value,
-          binaryValue: binaryValue?.toJSArray((e) => e),
+          binaryValue: binaryValue?.toJSArray((e) => e.toJS),
         );
 
   final $js.HttpHeadersItems _wrapped;
@@ -2606,11 +2616,13 @@ class HttpHeadersItems {
 
   /// Value of the HTTP header if it cannot be represented by UTF-8, stored as
   /// individual byte values (0..255).
-  List<int>? get binaryValue =>
-      _wrapped.binaryValue?.toDart.cast<int>().map((e) => e).toList();
+  List<int>? get binaryValue => _wrapped.binaryValue?.toDart
+      .cast<JSNumber>()
+      .map((e) => e.toDartInt)
+      .toList();
 
   set binaryValue(List<int>? v) {
-    _wrapped.binaryValue = v?.toJSArray((e) => e);
+    _wrapped.binaryValue = v?.toJSArray((e) => e.toJS);
   }
 }
 

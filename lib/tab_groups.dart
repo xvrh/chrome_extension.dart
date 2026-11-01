@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/tab_groups.dart' as $js;
 
@@ -25,16 +24,14 @@ class ChromeTabGroups {
 
   /// Retrieves details about the specified group.
   Future<TabGroup> get(int groupId) async {
-    var $res =
-        await promiseToFuture<$js.TabGroup>($js.chrome.tabGroups.get(groupId));
+    var $res = await $js.chrome.tabGroups.get(groupId).toDart;
     return TabGroup.fromJS($res);
   }
 
   /// Gets all groups that have the specified properties, or all groups if no
   /// properties are specified.
   Future<List<TabGroup>> query(QueryInfo queryInfo) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.tabGroups.query(queryInfo.toJS));
+    var $res = await $js.chrome.tabGroups.query(queryInfo.toJS).toDart;
     return $res.toDart
         .cast<$js.TabGroup>()
         .map((e) => TabGroup.fromJS(e))
@@ -48,10 +45,12 @@ class ChromeTabGroups {
     int groupId,
     UpdateProperties updateProperties,
   ) async {
-    var $res = await promiseToFuture<$js.TabGroup?>($js.chrome.tabGroups.update(
-      groupId,
-      updateProperties.toJS,
-    ));
+    var $res = await $js.chrome.tabGroups
+        .update(
+          groupId,
+          updateProperties.toJS,
+        )
+        .toDart;
     return $res?.let(TabGroup.fromJS);
   }
 
@@ -61,10 +60,12 @@ class ChromeTabGroups {
     int groupId,
     MoveProperties moveProperties,
   ) async {
-    var $res = await promiseToFuture<$js.TabGroup?>($js.chrome.tabGroups.move(
-      groupId,
-      moveProperties.toJS,
-    ));
+    var $res = await $js.chrome.tabGroups
+        .move(
+          groupId,
+          moveProperties.toJS,
+        )
+        .toDart;
     return $res?.let(TabGroup.fromJS);
   }
 
@@ -117,6 +118,7 @@ enum Color {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static Color fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

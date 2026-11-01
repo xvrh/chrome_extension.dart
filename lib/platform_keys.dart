@@ -173,6 +173,7 @@ enum ClientCertificateType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ClientCertificateType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -403,7 +404,7 @@ class VerificationResult {
     required List<String> debugErrors,
   }) : _wrapped = $js.VerificationResult(
           trusted: trusted,
-          debug_errors: debugErrors.toJSArray((e) => e),
+          debug_errors: debugErrors.toJSArray((e) => e.toJS),
         );
 
   final $js.VerificationResult _wrapped;
@@ -426,11 +427,13 @@ class VerificationResult {
   /// contain all relevant errors. The errors returned may change in future
   /// revisions of this API, and are not guaranteed to be forwards or backwards
   /// compatible.
-  List<String> get debugErrors =>
-      _wrapped.debug_errors.toDart.cast<String>().map((e) => e).toList();
+  List<String> get debugErrors => _wrapped.debug_errors.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
 
   set debugErrors(List<String> v) {
-    _wrapped.debug_errors = v.toJSArray((e) => e);
+    _wrapped.debug_errors = v.toJSArray((e) => e.toJS);
   }
 }
 

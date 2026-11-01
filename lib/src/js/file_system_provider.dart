@@ -49,11 +49,11 @@ extension type JSFileSystemProvider._(JSObject _) {
   external JSPromise unmount(UnmountOptions options);
 
   /// Returns all file systems mounted by the extension.
-  external JSPromise getAll();
+  external JSPromise<JSArray> getAll();
 
   /// Returns information about a file system with the passed
   /// `fileSystemId`.
-  external JSPromise get(String fileSystemId);
+  external JSPromise<FileSystemInfo> get(String fileSystemId);
 
   /// Notifies about changes in the watched directory at
   /// `observedPath` in `recursive` mode. If the file

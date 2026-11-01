@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/storage.dart' as $js;
 
@@ -63,6 +62,7 @@ enum AccessLevel {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static AccessLevel fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -119,14 +119,16 @@ class StorageArea {
   /// [returns] Callback with storage items, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<Map> get(Object? keys) async {
-    var $res = await promiseToFuture<JSAny>(_wrapped.get(switch (keys) {
-      String() => keys.jsify()!,
-      List() => keys.toJSArrayString(),
-      Map() => keys.jsify()!,
-      null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${keys.runtimeType}. Supported types are: String, List<String>, Map')
-    }));
+    var $res = await _wrapped
+        .get(switch (keys) {
+          String() => keys.toJS,
+          List() => keys.toJSArrayString(),
+          Map() => keys.jsify()!,
+          null => null,
+          _ => throw UnsupportedError(
+              'Received type: ${keys.runtimeType}. Supported types are: String, List<String>, Map')
+        })
+        .toDart;
     return $res.toDartMap();
   }
 
@@ -137,15 +139,16 @@ class StorageArea {
   /// [returns] Callback with the amount of space being used by storage, or on
   /// failure (in which case [runtime.lastError] will be set).
   Future<double> getBytesInUse(Object? keys) async {
-    var $res =
-        await promiseToFuture<double>(_wrapped.getBytesInUse(switch (keys) {
-      String() => keys.jsify()!,
-      List() => keys.toJSArrayString(),
-      null => null,
-      _ => throw UnsupportedError(
-          'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')
-    }));
-    return $res;
+    var $res = await _wrapped
+        .getBytesInUse(switch (keys) {
+          String() => keys.toJS,
+          List() => keys.toJSArrayString(),
+          null => null,
+          _ => throw UnsupportedError(
+              'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')
+        })
+        .toDart;
+    return $res.toDartDouble;
   }
 
   /// Sets multiple items.
@@ -159,7 +162,7 @@ class StorageArea {
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> set(Map items) async {
-    await promiseToFuture<void>(_wrapped.set(items.jsify()!));
+    await _wrapped.set(items.jsify()!).toDart;
   }
 
   /// Removes one or more items from storage.
@@ -167,19 +170,21 @@ class StorageArea {
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> remove(Object keys) async {
-    await promiseToFuture<void>(_wrapped.remove(switch (keys) {
-      String() => keys.jsify()!,
-      List() => keys.toJSArrayString(),
-      _ => throw UnsupportedError(
-          'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')
-    }));
+    await _wrapped
+        .remove(switch (keys) {
+          String() => keys.toJS,
+          List() => keys.toJSArrayString(),
+          _ => throw UnsupportedError(
+              'Received type: ${keys.runtimeType}. Supported types are: String, List<String>')
+        })
+        .toDart;
   }
 
   /// Removes all items from storage.
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> clear() async {
-    await promiseToFuture<void>(_wrapped.clear());
+    await _wrapped.clear().toDart;
   }
 
   /// Sets the desired access level for the storage area. The default will be
@@ -187,7 +192,7 @@ class StorageArea {
   /// [returns] Callback on success, or on failure (in which case
   /// [runtime.lastError] will be set).
   Future<void> setAccessLevel(SetAccessLevelAccessOptions accessOptions) async {
-    await promiseToFuture<void>(_wrapped.setAccessLevel(accessOptions.toJS));
+    await _wrapped.setAccessLevel(accessOptions.toJS).toDart;
   }
 
   /// Fired when one or more items change.

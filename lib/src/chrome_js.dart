@@ -5,9 +5,7 @@ export 'js/events.dart' show Event;
 @JS()
 external JSChrome get chrome;
 
-@JS()
-@staticInterop
-class JSChrome {}
+extension type JSChrome._(JSObject _) implements JSObject {}
 
 class ApiNotAvailableException implements Exception {
   final String name;

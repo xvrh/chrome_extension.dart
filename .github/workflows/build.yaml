@@ -4,10 +4,15 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # Weekly run to catch breakages from new Chrome, Dart and Flutter releases
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
 jobs:
   test:
     name: Run tests ${{matrix.sdk}} on ${{matrix.os}}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
@@ -18,19 +23,21 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: dart --version
-      - run: |
-          (dart pub get) && \
-          (cd extension_examples/dart && dart pub get) && \
-          (cd extension_examples/flutter && flutter pub get) && \
-          (cd extension_examples/flutter2 && flutter pub get)
+      - run: flutter pub get
       - run: flutter analyze --fatal-infos .
       - run: dart run puppeteer:download_chrome
+      # Recent Ubuntu versions restrict the user namespaces used by the Chrome sandbox
+      - run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+        if: runner.os == 'Linux'
       - run: xvfb-run --auto-servernum dart test
         if: runner.os == 'Linux'
       - run: dart test
         if: runner.os != 'Linux'
+      - name: Run tests compiled to Wasm
+        run: TEST_COMPILER=wasm xvfb-run --auto-servernum dart test
+        if: runner.os == 'Linux'
       - run: dart tool/gen_apis.dart
       - run: dart tool/prepare_submit.dart
       - name: "check for uncommitted changes"
@@ -39,3 +46,31 @@ jobs:
           || (echo "##[error] found changed files after build. please run 'dart tool/prepare_submit.dart'" \
                    "and check in all changes" \
               && exit 1)
+
+  examples:
+    name: Build the Flutter examples with Wasm
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: [flutter, flutter2]
+    defaults:
+      run:
+        working-directory: extension_examples/${{ matrix.example }}
+    steps:
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - uses: actions/checkout@v6
+      - run: flutter build web --wasm --csp --no-web-resources-cdn
+      - run: test -f build/web/main.dart.wasm
+
+  pana:
+    name: Check pub.dev score
+    runs-on: ubuntu-latest
+    steps:
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - uses: actions/checkout@v6
+      - run: dart pub global activate pana
+      - run: dart pub global run pana --exit-code-threshold 0 .

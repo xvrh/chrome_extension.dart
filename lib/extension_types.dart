@@ -32,6 +32,7 @@ enum ImageFormat {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ImageFormat fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -49,6 +50,7 @@ enum RunAt {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static RunAt fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -66,6 +68,7 @@ enum CSSOrigin {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static CSSOrigin fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -83,6 +86,7 @@ enum FrameType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static FrameType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -101,6 +105,7 @@ enum DocumentLifecycle {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static DocumentLifecycle fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -121,6 +126,7 @@ enum ExecutionWorld {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static ExecutionWorld fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

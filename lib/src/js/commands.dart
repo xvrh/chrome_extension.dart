@@ -29,7 +29,7 @@ extension type JSCommands._(JSObject _) {
   /// Returns all the registered extension commands for this extension and their
   /// shortcut (if active). Before Chrome 110, this command did not return
   /// `_execute_action`.
-  external JSPromise getAll();
+  external JSPromise<JSArray> getAll();
 
   /// Fired when a registered command is activated using a keyboard shortcut.
   external Event get onCommand;

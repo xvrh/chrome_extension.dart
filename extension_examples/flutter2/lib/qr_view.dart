@@ -5,7 +5,7 @@ import 'color_list.dart';
 class QRView extends StatefulWidget {
   final String? qrText;
   final bool enabled;
-  const QRView({Key? key, this.qrText, this.enabled = false}) : super(key: key);
+  const QRView({super.key, this.qrText, this.enabled = false});
 
   @override
   State<QRView> createState() => _QRViewState();

@@ -27,7 +27,7 @@ extension JSChromeJSSystemMemoryExtension on JSChromeSystem {
 
 extension type JSSystemMemory._(JSObject _) {
   /// Get physical memory information.
-  external JSPromise getInfo();
+  external JSPromise<MemoryInfo> getInfo();
 }
 extension type MemoryInfo._(JSObject _) implements JSObject {
   external factory MemoryInfo({

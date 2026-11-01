@@ -2,7 +2,6 @@
 
 library;
 
-import 'dart:js_util';
 import 'src/internal_helpers.dart';
 import 'src/js/tabs.dart' as $js_tabs;
 import 'src/js/windows.dart' as $js;
@@ -28,40 +27,39 @@ class ChromeWindows {
     int windowId,
     QueryOptions? queryOptions,
   ) async {
-    var $res = await promiseToFuture<$js.Window>($js.chrome.windows.get(
-      windowId,
-      queryOptions?.toJS,
-    ));
+    var $res = await $js.chrome.windows
+        .get(
+          windowId,
+          queryOptions?.toJS,
+        )
+        .toDart;
     return Window.fromJS($res);
   }
 
   /// Gets the [current window](#current-window).
   Future<Window> getCurrent(QueryOptions? queryOptions) async {
-    var $res = await promiseToFuture<$js.Window>(
-        $js.chrome.windows.getCurrent(queryOptions?.toJS));
+    var $res = await $js.chrome.windows.getCurrent(queryOptions?.toJS).toDart;
     return Window.fromJS($res);
   }
 
   /// Gets the window that was most recently focused - typically the window 'on
   /// top'.
   Future<Window> getLastFocused(QueryOptions? queryOptions) async {
-    var $res = await promiseToFuture<$js.Window>(
-        $js.chrome.windows.getLastFocused(queryOptions?.toJS));
+    var $res =
+        await $js.chrome.windows.getLastFocused(queryOptions?.toJS).toDart;
     return Window.fromJS($res);
   }
 
   /// Gets all windows.
   Future<List<Window>> getAll(QueryOptions? queryOptions) async {
-    var $res = await promiseToFuture<JSArray>(
-        $js.chrome.windows.getAll(queryOptions?.toJS));
+    var $res = await $js.chrome.windows.getAll(queryOptions?.toJS).toDart;
     return $res.toDart.cast<$js.Window>().map((e) => Window.fromJS(e)).toList();
   }
 
   /// Creates (opens) a new browser window with any optional sizing, position,
   /// or default URL provided.
   Future<Window?> create(CreateData? createData) async {
-    var $res = await promiseToFuture<$js.Window?>(
-        $js.chrome.windows.create(createData?.toJS));
+    var $res = await $js.chrome.windows.create(createData?.toJS).toDart;
     return $res?.let(Window.fromJS);
   }
 
@@ -71,16 +69,18 @@ class ChromeWindows {
     int windowId,
     UpdateInfo updateInfo,
   ) async {
-    var $res = await promiseToFuture<$js.Window>($js.chrome.windows.update(
-      windowId,
-      updateInfo.toJS,
-    ));
+    var $res = await $js.chrome.windows
+        .update(
+          windowId,
+          updateInfo.toJS,
+        )
+        .toDart;
     return Window.fromJS($res);
   }
 
   /// Removes (closes) a window and all the tabs inside it.
   Future<void> remove(int windowId) async {
-    await promiseToFuture<void>($js.chrome.windows.remove(windowId));
+    await $js.chrome.windows.remove(windowId).toDart;
   }
 
   /// The windowId value that represents the absence of a Chrome browser window.
@@ -145,6 +145,7 @@ enum WindowType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static WindowType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -176,6 +177,7 @@ enum WindowState {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static WindowState fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -199,6 +201,7 @@ enum CreateType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static CreateType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -471,7 +474,7 @@ class CreateData {
     bool? setSelfAsOpener,
   }) : _wrapped = $js.CreateData(
           url: switch (url) {
-            String() => url.jsify()!,
+            String() => url.toJS,
             List() => url.toJSArrayString(),
             null => null,
             _ => throw UnsupportedError(
@@ -499,12 +502,12 @@ class CreateData {
   /// the extension. Defaults to the New Tab Page.
   Object? get url => _wrapped.url?.when(
         isString: (v) => v,
-        isArray: (v) => v.toDart.cast<String>().map((e) => e).toList(),
+        isArray: (v) => v.toDart.cast<JSString>().map((e) => e.toDart).toList(),
       );
 
   set url(Object? v) {
     _wrapped.url = switch (v) {
-      String() => v.jsify()!,
+      String() => v.toJS,
       List() => v.toJSArrayString(),
       null => null,
       _ => throw UnsupportedError(

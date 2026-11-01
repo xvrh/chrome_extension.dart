@@ -25,12 +25,12 @@ bool checkRuntimeLastError(Completer completer) {
 }
 
 extension ListToJsExtension<T> on List<T> {
-  JSArray toJSArray(Object Function(T) mapper) {
-    return map(mapper).cast<JSAny>().toList().toJS;
+  JSArray toJSArray(JSAny? Function(T) mapper) {
+    return [for (var e in this) mapper(e)].toJS;
   }
 
   JSArray toJSArrayString() {
-    return toJSArray((e) => e.toString());
+    return toJSArray((e) => e.toString().toJS);
   }
 }
 
@@ -105,7 +105,7 @@ class EventStream<T> extends Stream<T> {
   @override
   StreamSubscription<T> listen(dynamic Function(T)? onData,
           {Function? onError, void Function()? onDone, bool? cancelOnError}) =>
-      _EventStreamSubscription<T>(this._target, onData, _callbackFactory);
+      _EventStreamSubscription<T>(_target, onData, _callbackFactory);
 }
 
 class _EventStreamSubscription<T> implements StreamSubscription<T> {

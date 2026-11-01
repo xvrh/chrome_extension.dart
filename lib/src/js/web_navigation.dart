@@ -28,13 +28,13 @@ extension JSChromeJSWebNavigationExtension on JSChrome {
 extension type JSWebNavigation._(JSObject _) {
   /// Retrieves information about the given frame. A frame refers to an <iframe>
   /// or a <frame> of a web page and is identified by a tab ID and a frame ID.
-  external JSPromise getFrame(
+  external JSPromise<GetFrameCallbackDetails?> getFrame(
 
       /// Information about the frame to retrieve information about.
       GetFrameDetails details);
 
   /// Retrieves information about all frames of a given tab.
-  external JSPromise getAllFrames(
+  external JSPromise<JSArray?> getAllFrames(
 
       /// Information about the tab to retrieve all frames from.
       GetAllFramesDetails details);

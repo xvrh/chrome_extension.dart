@@ -28,7 +28,8 @@ void _tests(TestContext context) {
     expect(tab.active, isTrue);
     expect(tab.pinned, isFalse);
     expect(tab.url, '');
-    expect(tab.title, 'New Tab');
+    // Recent versions of Chrome use "New tab" instead of "New Tab"
+    expect(tab.title?.toLowerCase(), 'new tab');
     expect(tab.favIconUrl, isNull);
     expect(tab.status, TabStatus.loading);
     expect(tab.incognito, isFalse);
@@ -253,7 +254,7 @@ void _tests(TestContext context) {
     await chrome.tabs.highlight(HighlightInfo(
         windowId: window.id, tabs: [newTab1.index, newTab2.index]));
     var result = await onHighlighted;
-    expect(result.tabIds, [newTab1.id, newTab2.id]);
+    expect(result.tabIds, unorderedEquals([newTab1.id, newTab2.id]));
   });
 
   test('onDetached', () async {

@@ -65,7 +65,7 @@ extension type StorageArea._(JSObject _) implements JSObject {
   external factory StorageArea();
 
   /// Gets one or more items from storage.
-  external JSPromise get(
+  external JSPromise<JSAny> get(
 
       /// A single key to get, list of keys to get, or a dictionary specifying
       /// default values (see description of the object).  An empty list or object
@@ -74,7 +74,7 @@ extension type StorageArea._(JSObject _) implements JSObject {
       JSAny? keys);
 
   /// Gets the amount of space (in bytes) being used by one or more items.
-  external JSPromise getBytesInUse(
+  external JSPromise<JSNumber> getBytesInUse(
 
       /// A single key or list of keys to get the total usage for. An empty list
       /// will return 0. Pass in `null` to get the total usage of all of storage.

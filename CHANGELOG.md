@@ -1,3 +1,12 @@
+## 0.5.0
+
+- Support WebAssembly: the package can be compiled with `dart compile wasm` and
+  `flutter build web --wasm`.
+- Remove the usages of the deprecated `dart:js_util` library.
+- `runtime.sendMessage` and `tabs.sendMessage` return `null` when the receiver
+  doesn't send a response.
+- Require Dart 3.6.
+
 ## 0.4.0
 
 - Fix the package to work with Dart 3.5 & Flutter 3.24

@@ -30,7 +30,7 @@ extension type JSVpnProvider._(JSObject _) {
   /// |name|: The name of the VPN configuration.
   /// |callback|: Called when the configuration is created or if there is an
   /// error.
-  external JSPromise createConfig(String name);
+  external JSPromise<JSString> createConfig(String name);
 
   /// Destroys a VPN configuration created by the extension.
   /// |id|: ID of the VPN configuration to destroy.

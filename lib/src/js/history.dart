@@ -29,10 +29,10 @@ extension JSChromeJSHistoryExtension on JSChrome {
 extension type JSHistory._(JSObject _) {
   /// Searches the history for the last visit time of each page matching the
   /// query.
-  external JSPromise search(SearchQuery query);
+  external JSPromise<JSArray> search(SearchQuery query);
 
   /// Retrieves information about visits to a URL.
-  external JSPromise getVisits(UrlDetails details);
+  external JSPromise<JSArray> getVisits(UrlDetails details);
 
   /// Adds a URL to the history at the current time with a [transition
   /// type](#transition_types) of "link".

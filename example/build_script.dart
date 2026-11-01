@@ -14,7 +14,7 @@ void main() async {
     '-t',
     'web/popup.dart',
     '--csp',
-    '--web-renderer=canvaskit',
+    '--wasm',
     '--no-web-resources-cdn',
   ]);
   for (var script in [

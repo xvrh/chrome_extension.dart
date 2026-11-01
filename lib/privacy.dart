@@ -51,6 +51,7 @@ enum IPHandlingPolicy {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static IPHandlingPolicy fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);

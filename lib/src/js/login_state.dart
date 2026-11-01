@@ -26,10 +26,10 @@ extension JSChromeJSLoginStateExtension on JSChrome {
 
 extension type JSLoginState._(JSObject _) {
   /// Gets the type of the profile the extension is in.
-  external JSPromise getProfileType();
+  external JSPromise<ProfileType> getProfileType();
 
   /// Gets the current session state.
-  external JSPromise getSessionState();
+  external JSPromise<SessionState> getSessionState();
 
   /// Dispatched when the session state changes. `sessionState`
   /// is the new session state.

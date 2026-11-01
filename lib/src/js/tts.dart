@@ -54,10 +54,10 @@ extension type JSTts._(JSObject _) {
   /// Checks whether the engine is currently speaking. On Mac OS X, the result
   /// is true whenever the system speech engine is speaking, even if the speech
   /// wasn't initiated by Chrome.
-  external JSPromise isSpeaking();
+  external JSPromise<JSBoolean> isSpeaking();
 
   /// Gets an array of all available voices.
-  external JSPromise getVoices();
+  external JSPromise<JSArray> getVoices();
 
   /// Used to pass events back to the function calling speak().
   external Event get onEvent;

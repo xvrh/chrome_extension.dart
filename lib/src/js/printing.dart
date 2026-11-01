@@ -32,7 +32,7 @@ extension type JSPrinting._(JSObject _) {
   /// `PrintingAPIExtensionsAllowlist`</a> policy,
   /// the user is prompted to accept the print job.<br/>
   /// Before Chrome 120, this function did not return a promise.
-  external JSPromise submitJob(SubmitJobRequest request);
+  external JSPromise<SubmitJobResponse> submitJob(SubmitJobRequest request);
 
   /// Cancels previously submitted job.
   /// |jobId|: The id of the print job to cancel. This should be the same id
@@ -41,14 +41,14 @@ extension type JSPrinting._(JSObject _) {
 
   /// Returns the list of available printers on the device. This includes
   /// manually added, enterprise and discovered printers.
-  external JSPromise getPrinters();
+  external JSPromise<JSArray> getPrinters();
 
   /// Returns the status and capabilities of the printer in
   /// <a href="https://developers.google.com/cloud-print/docs/cdd#cdd">
   /// CDD format</a>.
   /// This call will fail with a runtime error if no printers with given id are
   /// installed.
-  external JSPromise getPrinterInfo(String printerId);
+  external JSPromise<GetPrinterInfoResponse> getPrinterInfo(String printerId);
 
   /// Event fired when the status of the job is changed.
   /// This is only fired for the jobs created by this extension.

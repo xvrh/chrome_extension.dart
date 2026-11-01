@@ -71,6 +71,7 @@ enum DesktopCaptureSourceType {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static DesktopCaptureSourceType fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -88,6 +89,7 @@ enum SystemAudioPreferenceEnum {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static SystemAudioPreferenceEnum fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
@@ -105,6 +107,7 @@ enum SelfCapturePreferenceEnum {
   final String value;
 
   JSString get toJS => value.toJS;
+
   static SelfCapturePreferenceEnum fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
