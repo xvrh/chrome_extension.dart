@@ -49,60 +49,42 @@ class ChromeContextMenus {
   /// [id] The ID of the item to update.
   /// [updateProperties] The properties to update. Accepts the same values as
   /// the [contextMenus.create] function.
-  /// [returns] Called when the context menu has been updated.
+  /// [returns] Resolves when the context menu has been updated.
   Future<void> update(
     Object id,
     UpdateProperties updateProperties,
-  ) {
-    var $completer = Completer<void>();
-    $js.chrome.contextMenus.update(
-      switch (id) {
-        int() => id.toJS,
-        String() => id.toJS,
-        _ => throw UnsupportedError(
-            'Received type: ${id.runtimeType}. Supported types are: int, String')
-      },
-      updateProperties.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    await $js.chrome.contextMenus
+        .update(
+          switch (id) {
+            int() => id.toJS,
+            String() => id.toJS,
+            _ => throw UnsupportedError(
+                'Received type: ${id.runtimeType}. Supported types are: int, String')
+          },
+          updateProperties.toJS,
+        )
+        .toDart;
   }
 
   /// Removes a context menu item.
   /// [menuItemId] The ID of the context menu item to remove.
-  /// [returns] Called when the context menu has been removed.
-  Future<void> remove(Object menuItemId) {
-    var $completer = Completer<void>();
-    $js.chrome.contextMenus.remove(
-      switch (menuItemId) {
-        int() => menuItemId.toJS,
-        String() => menuItemId.toJS,
-        _ => throw UnsupportedError(
-            'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
-      },
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  /// [returns] Resolves when the context menu has been removed.
+  Future<void> remove(Object menuItemId) async {
+    await $js.chrome.contextMenus
+        .remove(switch (menuItemId) {
+          int() => menuItemId.toJS,
+          String() => menuItemId.toJS,
+          _ => throw UnsupportedError(
+              'Received type: ${menuItemId.runtimeType}. Supported types are: int, String')
+        })
+        .toDart;
   }
 
   /// Removes all context menu items added by this extension.
-  /// [returns] Called when removal is complete.
-  Future<void> removeAll() {
-    var $completer = Completer<void>();
-    $js.chrome.contextMenus.removeAll(() {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(null);
-      }
-    }.toJS);
-    return $completer.future;
+  /// [returns] Resolves when removal is complete.
+  Future<void> removeAll() async {
+    await $js.chrome.contextMenus.removeAll().toDart;
   }
 
   /// The maximum number of top level extension items that can be added to an
@@ -143,7 +125,8 @@ enum ContextType {
   launcher('launcher'),
   browserAction('browser_action'),
   pageAction('page_action'),
-  action('action');
+  action('action'),
+  tab('tab');
 
   const ContextType(this.value);
 
@@ -393,8 +376,8 @@ class CreateProperties {
     bool? visible,
 
     /// A function that is called back when the menu item is clicked. This is
-    /// not available inside of a service worker; instead, they should register
-    /// a listener for [contextMenus.onClicked].
+    /// not available inside of a service worker; instead, you should register a
+    /// listener for [contextMenus.onClicked].
     JSFunction? onclick,
 
     /// The ID of a parent menu item; this makes the item a child of a
@@ -491,7 +474,7 @@ class CreateProperties {
   }
 
   /// A function that is called back when the menu item is clicked. This is not
-  /// available inside of a service worker; instead, they should register a
+  /// available inside of a service worker; instead, you should register a
   /// listener for [contextMenus.onClicked].
   JSFunction? get onclick => _wrapped.onclick;
 

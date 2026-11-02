@@ -24,8 +24,8 @@ class ChromeVpnProvider {
   /// Creates a new VPN configuration that persists across multiple login
   /// sessions of the user.
   /// |name|: The name of the VPN configuration.
-  /// |callback|: Called when the configuration is created or if there is an
-  /// error.
+  /// |callback|: Returns a Promise which resolves when the configuration is
+  ///   created or rejects if there is an error.
   Future<String> createConfig(String name) async {
     var $res = await $js.chrome.vpnProvider.createConfig(name).toDart;
     return $res.toDart;
@@ -33,8 +33,8 @@ class ChromeVpnProvider {
 
   /// Destroys a VPN configuration created by the extension.
   /// |id|: ID of the VPN configuration to destroy.
-  /// |callback|: Called when the configuration is destroyed or if there is an
-  /// error.
+  /// |callback|: Returns a Promise which resolves when the configuration is
+  ///   destroyed or rejects if there is an error.
   Future<void> destroyConfig(String id) async {
     await $js.chrome.vpnProvider.destroyConfig(id).toDart;
   }
@@ -43,7 +43,8 @@ class ChromeVpnProvider {
   /// immediately after `"connected"` is received from the platform.
   /// This will succeed only when the VPN session is owned by the extension.
   /// |parameters|: The parameters for the VPN session.
-  /// |callback|: Called when the parameters are set or if there is an error.
+  /// |callback|: Returns a Promise which resolves when the parameters are set
+  /// or rejects if there is an error.
   Future<void> setParameters(Parameters parameters) async {
     await $js.chrome.vpnProvider.setParameters(parameters.toJS).toDart;
   }
@@ -51,7 +52,8 @@ class ChromeVpnProvider {
   /// Sends an IP packet through the tunnel created for the VPN session.
   /// This will succeed only when the VPN session is owned by the extension.
   /// |data|: The IP packet to be sent to the platform.
-  /// |callback|: Called when the packet is sent or if there is an error.
+  /// |callback|: Returns a Promise which resolves when the packet is sent or
+  /// rejects if there is an error.
   Future<void> sendPacket(ByteBuffer data) async {
     await $js.chrome.vpnProvider.sendPacket(data.toJS).toDart;
   }
@@ -59,8 +61,8 @@ class ChromeVpnProvider {
   /// Notifies the VPN session state to the platform.
   /// This will succeed only when the VPN session is owned by the extension.
   /// |state|: The VPN session state of the VPN client.
-  /// |callback|: Called when the notification is complete or if there is an
-  /// error.
+  /// |callback|: Returns a Promise which resolves when the notification is
+  /// complete or rejects if there is an error.
   Future<void> notifyConnectionStateChanged(VpnConnectionState state) async {
     await $js.chrome.vpnProvider
         .notifyConnectionStateChanged(state.toJS)
@@ -161,7 +163,7 @@ enum PlatformMessage {
   linkUp('linkUp'),
 
   /// Indicates that the default physical network connection changed, e.g.
-  /// wifi->mobile.
+  /// wifi-&gt;mobile.
   linkChanged('linkChanged'),
 
   /// Indicates that the OS is preparing to suspend, so the VPN should drop its

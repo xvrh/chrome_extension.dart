@@ -26,9 +26,11 @@ class ChromeStorage {
   /// Items in the `local` storage area are local to each machine.
   StorageLocal get local => StorageLocal.fromJS($js.chrome.storage.local);
 
-  /// Items in the `managed` storage area are set by the domain administrator,
-  /// and are read-only for the extension; trying to modify this namespace
-  /// results in an error.
+  /// Items in the `managed` storage area are set by an enterprise policy
+  /// configured by the domain administrator, and are read-only for the
+  /// extension; trying to modify this namespace results in an error. For
+  /// information on configuring a policy, see [Manifest for storage
+  /// areas](/docs/extensions/reference/manifest/storage).
   StorageArea get managed => StorageArea.fromJS($js.chrome.storage.managed);
 
   /// Items in the `session` storage area are stored in-memory and will not be
@@ -116,8 +118,8 @@ class StorageArea {
   /// specifying default values (see description of the object).  An empty
   /// list or object will return an empty result object.  Pass in `null` to
   /// get the entire contents of storage.
-  /// [returns] Callback with storage items, or on failure (in which case
-  /// [runtime.lastError] will be set).
+  /// [returns] Promise that resolves with an object containing a key-value
+  /// map for the requested items, or rejects on failure.
   Future<Map> get(Object? keys) async {
     var $res = await _wrapped
         .get(switch (keys) {
@@ -132,12 +134,20 @@ class StorageArea {
     return $res.toDartMap();
   }
 
+  /// Gets all keys from storage.
+  /// [returns] Promise that resolves with storage keys, or rejects on
+  /// failure.
+  Future<List<String>> getKeys() async {
+    var $res = await _wrapped.getKeys().toDart;
+    return $res.toDart.cast<JSString>().map((e) => e.toDart).toList();
+  }
+
   /// Gets the amount of space (in bytes) being used by one or more items.
   /// [keys] A single key or list of keys to get the total usage for. An empty
   /// list will return 0. Pass in `null` to get the total usage of all of
   /// storage.
-  /// [returns] Callback with the amount of space being used by storage, or on
-  /// failure (in which case [runtime.lastError] will be set).
+  /// [returns] Promise that resolves with the amount of space being used by
+  /// storage, or rejects on failure.
   Future<double> getBytesInUse(Object? keys) async {
     var $res = await _wrapped
         .getBytesInUse(switch (keys) {
@@ -159,16 +169,14 @@ class StorageArea {
   /// a `typeof` `"object"` and `"function"` will typically serialize to `{}`,
   /// with the exception of `Array` (serializes as expected), `Date`, and
   /// `Regex` (serialize using their `String` representation).
-  /// [returns] Callback on success, or on failure (in which case
-  /// [runtime.lastError] will be set).
+  /// [returns] Promise that resolves on success, or rejects on failure.
   Future<void> set(Map items) async {
     await _wrapped.set(items.jsify()!).toDart;
   }
 
   /// Removes one or more items from storage.
   /// [keys] A single key or a list of keys for items to remove.
-  /// [returns] Callback on success, or on failure (in which case
-  /// [runtime.lastError] will be set).
+  /// [returns] Promise that resolves on success, or rejects on failure.
   Future<void> remove(Object keys) async {
     await _wrapped
         .remove(switch (keys) {
@@ -181,16 +189,16 @@ class StorageArea {
   }
 
   /// Removes all items from storage.
-  /// [returns] Callback on success, or on failure (in which case
-  /// [runtime.lastError] will be set).
+  /// [returns] Promise that resolves on success, or rejects on failure.
   Future<void> clear() async {
     await _wrapped.clear().toDart;
   }
 
-  /// Sets the desired access level for the storage area. The default will be
-  /// only trusted contexts.
-  /// [returns] Callback on success, or on failure (in which case
-  /// [runtime.lastError] will be set).
+  /// Sets the desired access level for the storage area. By default, `session`
+  /// storage is restricted to trusted contexts (extension pages and service
+  /// workers), while `managed`, `local`, and `sync` storage allow access from
+  /// both trusted and untrusted contexts.
+  /// [returns] Promise that resolves on success, or rejects on failure.
   Future<void> setAccessLevel(SetAccessLevelAccessOptions accessOptions) async {
     await _wrapped.setAccessLevel(accessOptions.toJS).toDart;
   }
@@ -211,7 +219,8 @@ class StorageSync extends StorageArea {
   /// The maximum total amount (in bytes) of data that can be stored in sync
   /// storage, as measured by the JSON stringification of every value plus every
   /// key's length. Updates that would cause this limit to be exceeded fail
-  /// immediately and set [runtime.lastError].
+  /// immediately and set [runtime.lastError] when using a callback, or when a
+  /// Promise is rejected.
   int get quotaBytes => _wrapped.QUOTA_BYTES;
 
   set quotaBytes(int v) {
@@ -221,7 +230,8 @@ class StorageSync extends StorageArea {
   /// The maximum size (in bytes) of each individual item in sync storage, as
   /// measured by the JSON stringification of its value plus its key length.
   /// Updates containing items larger than this limit will fail immediately and
-  /// set [runtime.lastError].
+  /// set [runtime.lastError] when using a callback, or when a Promise is
+  /// rejected.
   int get quotaBytesPerItem => _wrapped.QUOTA_BYTES_PER_ITEM;
 
   set quotaBytesPerItem(int v) {
@@ -230,7 +240,7 @@ class StorageSync extends StorageArea {
 
   /// The maximum number of items that can be stored in sync storage. Updates
   /// that would cause this limit to be exceeded will fail immediately and set
-  /// [runtime.lastError].
+  /// [runtime.lastError] when using a callback, or when a Promise is rejected.
   int get maxItems => _wrapped.MAX_ITEMS;
 
   set maxItems(int v) {
@@ -242,7 +252,8 @@ class StorageSync extends StorageArea {
   /// short term higher writes-per-minute limit.
   ///
   /// Updates that would cause this limit to be exceeded fail immediately and
-  /// set [runtime.lastError].
+  /// set [runtime.lastError] when using a callback, or when a Promise is
+  /// rejected.
   int get maxWriteOperationsPerHour => _wrapped.MAX_WRITE_OPERATIONS_PER_HOUR;
 
   set maxWriteOperationsPerHour(int v) {
@@ -254,7 +265,8 @@ class StorageSync extends StorageArea {
   /// than writes-per-hour over a shorter period of time.
   ///
   /// Updates that would cause this limit to be exceeded fail immediately and
-  /// set [runtime.lastError].
+  /// set [runtime.lastError] when using a callback, or when a Promise is
+  /// rejected.
   int get maxWriteOperationsPerMinute =>
       _wrapped.MAX_WRITE_OPERATIONS_PER_MINUTE;
 
@@ -280,7 +292,8 @@ class StorageLocal extends StorageArea {
   /// as measured by the JSON stringification of every value plus every key's
   /// length. This value will be ignored if the extension has the
   /// `unlimitedStorage` permission. Updates that would cause this limit to be
-  /// exceeded fail immediately and set [runtime.lastError].
+  /// exceeded fail immediately and set [runtime.lastError] when using a
+  /// callback, or a rejected Promise if using async/await.
   int get quotaBytes => _wrapped.QUOTA_BYTES;
 
   set quotaBytes(int v) {
@@ -297,7 +310,8 @@ class StorageSession extends StorageArea {
   /// The maximum amount (in bytes) of data that can be stored in memory, as
   /// measured by estimating the dynamically allocated memory usage of every
   /// value and key. Updates that would cause this limit to be exceeded fail
-  /// immediately and set [runtime.lastError].
+  /// immediately and set [runtime.lastError] when using a callback, or when a
+  /// Promise is rejected.
   int get quotaBytes => _wrapped.QUOTA_BYTES;
 
   set quotaBytes(int v) {
@@ -337,7 +351,7 @@ class OnChangedEvent {
   /// [storage.StorageChange] for that item.
   final Map changes;
 
-  /// The name of the storage area (`"sync"`, `"local"` or `"managed"`) the
-  /// changes are for.
+  /// The name of the storage area (`"local"`, `"managed"`, `"session"`, or
+  /// `"sync"`) the changes are for.
   final String areaName;
 }

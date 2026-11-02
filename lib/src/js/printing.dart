@@ -50,6 +50,12 @@ extension type JSPrinting._(JSObject _) {
   /// installed.
   external JSPromise<GetPrinterInfoResponse> getPrinterInfo(String printerId);
 
+  /// Returns the status of the print job. This call will fail with a runtime
+  /// error if the print job with the given `jobId` doesn't exist.
+  /// `jobId`: The id of the print job to return the status of. This should be
+  /// the same id received in a [SubmitJobResponse].
+  external JSPromise<JobStatus> getJobStatus(String jobId);
+
   /// Event fired when the status of the job is changed.
   /// This is only fired for the jobs created by this extension.
   external Event get onJobStatusChanged;
@@ -77,12 +83,13 @@ typedef JobStatus = JSString;
 extension type SubmitJobRequest._(JSObject _) implements JSObject {
   external factory SubmitJobRequest({
     /// The print job to be submitted.
-    /// The only supported content type is "application/pdf", and the
+    /// Supported content types are "application/pdf" and "image/png". The
     /// [Cloud Job Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
     /// shouldn't include `FitToPageTicketItem`,
-    /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
-    /// and `VendorTicketItem` fields since they are
-    /// irrelevant for native printing. All other fields must be present.
+    /// `PageRangeTicketItem` and `ReverseOrderTicketItem`
+    /// fields since they are irrelevant for native printing.
+    /// `VendorTicketItem` is optional. All other fields must be
+    /// present.
     PrintJob job,
 
     /// Used internally to store the blob uuid after parameter customization and
@@ -91,12 +98,13 @@ extension type SubmitJobRequest._(JSObject _) implements JSObject {
   });
 
   /// The print job to be submitted.
-  /// The only supported content type is "application/pdf", and the
+  /// Supported content types are "application/pdf" and "image/png". The
   /// [Cloud Job Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
   /// shouldn't include `FitToPageTicketItem`,
-  /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
-  /// and `VendorTicketItem` fields since they are
-  /// irrelevant for native printing. All other fields must be present.
+  /// `PageRangeTicketItem` and `ReverseOrderTicketItem`
+  /// fields since they are irrelevant for native printing.
+  /// `VendorTicketItem` is optional. All other fields must be
+  /// present.
   external PrintJob job;
 
   /// Used internally to store the blob uuid after parameter customization and

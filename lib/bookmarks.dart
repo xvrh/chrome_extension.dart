@@ -151,6 +151,9 @@ class ChromeBookmarks {
   int get maxSustainedWriteOperationsPerMinute =>
       $js.chrome.bookmarks.MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE;
 
+  /// The `id` associated with the root level node.
+  String get rootNodeId => $js.chrome.bookmarks.ROOT_NODE_ID;
+
   /// Fired when a bookmark or folder is created.
   EventStream<OnCreatedEvent> get onCreated =>
       $js.chrome.bookmarks.onCreated.asStream(($c) => (
@@ -230,6 +233,35 @@ class ChromeBookmarks {
           }.toJS);
 }
 
+/// Indicates the type of folder.
+enum FolderType {
+  /// The folder whose contents is displayed at the top of the browser window.
+  bookmarksBar('bookmarks-bar'),
+
+  /// Bookmarks which are displayed in the full list of bookmarks on all
+  /// platforms.
+  other('other'),
+
+  /// Bookmarks generally available on the user's mobile devices, but modifiable
+  /// by extension or in the bookmarks manager.
+  mobile('mobile'),
+
+  /// A top-level folder that may be present if the system administrator or the
+  /// custodian of a supervised user has configured bookmarks.
+  managed('managed');
+
+  const FolderType(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static FolderType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
 /// Indicates the reason why this node is unmodifiable. The [managed] value
 /// indicates that this node was configured by the system administrator. Omitted
 /// if the node can be modified by the user and the extension (default).
@@ -281,11 +313,32 @@ class BookmarkTreeNode {
     /// epoch.
     double? dateGroupModified,
 
+    /// If present, this is a folder that is added by the browser and that
+    /// cannot be modified by the user or the extension. Child nodes may be
+    /// modified, if this node does not have the `unmodifiable` property set.
+    /// Omitted if the node can be modified by the user and the extension
+    /// (default).There may be zero, one or multiple nodes of each folder type.
+    /// A folder may be added or removed by the browser, but not via the
+    /// extensions API.
+    FolderType? folderType,
+
     /// Indicates the reason why this node is unmodifiable. The [managed] value
     /// indicates that this node was configured by the system administrator or
     /// by the custodian of a supervised user. Omitted if the node can be
     /// modified by the user and the extension (default).
     BookmarkTreeNodeUnmodifiable? unmodifiable,
+
+    /// Whether this node is synced with the user's remote account storage by
+    /// the browser. This can be used to distinguish between account and
+    /// local-only versions of the same [FolderType]. The value of this property
+    /// may change for an existing node, for example as a result of user
+    /// action.Note: this reflects whether the node is saved to the browser's
+    /// built-in account provider. It is possible that a node could be synced
+    /// via a third-party, even if this value is false.
+    ///
+    /// For managed nodes (nodes where `unmodifiable` is set to `true`), this
+    /// property will always be `false`.
+    required bool syncing,
 
     /// An ordered list of children of this node.
     List<BookmarkTreeNode>? children,
@@ -298,7 +351,9 @@ class BookmarkTreeNode {
           dateAdded: dateAdded,
           dateLastUsed: dateLastUsed,
           dateGroupModified: dateGroupModified,
+          folderType: folderType?.toJS,
           unmodifiable: unmodifiable?.toJS,
+          syncing: syncing,
           children: children?.toJSArray((e) => e.toJS),
         );
 
@@ -366,6 +421,18 @@ class BookmarkTreeNode {
     _wrapped.dateGroupModified = v;
   }
 
+  /// If present, this is a folder that is added by the browser and that cannot
+  /// be modified by the user or the extension. Child nodes may be modified, if
+  /// this node does not have the `unmodifiable` property set. Omitted if the
+  /// node can be modified by the user and the extension (default).There may be
+  /// zero, one or multiple nodes of each folder type. A folder may be added or
+  /// removed by the browser, but not via the extensions API.
+  FolderType? get folderType => _wrapped.folderType?.let(FolderType.fromJS);
+
+  set folderType(FolderType? v) {
+    _wrapped.folderType = v?.toJS;
+  }
+
   /// Indicates the reason why this node is unmodifiable. The [managed] value
   /// indicates that this node was configured by the system administrator or by
   /// the custodian of a supervised user. Omitted if the node can be modified by
@@ -375,6 +442,22 @@ class BookmarkTreeNode {
 
   set unmodifiable(BookmarkTreeNodeUnmodifiable? v) {
     _wrapped.unmodifiable = v?.toJS;
+  }
+
+  /// Whether this node is synced with the user's remote account storage by the
+  /// browser. This can be used to distinguish between account and local-only
+  /// versions of the same [FolderType]. The value of this property may change
+  /// for an existing node, for example as a result of user action.Note: this
+  /// reflects whether the node is saved to the browser's built-in account
+  /// provider. It is possible that a node could be synced via a third-party,
+  /// even if this value is false.
+  ///
+  /// For managed nodes (nodes where `unmodifiable` is set to `true`), this
+  /// property will always be `false`.
+  bool get syncing => _wrapped.syncing;
+
+  set syncing(bool v) {
+    _wrapped.syncing = v;
   }
 
   /// An ordered list of children of this node.

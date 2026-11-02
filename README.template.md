@@ -121,8 +121,9 @@ only dispatches the event that woke up the service worker to the listeners regis
 
 Write tests for the extension using [`puppeteer-dart`](https://pub.dev/packages/puppeteer).
 
-Google Chrome ignores the `--load-extension` flag since version 137. `puppeteer.launch()` uses
-[Chrome for Testing](https://developer.chrome.com/blog/chrome-for-testing) by default, which still supports it.
+`browser.installExtension()` (or `puppeteer.launch(extensions: [...])`) installs the extension through the
+DevTools protocol, so the tests can run in headless mode and with Google Chrome, which ignores the
+`--load-extension` flag since version 137.
 
 ```dart
 import 'example/test.dart';

@@ -48,7 +48,8 @@ extension type JSTabCapture._(JSObject _) {
   /// This allows extensions to inform the user that there is an existing
   /// tab capture that would prevent a new tab capture from succeeding (or
   /// to prevent redundant requests for the same tab).
-  /// |callback| : Callback invoked with CaptureInfo[] for captured tabs.
+  /// |callback| : Returns a Promise which resolves with CaptureInfo[] for
+  /// captured tabs.
   external JSPromise<JSArray> getCapturedTabs();
 
   /// Creates a stream ID to capture the target tab.
@@ -56,8 +57,8 @@ extension type JSTabCapture._(JSObject _) {
   /// stream ID, instead of a media stream, to the consumer tab.
   ///
   /// |GetMediaStreamOptions| : Options for the media stream id to retrieve.
-  /// |callback| : Callback to invoke with the result. If successful, the
-  /// result is an opaque string that can be passed to the
+  /// |callback| : Returns a Promise which resolves with the result. If
+  /// successful, the result is an opaque string that can be passed to the
   /// `getUserMedia()` API to generate a media stream that
   /// corresponds to the target tab. The created `streamId` can
   /// only be used once and expires after a few seconds if it is not used.

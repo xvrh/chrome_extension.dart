@@ -16,7 +16,9 @@ void _tests(TestContext context) {
     check(resources).isNotEmpty();
     check(resources.first.url).isNotEmpty();
 
-    var content = await resources.first.getContent();
+    // The page also has the scripts evaluated by puppeteer.
+    var page = resources.firstWhere((r) => r.url.endsWith('simple_page.html'));
+    var content = await page.getContent();
     check(content.content).length.isGreaterThan(0);
     check(content.content).contains('Simple page');
   });

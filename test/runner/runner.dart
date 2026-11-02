@@ -8,8 +8,13 @@ import 'package:shelf/shelf_io.dart' as shelf;
 import 'package:test/test.dart';
 import 'communication.dart';
 
+/// Compiles the extension in [source], opens it in Chrome and runs its tests.
+///
+/// [initialPage] is a path in the static directory to open in the first tab
+/// instead of about:blank.
 Future<void> runTests(String source,
     {bool? devtools,
+    String? initialPage,
     Future Function(RunnerTestContext)? afterBrowserOpen}) async {
   var sourceDir = Directory(source);
   var chromeExtensionDir = Directory(p.join('.dart_tool', 'chrome_extension'))
@@ -96,22 +101,36 @@ Future<void> runTests(String source,
   }
   manifestFile.writeAsStringSync(jsonEncode(manifest));
 
+  var initialUrl =
+      initialPage != null ? p.url.join(serverUrl, 'static', initialPage) : null;
   browser = await puppeteer.launch(
-    headless: false,
+    headless: true,
+    extensions: [extensionPath],
     args: [
-      '--disable-extensions-except=${Directory(extensionPath).absolute.path}',
-      '--load-extension=${Directory(extensionPath).absolute.path}',
       '--remote-debugging-port=$puppeteerPort',
       '--remote-allow-origins=*',
+      if (initialUrl != null) initialUrl,
     ],
     devTools: devtools,
   );
   // Tear-downs also run when the test times out, which would otherwise leave
   // the browser open.
   addTearDown(browser.close);
-  futureBrowser.complete(browser);
+  if (devtools ?? false) {
+    // The DevTools of the first tab can open before the extension is installed
+    // and then never load its devtools_page. Use a new tab instead.
+    var firstPage = (await browser.pages).first;
+    var targetId = await browser.connection.targetApi
+        .createTarget(initialUrl ?? 'about:blank');
+    await browser.waitForTarget((t) => t.targetID == targetId);
+    await firstPage.close();
+  }
   await afterBrowserOpen
       ?.call(RunnerTestContext(browser: browser, serverUrl: serverUrl));
+  // The tests in the extension wait for the server info, so they only start
+  // once afterBrowserOpen has set up the browser (for example navigated to the
+  // page they inspect).
+  futureBrowser.complete(browser);
 
   var endResult = await testCompleter.future;
 

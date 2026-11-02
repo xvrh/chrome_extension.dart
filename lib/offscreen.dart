@@ -21,25 +21,22 @@ class ChromeOffscreen {
 
   /// Creates a new offscreen document for the extension.
   /// |parameters|: The parameters describing the offscreen document to create.
-  /// |callback|: Invoked when the offscreen document is created and has
-  /// completed its initial page load.
+  /// |Returns|: Promise that resolves when the offscreen document is created
+  /// and has completed its initial page load.
   Future<void> createDocument(CreateParameters parameters) async {
     await $js.chrome.offscreen.createDocument(parameters.toJS).toDart;
   }
 
   /// Closes the currently-open offscreen document for the extension.
-  /// |callback|: Invoked when the offscreen document has been closed.
+  /// |Returns|: Promise that resolves when the offscreen document has been
+  /// closed.
   Future<void> closeDocument() async {
     await $js.chrome.offscreen.closeDocument().toDart;
   }
 
   /// Determines whether the extension has an active document.
-  /// TODO(https://crbug.com/1339382): This probably isn't something we want to
-  /// ship in its current form (hence the nodoc). Instead of this, we should
-  /// integrate offscreen documents into a service worker-compatible getViews()
-  /// alternative. But this is pretty useful in testing environments.
-  /// |callback|: Invoked with the result of whether the extension has an
-  /// active offscreen document.
+  /// |Returns|: Promise that resolves with the result of whether the
+  /// extension has an active offscreen document.
   Future<bool> hasDocument() async {
     var $res = await $js.chrome.offscreen.hasDocument().toDart;
     return $res.toDart;
@@ -67,7 +64,7 @@ enum Reason {
 
   /// Specifies that the offscreen document needs to use the
   /// <a
-  /// href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser>DOMParser
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/DOMParser">DOMParser
   /// API</a>.
   domParser('DOM_PARSER'),
 
@@ -81,18 +78,19 @@ enum Reason {
 
   /// Specifies that the offscreen document needs to use
   /// <a
-  /// href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API>WebRTC
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API">WebRTC
   /// APIs</a>.
   webRtc('WEB_RTC'),
 
   /// Specifies that the offscreen document needs to interact with the
   /// <a
-  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API>Clipboard
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API">Clipboard
   /// API</a>.
   clipboard('CLIPBOARD'),
 
   /// Specifies that the offscreen document needs access to
-  /// [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
+  /// <a
+  /// href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">localStorage</a>.
   localStorage('LOCAL_STORAGE'),
 
   /// Specifies that the offscreen document needs to spawn workers.

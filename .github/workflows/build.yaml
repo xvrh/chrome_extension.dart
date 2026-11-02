@@ -31,12 +31,9 @@ jobs:
       # Recent Ubuntu versions restrict the user namespaces used by the Chrome sandbox
       - run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
         if: runner.os == 'Linux'
-      - run: xvfb-run --auto-servernum dart test
-        if: runner.os == 'Linux'
       - run: dart test
-        if: runner.os != 'Linux'
       - name: Run tests compiled to Wasm
-        run: TEST_COMPILER=wasm xvfb-run --auto-servernum dart test
+        run: TEST_COMPILER=wasm dart test
         if: runner.os == 'Linux'
       - run: dart tool/gen_apis.dart
       - run: dart tool/prepare_submit.dart

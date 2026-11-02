@@ -4,7 +4,7 @@ library;
 
 import 'src/internal_helpers.dart';
 import 'src/js/action.dart' as $js;
-import 'src/js/browser_action.dart' as $js_browser_action;
+import 'src/js/extension_types.dart' as $js_extension_types;
 import 'src/js/tabs.dart' as $js_tabs;
 import 'tabs.dart';
 
@@ -96,13 +96,13 @@ class ChromeAction {
   }
 
   /// Enables the action for a tab. By default, actions are enabled.
-  /// [tabId] The id of the tab for which you want to modify the action.
+  /// [tabId] The ID of the tab for which you want to modify the action.
   Future<void> enable(int? tabId) async {
     await $js.chrome.action.enable(tabId).toDart;
   }
 
   /// Disables the action for a tab.
-  /// [tabId] The id of the tab for which you want to modify the action.
+  /// [tabId] The ID of the tab for which you want to modify the action.
   Future<void> disable(int? tabId) async {
     await $js.chrome.action.disable(tabId).toDart;
   }
@@ -110,7 +110,7 @@ class ChromeAction {
   /// Indicates whether the extension action is enabled for a tab (or globally
   /// if no `tabId` is provided). Actions enabled using only
   /// [declarativeContent] always return false.
-  /// [tabId] The id of the tab for which you want check enabled status.
+  /// [tabId] The ID of the tab for which you want check enabled status.
   Future<bool> isEnabled(int? tabId) async {
     var $res = await $js.chrome.action.isEnabled(tabId).toDart;
     return $res.toDart;
@@ -122,7 +122,8 @@ class ChromeAction {
     return UserSettings.fromJS($res);
   }
 
-  /// Opens the extension's popup.
+  /// Opens the extension's popup. Between Chrome 118 and Chrome 126, this is
+  /// only available to policy installed extensions.
   /// [options] Specifies options for opening the popup.
   Future<void> openPopup(OpenPopupOptions? options) async {
     await $js.chrome.action.openPopup(options?.toJS).toDart;
@@ -134,6 +135,14 @@ class ChromeAction {
       $js.chrome.action.onClicked.asStream(($c) => ($js_tabs.Tab tab) {
             return $c(Tab.fromJS(tab));
           }.toJS);
+
+  /// Fired when user-specified settings relating to an extension's action
+  /// change.
+  EventStream<UserSettingsChange> get onUserSettingsChanged =>
+      $js.chrome.action.onUserSettingsChanged
+          .asStream(($c) => ($js.UserSettingsChange change) {
+                return $c(UserSettingsChange.fromJS(change));
+              }.toJS);
 }
 
 class TabDetails {
@@ -184,12 +193,37 @@ class UserSettings {
   }
 }
 
+class UserSettingsChange {
+  UserSettingsChange.fromJS(this._wrapped);
+
+  UserSettingsChange(
+      {
+      /// Whether the extension's action icon is visible on browser windows'
+      /// top-level toolbar (i.e., whether the extension has been 'pinned' by the
+      /// user).
+      bool? isOnToolbar})
+      : _wrapped = $js.UserSettingsChange(isOnToolbar: isOnToolbar);
+
+  final $js.UserSettingsChange _wrapped;
+
+  $js.UserSettingsChange get toJS => _wrapped;
+
+  /// Whether the extension's action icon is visible on browser windows'
+  /// top-level toolbar (i.e., whether the extension has been 'pinned' by the
+  /// user).
+  bool? get isOnToolbar => _wrapped.isOnToolbar;
+
+  set isOnToolbar(bool? v) {
+    _wrapped.isOnToolbar = v;
+  }
+}
+
 class OpenPopupOptions {
   OpenPopupOptions.fromJS(this._wrapped);
 
   OpenPopupOptions(
       {
-      /// The id of the window to open the action popup in. Defaults to the
+      /// The ID of the window to open the action popup in. Defaults to the
       /// currently-active window if unspecified.
       int? windowId})
       : _wrapped = $js.OpenPopupOptions(windowId: windowId);
@@ -198,7 +232,7 @@ class OpenPopupOptions {
 
   $js.OpenPopupOptions get toJS => _wrapped;
 
-  /// The id of the window to open the action popup in. Defaults to the
+  /// The ID of the window to open the action popup in. Defaults to the
   /// currently-active window if unspecified.
   int? get windowId => _wrapped.windowId;
 
@@ -300,7 +334,7 @@ class SetIconDetails {
   /// that 'details.imageData = foo' is equivalent to 'details.imageData =
   /// {'16': foo}'
   Object? get imageData => _wrapped.imageData?.when(
-        isOther: (v) => (v as $js_browser_action.ImageDataType),
+        isOther: (v) => (v as $js_extension_types.ImageDataType),
         isMap: (v) => v.toDartMap(),
       );
 
@@ -455,7 +489,7 @@ class SetBadgeBackgroundColorDetails {
   /// string with a CSS value, with opaque red being `#FF0000` or `#F00`.
   Object get color => _wrapped.color.when(
         isString: (v) => v,
-        isOther: (v) => (v as $js_browser_action.ColorArray)
+        isOther: (v) => (v as $js_extension_types.ColorArray)
             .toDart
             .cast<JSNumber>()
             .map((e) => e.toDartInt)
@@ -519,7 +553,7 @@ class SetBadgeTextColorDetails {
   /// an error.
   Object get color => _wrapped.color.when(
         isString: (v) => v,
-        isOther: (v) => (v as $js_browser_action.ColorArray)
+        isOther: (v) => (v as $js_extension_types.ColorArray)
             .toDart
             .cast<JSNumber>()
             .map((e) => e.toDartInt)

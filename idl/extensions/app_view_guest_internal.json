@@ -29,12 +29,7 @@
         "returns_async": {
           "name": "callback",
           "optional": true,
-          "parameters": [
-            {
-              "type": "integer",
-              "name": "instanceId"
-            }
-          ]
+          "parameters": []
         }
       },
       {
@@ -52,3 +47,4 @@
     ]
   }
 ]
+

@@ -51,7 +51,8 @@ class ChromeTabCapture {
   /// This allows extensions to inform the user that there is an existing
   /// tab capture that would prevent a new tab capture from succeeding (or
   /// to prevent redundant requests for the same tab).
-  /// |callback| : Callback invoked with CaptureInfo[] for captured tabs.
+  /// |callback| : Returns a Promise which resolves with CaptureInfo[] for
+  /// captured tabs.
   Future<List<CaptureInfo>> getCapturedTabs() async {
     var $res = await $js.chrome.tabCapture.getCapturedTabs().toDart;
     return $res.toDart
@@ -65,8 +66,8 @@ class ChromeTabCapture {
   /// stream ID, instead of a media stream, to the consumer tab.
   ///
   /// |GetMediaStreamOptions| : Options for the media stream id to retrieve.
-  /// |callback| : Callback to invoke with the result. If successful, the
-  /// result is an opaque string that can be passed to the
+  /// |callback| : Returns a Promise which resolves with the result. If
+  /// successful, the result is an opaque string that can be passed to the
   /// `getUserMedia()` API to generate a media stream that
   /// corresponds to the target tab. The created `streamId` can
   /// only be used once and expires after a few seconds if it is not used.

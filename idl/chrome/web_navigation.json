@@ -23,7 +23,7 @@
       {
         "name": "getFrame",
         "type": "function",
-        "description": "Retrieves information about the given frame. A frame refers to an <iframe> or a <frame> of a web page and is identified by a tab ID and a frame ID.",
+        "description": "Retrieves information about the given frame. A frame refers to an &lt;iframe&gt; or a &lt;frame&gt; of a web page and is identified by a tab ID and a frame ID.",
         "parameters": [
           {
             "type": "object",

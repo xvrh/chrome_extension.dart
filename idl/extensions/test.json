@@ -151,6 +151,45 @@
         }
       },
       {
+        "name": "notifyTestStarted",
+        "type": "function",
+        "description": "Notifies the browser process that a specific test case in the test code started running. The chrome.test API uses this internally.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "testName"
+          }
+        ]
+      },
+      {
+        "name": "notifyTestFinished",
+        "type": "function",
+        "description": "Notifies the browser process that a specific test case in the test code finished running. The chrome.test API uses this internally.",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "testName"
+          },
+          {
+            "type": "boolean",
+            "name": "result"
+          },
+          {
+            "type": "integer",
+            "name": "remainingTests"
+          },
+          {
+            "type": "string",
+            "name": "assertionDescription"
+          },
+          {
+            "type": "string",
+            "name": "message",
+            "optional": true
+          }
+        ]
+      },
+      {
         "name": "callbackAdded",
         "type": "function",
         "nocompile": true,
@@ -196,10 +235,7 @@
         "parameters": [
           {
             "name": "test",
-            "choices": [
-              {"type": "string"},
-              {"type": "boolean"}
-            ]
+            "type": "boolean"
           },
           {"type": "string", "name": "message", "optional": true}
         ]
@@ -211,10 +247,7 @@
         "parameters": [
           {
             "name": "test",
-            "choices": [
-              {"type": "string"},
-              {"type": "boolean"}
-            ]
+            "type": "boolean"
           },
           {"type": "string", "name": "message", "optional": true}
         ]
@@ -223,34 +256,34 @@
         "name": "checkDeepEq",
         "type": "function",
         "nocompile": true,
-        "allowAmbiguousOptionalArguments": true,
         "parameters": [
-          // These need to be optional because they can be null.
-          {"type": "any", "name": "expected", "optional": true},
-          {"type": "any", "name": "actual", "optional": true}
+          {"type": "any", "name": "value", "optional": true},
+          {"type": "any", "name": "other_value", "optional": true}
         ]
       },
       {
         "name": "assertEq",
         "type": "function",
         "nocompile": true,
-        "allowAmbiguousOptionalArguments": true,
         "parameters": [
           // These need to be optional because they can be null.
-          {"type": "any", "name": "expected", "optional": true},
-          {"type": "any", "name": "actual", "optional": true},
-          {"type": "string", "name": "message", "optional": true}
+          {"type": "any", "name": "value", "optional": true},
+          {"type": "any", "name": "other_value", "optional": true},
+          {
+            "type": "string",
+            "name": "message",
+            "optional": true,
+            "description": "A custom error message to print out with the test failure, if any."
+          }
         ]
       },
       {
         "name": "assertNe",
         "type": "function",
         "nocompile": true,
-        "allowAmbiguousOptionalArguments": true,
         "parameters": [
-          // These need to be optional because they can be null.
-          {"type": "any", "name": "expected", "optional": true},
-          {"type": "any", "name": "actual", "optional": true},
+          {"type": "any", "name": "value", "optional": true},
+          {"type": "any", "name": "other_value", "optional": true},
           {
             "type": "string",
             "name": "message",
@@ -277,16 +310,24 @@
         "name": "assertThrows",
         "type": "function",
         "nocompile": true,
+        "description": "Asserts that a given function throws an error. If it does not, or if the thrown error doesn't match expectedError (if defined), the test fails.",
         "parameters": [
           {"type": "function", "name": "fn"},
           {
-            "type": "object",
-            "name": "self",
-            "additionalProperties": {"type": "any"},
-            "optional": true
+            "choices": [
+              {"type": "string"},
+              {"type": "object", "isInstanceOf": "RegExp"}
+            ],
+            "name": "expectedError",
+            "optional": true,
+            "description": "Expected error message or RegExp."
           },
-          {"type": "array", "items": {"type": "any"}, "name": "args"},
-          {"choices": [ {"type": "string"}, {"type": "object", "isInstanceOf": "RegExp"} ], "name": "message", "optional": true}
+          {
+            "type": "string",
+            "name": "message",
+            "optional": true,
+            "description": "Custom failure message."
+          }
         ]
       },
       {
@@ -326,13 +367,25 @@
       },
       {
         "name": "listenOnce",
+        "description": "Listens to the given event exactly once. This will add a new event listener and remove it after its first invocation. If supplied a function argument, this will add a pending callback to the test so that it won't automatically complete until invoked (see also callbackPass()). If no function is supplied, this returns a promise and does not artifically prolong the lifetime of the test.",
         "type": "function",
         "nocompile": true,
         "parameters": [
           // TODO(cduvall): Make this a $ref to events.Event.
           {"type": "any", "name": "event"},
-          {"type": "function", "name": "func"}
-        ]
+          {
+            "type": "function",
+            "name": "func",
+            "optional": true,
+            "description": "If provided, a function to invoke with the arugments that the event was triggered with."
+          }
+        ],
+        "returns": {
+          "type": "object",
+          "isInstanceOf": "Promise",
+          "optional": true,
+          "description": "A promise that will be resolved when the event has been triggered, and will be resolved with the arguments passed to the event. Clunkily, if only a single argument is passed to the event (common case), the promise will be invoked with that single argument. If multiple arguments are passed to the event, the promise will be resolved with an array of arguments. This is only returned if a function argument is *not* passed to listenOnce()."
+        }
       },
       {
         "name": "listenForever",
@@ -371,7 +424,12 @@
             "name": "tests",
             "items": {"type": "function"}
           }
-        ]
+        ],
+        "returns": {
+          "type": "object",
+          "isInstanceOf": "Promise",
+          "description": "A promise that resolves when all tests complete successfully or rejects if any test failed."
+        }
       },
       {
         "name": "getApiFeatures",
@@ -457,17 +515,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "getWakeEventPage",
-        "type": "function",
-        "description": "Returns the wake-event-page API function, which can be called to wake up the extension's event page.",
-        "nocompile": true,
-        "parameters": [],
-        "returns": {
-          "type": "function",
-          "description": "The API function which wakes the extension's event page"
-        }
       }
     ],
     "events": [
@@ -482,6 +529,38 @@
             "properties": {
               "data": { "type": "string", "description": "Additional information." },
               "lastMessage": { "type": "boolean", "description": "True if this was the last message for this test" }
+            }
+          }
+        ]
+      },
+      {
+        "name": "onTestStarted",
+        "type": "function",
+        "description": "Fired when a test is started, before any test logic has run.",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "info",
+            "properties": {
+              "testName": { "type": "string" }
+            }
+          }
+        ]
+      },
+      {
+        "name": "onTestFinished",
+        "type": "function",
+        "description": "Fired when a test evaluates to success or failure.",
+        "parameters": [
+          {
+            "type": "object",
+            "name": "info",
+            "properties": {
+              "testName": { "type": "string" },
+              "result": { "type": "boolean" },
+              "remainingTests": { "type": "integer" },
+              "assertionDescription": { "type": "string" },
+              "message": { "type": "string", "optional": true }
             }
           }
         ]

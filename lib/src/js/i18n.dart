@@ -64,15 +64,15 @@ typedef LanguageCode = String;
 extension type GetMessageOptions._(JSObject _) implements JSObject {
   external factory GetMessageOptions(
       {
-      /// Escape `<` in translation to `&amp;lt;`. This applies only to the message
-      /// itself, not to the placeholders. Developers might want to use this if the
-      /// translation is used in an HTML context. Closure Templates used with
+      /// Escape `&lt;` in translation to `&amp;lt;`. This applies only to the
+      /// message itself, not to the placeholders. Developers might want to use this
+      /// if the translation is used in an HTML context. Closure Templates used with
       /// Closure Compiler generate this automatically.
       bool? escapeLt});
 
-  /// Escape `<` in translation to `&amp;lt;`. This applies only to the message
-  /// itself, not to the placeholders. Developers might want to use this if the
-  /// translation is used in an HTML context. Closure Templates used with
+  /// Escape `&lt;` in translation to `&amp;lt;`. This applies only to the
+  /// message itself, not to the placeholders. Developers might want to use this
+  /// if the translation is used in an HTML context. Closure Templates used with
   /// Closure Compiler generate this automatically.
   external bool? escapeLt;
 }

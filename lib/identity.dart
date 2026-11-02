@@ -19,8 +19,8 @@ class ChromeIdentity {
 
   bool get isAvailable => $js.chrome.identityNullable != null && alwaysTrue;
 
-  /// Retrieves a list of AccountInfo objects describing the accounts
-  /// present on the profile.
+  /// Retrieves a list of AccountInfo objects describing the accounts present on
+  /// the profile.
   ///
   /// `getAccounts` is only supported on dev channel.
   Future<List<AccountInfo>> getAccounts() async {
@@ -31,14 +31,14 @@ class ChromeIdentity {
         .toList();
   }
 
-  /// Gets an OAuth2 access token using the client ID and scopes
-  /// specified in the <a
-  /// href="/docs/apps/app_identity#update_manifest">`oauth2`
+  /// Gets an OAuth2 access token using the client ID and scopes specified in
+  /// the
+  /// <a href="/docs/apps/app_identity#update_manifest">`oauth2`
   /// section of manifest.json</a>.
   ///
-  /// The Identity API caches access tokens in memory, so it's ok to
-  /// call `getAuthToken` non-interactively any time a token is
-  /// required. The token cache automatically handles expiration.
+  /// The Identity API caches access tokens in memory, so it's ok to call
+  /// `getAuthToken` non-interactively any time a token is required.
+  /// The token cache automatically handles expiration.
   ///
   /// For a good user experience it is important interactive token requests are
   /// initiated by UI in your app explaining what the authorization is for.
@@ -49,11 +49,13 @@ class ChromeIdentity {
   ///
   /// Note: When called with a callback, instead of returning an object this
   /// function will return the two properties as separate arguments passed to
-  /// the callback.
+  /// the
+  /// callback.
   ///
   /// |details| : Token options.
-  /// |callback| : Called with an OAuth2 access token as specified by the
-  /// manifest, or undefined if there was an error. The
+  /// |Returns| : Returns a Promise which resolves with an OAuth2 access token
+  /// as
+  /// specified by the manifest, or rejects if there was an error. The
   /// `grantedScopes` parameter is populated since Chrome 87. When
   /// available, this parameter contains the list of granted scopes
   /// corresponding with the returned token.
@@ -62,20 +64,21 @@ class ChromeIdentity {
     return GetAuthTokenResult.fromJS($res);
   }
 
-  /// Retrieves email address and obfuscated gaia id of the user
-  /// signed into a profile.
+  /// Retrieves email address and obfuscated gaia id of the user signed into a
+  /// profile.
   ///
   /// Requires the `identity.email` manifest permission. Otherwise,
   /// returns an empty result.
   ///
-  /// This API is different from identity.getAccounts in two
-  /// ways. The information returned is available offline, and it
-  /// only applies to the primary account for the profile.
+  /// This API is different from identity.getAccounts in two ways. The
+  /// information returned is available offline, and it only applies to the
+  /// primary account for the profile.
   ///
   /// |details|: Profile options.
-  /// |callback|: Called with the `ProfileUserInfo` of the primary
-  /// Chrome account, of an empty `ProfileUserInfo` if the account
-  /// with given `details` doesn't exist.
+  /// |Returns|: Returns a Promise which resolves with the
+  /// `ProfileUserInfo` of the primary Chrome account, or an empty
+  /// `ProfileUserInfo` if the account with given
+  /// `details` doesn't exist.
   Future<ProfileUserInfo> getProfileUserInfo(ProfileDetails? details) async {
     var $res =
         await $js.chrome.identity.getProfileUserInfo(details?.toJS).toDart;
@@ -84,13 +87,13 @@ class ChromeIdentity {
 
   /// Removes an OAuth2 access token from the Identity API's token cache.
   ///
-  /// If an access token is discovered to be invalid, it should be
-  /// passed to removeCachedAuthToken to remove it from the
-  /// cache. The app may then retrieve a fresh token with
-  /// `getAuthToken`.
+  /// If an access token is discovered to be invalid, it should be passed to
+  /// removeCachedAuthToken to remove it from the cache. The app may then
+  /// retrieve a fresh token with `getAuthToken`.
   ///
   /// |details| : Token information.
-  /// |callback| : Called when the token has been removed from the cache.
+  /// |Returns| : Returns a Promise which resolves when the token has been
+  /// removed from the cache.
   Future<void> removeCachedAuthToken(InvalidTokenDetails details) async {
     await $js.chrome.identity.removeCachedAuthToken(details.toJS).toDart;
   }
@@ -102,18 +105,18 @@ class ChromeIdentity {
   ///   <li>De-authorizes the user from all auth flows</li>
   /// </ul>
   ///
-  /// |callback| : Called when the state has been cleared.
+  /// |Returns| : Returns a Promise which resolves when the state has been
+  /// cleared.
   Future<void> clearAllCachedAuthTokens() async {
     await $js.chrome.identity.clearAllCachedAuthTokens().toDart;
   }
 
   /// Starts an auth flow at the specified URL.
   ///
-  /// This method enables auth flows with non-Google identity
-  /// providers by launching a web view and navigating it to the
-  /// first URL in the provider's auth flow. When the provider
-  /// redirects to a URL matching the pattern
-  /// `https://<app-id>.chromiumapp.org/*`, the
+  /// This method enables auth flows with non-Google identity providers by
+  /// launching a web view and navigating it to the first URL in the provider's
+  /// auth flow. When the provider redirects to a URL matching the pattern
+  /// `https://&lt;app-id&gt;.chromiumapp.org/*`, the
   /// window will close, and the final redirect URL will be passed to
   /// the [callback] function.
   ///
@@ -124,7 +127,8 @@ class ChromeIdentity {
   /// when your app is first launched.
   ///
   /// |details| : WebAuth flow options.
-  /// |callback| : Called with the URL redirected back to your application.
+  /// |Returns| : Returns a Promise which resolves with the URL redirected back
+  /// to your application.
   Future<String?> launchWebAuthFlow(WebAuthFlowDetails details) async {
     var $res = await $js.chrome.identity.launchWebAuthFlow(details.toJS).toDart;
     return $res?.toDart;
@@ -133,7 +137,7 @@ class ChromeIdentity {
   /// Generates a redirect URL to be used in |launchWebAuthFlow|.
   ///
   /// The generated URLs match the pattern
-  /// `https://<app-id>.chromiumapp.org/*`.
+  /// `https://&lt;app-id&gt;.chromiumapp.org/*`.
   ///
   /// |path| : The path appended to the end of the generated URL.
   String getRedirectURL(String? path) {
@@ -225,16 +229,14 @@ class ProfileUserInfo {
   ProfileUserInfo.fromJS(this._wrapped);
 
   ProfileUserInfo({
-    /// An email address for the user account signed into the current
-    /// profile. Empty if the user is not signed in or the
-    /// `identity.email` manifest permission is not
-    /// specified.
+    /// An email address for the user account signed into the current profile.
+    /// Empty if the user is not signed in or the `identity.email`
+    /// manifest permission is not specified.
     required String email,
 
-    /// A unique identifier for the account. This ID will not change
-    /// for the lifetime of the account. Empty if the user is not
-    /// signed in or (in M41+) the `identity.email`
-    /// manifest permission is not specified.
+    /// A unique identifier for the account. This ID will not change for the
+    /// lifetime of the account. Empty if the user is not signed in or (in M41+)
+    /// the `identity.email` manifest permission is not specified.
     required String id,
   }) : _wrapped = $js.ProfileUserInfo(
           email: email,
@@ -245,20 +247,18 @@ class ProfileUserInfo {
 
   $js.ProfileUserInfo get toJS => _wrapped;
 
-  /// An email address for the user account signed into the current
-  /// profile. Empty if the user is not signed in or the
-  /// `identity.email` manifest permission is not
-  /// specified.
+  /// An email address for the user account signed into the current profile.
+  /// Empty if the user is not signed in or the `identity.email`
+  /// manifest permission is not specified.
   String get email => _wrapped.email;
 
   set email(String v) {
     _wrapped.email = v;
   }
 
-  /// A unique identifier for the account. This ID will not change
-  /// for the lifetime of the account. Empty if the user is not
-  /// signed in or (in M41+) the `identity.email`
-  /// manifest permission is not specified.
+  /// A unique identifier for the account. This ID will not change for the
+  /// lifetime of the account. Empty if the user is not signed in or (in M41+)
+  /// the `identity.email` manifest permission is not specified.
   String get id => _wrapped.id;
 
   set id(String v) {
@@ -270,12 +270,13 @@ class TokenDetails {
   TokenDetails.fromJS(this._wrapped);
 
   TokenDetails({
-    /// Fetching a token may require the user to sign-in to Chrome, or
-    /// approve the application's requested scopes. If the interactive
-    /// flag is `true`, `getAuthToken` will
-    /// prompt the user as necessary. When the flag is
-    /// `false` or omitted, `getAuthToken` will
-    /// return failure any time a prompt would be required.
+    /// Fetching a token may require the user to sign-in to Chrome, or approve
+    /// the
+    /// application's requested scopes. If the interactive flag is
+    /// `true`, `getAuthToken` will prompt the user as
+    /// necessary. When the flag is `false` or omitted,
+    /// `getAuthToken` will return failure any time a prompt would be
+    /// required.
     bool? interactive,
 
     /// The account ID whose token should be returned. If not specified, the
@@ -286,13 +287,13 @@ class TokenDetails {
 
     /// A list of OAuth2 scopes to request.
     ///
-    /// When the `scopes` field is present, it overrides the
-    /// list of scopes specified in manifest.json.
+    /// When the `scopes` field is present, it overrides the list of
+    /// scopes specified in manifest.json.
     List<String>? scopes,
 
-    /// The `enableGranularPermissions` flag allows extensions to
-    /// opt-in early to the granular permissions consent screen, in which
-    /// requested permissions are granted or denied individually.
+    /// The `enableGranularPermissions` flag allows extensions to opt-in
+    /// early to the granular permissions consent screen, in which requested
+    /// permissions are granted or denied individually.
     bool? enableGranularPermissions,
   }) : _wrapped = $js.TokenDetails(
           interactive: interactive,
@@ -305,12 +306,12 @@ class TokenDetails {
 
   $js.TokenDetails get toJS => _wrapped;
 
-  /// Fetching a token may require the user to sign-in to Chrome, or
-  /// approve the application's requested scopes. If the interactive
-  /// flag is `true`, `getAuthToken` will
-  /// prompt the user as necessary. When the flag is
-  /// `false` or omitted, `getAuthToken` will
-  /// return failure any time a prompt would be required.
+  /// Fetching a token may require the user to sign-in to Chrome, or approve the
+  /// application's requested scopes. If the interactive flag is
+  /// `true`, `getAuthToken` will prompt the user as
+  /// necessary. When the flag is `false` or omitted,
+  /// `getAuthToken` will return failure any time a prompt would be
+  /// required.
   bool? get interactive => _wrapped.interactive;
 
   set interactive(bool? v) {
@@ -328,8 +329,8 @@ class TokenDetails {
 
   /// A list of OAuth2 scopes to request.
   ///
-  /// When the `scopes` field is present, it overrides the
-  /// list of scopes specified in manifest.json.
+  /// When the `scopes` field is present, it overrides the list of
+  /// scopes specified in manifest.json.
   List<String>? get scopes =>
       _wrapped.scopes?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
@@ -337,9 +338,9 @@ class TokenDetails {
     _wrapped.scopes = v?.toJSArray((e) => e.toJS);
   }
 
-  /// The `enableGranularPermissions` flag allows extensions to
-  /// opt-in early to the granular permissions consent screen, in which
-  /// requested permissions are granted or denied individually.
+  /// The `enableGranularPermissions` flag allows extensions to opt-in
+  /// early to the granular permissions consent screen, in which requested
+  /// permissions are granted or denied individually.
   bool? get enableGranularPermissions => _wrapped.enableGranularPermissions;
 
   set enableGranularPermissions(bool? v) {
@@ -382,10 +383,10 @@ class WebAuthFlowDetails {
     /// navigation either redirects to the final URL, or finishes loading a page
     /// meant to be displayed.
     ///
-    /// If the `interactive` flag is `true`, the window
-    /// will be displayed when a page load completes. If the flag is
-    /// `false` or omitted, `launchWebAuthFlow` will return
-    /// with an error if the initial navigation does not complete the flow.
+    /// If the `interactive` flag is `true`, the window will
+    /// be displayed when a page load completes. If the flag is `false`
+    /// or omitted, `launchWebAuthFlow` will return with an error if the
+    /// initial navigation does not complete the flow.
     ///
     /// For flows that use JavaScript for redirection,
     /// `abortOnLoadForNonInteractive` can be set to `false`
@@ -398,18 +399,18 @@ class WebAuthFlowDetails {
     /// interactive
     /// flows.
     ///
-    /// When set to `true` (default) the flow will terminate
-    /// immediately after the page loads. When set to `false`, the
-    /// flow will only terminate after the
-    /// `timeoutMsForNonInteractive` passes. This is useful for
-    /// identity providers that use JavaScript to perform redirections after the
-    /// page loads.
+    /// When set to `true` (default) the flow will terminate immediately
+    /// after the page loads. When set to `false`, the flow will only
+    /// terminate after the `timeoutMsForNonInteractive` passes. This is
+    /// useful for identity providers that use JavaScript to perform
+    /// redirections
+    /// after the page loads.
     bool? abortOnLoadForNonInteractive,
 
-    /// The maximum amount of time, in miliseconds,
-    /// `launchWebAuthFlow` is allowed to run in non-interactive mode
-    /// in total. Only has an effect if `interactive` is
-    /// `false`.
+    /// The maximum amount of time, in miliseconds, `launchWebAuthFlow`
+    /// is allowed to run in non-interactive mode in total. Only has an effect
+    /// if
+    /// `interactive` is `false`.
     int? timeoutMsForNonInteractive,
   }) : _wrapped = $js.WebAuthFlowDetails(
           url: url,
@@ -436,10 +437,10 @@ class WebAuthFlowDetails {
   /// navigation either redirects to the final URL, or finishes loading a page
   /// meant to be displayed.
   ///
-  /// If the `interactive` flag is `true`, the window
-  /// will be displayed when a page load completes. If the flag is
-  /// `false` or omitted, `launchWebAuthFlow` will return
-  /// with an error if the initial navigation does not complete the flow.
+  /// If the `interactive` flag is `true`, the window will
+  /// be displayed when a page load completes. If the flag is `false`
+  /// or omitted, `launchWebAuthFlow` will return with an error if the
+  /// initial navigation does not complete the flow.
   ///
   /// For flows that use JavaScript for redirection,
   /// `abortOnLoadForNonInteractive` can be set to `false`
@@ -455,12 +456,11 @@ class WebAuthFlowDetails {
   /// requests after the page loads. This parameter does not affect interactive
   /// flows.
   ///
-  /// When set to `true` (default) the flow will terminate
-  /// immediately after the page loads. When set to `false`, the
-  /// flow will only terminate after the
-  /// `timeoutMsForNonInteractive` passes. This is useful for
-  /// identity providers that use JavaScript to perform redirections after the
-  /// page loads.
+  /// When set to `true` (default) the flow will terminate immediately
+  /// after the page loads. When set to `false`, the flow will only
+  /// terminate after the `timeoutMsForNonInteractive` passes. This is
+  /// useful for identity providers that use JavaScript to perform redirections
+  /// after the page loads.
   bool? get abortOnLoadForNonInteractive =>
       _wrapped.abortOnLoadForNonInteractive;
 
@@ -468,10 +468,9 @@ class WebAuthFlowDetails {
     _wrapped.abortOnLoadForNonInteractive = v;
   }
 
-  /// The maximum amount of time, in miliseconds,
-  /// `launchWebAuthFlow` is allowed to run in non-interactive mode
-  /// in total. Only has an effect if `interactive` is
-  /// `false`.
+  /// The maximum amount of time, in miliseconds, `launchWebAuthFlow`
+  /// is allowed to run in non-interactive mode in total. Only has an effect if
+  /// `interactive` is `false`.
   int? get timeoutMsForNonInteractive => _wrapped.timeoutMsForNonInteractive;
 
   set timeoutMsForNonInteractive(int? v) {

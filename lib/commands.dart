@@ -26,7 +26,7 @@ class ChromeCommands {
   /// Returns all the registered extension commands for this extension and their
   /// shortcut (if active). Before Chrome 110, this command did not return
   /// `_execute_action`.
-  /// [returns] Called to return the registered commands.
+  /// [returns] Resolves with a list of the registered commands.
   Future<List<Command>> getAll() async {
     var $res = await $js.chrome.commands.getAll().toDart;
     return $res.toDart

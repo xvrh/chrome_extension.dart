@@ -6,10 +6,8 @@ void main() {
     return runTests(
       'test/apis/devtools_inspected_window',
       devtools: true,
-      afterBrowserOpen: (context) async {
-        var page = (await context.browser.pages).first;
-        await page.goto(context.staticPath('assets/simple_page.html'));
-      },
+      // Navigating after the launch is flaky while DevTools attaches to the tab.
+      initialPage: 'assets/simple_page.html',
     );
   });
 }

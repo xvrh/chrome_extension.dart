@@ -40,6 +40,8 @@ extension type JSBrowsingData._(JSObject _) {
   );
 
   /// Clears websites' appcache data.
+  @Deprecated(
+      r'Support for appcache has been removed. This function has no effect.')
   external JSPromise removeAppcache(RemovalOptions options);
 
   /// Clears the browser's cache.
@@ -77,12 +79,16 @@ extension type JSBrowsingData._(JSObject _) {
   external JSPromise removePluginData(RemovalOptions options);
 
   /// Clears the browser's stored passwords.
+  @Deprecated(
+      r'Support for password deletion through extensions has been removed. This function has no effect.')
   external JSPromise removePasswords(RemovalOptions options);
 
   /// Clears websites' service workers.
   external JSPromise removeServiceWorkers(RemovalOptions options);
 
   /// Clears websites' WebSQL data.
+  @Deprecated(
+      r'Support for WebSQL has been removed. This function has no effect.')
   external JSPromise removeWebSQL(RemovalOptions options);
 }
 extension type RemovalOptions._(JSObject _) implements JSObject {

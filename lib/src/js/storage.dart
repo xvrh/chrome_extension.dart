@@ -34,9 +34,11 @@ extension type JSStorage._(JSObject _) {
   /// Items in the `local` storage area are local to each machine.
   external StorageLocal get local;
 
-  /// Items in the `managed` storage area are set by the domain administrator,
-  /// and are read-only for the extension; trying to modify this namespace
-  /// results in an error.
+  /// Items in the `managed` storage area are set by an enterprise policy
+  /// configured by the domain administrator, and are read-only for the
+  /// extension; trying to modify this namespace results in an error. For
+  /// information on configuring a policy, see [Manifest for storage
+  /// areas](/docs/extensions/reference/manifest/storage).
   external StorageArea get managed;
 
   /// Items in the `session` storage area are stored in-memory and will not be
@@ -73,6 +75,9 @@ extension type StorageArea._(JSObject _) implements JSObject {
       /// contents of storage.
       JSAny? keys);
 
+  /// Gets all keys from storage.
+  external JSPromise<JSArray> getKeys();
+
   /// Gets the amount of space (in bytes) being used by one or more items.
   external JSPromise<JSNumber> getBytesInUse(
 
@@ -101,8 +106,10 @@ extension type StorageArea._(JSObject _) implements JSObject {
   /// Removes all items from storage.
   external JSPromise clear();
 
-  /// Sets the desired access level for the storage area. The default will be
-  /// only trusted contexts.
+  /// Sets the desired access level for the storage area. By default, `session`
+  /// storage is restricted to trusted contexts (extension pages and service
+  /// workers), while `managed`, `local`, and `sync` storage allow access from
+  /// both trusted and untrusted contexts.
   external JSPromise setAccessLevel(SetAccessLevelAccessOptions accessOptions);
 
   /// Fired when one or more items change.
@@ -113,18 +120,20 @@ extension type StorageSync._(JSObject _) implements JSObject, StorageArea {
     /// The maximum total amount (in bytes) of data that can be stored in sync
     /// storage, as measured by the JSON stringification of every value plus every
     /// key's length. Updates that would cause this limit to be exceeded fail
-    /// immediately and set [runtime.lastError].
+    /// immediately and set [runtime.lastError] when using a callback, or when a
+    /// Promise is rejected.
     int QUOTA_BYTES,
 
     /// The maximum size (in bytes) of each individual item in sync storage, as
     /// measured by the JSON stringification of its value plus its key length.
     /// Updates containing items larger than this limit will fail immediately and
-    /// set [runtime.lastError].
+    /// set [runtime.lastError] when using a callback, or when a Promise is
+    /// rejected.
     int QUOTA_BYTES_PER_ITEM,
 
     /// The maximum number of items that can be stored in sync storage. Updates
     /// that would cause this limit to be exceeded will fail immediately and set
-    /// [runtime.lastError].
+    /// [runtime.lastError] when using a callback, or when a Promise is rejected.
     int MAX_ITEMS,
 
     /// The maximum number of `set`, `remove`, or `clear` operations that can be
@@ -132,7 +141,8 @@ extension type StorageSync._(JSObject _) implements JSObject, StorageArea {
     /// short term higher writes-per-minute limit.
     ///
     /// Updates that would cause this limit to be exceeded fail immediately and
-    /// set [runtime.lastError].
+    /// set [runtime.lastError] when using a callback, or when a Promise is
+    /// rejected.
     int MAX_WRITE_OPERATIONS_PER_HOUR,
 
     /// The maximum number of `set`, `remove`, or `clear` operations that can be
@@ -140,7 +150,8 @@ extension type StorageSync._(JSObject _) implements JSObject, StorageArea {
     /// than writes-per-hour over a shorter period of time.
     ///
     /// Updates that would cause this limit to be exceeded fail immediately and
-    /// set [runtime.lastError].
+    /// set [runtime.lastError] when using a callback, or when a Promise is
+    /// rejected.
     int MAX_WRITE_OPERATIONS_PER_MINUTE,
     int MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE,
   });
@@ -148,18 +159,20 @@ extension type StorageSync._(JSObject _) implements JSObject, StorageArea {
   /// The maximum total amount (in bytes) of data that can be stored in sync
   /// storage, as measured by the JSON stringification of every value plus every
   /// key's length. Updates that would cause this limit to be exceeded fail
-  /// immediately and set [runtime.lastError].
+  /// immediately and set [runtime.lastError] when using a callback, or when a
+  /// Promise is rejected.
   external int QUOTA_BYTES;
 
   /// The maximum size (in bytes) of each individual item in sync storage, as
   /// measured by the JSON stringification of its value plus its key length.
   /// Updates containing items larger than this limit will fail immediately and
-  /// set [runtime.lastError].
+  /// set [runtime.lastError] when using a callback, or when a Promise is
+  /// rejected.
   external int QUOTA_BYTES_PER_ITEM;
 
   /// The maximum number of items that can be stored in sync storage. Updates
   /// that would cause this limit to be exceeded will fail immediately and set
-  /// [runtime.lastError].
+  /// [runtime.lastError] when using a callback, or when a Promise is rejected.
   external int MAX_ITEMS;
 
   /// The maximum number of `set`, `remove`, or `clear` operations that can be
@@ -167,7 +180,8 @@ extension type StorageSync._(JSObject _) implements JSObject, StorageArea {
   /// short term higher writes-per-minute limit.
   ///
   /// Updates that would cause this limit to be exceeded fail immediately and
-  /// set [runtime.lastError].
+  /// set [runtime.lastError] when using a callback, or when a Promise is
+  /// rejected.
   external int MAX_WRITE_OPERATIONS_PER_HOUR;
 
   /// The maximum number of `set`, `remove`, or `clear` operations that can be
@@ -175,7 +189,8 @@ extension type StorageSync._(JSObject _) implements JSObject, StorageArea {
   /// than writes-per-hour over a shorter period of time.
   ///
   /// Updates that would cause this limit to be exceeded fail immediately and
-  /// set [runtime.lastError].
+  /// set [runtime.lastError] when using a callback, or when a Promise is
+  /// rejected.
   external int MAX_WRITE_OPERATIONS_PER_MINUTE;
 
   external int MAX_SUSTAINED_WRITE_OPERATIONS_PER_MINUTE;
@@ -187,14 +202,16 @@ extension type StorageLocal._(JSObject _) implements JSObject, StorageArea {
       /// as measured by the JSON stringification of every value plus every key's
       /// length. This value will be ignored if the extension has the
       /// `unlimitedStorage` permission. Updates that would cause this limit to be
-      /// exceeded fail immediately and set [runtime.lastError].
+      /// exceeded fail immediately and set [runtime.lastError] when using a
+      /// callback, or a rejected Promise if using async/await.
       int QUOTA_BYTES});
 
   /// The maximum amount (in bytes) of data that can be stored in local storage,
   /// as measured by the JSON stringification of every value plus every key's
   /// length. This value will be ignored if the extension has the
   /// `unlimitedStorage` permission. Updates that would cause this limit to be
-  /// exceeded fail immediately and set [runtime.lastError].
+  /// exceeded fail immediately and set [runtime.lastError] when using a
+  /// callback, or a rejected Promise if using async/await.
   external int QUOTA_BYTES;
 }
 extension type StorageSession._(JSObject _) implements JSObject, StorageArea {
@@ -203,13 +220,15 @@ extension type StorageSession._(JSObject _) implements JSObject, StorageArea {
       /// The maximum amount (in bytes) of data that can be stored in memory, as
       /// measured by estimating the dynamically allocated memory usage of every
       /// value and key. Updates that would cause this limit to be exceeded fail
-      /// immediately and set [runtime.lastError].
+      /// immediately and set [runtime.lastError] when using a callback, or when a
+      /// Promise is rejected.
       int QUOTA_BYTES});
 
   /// The maximum amount (in bytes) of data that can be stored in memory, as
   /// measured by estimating the dynamically allocated memory usage of every
   /// value and key. Updates that would cause this limit to be exceeded fail
-  /// immediately and set [runtime.lastError].
+  /// immediately and set [runtime.lastError] when using a callback, or when a
+  /// Promise is rejected.
   external int QUOTA_BYTES;
 }
 extension type SetAccessLevelAccessOptions._(JSObject _) implements JSObject {

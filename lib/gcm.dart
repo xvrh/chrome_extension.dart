@@ -27,8 +27,7 @@ class ChromeGcm {
   /// [senderIds] A list of server IDs that are allowed to send messages to
   /// the application. It should contain at least one and no more than 100
   /// sender IDs.
-  /// [returns] Function called when registration completes. It should check
-  /// [runtime.lastError] for error when `registrationId` is empty.
+  /// [returns] Resolves when registration completes.
   Future<String> register(List<String> senderIds) async {
     var $res = await $js.chrome.gcm
         .register(senderIds.toJSArray((e) => e.toJS))
@@ -37,17 +36,16 @@ class ChromeGcm {
   }
 
   /// Unregisters the application from FCM.
-  /// [returns] A function called after the unregistration completes.
-  /// Unregistration was successful if [runtime.lastError] is not set.
+  /// [returns] Resolves after the unregistration completes. Unregistration
+  /// was successful if the promise does not reject.
   Future<void> unregister() async {
     await $js.chrome.gcm.unregister().toDart;
   }
 
   /// Sends a message according to its contents.
   /// [message] A message to send to the other party via FCM.
-  /// [returns] A function called after the message is successfully queued for
-  /// sending. [runtime.lastError] should be checked, to ensure a message was
-  /// sent without problems.
+  /// [returns] Resolves after the message is successfully queued for sending.
+  /// If an error occurs, the promise will be rejected.
   Future<String> send(SendMessage message) async {
     var $res = await $js.chrome.gcm.send(message.toJS).toDart;
     return $res.toDart;

@@ -31,7 +31,7 @@ class ChromeBrowsingData {
 
   /// Clears various types of browsing data stored in a user's profile.
   /// [dataToRemove] The set of data types to remove.
-  /// [returns] Called when deletion has completed.
+  /// [returns] Resolves when deletion has completed.
   Future<void> remove(
     RemovalOptions options,
     DataTypeSet dataToRemove,
@@ -45,26 +45,28 @@ class ChromeBrowsingData {
   }
 
   /// Clears websites' appcache data.
-  /// [returns] Called when websites' appcache data has been cleared.
+  /// [returns] Resolves when websites' appcache data has been cleared.
+  @Deprecated(
+      r'Support for appcache has been removed. This function has no effect.')
   Future<void> removeAppcache(RemovalOptions options) async {
     await $js.chrome.browsingData.removeAppcache(options.toJS).toDart;
   }
 
   /// Clears the browser's cache.
-  /// [returns] Called when the browser's cache has been cleared.
+  /// [returns] Resolves when the browser's cache has been cleared.
   Future<void> removeCache(RemovalOptions options) async {
     await $js.chrome.browsingData.removeCache(options.toJS).toDart;
   }
 
   /// Clears websites' cache storage data.
-  /// [returns] Called when websites' cache storage has been cleared.
+  /// [returns] Resolves when websites' cache storage has been cleared.
   Future<void> removeCacheStorage(RemovalOptions options) async {
     await $js.chrome.browsingData.removeCacheStorage(options.toJS).toDart;
   }
 
   /// Clears the browser's cookies and server-bound certificates modified within
   /// a particular timeframe.
-  /// [returns] Called when the browser's cookies and server-bound
+  /// [returns] Resolves when the browser's cookies and server-bound
   /// certificates have been cleared.
   Future<void> removeCookies(RemovalOptions options) async {
     await $js.chrome.browsingData.removeCookies(options.toJS).toDart;
@@ -72,44 +74,44 @@ class ChromeBrowsingData {
 
   /// Clears the browser's list of downloaded files (_not_ the downloaded files
   /// themselves).
-  /// [returns] Called when the browser's list of downloaded files has been
+  /// [returns] Resolves when the browser's list of downloaded files has been
   /// cleared.
   Future<void> removeDownloads(RemovalOptions options) async {
     await $js.chrome.browsingData.removeDownloads(options.toJS).toDart;
   }
 
   /// Clears websites' file system data.
-  /// [returns] Called when websites' file systems have been cleared.
+  /// [returns] Resolves when websites' file systems have been cleared.
   Future<void> removeFileSystems(RemovalOptions options) async {
     await $js.chrome.browsingData.removeFileSystems(options.toJS).toDart;
   }
 
   /// Clears the browser's stored form data (autofill).
-  /// [returns] Called when the browser's form data has been cleared.
+  /// [returns] Resolves when the browser's form data has been cleared.
   Future<void> removeFormData(RemovalOptions options) async {
     await $js.chrome.browsingData.removeFormData(options.toJS).toDart;
   }
 
   /// Clears the browser's history.
-  /// [returns] Called when the browser's history has cleared.
+  /// [returns] Resolves when the browser's history has cleared.
   Future<void> removeHistory(RemovalOptions options) async {
     await $js.chrome.browsingData.removeHistory(options.toJS).toDart;
   }
 
   /// Clears websites' IndexedDB data.
-  /// [returns] Called when websites' IndexedDB data has been cleared.
+  /// [returns] Resolves when websites' IndexedDB data has been cleared.
   Future<void> removeIndexedDB(RemovalOptions options) async {
     await $js.chrome.browsingData.removeIndexedDB(options.toJS).toDart;
   }
 
   /// Clears websites' local storage data.
-  /// [returns] Called when websites' local storage has been cleared.
+  /// [returns] Resolves when websites' local storage has been cleared.
   Future<void> removeLocalStorage(RemovalOptions options) async {
     await $js.chrome.browsingData.removeLocalStorage(options.toJS).toDart;
   }
 
   /// Clears plugins' data.
-  /// [returns] Called when plugins' data has been cleared.
+  /// [returns] Resolves when plugins' data has been cleared.
   @Deprecated(
       r'Support for Flash has been removed. This function has no effect.')
   Future<void> removePluginData(RemovalOptions options) async {
@@ -117,19 +119,23 @@ class ChromeBrowsingData {
   }
 
   /// Clears the browser's stored passwords.
-  /// [returns] Called when the browser's passwords have been cleared.
+  /// [returns] Resolves when the browser's passwords have been cleared.
+  @Deprecated(
+      r'Support for password deletion through extensions has been removed. This function has no effect.')
   Future<void> removePasswords(RemovalOptions options) async {
     await $js.chrome.browsingData.removePasswords(options.toJS).toDart;
   }
 
   /// Clears websites' service workers.
-  /// [returns] Called when websites' service workers have been cleared.
+  /// [returns] Resolves when websites' service workers have been cleared.
   Future<void> removeServiceWorkers(RemovalOptions options) async {
     await $js.chrome.browsingData.removeServiceWorkers(options.toJS).toDart;
   }
 
   /// Clears websites' WebSQL data.
-  /// [returns] Called when websites' WebSQL databases have been cleared.
+  /// [returns] Resolves when websites' WebSQL databases have been cleared.
+  @Deprecated(
+      r'Support for WebSQL has been removed. This function has no effect.')
   Future<void> removeWebSQL(RemovalOptions options) async {
     await $js.chrome.browsingData.removeWebSQL(options.toJS).toDart;
   }

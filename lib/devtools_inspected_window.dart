@@ -38,27 +38,17 @@ class ChromeDevtoolsInspectedWindow {
   /// [expression] An expression to evaluate.
   /// [options] The options parameter can contain one or more options.
   /// [returns] A function called when evaluation completes.
-  Future<EvalResult> eval(
+  Future<EvalCallbackResponse> eval(
     String expression,
     EvalOptions? options,
-  ) {
-    var $completer = Completer<EvalResult>();
-    $js.chrome.devtools.inspectedWindow.eval(
-      expression,
-      options?.toJS,
-      (
-        JSAny result,
-        $js.EvalExceptionInfo exceptionInfo,
-      ) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(EvalResult(
-            result: result.toDartMap(),
-            exceptionInfo: EvalExceptionInfo.fromJS(exceptionInfo),
-          ));
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    var $res = await $js.chrome.devtools.inspectedWindow
+        .eval(
+          expression,
+          options?.toJS,
+        )
+        .toDart;
+    return EvalCallbackResponse.fromJS($res);
   }
 
   /// Reloads the inspected page.
@@ -69,17 +59,12 @@ class ChromeDevtoolsInspectedWindow {
   /// Retrieves the list of resources from the inspected page.
   /// [returns] A function that receives the list of resources when the
   /// request completes.
-  Future<List<Resource>> getResources() {
-    var $completer = Completer<List<Resource>>();
-    $js.chrome.devtools.inspectedWindow.getResources((JSArray resources) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(resources.toDart
-            .cast<$js.Resource>()
-            .map((e) => Resource.fromJS(e))
-            .toList());
-      }
-    }.toJS);
-    return $completer.future;
+  Future<List<Resource>> getResources() async {
+    var $res = await $js.chrome.devtools.inspectedWindow.getResources().toDart;
+    return $res.toDart
+        .cast<$js.Resource>()
+        .map((e) => Resource.fromJS(e))
+        .toList();
   }
 
   /// The ID of the tab being inspected. This ID may be used with chrome.tabs.*
@@ -131,20 +116,9 @@ class Resource {
   /// Gets the content of the resource.
   /// [returns] A function that receives resource content when the request
   /// completes.
-  Future<GetContentResult> getContent() {
-    var $completer = Completer<GetContentResult>();
-    _wrapped.getContent((
-      String content,
-      String encoding,
-    ) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(GetContentResult(
-          content: content,
-          encoding: encoding,
-        ));
-      }
-    }.toJS);
-    return $completer.future;
+  Future<GetContentCallbackResponse> getContent() async {
+    var $res = await _wrapped.getContent().toDart;
+    return GetContentCallbackResponse.fromJS($res);
   }
 
   /// Sets the content of the resource.
@@ -157,108 +131,50 @@ class Resource {
   Future<Map?> setContent(
     String content,
     bool commit,
-  ) {
-    var $completer = Completer<Map?>();
-    _wrapped.setContent(
-      content,
-      commit,
-      (JSAny? error) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(error?.toDartMap());
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    var $res = await _wrapped
+        .setContent(
+          content,
+          commit,
+        )
+        .toDart;
+    return $res?.toDartMap();
   }
 }
 
-class EvalExceptionInfo {
-  EvalExceptionInfo.fromJS(this._wrapped);
+class EvalCallbackResponse {
+  EvalCallbackResponse.fromJS(this._wrapped);
 
-  EvalExceptionInfo({
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated.
-    required bool isError,
+  EvalCallbackResponse({
+    /// The result of evaluation.
+    required Map result,
 
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated.
-    required String code,
-
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated.
-    required String description,
-
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated, contains the array of the values that may be substituted into
-    /// the description string to provide more information about the cause of
-    /// the error.
-    required List<Object> details,
-
-    /// Set if the evaluated code produces an unhandled exception.
-    required bool isException,
-
-    /// Set if the evaluated code produces an unhandled exception.
-    required String value,
-  }) : _wrapped = $js.EvalExceptionInfo(
-          isError: isError,
-          code: code,
-          description: description,
-          details: details.toJSArray((e) => e.jsify()!),
-          isException: isException,
-          value: value,
+    /// An object providing details if an exception occurred while evaluating
+    /// the expression.
+    required EvalCallbackResponseExceptionInfo exceptionInfo,
+  }) : _wrapped = $js.EvalCallbackResponse(
+          result: result.jsify()!,
+          exceptionInfo: exceptionInfo.toJS,
         );
 
-  final $js.EvalExceptionInfo _wrapped;
+  final $js.EvalCallbackResponse _wrapped;
 
-  $js.EvalExceptionInfo get toJS => _wrapped;
+  $js.EvalCallbackResponse get toJS => _wrapped;
 
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated.
-  bool get isError => _wrapped.isError;
+  /// The result of evaluation.
+  Map get result => _wrapped.result.toDartMap();
 
-  set isError(bool v) {
-    _wrapped.isError = v;
+  set result(Map v) {
+    _wrapped.result = v.jsify()!;
   }
 
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated.
-  String get code => _wrapped.code;
+  /// An object providing details if an exception occurred while evaluating the
+  /// expression.
+  EvalCallbackResponseExceptionInfo get exceptionInfo =>
+      EvalCallbackResponseExceptionInfo.fromJS(_wrapped.exceptionInfo);
 
-  set code(String v) {
-    _wrapped.code = v;
-  }
-
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated.
-  String get description => _wrapped.description;
-
-  set description(String v) {
-    _wrapped.description = v;
-  }
-
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated, contains the array of the values that may be substituted into
-  /// the description string to provide more information about the cause of the
-  /// error.
-  List<Object> get details =>
-      _wrapped.details.toDart.cast<JSAny>().map((e) => e.dartify()!).toList();
-
-  set details(List<Object> v) {
-    _wrapped.details = v.toJSArray((e) => e.jsify()!);
-  }
-
-  /// Set if the evaluated code produces an unhandled exception.
-  bool get isException => _wrapped.isException;
-
-  set isException(bool v) {
-    _wrapped.isException = v;
-  }
-
-  /// Set if the evaluated code produces an unhandled exception.
-  String get value => _wrapped.value;
-
-  set value(String v) {
-    _wrapped.value = v;
+  set exceptionInfo(EvalCallbackResponseExceptionInfo v) {
+    _wrapped.exceptionInfo = v.toJS;
   }
 }
 
@@ -387,6 +303,131 @@ class ReloadOptions {
   }
 }
 
+class GetContentCallbackResponse {
+  GetContentCallbackResponse.fromJS(this._wrapped);
+
+  GetContentCallbackResponse({
+    /// Content of the resource (potentially encoded).
+    required String content,
+
+    /// Empty if the content is not encoded, encoding name otherwise. Currently,
+    /// only base64 is supported.
+    required String encoding,
+  }) : _wrapped = $js.GetContentCallbackResponse(
+          content: content,
+          encoding: encoding,
+        );
+
+  final $js.GetContentCallbackResponse _wrapped;
+
+  $js.GetContentCallbackResponse get toJS => _wrapped;
+
+  /// Content of the resource (potentially encoded).
+  String get content => _wrapped.content;
+
+  set content(String v) {
+    _wrapped.content = v;
+  }
+
+  /// Empty if the content is not encoded, encoding name otherwise. Currently,
+  /// only base64 is supported.
+  String get encoding => _wrapped.encoding;
+
+  set encoding(String v) {
+    _wrapped.encoding = v;
+  }
+}
+
+class EvalCallbackResponseExceptionInfo {
+  EvalCallbackResponseExceptionInfo.fromJS(this._wrapped);
+
+  EvalCallbackResponseExceptionInfo({
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated.
+    required bool isError,
+
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated.
+    required String code,
+
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated.
+    required String description,
+
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated, contains the array of the values that may be substituted into
+    /// the description string to provide more information about the cause of
+    /// the error.
+    required List<Object> details,
+
+    /// Set if the evaluated code produces an unhandled exception.
+    required bool isException,
+
+    /// Set if the evaluated code produces an unhandled exception.
+    required String value,
+  }) : _wrapped = $js.EvalCallbackResponseExceptionInfo(
+          isError: isError,
+          code: code,
+          description: description,
+          details: details.toJSArray((e) => e.jsify()!),
+          isException: isException,
+          value: value,
+        );
+
+  final $js.EvalCallbackResponseExceptionInfo _wrapped;
+
+  $js.EvalCallbackResponseExceptionInfo get toJS => _wrapped;
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated.
+  bool get isError => _wrapped.isError;
+
+  set isError(bool v) {
+    _wrapped.isError = v;
+  }
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated.
+  String get code => _wrapped.code;
+
+  set code(String v) {
+    _wrapped.code = v;
+  }
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated.
+  String get description => _wrapped.description;
+
+  set description(String v) {
+    _wrapped.description = v;
+  }
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated, contains the array of the values that may be substituted into
+  /// the description string to provide more information about the cause of the
+  /// error.
+  List<Object> get details =>
+      _wrapped.details.toDart.cast<JSAny>().map((e) => e.dartify()!).toList();
+
+  set details(List<Object> v) {
+    _wrapped.details = v.toJSArray((e) => e.jsify()!);
+  }
+
+  /// Set if the evaluated code produces an unhandled exception.
+  bool get isException => _wrapped.isException;
+
+  set isException(bool v) {
+    _wrapped.isException = v;
+  }
+
+  /// Set if the evaluated code produces an unhandled exception.
+  String get value => _wrapped.value;
+
+  set value(String v) {
+    _wrapped.value = v;
+  }
+}
+
 class OnResourceContentCommittedEvent {
   OnResourceContentCommittedEvent({
     required this.resource,
@@ -397,32 +438,4 @@ class OnResourceContentCommittedEvent {
 
   /// New content of the resource.
   final String content;
-}
-
-class EvalResult {
-  EvalResult({
-    required this.result,
-    required this.exceptionInfo,
-  });
-
-  /// The result of evaluation.
-  final Map result;
-
-  /// An object providing details if an exception occurred while evaluating the
-  /// expression.
-  final EvalExceptionInfo exceptionInfo;
-}
-
-class GetContentResult {
-  GetContentResult({
-    required this.content,
-    required this.encoding,
-  });
-
-  /// Content of the resource (potentially encoded).
-  final String content;
-
-  /// Empty if the content is not encoded, encoding name otherwise. Currently,
-  /// only base64 is supported.
-  final String encoding;
 }

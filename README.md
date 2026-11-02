@@ -135,6 +135,7 @@ void main() async {
 - `package:chrome_extension/privacy.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/privacy/))
 - `package:chrome_extension/processes.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/processes/))
 - `package:chrome_extension/proxy.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/proxy/))
+- `package:chrome_extension/reading_list.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/readingList/))
 - `package:chrome_extension/runtime.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/runtime/))
 - `package:chrome_extension/scripting.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/scripting/))
 - `package:chrome_extension/search.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/search/))
@@ -153,6 +154,7 @@ void main() async {
 - `package:chrome_extension/tts.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/tts/))
 - `package:chrome_extension/tts_engine.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/ttsEngine/))
 - `package:chrome_extension/types.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/types/))
+- `package:chrome_extension/user_scripts.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/userScripts/))
 - `package:chrome_extension/vpn_provider.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/vpnProvider/))
 - `package:chrome_extension/wallpaper.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/wallpaper/))
 - `package:chrome_extension/web_authentication_proxy.dart` ([API reference](https://developer.chrome.com/docs/extensions/reference/webAuthenticationProxy/))
@@ -290,11 +292,11 @@ only dispatches the event that woke up the service worker to the listeners regis
 
 Write tests for the extension using [`puppeteer-dart`](https://pub.dev/packages/puppeteer).
 
-Google Chrome ignores the `--load-extension` flag since version 137. `puppeteer.launch()` uses
-[Chrome for Testing](https://developer.chrome.com/blog/chrome-for-testing) by default, which still supports it.
+`browser.installExtension()` (or `puppeteer.launch(extensions: [...])`) installs the extension through the
+DevTools protocol, so the tests can run in headless mode and with Google Chrome, which ignores the
+`--load-extension` flag since version 137.
 
 ```dart
-import 'package:collection/collection.dart';
 import 'package:puppeteer/puppeteer.dart';
 
 void main() async {
@@ -302,32 +304,20 @@ void main() async {
   var extensionPath = '...';
 
   var browser = await puppeteer.launch(
-    headless: false,
+    enableExtensions: true,
     args: [
-      '--disable-extensions-except=$extensionPath',
-      '--load-extension=$extensionPath',
       // Allow to connect to puppeteer from inside your extension if needed for the testing
       '--remote-allow-origins=*',
     ],
   );
-
-  // Find the background page target
-  var targetName = 'service_worker';
-  var backgroundPageTarget =
-      browser.targets.firstWhereOrNull((t) => t.type == targetName);
-  backgroundPageTarget ??=
-      await browser.waitForTarget((target) => target.type == targetName);
-  var worker = (await backgroundPageTarget.worker)!;
-
-  var url = Uri.parse(worker.url!);
-  assert(url.scheme == 'chrome-extension');
-  var extensionId = url.host;
+  var extensionId = await browser.installExtension(extensionPath);
 
   // Go to the popup page
-  await (await browser.pages)
-      .first
-      .goto('chrome-extension://$extensionId/popup.html');
+  var page = await browser.newPage();
+  await page.goto('chrome-extension://$extensionId/popup.html');
 
   // Etc...
+
+  await browser.close();
 }
 ```

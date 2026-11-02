@@ -58,7 +58,7 @@ class ChromeTabs {
   /// an optional callback to run when a response is sent back.  The
   /// [extension.onRequest] event is fired in each content script running in the
   /// specified tab for the current extension.
-  @Deprecated(r'Please use $(ref:runtime.sendMessage).')
+  @Deprecated(r'Please use runtime.sendMessage.')
   Future<Object?> sendRequest(
     int tabId,
     Object request,
@@ -72,12 +72,14 @@ class ChromeTabs {
     return $res?.dartify();
   }
 
-  /// Sends a single message to the content script(s) in the specified tab, with
-  /// an optional callback to run when a response is sent back.  The
+  /// Sends a single message to the content script(s) in the specified tab. The
   /// [runtime.onMessage] event is fired in each content script running in the
   /// specified tab for the current extension.
   /// [message] The message to send. This message should be a JSON-ifiable
   /// object.
+  /// [returns] Promise that resolves with the response from the content
+  /// script. If an error occurs while connecting to the specified tab, the
+  /// promise will be rejected.
   Future<Object?> sendMessage(
     int tabId,
     Object message,
@@ -95,7 +97,7 @@ class ChromeTabs {
 
   /// Gets the tab that is selected in the specified window.
   /// [windowId] Defaults to the [current window](windows#current-window).
-  @Deprecated(r'Please use $(ref:tabs.query) <code>{active: true}</code>.')
+  @Deprecated(r'Please use tabs.query <code>{active: true}</code>.')
   Future<Tab> getSelected(int? windowId) async {
     var $res = await $js.chrome.tabs.getSelected(windowId).toDart;
     return Tab.fromJS($res);
@@ -103,8 +105,7 @@ class ChromeTabs {
 
   /// Gets details about all tabs in the specified window.
   /// [windowId] Defaults to the [current window](windows#current-window).
-  @Deprecated(
-      r'Please use $(ref:tabs.query) <code>{windowId: windowId}</code>.')
+  @Deprecated(r'Please use tabs.query <code>{windowId: windowId}</code>.')
   Future<List<Tab>> getAllInWindow(int? windowId) async {
     var $res = await $js.chrome.tabs.getAllInWindow(windowId).toDart;
     return $res.toDart.cast<$js.Tab>().map((e) => Tab.fromJS(e)).toList();
@@ -114,6 +115,18 @@ class ChromeTabs {
   Future<Tab> create(CreateProperties createProperties) async {
     var $res = await $js.chrome.tabs.create(createProperties.toJS).toDart;
     return Tab.fromJS($res);
+  }
+
+  /// Splits two existing tabs into a Split View.
+  /// [tabIds] An array of exactly two tab IDs to pair into a Split View. All
+  /// tabs must meet the following conditions: <ul><li>They must be
+  /// adjacent.</li><li>They must not already be in a split view.</li><li>They
+  /// must have matching `windowId`, `pinned`, and `groupId` states.</li></ul>
+  Future<int> createSplit(List<int> tabIds) async {
+    var $res = await $js.chrome.tabs
+        .createSplit(tabIds.toJSArray((e) => e.toJS))
+        .toDart;
+    return $res.toDartInt;
   }
 
   /// Duplicates a tab.
@@ -230,6 +243,12 @@ class ChromeTabs {
         .toDart;
   }
 
+  /// Separates the tabs in a Split View into independent tabs.
+  /// [splitViewId] The ID of the Split View to separate.
+  Future<void> unsplit(int splitViewId) async {
+    await $js.chrome.tabs.unsplit(splitViewId).toDart;
+  }
+
   /// Detects the primary language of the content in a tab.
   /// [tabId] Defaults to the active tab of the [current
   /// window](windows#current-window).
@@ -240,13 +259,14 @@ class ChromeTabs {
 
   /// Captures the visible area of the currently active tab in the specified
   /// window. In order to call this method, the extension must have either the
-  /// <a href='develop/concepts/declare-permissions'><all_urls></a> permission
-  /// or the [activeTab](develop/concepts/activeTab) permission. In addition to
-  /// sites that extensions can normally access, this method allows extensions
-  /// to capture sensitive sites that are otherwise restricted, including
-  /// chrome:-scheme pages, other extensions' pages, and data: URLs. These
-  /// sensitive sites can only be captured with the activeTab permission. File
-  /// URLs may be captured only if the extension has been granted file access.
+  /// <a href='develop/concepts/declare-permissions'>&lt;all_urls&gt;</a>
+  /// permission or the [activeTab](develop/concepts/activeTab) permission. In
+  /// addition to sites that extensions can normally access, this method allows
+  /// extensions to capture sensitive sites that are otherwise restricted,
+  /// including chrome:-scheme pages, other extensions' pages, and data: URLs.
+  /// These sensitive sites can only be captured with the activeTab permission.
+  /// File URLs may be captured only if the extension has been granted file
+  /// access.
   /// [windowId] The target window. Defaults to the [current
   /// window](windows#current-window).
   Future<String> captureVisibleTab(
@@ -263,14 +283,14 @@ class ChromeTabs {
   }
 
   /// Injects JavaScript code into a page. For details, see the [programmatic
-  /// injection](develop/concepts/content-scripts#programmatic) section of the
-  /// content scripts doc.
+  /// injection](/docs/extensions/develop/concepts/content-scripts#programmatic)
+  /// section of the content scripts doc.
   /// [tabId] The ID of the tab in which to run the script; defaults to the
   /// active tab of the current window.
   /// [details] Details of the script to run. Either the code or the file
   /// property must be set, but both may not be set at the same time.
-  /// [returns] Called after all the JavaScript has been executed.
-  @Deprecated(r'Replaced by $(ref:scripting.executeScript) in Manifest V3.')
+  /// [returns] Resolves after all the JavaScript has been executed.
+  @Deprecated(r'Replaced by scripting.executeScript in Manifest V3.')
   Future<List<Object>?> executeScript(
     int? tabId,
     InjectDetails details,
@@ -286,14 +306,14 @@ class ChromeTabs {
 
   /// Injects CSS into a page. Styles inserted with this method can be removed
   /// with [scripting.removeCSS]. For details, see the [programmatic
-  /// injection](develop/concepts/content-scripts#programmatic) section of the
-  /// content scripts doc.
+  /// injection](/docs/extensions/develop/concepts/content-scripts#programmatic)
+  /// section of the content scripts doc.
   /// [tabId] The ID of the tab in which to insert the CSS; defaults to the
   /// active tab of the current window.
   /// [details] Details of the CSS text to insert. Either the code or the file
   /// property must be set, but both may not be set at the same time.
-  /// [returns] Called when all the CSS has been inserted.
-  @Deprecated(r'Replaced by $(ref:scripting.insertCSS) in Manifest V3.')
+  /// [returns] Resolves when all the CSS has been inserted.
+  @Deprecated(r'Replaced by scripting.insertCSS in Manifest V3.')
   Future<void> insertCSS(
     int? tabId,
     InjectDetails details,
@@ -312,8 +332,8 @@ class ChromeTabs {
   /// active tab of the current window.
   /// [details] Details of the CSS text to remove. Either the code or the file
   /// property must be set, but both may not be set at the same time.
-  /// [returns] Called when all the CSS has been removed.
-  @Deprecated(r'Replaced by $(ref:scripting.removeCSS) in Manifest V3.')
+  /// [returns] Resolves when all the CSS has been removed.
+  @Deprecated(r'Replaced by scripting.removeCSS in Manifest V3.')
   Future<void> removeCSS(
     int? tabId,
     DeleteInjectionDetails details,
@@ -332,7 +352,7 @@ class ChromeTabs {
   /// [zoomFactor] The new zoom factor. A value of `0` sets the tab to its
   /// current default zoom factor. Values greater than `0` specify a (possibly
   /// non-default) zoom factor for the tab.
-  /// [returns] Called after the zoom factor has been changed.
+  /// [returns] Resolves after the zoom factor has been changed.
   Future<void> setZoom(
     int? tabId,
     double zoomFactor,
@@ -348,7 +368,7 @@ class ChromeTabs {
   /// Gets the current zoom factor of a specified tab.
   /// [tabId] The ID of the tab to get the current zoom factor from; defaults
   /// to the active tab of the current window.
-  /// [returns] Called with the tab's current zoom factor after it has been
+  /// [returns] Resolves with the tab's current zoom factor after it has been
   /// fetched.
   Future<double> getZoom(int? tabId) async {
     var $res = await $js.chrome.tabs.getZoom(tabId).toDart;
@@ -360,7 +380,7 @@ class ChromeTabs {
   /// [tabId] The ID of the tab to change the zoom settings for; defaults to
   /// the active tab of the current window.
   /// [zoomSettings] Defines how zoom changes are handled and at what scope.
-  /// [returns] Called after the zoom settings are changed.
+  /// [returns] Resolves after the zoom settings are changed.
   Future<void> setZoomSettings(
     int? tabId,
     ZoomSettings zoomSettings,
@@ -376,7 +396,7 @@ class ChromeTabs {
   /// Gets the current zoom settings of a specified tab.
   /// [tabId] The ID of the tab to get the current zoom settings from;
   /// defaults to the active tab of the current window.
-  /// [returns] Called with the tab's current zoom settings.
+  /// [returns] Resolves with the tab's current zoom settings.
   Future<ZoomSettings> getZoomSettings(int? tabId) async {
     var $res = await $js.chrome.tabs.getZoomSettings(tabId).toDart;
     return ZoomSettings.fromJS($res);
@@ -388,7 +408,7 @@ class ChromeTabs {
   /// discarded unless it is active or already discarded. If omitted, the
   /// browser discards the least important tab. This can fail if no
   /// discardable tabs exist.
-  /// [returns] Called after the operation is completed.
+  /// [returns] Resolves after the operation is completed.
   Future<Tab?> discard(int? tabId) async {
     var $res = await $js.chrome.tabs.discard(tabId).toDart;
     return $res?.let(Tab.fromJS);
@@ -414,8 +434,14 @@ class ChromeTabs {
   int get maxCaptureVisibleTabCallsPerSecond =>
       $js.chrome.tabs.MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND;
 
+  /// An ID that represents the absence of a split tab.
+  int get splitViewIdNone => $js.chrome.tabs.SPLIT_VIEW_ID_NONE;
+
   /// An ID that represents the absence of a browser tab.
   int get tabIdNone => $js.chrome.tabs.TAB_ID_NONE;
+
+  /// An index that represents the absence of a tab index in a tab_strip.
+  int get tabIndexNone => $js.chrome.tabs.TAB_INDEX_NONE;
 
   /// Fired when a tab is created. Note that the tab's URL and tab group
   /// membership may not be set at the time this event is fired, but you can
@@ -457,6 +483,7 @@ class ChromeTabs {
           }.toJS);
 
   /// Fires when the selected tab in a window changes.
+  @Deprecated(r'Please use tabs.onActivated.')
   EventStream<OnSelectionChangedEvent> get onSelectionChanged =>
       $js.chrome.tabs.onSelectionChanged.asStream(($c) => (
             int tabId,
@@ -471,6 +498,7 @@ class ChromeTabs {
   /// Fires when the selected tab in a window changes. Note that the tab's URL
   /// may not be set at the time this event fired, but you can listen to
   /// [tabs.onUpdated] events so as to be notified when a URL is set.
+  @Deprecated(r'Please use tabs.onActivated.')
   EventStream<OnActiveChangedEvent> get onActiveChanged =>
       $js.chrome.tabs.onActiveChanged.asStream(($c) => (
             int tabId,
@@ -492,6 +520,7 @@ class ChromeTabs {
               }.toJS);
 
   /// Fired when the highlighted or selected tabs in a window changes.
+  @Deprecated(r'Please use tabs.onHighlighted.')
   EventStream<OnHighlightChangedSelectInfo> get onHighlightChanged =>
       $js.chrome.tabs.onHighlightChanged
           .asStream(($c) => ($js.OnHighlightChangedSelectInfo selectInfo) {
@@ -669,7 +698,8 @@ enum WindowType {
   popup('popup'),
   panel('panel'),
   app('app'),
-  devtools('devtools');
+  devtools('devtools'),
+  customTab('custom-tab');
 
   const WindowType(this.value);
 
@@ -752,6 +782,9 @@ class Tab {
     /// The ID of the group that the tab belongs to.
     required int groupId,
 
+    /// The ID of the Split View that the tab belongs to.
+    int? splitViewId,
+
     /// The ID of the window that contains the tab.
     required int windowId,
 
@@ -762,9 +795,9 @@ class Tab {
     /// Whether the tab is selected.
     required bool selected,
 
-    /// The last time the tab was accessed as the number of milliseconds since
-    /// epoch.
-    double? lastAccessed,
+    /// The last time the tab became active in its window as the number of
+    /// milliseconds since epoch.
+    required double lastAccessed,
 
     /// Whether the tab is highlighted.
     required bool highlighted,
@@ -781,6 +814,11 @@ class Tab {
     /// audio' indicator is showing.
     bool? audible,
 
+    /// Whether the tab is frozen. A frozen tab cannot execute tasks, including
+    /// event handlers or timers. It is visible in the tab strip and its content
+    /// is loaded in memory.  It is unfrozen on activation.
+    required bool frozen,
+
     /// Whether the tab is discarded. A discarded tab is one whose content has
     /// been unloaded from memory, but is still visible in the tab strip. Its
     /// content is reloaded the next time it is activated.
@@ -794,23 +832,23 @@ class Tab {
     MutedInfo? mutedInfo,
 
     /// The last committed URL of the main frame of the tab. This property is
-    /// only present if the extension's manifest includes the `"tabs"`
-    /// permission and may be an empty string if the tab has not yet committed.
-    /// See also [Tab.pendingUrl].
+    /// only present if the extension has the `"tabs"` permission or has host
+    /// permissions for the page. May be an empty string if the tab has not yet
+    /// committed. See also [Tab.pendingUrl].
     String? url,
 
     /// The URL the tab is navigating to, before it has committed. This property
-    /// is only present if the extension's manifest includes the `"tabs"`
-    /// permission and there is a pending navigation.
+    /// is only present if the extension has the `"tabs"` permission or has host
+    /// permissions for the page and there is a pending navigation.
     String? pendingUrl,
 
-    /// The title of the tab. This property is only present if the extension's
-    /// manifest includes the `"tabs"` permission.
+    /// The title of the tab. This property is only present if the extension has
+    /// the `"tabs"` permission or has host permissions for the page.
     String? title,
 
     /// The URL of the tab's favicon. This property is only present if the
-    /// extension's manifest includes the `"tabs"` permission. It may also be an
-    /// empty string if the tab is loading.
+    /// extension has the `"tabs"` permission or has host permissions for the
+    /// page. It may also be an empty string if the tab is loading.
     String? favIconUrl,
 
     /// The tab's loading status.
@@ -832,6 +870,7 @@ class Tab {
           id: id,
           index: index,
           groupId: groupId,
+          splitViewId: splitViewId,
           windowId: windowId,
           openerTabId: openerTabId,
           selected: selected,
@@ -840,6 +879,7 @@ class Tab {
           active: active,
           pinned: pinned,
           audible: audible,
+          frozen: frozen,
           discarded: discarded,
           autoDiscardable: autoDiscardable,
           mutedInfo: mutedInfo?.toJS,
@@ -883,6 +923,13 @@ class Tab {
     _wrapped.groupId = v;
   }
 
+  /// The ID of the Split View that the tab belongs to.
+  int? get splitViewId => _wrapped.splitViewId;
+
+  set splitViewId(int? v) {
+    _wrapped.splitViewId = v;
+  }
+
   /// The ID of the window that contains the tab.
   int get windowId => _wrapped.windowId;
 
@@ -905,11 +952,11 @@ class Tab {
     _wrapped.selected = v;
   }
 
-  /// The last time the tab was accessed as the number of milliseconds since
-  /// epoch.
-  double? get lastAccessed => _wrapped.lastAccessed;
+  /// The last time the tab became active in its window as the number of
+  /// milliseconds since epoch.
+  double get lastAccessed => _wrapped.lastAccessed;
 
-  set lastAccessed(double? v) {
+  set lastAccessed(double v) {
     _wrapped.lastAccessed = v;
   }
 
@@ -944,6 +991,15 @@ class Tab {
     _wrapped.audible = v;
   }
 
+  /// Whether the tab is frozen. A frozen tab cannot execute tasks, including
+  /// event handlers or timers. It is visible in the tab strip and its content
+  /// is loaded in memory.  It is unfrozen on activation.
+  bool get frozen => _wrapped.frozen;
+
+  set frozen(bool v) {
+    _wrapped.frozen = v;
+  }
+
   /// Whether the tab is discarded. A discarded tab is one whose content has
   /// been unloaded from memory, but is still visible in the tab strip. Its
   /// content is reloaded the next time it is activated.
@@ -969,9 +1025,9 @@ class Tab {
   }
 
   /// The last committed URL of the main frame of the tab. This property is only
-  /// present if the extension's manifest includes the `"tabs"` permission and
-  /// may be an empty string if the tab has not yet committed. See also
-  /// [Tab.pendingUrl].
+  /// present if the extension has the `"tabs"` permission or has host
+  /// permissions for the page. May be an empty string if the tab has not yet
+  /// committed. See also [Tab.pendingUrl].
   String? get url => _wrapped.url;
 
   set url(String? v) {
@@ -979,16 +1035,16 @@ class Tab {
   }
 
   /// The URL the tab is navigating to, before it has committed. This property
-  /// is only present if the extension's manifest includes the `"tabs"`
-  /// permission and there is a pending navigation.
+  /// is only present if the extension has the `"tabs"` permission or has host
+  /// permissions for the page and there is a pending navigation.
   String? get pendingUrl => _wrapped.pendingUrl;
 
   set pendingUrl(String? v) {
     _wrapped.pendingUrl = v;
   }
 
-  /// The title of the tab. This property is only present if the extension's
-  /// manifest includes the `"tabs"` permission.
+  /// The title of the tab. This property is only present if the extension has
+  /// the `"tabs"` permission or has host permissions for the page.
   String? get title => _wrapped.title;
 
   set title(String? v) {
@@ -996,8 +1052,8 @@ class Tab {
   }
 
   /// The URL of the tab's favicon. This property is only present if the
-  /// extension's manifest includes the `"tabs"` permission. It may also be an
-  /// empty string if the tab is loading.
+  /// extension has the `"tabs"` permission or has host permissions for the
+  /// page. It may also be an empty string if the tab is loading.
   String? get favIconUrl => _wrapped.favIconUrl;
 
   set favIconUrl(String? v) {
@@ -1106,11 +1162,17 @@ class OnUpdatedChangeInfo {
     /// The tab's new group.
     int? groupId,
 
+    /// The tab's new Split View.
+    int? splitViewId,
+
     /// The tab's new pinned state.
     bool? pinned,
 
     /// The tab's new audible state.
     bool? audible,
+
+    /// The tab's new frozen state.
+    bool? frozen,
 
     /// The tab's new discarded state.
     bool? discarded,
@@ -1130,8 +1192,10 @@ class OnUpdatedChangeInfo {
           status: status?.toJS,
           url: url,
           groupId: groupId,
+          splitViewId: splitViewId,
           pinned: pinned,
           audible: audible,
+          frozen: frozen,
           discarded: discarded,
           autoDiscardable: autoDiscardable,
           mutedInfo: mutedInfo?.toJS,
@@ -1164,6 +1228,13 @@ class OnUpdatedChangeInfo {
     _wrapped.groupId = v;
   }
 
+  /// The tab's new Split View.
+  int? get splitViewId => _wrapped.splitViewId;
+
+  set splitViewId(int? v) {
+    _wrapped.splitViewId = v;
+  }
+
   /// The tab's new pinned state.
   bool? get pinned => _wrapped.pinned;
 
@@ -1176,6 +1247,13 @@ class OnUpdatedChangeInfo {
 
   set audible(bool? v) {
     _wrapped.audible = v;
+  }
+
+  /// The tab's new frozen state.
+  bool? get frozen => _wrapped.frozen;
+
+  set frozen(bool? v) {
+    _wrapped.frozen = v;
   }
 
   /// The tab's new discarded state.
@@ -1646,6 +1724,15 @@ class CreateProperties {
     /// The ID of the tab that opened this tab. If specified, the opener tab
     /// must be in the same window as the newly created tab.
     int? openerTabId,
+
+    /// The ID of an existing tab to create a split view with. If specified, the
+    /// split-with tab must meet the following conditions: <ul><li>It must not
+    /// be an already split tab.</li><li>It must be in the same window as the
+    /// newly created tab.</li><li>If [windowId] is specified, it must be the
+    /// same as the split-with tab's window ID.</li><li>If [index] is specified,
+    /// it must be an index adjacent to the split-with tab and will affect the
+    /// relative positioning of the newly created tab.</li></ul>
+    int? splitWithTabId,
   }) : _wrapped = $js.CreateProperties(
           windowId: windowId,
           index: index,
@@ -1654,6 +1741,7 @@ class CreateProperties {
           selected: selected,
           pinned: pinned,
           openerTabId: openerTabId,
+          splitWithTabId: splitWithTabId,
         );
 
   final $js.CreateProperties _wrapped;
@@ -1717,6 +1805,19 @@ class CreateProperties {
   set openerTabId(int? v) {
     _wrapped.openerTabId = v;
   }
+
+  /// The ID of an existing tab to create a split view with. If specified, the
+  /// split-with tab must meet the following conditions: <ul><li>It must not be
+  /// an already split tab.</li><li>It must be in the same window as the newly
+  /// created tab.</li><li>If [windowId] is specified, it must be the same as
+  /// the split-with tab's window ID.</li><li>If [index] is specified, it must
+  /// be an index adjacent to the split-with tab and will affect the relative
+  /// positioning of the newly created tab.</li></ul>
+  int? get splitWithTabId => _wrapped.splitWithTabId;
+
+  set splitWithTabId(int? v) {
+    _wrapped.splitWithTabId = v;
+  }
 }
 
 class QueryInfo {
@@ -1738,6 +1839,11 @@ class QueryInfo {
     /// Whether the tabs are highlighted.
     bool? highlighted,
 
+    /// Whether the tabs are frozen. A frozen tab cannot execute tasks,
+    /// including event handlers or timers. It is visible in the tab strip and
+    /// its content is loaded in memory.  It is unfrozen on activation.
+    bool? frozen,
+
     /// Whether the tabs are discarded. A discarded tab is one whose content has
     /// been unloaded from memory, but is still visible in the tab strip. Its
     /// content is reloaded the next time it is activated.
@@ -1757,17 +1863,22 @@ class QueryInfo {
     TabStatus? status,
 
     /// Match page titles against a pattern. This property is ignored if the
-    /// extension does not have the `"tabs"` permission.
+    /// extension does not have the `"tabs"` permission or host permissions for
+    /// the page.
     String? title,
 
     /// Match tabs against one or more [URL patterns](match_patterns). Fragment
     /// identifiers are not matched. This property is ignored if the extension
-    /// does not have the `"tabs"` permission.
+    /// does not have the `"tabs"` permission or host permissions for the page.
     Object? url,
 
     /// The ID of the group that the tabs are in, or
     /// [tabGroups.TAB_GROUP_ID_NONE] for ungrouped tabs.
     int? groupId,
+
+    /// The ID of the Split View that the tabs are in, or
+    /// [tabs.SPLIT_VIEW_ID_NONE] for tabs that aren't in a Split View.
+    int? splitViewId,
 
     /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
     /// [current window](windows#current-window).
@@ -1784,6 +1895,7 @@ class QueryInfo {
           audible: audible,
           muted: muted,
           highlighted: highlighted,
+          frozen: frozen,
           discarded: discarded,
           autoDiscardable: autoDiscardable,
           currentWindow: currentWindow,
@@ -1798,6 +1910,7 @@ class QueryInfo {
                 'Received type: ${url.runtimeType}. Supported types are: String, List<String>')
           },
           groupId: groupId,
+          splitViewId: splitViewId,
           windowId: windowId,
           windowType: windowType?.toJS,
           index: index,
@@ -1842,6 +1955,15 @@ class QueryInfo {
     _wrapped.highlighted = v;
   }
 
+  /// Whether the tabs are frozen. A frozen tab cannot execute tasks, including
+  /// event handlers or timers. It is visible in the tab strip and its content
+  /// is loaded in memory.  It is unfrozen on activation.
+  bool? get frozen => _wrapped.frozen;
+
+  set frozen(bool? v) {
+    _wrapped.frozen = v;
+  }
+
   /// Whether the tabs are discarded. A discarded tab is one whose content has
   /// been unloaded from memory, but is still visible in the tab strip. Its
   /// content is reloaded the next time it is activated.
@@ -1881,7 +2003,8 @@ class QueryInfo {
   }
 
   /// Match page titles against a pattern. This property is ignored if the
-  /// extension does not have the `"tabs"` permission.
+  /// extension does not have the `"tabs"` permission or host permissions for
+  /// the page.
   String? get title => _wrapped.title;
 
   set title(String? v) {
@@ -1890,7 +2013,7 @@ class QueryInfo {
 
   /// Match tabs against one or more [URL patterns](match_patterns). Fragment
   /// identifiers are not matched. This property is ignored if the extension
-  /// does not have the `"tabs"` permission.
+  /// does not have the `"tabs"` permission or host permissions for the page.
   Object? get url => _wrapped.url?.when(
         isString: (v) => v,
         isArray: (v) => v.toDart.cast<JSString>().map((e) => e.toDart).toList(),
@@ -1912,6 +2035,14 @@ class QueryInfo {
 
   set groupId(int? v) {
     _wrapped.groupId = v;
+  }
+
+  /// The ID of the Split View that the tabs are in, or
+  /// [tabs.SPLIT_VIEW_ID_NONE] for tabs that aren't in a Split View.
+  int? get splitViewId => _wrapped.splitViewId;
+
+  set splitViewId(int? v) {
+    _wrapped.splitViewId = v;
   }
 
   /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the

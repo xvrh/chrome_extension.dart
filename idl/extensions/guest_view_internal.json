@@ -93,7 +93,7 @@
           {
             "type": "integer",
             "name": "instanceId",
-            "description": "The instance ID of the guest <webview> process. This not exposed to developers through the API."
+            "description": "The instance ID of the guest &lt;webview&gt; process. This not exposed to developers through the API."
           },
           {
             "$ref": "SizeParams",

@@ -49,14 +49,13 @@ extension type JSTabs._(JSObject _) {
   /// an optional callback to run when a response is sent back.  The
   /// [extension.onRequest] event is fired in each content script running in the
   /// specified tab for the current extension.
-  @Deprecated(r'Please use $(ref:runtime.sendMessage).')
+  @Deprecated(r'Please use runtime.sendMessage.')
   external JSPromise<JSAny?> sendRequest(
     int tabId,
     JSAny request,
   );
 
-  /// Sends a single message to the content script(s) in the specified tab, with
-  /// an optional callback to run when a response is sent back.  The
+  /// Sends a single message to the content script(s) in the specified tab. The
   /// [runtime.onMessage] event is fired in each content script running in the
   /// specified tab for the current extension.
   external JSPromise<JSAny?> sendMessage(
@@ -68,15 +67,14 @@ extension type JSTabs._(JSObject _) {
   );
 
   /// Gets the tab that is selected in the specified window.
-  @Deprecated(r'Please use $(ref:tabs.query) <code>{active: true}</code>.')
+  @Deprecated(r'Please use tabs.query <code>{active: true}</code>.')
   external JSPromise<Tab> getSelected(
 
       /// Defaults to the [current window](windows#current-window).
       int? windowId);
 
   /// Gets details about all tabs in the specified window.
-  @Deprecated(
-      r'Please use $(ref:tabs.query) <code>{windowId: windowId}</code>.')
+  @Deprecated(r'Please use tabs.query <code>{windowId: windowId}</code>.')
   external JSPromise<JSArray> getAllInWindow(
 
       /// Defaults to the [current window](windows#current-window).
@@ -84,6 +82,15 @@ extension type JSTabs._(JSObject _) {
 
   /// Creates a new tab.
   external JSPromise<Tab> create(CreateProperties createProperties);
+
+  /// Splits two existing tabs into a Split View.
+  external JSPromise<JSNumber> createSplit(
+
+      /// An array of exactly two tab IDs to pair into a Split View. All tabs must
+      /// meet the following conditions: <ul><li>They must be
+      /// adjacent.</li><li>They must not already be in a split view.</li><li>They
+      /// must have matching `windowId`, `pinned`, and `groupId` states.</li></ul>
+      JSArray tabIds);
 
   /// Duplicates a tab.
   external JSPromise<Tab?> duplicate(
@@ -142,6 +149,12 @@ extension type JSTabs._(JSObject _) {
       /// The tab ID or list of tab IDs to remove from their respective groups.
       JSAny tabIds);
 
+  /// Separates the tabs in a Split View into independent tabs.
+  external JSPromise unsplit(
+
+      /// The ID of the Split View to separate.
+      int splitViewId);
+
   /// Detects the primary language of the content in a tab.
   external JSPromise<JSString> detectLanguage(
 
@@ -151,13 +164,14 @@ extension type JSTabs._(JSObject _) {
 
   /// Captures the visible area of the currently active tab in the specified
   /// window. In order to call this method, the extension must have either the
-  /// <a href='develop/concepts/declare-permissions'><all_urls></a> permission
-  /// or the [activeTab](develop/concepts/activeTab) permission. In addition to
-  /// sites that extensions can normally access, this method allows extensions
-  /// to capture sensitive sites that are otherwise restricted, including
-  /// chrome:-scheme pages, other extensions' pages, and data: URLs. These
-  /// sensitive sites can only be captured with the activeTab permission. File
-  /// URLs may be captured only if the extension has been granted file access.
+  /// <a href='develop/concepts/declare-permissions'>&lt;all_urls&gt;</a>
+  /// permission or the [activeTab](develop/concepts/activeTab) permission. In
+  /// addition to sites that extensions can normally access, this method allows
+  /// extensions to capture sensitive sites that are otherwise restricted,
+  /// including chrome:-scheme pages, other extensions' pages, and data: URLs.
+  /// These sensitive sites can only be captured with the activeTab permission.
+  /// File URLs may be captured only if the extension has been granted file
+  /// access.
   external JSPromise<JSString> captureVisibleTab(
     /// The target window. Defaults to the [current
     /// window](windows#current-window).
@@ -166,9 +180,9 @@ extension type JSTabs._(JSObject _) {
   );
 
   /// Injects JavaScript code into a page. For details, see the [programmatic
-  /// injection](develop/concepts/content-scripts#programmatic) section of the
-  /// content scripts doc.
-  @Deprecated(r'Replaced by $(ref:scripting.executeScript) in Manifest V3.')
+  /// injection](/docs/extensions/develop/concepts/content-scripts#programmatic)
+  /// section of the content scripts doc.
+  @Deprecated(r'Replaced by scripting.executeScript in Manifest V3.')
   external JSPromise<JSArray?> executeScript(
     /// The ID of the tab in which to run the script; defaults to the active tab
     /// of the current window.
@@ -181,9 +195,9 @@ extension type JSTabs._(JSObject _) {
 
   /// Injects CSS into a page. Styles inserted with this method can be removed
   /// with [scripting.removeCSS]. For details, see the [programmatic
-  /// injection](develop/concepts/content-scripts#programmatic) section of the
-  /// content scripts doc.
-  @Deprecated(r'Replaced by $(ref:scripting.insertCSS) in Manifest V3.')
+  /// injection](/docs/extensions/develop/concepts/content-scripts#programmatic)
+  /// section of the content scripts doc.
+  @Deprecated(r'Replaced by scripting.insertCSS in Manifest V3.')
   external JSPromise insertCSS(
     /// The ID of the tab in which to insert the CSS; defaults to the active tab
     /// of the current window.
@@ -196,7 +210,7 @@ extension type JSTabs._(JSObject _) {
 
   /// Removes from a page CSS that was previously injected by a call to
   /// [scripting.insertCSS].
-  @Deprecated(r'Replaced by $(ref:scripting.removeCSS) in Manifest V3.')
+  @Deprecated(r'Replaced by scripting.removeCSS in Manifest V3.')
   external JSPromise removeCSS(
     /// The ID of the tab from which to remove the CSS; defaults to the active
     /// tab of the current window.
@@ -326,8 +340,14 @@ extension type JSTabs._(JSObject _) {
   /// often.
   external int get MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND;
 
+  /// An ID that represents the absence of a split tab.
+  external int get SPLIT_VIEW_ID_NONE;
+
   /// An ID that represents the absence of a browser tab.
   external int get TAB_ID_NONE;
+
+  /// An index that represents the absence of a tab index in a tab_strip.
+  external int get TAB_INDEX_NONE;
 }
 
 /// The tab's loading status.
@@ -391,6 +411,9 @@ extension type Tab._(JSObject _) implements JSObject {
     /// The ID of the group that the tab belongs to.
     int groupId,
 
+    /// The ID of the Split View that the tab belongs to.
+    int? splitViewId,
+
     /// The ID of the window that contains the tab.
     int windowId,
 
@@ -401,9 +424,9 @@ extension type Tab._(JSObject _) implements JSObject {
     /// Whether the tab is selected.
     bool selected,
 
-    /// The last time the tab was accessed as the number of milliseconds since
-    /// epoch.
-    double? lastAccessed,
+    /// The last time the tab became active in its window as the number of
+    /// milliseconds since epoch.
+    double lastAccessed,
 
     /// Whether the tab is highlighted.
     bool highlighted,
@@ -420,6 +443,11 @@ extension type Tab._(JSObject _) implements JSObject {
     /// audio' indicator is showing.
     bool? audible,
 
+    /// Whether the tab is frozen. A frozen tab cannot execute tasks, including
+    /// event handlers or timers. It is visible in the tab strip and its content
+    /// is loaded in memory.  It is unfrozen on activation.
+    bool frozen,
+
     /// Whether the tab is discarded. A discarded tab is one whose content has
     /// been unloaded from memory, but is still visible in the tab strip. Its
     /// content is reloaded the next time it is activated.
@@ -433,23 +461,23 @@ extension type Tab._(JSObject _) implements JSObject {
     MutedInfo? mutedInfo,
 
     /// The last committed URL of the main frame of the tab. This property is only
-    /// present if the extension's manifest includes the `"tabs"` permission and
-    /// may be an empty string if the tab has not yet committed. See also
-    /// [Tab.pendingUrl].
+    /// present if the extension has the `"tabs"` permission or has host
+    /// permissions for the page. May be an empty string if the tab has not yet
+    /// committed. See also [Tab.pendingUrl].
     String? url,
 
     /// The URL the tab is navigating to, before it has committed. This property
-    /// is only present if the extension's manifest includes the `"tabs"`
-    /// permission and there is a pending navigation.
+    /// is only present if the extension has the `"tabs"` permission or has host
+    /// permissions for the page and there is a pending navigation.
     String? pendingUrl,
 
-    /// The title of the tab. This property is only present if the extension's
-    /// manifest includes the `"tabs"` permission.
+    /// The title of the tab. This property is only present if the extension has
+    /// the `"tabs"` permission or has host permissions for the page.
     String? title,
 
     /// The URL of the tab's favicon. This property is only present if the
-    /// extension's manifest includes the `"tabs"` permission. It may also be an
-    /// empty string if the tab is loading.
+    /// extension has the `"tabs"` permission or has host permissions for the
+    /// page. It may also be an empty string if the tab is loading.
     String? favIconUrl,
 
     /// The tab's loading status.
@@ -482,6 +510,9 @@ extension type Tab._(JSObject _) implements JSObject {
   /// The ID of the group that the tab belongs to.
   external int groupId;
 
+  /// The ID of the Split View that the tab belongs to.
+  external int? splitViewId;
+
   /// The ID of the window that contains the tab.
   external int windowId;
 
@@ -492,9 +523,9 @@ extension type Tab._(JSObject _) implements JSObject {
   /// Whether the tab is selected.
   external bool selected;
 
-  /// The last time the tab was accessed as the number of milliseconds since
-  /// epoch.
-  external double? lastAccessed;
+  /// The last time the tab became active in its window as the number of
+  /// milliseconds since epoch.
+  external double lastAccessed;
 
   /// Whether the tab is highlighted.
   external bool highlighted;
@@ -511,6 +542,11 @@ extension type Tab._(JSObject _) implements JSObject {
   /// audio' indicator is showing.
   external bool? audible;
 
+  /// Whether the tab is frozen. A frozen tab cannot execute tasks, including
+  /// event handlers or timers. It is visible in the tab strip and its content
+  /// is loaded in memory.  It is unfrozen on activation.
+  external bool frozen;
+
   /// Whether the tab is discarded. A discarded tab is one whose content has
   /// been unloaded from memory, but is still visible in the tab strip. Its
   /// content is reloaded the next time it is activated.
@@ -524,23 +560,23 @@ extension type Tab._(JSObject _) implements JSObject {
   external MutedInfo? mutedInfo;
 
   /// The last committed URL of the main frame of the tab. This property is only
-  /// present if the extension's manifest includes the `"tabs"` permission and
-  /// may be an empty string if the tab has not yet committed. See also
-  /// [Tab.pendingUrl].
+  /// present if the extension has the `"tabs"` permission or has host
+  /// permissions for the page. May be an empty string if the tab has not yet
+  /// committed. See also [Tab.pendingUrl].
   external String? url;
 
   /// The URL the tab is navigating to, before it has committed. This property
-  /// is only present if the extension's manifest includes the `"tabs"`
-  /// permission and there is a pending navigation.
+  /// is only present if the extension has the `"tabs"` permission or has host
+  /// permissions for the page and there is a pending navigation.
   external String? pendingUrl;
 
-  /// The title of the tab. This property is only present if the extension's
-  /// manifest includes the `"tabs"` permission.
+  /// The title of the tab. This property is only present if the extension has
+  /// the `"tabs"` permission or has host permissions for the page.
   external String? title;
 
   /// The URL of the tab's favicon. This property is only present if the
-  /// extension's manifest includes the `"tabs"` permission. It may also be an
-  /// empty string if the tab is loading.
+  /// extension has the `"tabs"` permission or has host permissions for the
+  /// page. It may also be an empty string if the tab is loading.
   external String? favIconUrl;
 
   /// The tab's loading status.
@@ -599,11 +635,17 @@ extension type OnUpdatedChangeInfo._(JSObject _) implements JSObject {
     /// The tab's new group.
     int? groupId,
 
+    /// The tab's new Split View.
+    int? splitViewId,
+
     /// The tab's new pinned state.
     bool? pinned,
 
     /// The tab's new audible state.
     bool? audible,
+
+    /// The tab's new frozen state.
+    bool? frozen,
 
     /// The tab's new discarded state.
     bool? discarded,
@@ -630,11 +672,17 @@ extension type OnUpdatedChangeInfo._(JSObject _) implements JSObject {
   /// The tab's new group.
   external int? groupId;
 
+  /// The tab's new Split View.
+  external int? splitViewId;
+
   /// The tab's new pinned state.
   external bool? pinned;
 
   /// The tab's new audible state.
   external bool? audible;
+
+  /// The tab's new frozen state.
+  external bool? frozen;
 
   /// The tab's new discarded state.
   external bool? discarded;
@@ -855,6 +903,15 @@ extension type CreateProperties._(JSObject _) implements JSObject {
     /// The ID of the tab that opened this tab. If specified, the opener tab must
     /// be in the same window as the newly created tab.
     int? openerTabId,
+
+    /// The ID of an existing tab to create a split view with. If specified, the
+    /// split-with tab must meet the following conditions: <ul><li>It must not be
+    /// an already split tab.</li><li>It must be in the same window as the newly
+    /// created tab.</li><li>If [windowId] is specified, it must be the same as
+    /// the split-with tab's window ID.</li><li>If [index] is specified, it must
+    /// be an index adjacent to the split-with tab and will affect the relative
+    /// positioning of the newly created tab.</li></ul>
+    int? splitWithTabId,
   });
 
   /// The window in which to create the new tab. Defaults to the [current
@@ -886,6 +943,15 @@ extension type CreateProperties._(JSObject _) implements JSObject {
   /// The ID of the tab that opened this tab. If specified, the opener tab must
   /// be in the same window as the newly created tab.
   external int? openerTabId;
+
+  /// The ID of an existing tab to create a split view with. If specified, the
+  /// split-with tab must meet the following conditions: <ul><li>It must not be
+  /// an already split tab.</li><li>It must be in the same window as the newly
+  /// created tab.</li><li>If [windowId] is specified, it must be the same as
+  /// the split-with tab's window ID.</li><li>If [index] is specified, it must
+  /// be an index adjacent to the split-with tab and will affect the relative
+  /// positioning of the newly created tab.</li></ul>
+  external int? splitWithTabId;
 }
 extension type QueryInfo._(JSObject _) implements JSObject {
   external factory QueryInfo({
@@ -903,6 +969,11 @@ extension type QueryInfo._(JSObject _) implements JSObject {
 
     /// Whether the tabs are highlighted.
     bool? highlighted,
+
+    /// Whether the tabs are frozen. A frozen tab cannot execute tasks, including
+    /// event handlers or timers. It is visible in the tab strip and its content
+    /// is loaded in memory.  It is unfrozen on activation.
+    bool? frozen,
 
     /// Whether the tabs are discarded. A discarded tab is one whose content has
     /// been unloaded from memory, but is still visible in the tab strip. Its
@@ -923,17 +994,22 @@ extension type QueryInfo._(JSObject _) implements JSObject {
     TabStatus? status,
 
     /// Match page titles against a pattern. This property is ignored if the
-    /// extension does not have the `"tabs"` permission.
+    /// extension does not have the `"tabs"` permission or host permissions for
+    /// the page.
     String? title,
 
     /// Match tabs against one or more [URL patterns](match_patterns). Fragment
     /// identifiers are not matched. This property is ignored if the extension
-    /// does not have the `"tabs"` permission.
+    /// does not have the `"tabs"` permission or host permissions for the page.
     JSAny? url,
 
     /// The ID of the group that the tabs are in, or [tabGroups.TAB_GROUP_ID_NONE]
     /// for ungrouped tabs.
     int? groupId,
+
+    /// The ID of the Split View that the tabs are in, or
+    /// [tabs.SPLIT_VIEW_ID_NONE] for tabs that aren't in a Split View.
+    int? splitViewId,
 
     /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
     /// [current window](windows#current-window).
@@ -961,6 +1037,11 @@ extension type QueryInfo._(JSObject _) implements JSObject {
   /// Whether the tabs are highlighted.
   external bool? highlighted;
 
+  /// Whether the tabs are frozen. A frozen tab cannot execute tasks, including
+  /// event handlers or timers. It is visible in the tab strip and its content
+  /// is loaded in memory.  It is unfrozen on activation.
+  external bool? frozen;
+
   /// Whether the tabs are discarded. A discarded tab is one whose content has
   /// been unloaded from memory, but is still visible in the tab strip. Its
   /// content is reloaded the next time it is activated.
@@ -980,17 +1061,22 @@ extension type QueryInfo._(JSObject _) implements JSObject {
   external TabStatus? status;
 
   /// Match page titles against a pattern. This property is ignored if the
-  /// extension does not have the `"tabs"` permission.
+  /// extension does not have the `"tabs"` permission or host permissions for
+  /// the page.
   external String? title;
 
   /// Match tabs against one or more [URL patterns](match_patterns). Fragment
   /// identifiers are not matched. This property is ignored if the extension
-  /// does not have the `"tabs"` permission.
+  /// does not have the `"tabs"` permission or host permissions for the page.
   external JSAny? url;
 
   /// The ID of the group that the tabs are in, or [tabGroups.TAB_GROUP_ID_NONE]
   /// for ungrouped tabs.
   external int? groupId;
+
+  /// The ID of the Split View that the tabs are in, or
+  /// [tabs.SPLIT_VIEW_ID_NONE] for tabs that aren't in a Split View.
+  external int? splitViewId;
 
   /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
   /// [current window](windows#current-window).

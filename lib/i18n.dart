@@ -76,7 +76,7 @@ class GetMessageOptions {
 
   GetMessageOptions(
       {
-      /// Escape `<` in translation to `&amp;lt;`. This applies only to the
+      /// Escape `&lt;` in translation to `&amp;lt;`. This applies only to the
       /// message itself, not to the placeholders. Developers might want to use
       /// this if the translation is used in an HTML context. Closure Templates
       /// used with Closure Compiler generate this automatically.
@@ -87,9 +87,9 @@ class GetMessageOptions {
 
   $js.GetMessageOptions get toJS => _wrapped;
 
-  /// Escape `<` in translation to `&amp;lt;`. This applies only to the message
-  /// itself, not to the placeholders. Developers might want to use this if the
-  /// translation is used in an HTML context. Closure Templates used with
+  /// Escape `&lt;` in translation to `&amp;lt;`. This applies only to the
+  /// message itself, not to the placeholders. Developers might want to use this
+  /// if the translation is used in an HTML context. Closure Templates used with
   /// Closure Compiler generate this automatically.
   bool? get escapeLt => _wrapped.escapeLt;
 

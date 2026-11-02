@@ -208,6 +208,21 @@ extension type UploadData._(JSObject _) implements JSObject {
   /// A string with the file's path and name.
   external String? file;
 }
+extension type SecurityInfo._(JSObject _) implements JSObject {
+  external factory SecurityInfo({
+    /// A list of certificates
+    JSArray certificates,
+
+    /// State of the connection. One of secure, insecure, broken.
+    String state,
+  });
+
+  /// A list of certificates
+  external JSArray certificates;
+
+  /// State of the connection. One of secure, insecure, broken.
+  external String state;
+}
 extension type OnBeforeRequestDetails._(JSObject _) implements JSObject {
   external factory OnBeforeRequestDetails({
     /// The ID of the request. Request IDs are unique within a browser session. As
@@ -337,7 +352,7 @@ extension type OnBeforeSendHeadersDetails._(JSObject _) implements JSObject {
     int parentFrameId,
 
     /// The UUID of the document making the request.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -389,7 +404,7 @@ extension type OnBeforeSendHeadersDetails._(JSObject _) implements JSObject {
   external int parentFrameId;
 
   /// The UUID of the document making the request.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -441,7 +456,7 @@ extension type OnSendHeadersDetails._(JSObject _) implements JSObject {
     int parentFrameId,
 
     /// The UUID of the document making the request.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -493,7 +508,7 @@ extension type OnSendHeadersDetails._(JSObject _) implements JSObject {
   external int parentFrameId;
 
   /// The UUID of the document making the request.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -545,7 +560,7 @@ extension type OnHeadersReceivedDetails._(JSObject _) implements JSObject {
     int parentFrameId,
 
     /// The UUID of the document making the request.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -580,6 +595,11 @@ extension type OnHeadersReceivedDetails._(JSObject _) implements JSObject {
 
     /// Standard HTTP status code returned by the server.
     int statusCode,
+
+    /// Information about the TLS/QUIC connection used for the underlying
+    /// connection. Only provided if `securityInfo` is specified in the
+    /// `extraInfoSpec` parameter.
+    SecurityInfo? securityInfo,
   });
 
   /// The ID of the request. Request IDs are unique within a browser session. As
@@ -604,7 +624,7 @@ extension type OnHeadersReceivedDetails._(JSObject _) implements JSObject {
   external int parentFrameId;
 
   /// The UUID of the document making the request.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -639,6 +659,11 @@ extension type OnHeadersReceivedDetails._(JSObject _) implements JSObject {
 
   /// Standard HTTP status code returned by the server.
   external int statusCode;
+
+  /// Information about the TLS/QUIC connection used for the underlying
+  /// connection. Only provided if `securityInfo` is specified in the
+  /// `extraInfoSpec` parameter.
+  external SecurityInfo? securityInfo;
 }
 extension type OnAuthRequiredDetails._(JSObject _) implements JSObject {
   external factory OnAuthRequiredDetails({
@@ -663,7 +688,7 @@ extension type OnAuthRequiredDetails._(JSObject _) implements JSObject {
     int parentFrameId,
 
     /// The UUID of the document making the request.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -735,7 +760,7 @@ extension type OnAuthRequiredDetails._(JSObject _) implements JSObject {
   external int parentFrameId;
 
   /// The UUID of the document making the request.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -807,7 +832,7 @@ extension type OnResponseStartedDetails._(JSObject _) implements JSObject {
     int parentFrameId,
 
     /// The UUID of the document making the request.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -874,7 +899,7 @@ extension type OnResponseStartedDetails._(JSObject _) implements JSObject {
   external int parentFrameId;
 
   /// The UUID of the document making the request.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -941,7 +966,7 @@ extension type OnBeforeRedirectDetails._(JSObject _) implements JSObject {
     int parentFrameId,
 
     /// The UUID of the document making the request.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1011,7 +1036,7 @@ extension type OnBeforeRedirectDetails._(JSObject _) implements JSObject {
   external int parentFrameId;
 
   /// The UUID of the document making the request.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -1081,7 +1106,7 @@ extension type OnCompletedDetails._(JSObject _) implements JSObject {
     int parentFrameId,
 
     /// The UUID of the document making the request.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1148,7 +1173,7 @@ extension type OnCompletedDetails._(JSObject _) implements JSObject {
   external int parentFrameId;
 
   /// The UUID of the document making the request.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -1216,7 +1241,7 @@ extension type OnErrorOccurredDetails._(JSObject _) implements JSObject {
 
     /// The UUID of the document making the request. This value is not present if
     /// the request is a navigation of a frame.
-    String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1278,7 +1303,7 @@ extension type OnErrorOccurredDetails._(JSObject _) implements JSObject {
 
   /// The UUID of the document making the request. This value is not present if
   /// the request is a navigation of a frame.
-  external String documentId;
+  external String? documentId;
 
   /// The UUID of the parent document owning this frame. This is not set if
   /// there is no parent.
@@ -1369,6 +1394,21 @@ extension type BlockingResponseAuthCredentials._(JSObject _)
 
   external String password;
 }
+extension type SecurityInfoCertificates._(JSObject _) implements JSObject {
+  external factory SecurityInfoCertificates({
+    /// Raw bytes of DER encoded server certificate
+    JSArrayBuffer? rawDER,
+
+    /// Fingerprints of the certificate.
+    SecurityInfoCertificatesFingerprint fingerprint,
+  });
+
+  /// Raw bytes of DER encoded server certificate
+  external JSArrayBuffer? rawDER;
+
+  /// Fingerprints of the certificate.
+  external SecurityInfoCertificatesFingerprint fingerprint;
+}
 extension type OnBeforeRequestDetailsRequestBody._(JSObject _)
     implements JSObject {
   external factory OnBeforeRequestDetailsRequestBody({
@@ -1415,4 +1455,14 @@ extension type OnAuthRequiredDetailsChallenger._(JSObject _)
   external String host;
 
   external int port;
+}
+extension type SecurityInfoCertificatesFingerprint._(JSObject _)
+    implements JSObject {
+  external factory SecurityInfoCertificatesFingerprint(
+      {
+      /// sha256 fingerprint of the certificate.
+      String sha256});
+
+  /// sha256 fingerprint of the certificate.
+  external String sha256;
 }

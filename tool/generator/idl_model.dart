@@ -286,6 +286,7 @@ enum IDLAttributeTypeEnum {
   documentationNamespace("documentation_namespace"),
   documentedIn("documented_in"),
   doesNotSupportPromises("doesNotSupportPromises"),
+  trailingCallbackIsFunctionParameter("trailingCallbackIsFunctionParameter"),
   ;
 
   final String type;
@@ -294,9 +295,9 @@ enum IDLAttributeTypeEnum {
 }
 
 extension IDLAttributeDeclarationExtension on IDLAttributeDeclaration? {
-  bool get supportsPromises =>
-      this?.attributes.any(
-          (e) => e.attributeType == IDLAttributeTypeEnum.supportsPromises) ??
+  bool get doesNotSupportPromises =>
+      this?.attributes.any((e) =>
+          e.attributeType == IDLAttributeTypeEnum.doesNotSupportPromises) ??
       false;
 }
 

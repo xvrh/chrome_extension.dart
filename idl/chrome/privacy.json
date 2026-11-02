@@ -12,6 +12,34 @@
         "type": "string",
         "enum": ["default", "default_public_and_private_interfaces", "default_public_interface_only", "disable_non_proxied_udp"],
         "description": "The IP handling policy of WebRTC."
+      },
+      {
+        "id": "AutofillBlockedType",
+        "type": "string",
+        "enum": ["contact_info", "payments", "identity_docs", "travel", "all"],
+        "description": "Categories of Autofill data."
+      },
+      {
+        "id": "AutofillSettings",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "urlPattern": {
+              "type": "string",
+              "description": "A URL pattern specifying the sites for which the block rule applies."
+            },
+            "blockedTypes": {
+              "type": "array",
+              "items": {
+                "$ref": "AutofillBlockedType"
+              },
+              "description": "The categories of Autofill data to block on matching sites."
+            }
+          }
+        },
+        "description": "Site-specific block rules for Autofill features.",
+        "nodoc": true
       }
     ],
     "properties": {
@@ -23,7 +51,7 @@
           "networkPredictionEnabled": {
             "$ref": "types.ChromeSetting",
             "value": ["networkPredictionEnabled", {"type":"boolean"}],
-            "description": "If enabled, Chrome attempts to speed up your web browsing experience by pre-resolving DNS entries and preemptively opening TCP and SSL connections to servers. This preference only affects actions taken by Chrome's internal prediction service. It does not affect webpage-initiated prefectches or preconnects. This preference's value is a boolean, defaulting to <code>true</code>."
+            "description": "If enabled, Chrome attempts to speed up your web browsing experience by pre-resolving DNS entries, preemptively opening TCP and SSL connections to servers, and preloading pages. Disabling this preference overrides site owners' ability to speculatively load content (such as prefetching or prerendering via the <a href='https://developer.mozilla.org/docs/Web/API/Speculation_Rules_API'>Speculation Rules API</a>). It does not affect webpage-initiated preconnects or DNS prefetches. This preference's value is a boolean, defaulting to <code>true</code>."
           },
           "webRTCIPHandlingPolicy": {
             "$ref": "types.ChromeSetting",
@@ -57,6 +85,12 @@
             "$ref": "types.ChromeSetting",
             "value": ["autofillCreditCardEnabled", {"type":"boolean"}],
             "description": "If enabled, Chrome offers to automatically fill in credit card forms. This preference's value is a boolean, defaulting to <code>true</code>."
+          },
+          "autofillSettings": {
+            "$ref": "types.ChromeSetting",
+            "value": ["autofillSettings", {"$ref":"AutofillSettings"}],
+            "description": "If set, allows site-specific control over Autofill features by blocking specific data categories on matching URL patterns.",
+            "nodoc": true
           },
           "passwordSavingEnabled": {
             "$ref": "types.ChromeSetting",
@@ -98,7 +132,7 @@
           "thirdPartyCookiesAllowed": {
             "$ref": "types.ChromeSetting",
             "value": ["thirdPartyCookiesAllowed", {"type": "boolean"}],
-            "description": "If disabled, Chrome blocks third-party sites from setting cookies. The value of this preference is of type boolean, and the default value is <code>true</code>."
+            "description": "If disabled, Chrome blocks third-party sites from setting cookies. The value of this preference is of type boolean, and the default value is <code>true</code>. Extensions may not enable this API in Incognito mode, where third-party cookies are blocked and can only be allowed at the site level. If you try setting this API to true in Incognito, it will throw an error.<br></br>Note: Individual sites may still be able to access third-party cookies when this API returns <code>false</code>, if they have a valid <a href='https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/preserving-critical-user-experiences'>exemption</a> or they use the <a href='https://developers.google.com/privacy-sandbox/cookies/storage-access-api'>Storage Access API</a> instead."
           },
           "topicsEnabled": {
             "$ref": "types.ChromeSetting",
@@ -118,7 +152,7 @@
           "hyperlinkAuditingEnabled": {
             "$ref": "types.ChromeSetting",
             "value": ["hyperlinkAuditingEnabled", {"type":"boolean"}],
-            "description": "If enabled, Chrome sends auditing pings when requested by a website (<code><a ping></code>). The value of this preference is of type boolean, and the default value is <code>true</code>."
+            "description": "If enabled, Chrome sends auditing pings when requested by a website (<code>&lt;a ping&gt;</code>). The value of this preference is of type boolean, and the default value is <code>true</code>."
           },
           "referrersEnabled": {
             "$ref": "types.ChromeSetting",
@@ -134,12 +168,7 @@
             "$ref": "types.ChromeSetting",
             "value": ["protectedContentEnabled", {"type":"boolean"}],
             "description": "<strong>Available on Windows and ChromeOS only</strong>: If enabled, Chrome provides a unique ID to plugins in order to run protected content. The value of this preference is of type boolean, and the default value is <code>true</code>.",
-            "platforms": ["win", "chromeos", "lacros"]
-          },
-          "relatedWebsiteSetsEnabled": {
-            "$ref": "types.ChromeSetting",
-            "value": ["relatedWebsiteSetsEnabled", {"type": "boolean"}],
-            "description": "If disabled, <a href='https://developer.chrome.com/docs/privacy-sandbox/related-website-sets/'>Related Website Sets</a> is deactivated. The value of this preference is of type boolean, and the default value is <code>true</code>. Extensions may only disable this API by setting the value to <code>false</code>. If you try setting this API to <code>true</code>, it will throw an error."
+            "platforms": ["win", "chromeos"]
           }
         }
       }

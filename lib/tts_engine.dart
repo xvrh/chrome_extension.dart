@@ -60,6 +60,15 @@ class ChromeTtsEngine {
     );
   }
 
+  /// Called by an engine when a language install is attempted, and when a
+  /// language is uninstalled. Also called in response to a status request from
+  /// a client. When a voice is installed or uninstalled, the engine should also
+  /// call ttsEngine.updateVoices to register the voice.
+  /// [status] The install status of the language.
+  void updateLanguage(LanguageStatus status) {
+    $js.chrome.ttsEngine.updateLanguage(status.toJS);
+  }
+
   /// Called when the user makes a call to tts.speak() and one of the voices
   /// from this extension's manifest is the first to match the options object.
   EventStream<OnSpeakEvent> get onSpeak =>
@@ -120,6 +129,65 @@ class ChromeTtsEngine {
       $js.chrome.ttsEngine.onResume.asStream(($c) => () {
             return $c(null);
           }.toJS);
+
+  /// Fired when a TTS client requests to install a new language. The engine
+  /// should attempt to download and install the language, and call
+  /// ttsEngine.updateLanguage with the result. On success, the engine should
+  /// also call ttsEngine.updateVoices to register the newly available voices.
+  EventStream<OnInstallLanguageRequestEvent> get onInstallLanguageRequest =>
+      $js.chrome.ttsEngine.onInstallLanguageRequest.asStream(($c) => (
+            $js.TtsClient requestor,
+            String lang,
+          ) {
+            return $c(OnInstallLanguageRequestEvent(
+              requestor: TtsClient.fromJS(requestor),
+              lang: lang,
+            ));
+          }.toJS);
+
+  /// Fired when a TTS client indicates a language is no longer needed.
+  EventStream<OnUninstallLanguageRequestEvent> get onUninstallLanguageRequest =>
+      $js.chrome.ttsEngine.onUninstallLanguageRequest.asStream(($c) => (
+            $js.TtsClient requestor,
+            String lang,
+            $js.LanguageUninstallOptions uninstallOptions,
+          ) {
+            return $c(OnUninstallLanguageRequestEvent(
+              requestor: TtsClient.fromJS(requestor),
+              lang: lang,
+              uninstallOptions:
+                  LanguageUninstallOptions.fromJS(uninstallOptions),
+            ));
+          }.toJS);
+
+  /// Fired when a TTS client requests the install status of a language.
+  EventStream<OnLanguageStatusRequestEvent> get onLanguageStatusRequest =>
+      $js.chrome.ttsEngine.onLanguageStatusRequest.asStream(($c) => (
+            $js.TtsClient requestor,
+            String lang,
+          ) {
+            return $c(OnLanguageStatusRequestEvent(
+              requestor: TtsClient.fromJS(requestor),
+              lang: lang,
+            ));
+          }.toJS);
+}
+
+/// Type of requestor.
+enum TtsClientSource {
+  chromefeature('chromefeature'),
+  extension('extension');
+
+  const TtsClientSource(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static TtsClientSource fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
 }
 
 enum VoiceGender {
@@ -135,6 +203,139 @@ enum VoiceGender {
   static VoiceGender fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
+/// The install status of a voice.
+enum LanguageInstallStatus {
+  notInstalled('notInstalled'),
+  installing('installing'),
+  installed('installed'),
+  failed('failed');
+
+  const LanguageInstallStatus(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static LanguageInstallStatus fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
+class TtsClient {
+  TtsClient.fromJS(this._wrapped);
+
+  TtsClient({
+    /// Client making a language management request. For an extension, this is
+    /// the unique extension ID. For Chrome features, this is the human-readable
+    /// name of the feature.
+    required String id,
+
+    /// Type of requestor.
+    required TtsClientSource source,
+  }) : _wrapped = $js.TtsClient(
+          id: id,
+          source: source.toJS,
+        );
+
+  final $js.TtsClient _wrapped;
+
+  $js.TtsClient get toJS => _wrapped;
+
+  /// Client making a language management request. For an extension, this is the
+  /// unique extension ID. For Chrome features, this is the human-readable name
+  /// of the feature.
+  String get id => _wrapped.id;
+
+  set id(String v) {
+    _wrapped.id = v;
+  }
+
+  /// Type of requestor.
+  TtsClientSource get source => TtsClientSource.fromJS(_wrapped.source);
+
+  set source(TtsClientSource v) {
+    _wrapped.source = v.toJS;
+  }
+}
+
+class LanguageUninstallOptions {
+  LanguageUninstallOptions.fromJS(this._wrapped);
+
+  LanguageUninstallOptions(
+      {
+      /// True if the TTS client wants the language to be immediately uninstalled.
+      /// The engine may choose whether or when to uninstall the language, based
+      /// on this parameter and the requestor information. If false, it may use
+      /// other criteria, such as recent usage, to determine when to uninstall.
+      required bool uninstallImmediately})
+      : _wrapped = $js.LanguageUninstallOptions(
+            uninstallImmediately: uninstallImmediately);
+
+  final $js.LanguageUninstallOptions _wrapped;
+
+  $js.LanguageUninstallOptions get toJS => _wrapped;
+
+  /// True if the TTS client wants the language to be immediately uninstalled.
+  /// The engine may choose whether or when to uninstall the language, based on
+  /// this parameter and the requestor information. If false, it may use other
+  /// criteria, such as recent usage, to determine when to uninstall.
+  bool get uninstallImmediately => _wrapped.uninstallImmediately;
+
+  set uninstallImmediately(bool v) {
+    _wrapped.uninstallImmediately = v;
+  }
+}
+
+class LanguageStatus {
+  LanguageStatus.fromJS(this._wrapped);
+
+  LanguageStatus({
+    /// Language string in the form of language code-region code, where the
+    /// region may be omitted. Examples are en, en-AU, zh-CH.
+    required String lang,
+
+    /// Installation status.
+    required LanguageInstallStatus installStatus,
+
+    /// Detail about installation failures. Optionally populated if the language
+    /// failed to install.
+    String? error,
+  }) : _wrapped = $js.LanguageStatus(
+          lang: lang,
+          installStatus: installStatus.toJS,
+          error: error,
+        );
+
+  final $js.LanguageStatus _wrapped;
+
+  $js.LanguageStatus get toJS => _wrapped;
+
+  /// Language string in the form of language code-region code, where the region
+  /// may be omitted. Examples are en, en-AU, zh-CH.
+  String get lang => _wrapped.lang;
+
+  set lang(String v) {
+    _wrapped.lang = v;
+  }
+
+  /// Installation status.
+  LanguageInstallStatus get installStatus =>
+      LanguageInstallStatus.fromJS(_wrapped.installStatus);
+
+  set installStatus(LanguageInstallStatus v) {
+    _wrapped.installStatus = v.toJS;
+  }
+
+  /// Detail about installation failures. Optionally populated if the language
+  /// failed to install.
+  String? get error => _wrapped.error;
+
+  set error(String? v) {
+    _wrapped.error = v;
   }
 }
 
@@ -368,4 +569,48 @@ class OnSpeakWithAudioStreamEvent {
 
   /// Call this function to indicate an error with rendering this utterance.
   final JSFunction sendError;
+}
+
+class OnInstallLanguageRequestEvent {
+  OnInstallLanguageRequestEvent({
+    required this.requestor,
+    required this.lang,
+  });
+
+  /// Client requesting a language install.
+  final TtsClient requestor;
+
+  /// Language string to be installed in the form language code-region code,
+  /// where the region may be omitted. Examples are en, en-AU, zh-CH.
+  final String lang;
+}
+
+class OnUninstallLanguageRequestEvent {
+  OnUninstallLanguageRequestEvent({
+    required this.requestor,
+    required this.lang,
+    required this.uninstallOptions,
+  });
+
+  /// Client requesting language removal.
+  final TtsClient requestor;
+
+  final String lang;
+
+  /// Options for the language removal.
+  final LanguageUninstallOptions uninstallOptions;
+}
+
+class OnLanguageStatusRequestEvent {
+  OnLanguageStatusRequestEvent({
+    required this.requestor,
+    required this.lang,
+  });
+
+  /// Client requesting status.
+  final TtsClient requestor;
+
+  /// Language string in the form language code-region code, where the region
+  /// may be omitted. Examples are en, en-AU, zh-CH.
+  final String lang;
 }

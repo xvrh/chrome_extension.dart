@@ -23,7 +23,7 @@ class ChromeSystemNetwork {
       $js.chrome.systemNullable?.networkNullable != null && alwaysTrue;
 
   /// Retrieves information about local adapters on this system.
-  /// |callback| : Called when local adapter information is available.
+  /// |Returns|: Called when local adapter information is available.
   Future<List<NetworkInterface>> getNetworkInterfaces() async {
     var $res = await $js.chrome.system.network.getNetworkInterfaces().toDart;
     return $res.toDart

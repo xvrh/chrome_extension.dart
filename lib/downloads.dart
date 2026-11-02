@@ -32,15 +32,16 @@ class ChromeDownloads {
   /// a descriptive string. The error strings are not guaranteed to remain
   /// backwards compatible between releases. Extensions must not parse it.
   /// |options|: What to download and how.
-  /// |callback|: Called with the id of the new [DownloadItem].
+  /// |Returns|: Returns a Promise which resolves with the id of the new
+  /// [DownloadItem].
   Future<int> download(DownloadOptions options) async {
     var $res = await $js.chrome.downloads.download(options.toJS).toDart;
     return $res.toDartInt;
   }
 
   /// Find [DownloadItem]. Set `query` to the empty object to get
-  /// all [DownloadItem]. To get a specific [DownloadItem], set only the
-  /// `id` field. To page through a large number of items, set
+  /// all [DownloadItem]. To get a specific [DownloadItem], set only
+  /// the `id` field. To page through a large number of items, set
   /// `orderBy: ['-startTime']`, set `limit` to the
   /// number of items per page, and set `startedAfter` to the
   /// `startTime` of the last item from the last page.
@@ -56,7 +57,8 @@ class ChromeDownloads {
   /// paused state. Otherwise [runtime.lastError] contains an error message.
   /// The request will fail if the download is not active.
   /// |downloadId|: The id of the download to pause.
-  /// |callback|: Called when the pause request is completed.
+  /// |Returns|: Returns a Promise which resolves when the pause request is
+  /// completed.
   Future<void> pause(int downloadId) async {
     await $js.chrome.downloads.pause(downloadId).toDart;
   }
@@ -65,7 +67,8 @@ class ChromeDownloads {
   /// in progress and unpaused. Otherwise [runtime.lastError] contains an
   /// error message. The request will fail if the download is not active.
   /// |downloadId|: The id of the download to resume.
-  /// |callback|: Called when the resume request is completed.
+  /// |Returns|: Returns a Promise which resolves when the resume request is
+  /// completed.
   Future<void> resume(int downloadId) async {
     await $js.chrome.downloads.resume(downloadId).toDart;
   }
@@ -73,22 +76,28 @@ class ChromeDownloads {
   /// Cancel a download. When `callback` is run, the download is
   /// cancelled, completed, interrupted or doesn't exist anymore.
   /// |downloadId|: The id of the download to cancel.
-  /// |callback|: Called when the cancel request is completed.
+  /// |Returns|: Returns a Promise which resolves when the cancel request is
+  /// completed.
   Future<void> cancel(int downloadId) async {
     await $js.chrome.downloads.cancel(downloadId).toDart;
   }
 
   /// Retrieve an icon for the specified download. For new downloads, file
-  /// icons are available after the [onCreated] event has been received. The
-  /// image returned by this function while a download is in progress may be
-  /// different from the image returned after the download is complete. Icon
-  /// retrieval is done by querying the underlying operating system or toolkit
-  /// depending on the platform. The icon that is returned will therefore
-  /// depend on a number of factors including state of the download, platform,
-  /// registered file types and visual theme. If a file icon cannot be
-  /// determined, [runtime.lastError] will contain an error message.
+  /// icons are available after the download's target filename has been
+  /// determined (for example, when [onChanged] fires with a
+  /// `filename` change). Attempting to retrieve the icon before the
+  /// filename is determined will result in an error through
+  /// [runtime.lastError]. The image returned by this function while a
+  /// download is in progress may be different from the image returned after the
+  /// download is complete. Icon retrieval is done by querying the underlying
+  /// operating system or toolkit depending on the platform. The icon that is
+  /// returned will therefore depend on a number of factors including state of
+  /// the download, platform, registered file types and visual theme. If a file
+  /// icon cannot be determined, [runtime.lastError] will contain an error
+  /// message.
   /// |downloadId|: The identifier for the download.
-  /// |callback|: A URL to an image that represents the download.
+  /// |Returns|: Returns a Promise which resolves with a URL to an image that
+  /// represents the download.
   Future<String?> getFileIcon(
     int downloadId,
     GetFileIconOptions? options,
@@ -109,8 +118,8 @@ class ChromeDownloads {
   /// when the item is opened for the first time. This method can only be called
   /// in response to a user gesture.
   /// |downloadId|: The identifier for the downloaded file.
-  void open(int downloadId) {
-    $js.chrome.downloads.open(downloadId);
+  Future<void> open(int downloadId) async {
+    await $js.chrome.downloads.open(downloadId).toDart;
   }
 
   /// Show the downloaded file in its folder in a file manager.
@@ -148,7 +157,8 @@ class ChromeDownloads {
   /// temporary file is renamed to the target filename, the |state| changes to
   /// 'complete', and [onChanged] fires.
   /// |downloadId|: The identifier for the [DownloadItem].
-  /// |callback|: Called when the danger prompt dialog closes.
+  /// |Returns|: Returns a Promise which resolves when the danger prompt
+  /// dialog closes.
   Future<void> acceptDanger(int downloadId) async {
     await $js.chrome.downloads.acceptDanger(downloadId).toDart;
   }
@@ -159,7 +169,7 @@ class ChromeDownloads {
   /// one other extension has disabled it will return an error through
   /// [runtime.lastError]. Requires the `"downloads.shelf"`
   /// permission in addition to the `"downloads"` permission.
-  @Deprecated(r'Use $(ref:setUiOptions) instead.')
+  @Deprecated(r'Use setUiOptions instead.')
   void setShelfEnabled(bool enabled) {
     $js.chrome.downloads.setShelfEnabled(enabled);
   }
@@ -172,7 +182,8 @@ class ChromeDownloads {
   /// [runtime.lastError]. Requires the `"downloads.ui"`
   /// permission in addition to the `"downloads"` permission.
   /// |options|: Encapsulate a change to the download UI.
-  /// |callback|: Called when the UI update is completed.
+  /// |Returns|: Returns a Promise which resolves when the UI update is
+  /// completed.
   Future<void> setUiOptions(UiOptions options) async {
     await $js.chrome.downloads.setUiOptions(options.toJS).toDart;
   }
@@ -186,8 +197,6 @@ class ChromeDownloads {
 
   /// Fires with the `downloadId` when a download is erased from
   /// history.
-  /// |downloadId|: The `id` of the [DownloadItem] that was
-  /// erased.
   EventStream<int> get onErased =>
       $js.chrome.downloads.onErased.asStream(($c) => (int downloadId) {
             return $c(downloadId);
@@ -321,35 +330,34 @@ enum InterruptReason {
   }
 }
 
-/// <dl><dt>file</dt>
-///     <dd>The download's filename is suspicious.</dd>
-///     <dt>url</dt>
-///     <dd>The download's URL is known to be malicious.</dd>
-///     <dt>content</dt>
-///     <dd>The downloaded file is known to be malicious.</dd>
-///     <dt>uncommon</dt>
-///     <dd>The download's URL is not commonly downloaded and could be
-///     dangerous.</dd>
-///     <dt>host</dt>
-///     <dd>The download came from a host known to distribute malicious
-///     binaries and is likely dangerous.</dd>
-///     <dt>unwanted</dt>
-///     <dd>The download is potentially unwanted or unsafe. E.g. it could make
-///     changes to browser or computer settings.</dd>
-///     <dt>safe</dt>
-///     <dd>The download presents no known danger to the user's computer.</dd>
-///     <dt>accepted</dt>
-///     <dd>The user has accepted the dangerous download.</dd>
-/// </dl>
 enum DangerType {
+  /// The download's filename is suspicious.
   file('file'),
+
+  /// The download's URL is known to be malicious.
   url('url'),
+
+  /// The downloaded file is known to be malicious.
   content('content'),
+
+  /// The download's URL is not commonly downloaded and could be dangerous.
   uncommon('uncommon'),
+
+  /// The download came from a host known to distribute malicious binaries and
+  /// is likely dangerous.
   host('host'),
+
+  /// The download is potentially unwanted or unsafe. E.g. it could make
+  /// changes to browser or computer settings.
   unwanted('unwanted'),
+
+  /// The download presents no known danger to the user's computer.
   safe('safe'),
+
+  /// The user has accepted the dangerous download.
   accepted('accepted'),
+
+  /// Enterprise-related values.
   allowlistedByPolicy('allowlistedByPolicy'),
   asyncScanning('asyncScanning'),
   asyncLocalPasswordScanning('asyncLocalPasswordScanning'),
@@ -357,13 +365,23 @@ enum DangerType {
   blockedTooLarge('blockedTooLarge'),
   sensitiveContentWarning('sensitiveContentWarning'),
   sensitiveContentBlock('sensitiveContentBlock'),
-  unsupportedFileType('unsupportedFileType'),
   deepScannedFailed('deepScannedFailed'),
   deepScannedSafe('deepScannedSafe'),
   deepScannedOpenedDangerous('deepScannedOpenedDangerous'),
   promptForScanning('promptForScanning'),
   promptForLocalPasswordScanning('promptForLocalPasswordScanning'),
-  accountCompromise('accountCompromise');
+  accountCompromise('accountCompromise'),
+  blockedScanFailed('blockedScanFailed'),
+
+  /// For use by the Secure Enterprise Browser extension. When required, Chrome
+  /// will block the download to disc and download the file directly to Google
+  /// Drive.
+  forceSaveToGdrive('forceSaveToGdrive'),
+
+  /// For use by the Secure Enterprise Browser extension. When required, Chrome
+  /// will block the download to disc and download the file directly to
+  /// OneDrive.
+  forceSaveToOnedrive('forceSaveToOnedrive');
 
   const DangerType(this.value);
 
@@ -440,12 +458,12 @@ class FilenameSuggestion {
   FilenameSuggestion.fromJS(this._wrapped);
 
   FilenameSuggestion({
-    /// The [DownloadItem]'s new target [DownloadItem.filename], as a path
-    /// relative to the user's default Downloads directory, possibly containing
-    /// subdirectories. Absolute paths, empty paths, and paths containing
-    /// back-references ".." will be ignored. `filename` is ignored if
-    /// there are any [onDeterminingFilename] listeners registered by any
-    /// extensions.
+    /// The [DownloadItem]'s new target [DownloadItem.filename], as a
+    /// path relative to the user's default Downloads directory, possibly
+    /// containing subdirectories. Absolute paths, empty paths, and paths
+    /// containing back-references ".." will be ignored. `filename` is
+    /// ignored if there are any [onDeterminingFilename] listeners registered
+    /// by any extensions.
     required String filename,
 
     /// The action to take if `filename` already exists.
@@ -459,12 +477,12 @@ class FilenameSuggestion {
 
   $js.FilenameSuggestion get toJS => _wrapped;
 
-  /// The [DownloadItem]'s new target [DownloadItem.filename], as a path
-  /// relative to the user's default Downloads directory, possibly containing
-  /// subdirectories. Absolute paths, empty paths, and paths containing
-  /// back-references ".." will be ignored. `filename` is ignored if
-  /// there are any [onDeterminingFilename] listeners registered by any
-  /// extensions.
+  /// The [DownloadItem]'s new target [DownloadItem.filename], as a
+  /// path relative to the user's default Downloads directory, possibly
+  /// containing subdirectories. Absolute paths, empty paths, and paths
+  /// containing back-references ".." will be ignored. `filename` is
+  /// ignored if there are any [onDeterminingFilename] listeners registered
+  /// by any extensions.
   String get filename => _wrapped.filename;
 
   set filename(String v) {
@@ -912,41 +930,40 @@ class DownloadQuery {
     /// none of the search terms that do begin with a dash.
     List<String>? query,
 
-    /// Limits results to [DownloadItem] that
-    /// started before the given ms since the epoch.
+    /// Limits results to [DownloadItem] that started before the given ms in
+    /// ISO 8601 format.
     String? startedBefore,
 
-    /// Limits results to [DownloadItem] that
-    /// started after the given ms since the epoch.
+    /// Limits results to [DownloadItem] that started after the given ms in
+    /// ISO 8601 format.
     String? startedAfter,
 
-    /// Limits results to [DownloadItem] that ended before the given ms since
-    /// the
-    /// epoch.
+    /// Limits results to [DownloadItem] that ended before the given ms in ISO
+    /// 8601 format.
     String? endedBefore,
 
-    /// Limits results to [DownloadItem] that ended after the given ms since the
-    /// epoch.
+    /// Limits results to [DownloadItem] that ended after the given ms in ISO
+    /// 8601 format
     String? endedAfter,
 
-    /// Limits results to [DownloadItem] whose
-    /// `totalBytes` is greater than the given integer.
+    /// Limits results to [DownloadItem] whose `totalBytes` is
+    /// greater than the given integer.
     double? totalBytesGreater,
 
-    /// Limits results to [DownloadItem] whose
-    /// `totalBytes` is less than the given integer.
+    /// Limits results to [DownloadItem] whose `totalBytes` is less
+    /// than the given integer.
     double? totalBytesLess,
 
-    /// Limits results to [DownloadItem] whose
-    /// `filename` matches the given regular expression.
+    /// Limits results to [DownloadItem] whose `filename` matches
+    /// the given regular expression.
     String? filenameRegex,
 
-    /// Limits results to [DownloadItem] whose
-    /// `url` matches the given regular expression.
+    /// Limits results to [DownloadItem] whose `url` matches the
+    /// given regular expression.
     String? urlRegex,
 
-    /// Limits results to [DownloadItem] whose
-    /// `finalUrl` matches the given regular expression.
+    /// Limits results to [DownloadItem] whose `finalUrl` matches
+    /// the given regular expression.
     String? finalUrlRegex,
 
     /// The maximum number of matching [DownloadItem] returned. Defaults to
@@ -1058,72 +1075,72 @@ class DownloadQuery {
     _wrapped.query = v?.toJSArray((e) => e.toJS);
   }
 
-  /// Limits results to [DownloadItem] that
-  /// started before the given ms since the epoch.
+  /// Limits results to [DownloadItem] that started before the given ms in
+  /// ISO 8601 format.
   String? get startedBefore => _wrapped.startedBefore;
 
   set startedBefore(String? v) {
     _wrapped.startedBefore = v;
   }
 
-  /// Limits results to [DownloadItem] that
-  /// started after the given ms since the epoch.
+  /// Limits results to [DownloadItem] that started after the given ms in
+  /// ISO 8601 format.
   String? get startedAfter => _wrapped.startedAfter;
 
   set startedAfter(String? v) {
     _wrapped.startedAfter = v;
   }
 
-  /// Limits results to [DownloadItem] that ended before the given ms since the
-  /// epoch.
+  /// Limits results to [DownloadItem] that ended before the given ms in ISO
+  /// 8601 format.
   String? get endedBefore => _wrapped.endedBefore;
 
   set endedBefore(String? v) {
     _wrapped.endedBefore = v;
   }
 
-  /// Limits results to [DownloadItem] that ended after the given ms since the
-  /// epoch.
+  /// Limits results to [DownloadItem] that ended after the given ms in ISO
+  /// 8601 format
   String? get endedAfter => _wrapped.endedAfter;
 
   set endedAfter(String? v) {
     _wrapped.endedAfter = v;
   }
 
-  /// Limits results to [DownloadItem] whose
-  /// `totalBytes` is greater than the given integer.
+  /// Limits results to [DownloadItem] whose `totalBytes` is
+  /// greater than the given integer.
   double? get totalBytesGreater => _wrapped.totalBytesGreater;
 
   set totalBytesGreater(double? v) {
     _wrapped.totalBytesGreater = v;
   }
 
-  /// Limits results to [DownloadItem] whose
-  /// `totalBytes` is less than the given integer.
+  /// Limits results to [DownloadItem] whose `totalBytes` is less
+  /// than the given integer.
   double? get totalBytesLess => _wrapped.totalBytesLess;
 
   set totalBytesLess(double? v) {
     _wrapped.totalBytesLess = v;
   }
 
-  /// Limits results to [DownloadItem] whose
-  /// `filename` matches the given regular expression.
+  /// Limits results to [DownloadItem] whose `filename` matches
+  /// the given regular expression.
   String? get filenameRegex => _wrapped.filenameRegex;
 
   set filenameRegex(String? v) {
     _wrapped.filenameRegex = v;
   }
 
-  /// Limits results to [DownloadItem] whose
-  /// `url` matches the given regular expression.
+  /// Limits results to [DownloadItem] whose `url` matches the
+  /// given regular expression.
   String? get urlRegex => _wrapped.urlRegex;
 
   set urlRegex(String? v) {
     _wrapped.urlRegex = v;
   }
 
-  /// Limits results to [DownloadItem] whose
-  /// `finalUrl` matches the given regular expression.
+  /// Limits results to [DownloadItem] whose `finalUrl` matches
+  /// the given regular expression.
   String? get finalUrlRegex => _wrapped.finalUrlRegex;
 
   set finalUrlRegex(String? v) {
@@ -1158,8 +1175,7 @@ class DownloadQuery {
     _wrapped.id = v;
   }
 
-  /// The absolute URL that this download initiated from, before any
-  /// redirects.
+  /// The absolute URL that this download initiated from, before any redirects.
   String? get url => _wrapped.url;
 
   set url(String? v) {
@@ -1351,8 +1367,7 @@ class DownloadDelta {
   DownloadDelta.fromJS(this._wrapped);
 
   DownloadDelta({
-    /// The `id` of the [DownloadItem]
-    /// that changed.
+    /// The `id` of the [DownloadItem] that changed.
     required int id,
 
     /// The change in `url`, if any.
@@ -1418,8 +1433,7 @@ class DownloadDelta {
 
   $js.DownloadDelta get toJS => _wrapped;
 
-  /// The `id` of the [DownloadItem]
-  /// that changed.
+  /// The `id` of the [DownloadItem] that changed.
   int get id => _wrapped.id;
 
   set id(int v) {
@@ -1530,11 +1544,11 @@ class GetFileIconOptions {
 
   GetFileIconOptions(
       {
-      /// The size of the returned icon. The icon will be square with dimensions
-      /// size * size pixels. The default and largest size for the icon is 32x32
-      /// pixels. The only supported sizes are 16 and 32. It is an error to
-      /// specify
-      /// any other size.
+      /// The size of the returned icon in density-independent pixels (DIPs). Must
+      /// be either 16 or 32 (defaults to 32). On high-DPI displays, the returned
+      /// image scales with the device scale factor (e.g., 64x64 px for size 32 on
+      /// a
+      /// 2x display). Calls from background service workers default to 1x scale.
       int? size})
       : _wrapped = $js.GetFileIconOptions(size: size);
 
@@ -1542,10 +1556,10 @@ class GetFileIconOptions {
 
   $js.GetFileIconOptions get toJS => _wrapped;
 
-  /// The size of the returned icon. The icon will be square with dimensions
-  /// size * size pixels. The default and largest size for the icon is 32x32
-  /// pixels. The only supported sizes are 16 and 32. It is an error to specify
-  /// any other size.
+  /// The size of the returned icon in density-independent pixels (DIPs). Must
+  /// be either 16 or 32 (defaults to 32). On high-DPI displays, the returned
+  /// image scales with the device scale factor (e.g., 64x64 px for size 32 on a
+  /// 2x display). Calls from background service workers default to 1x scale.
   int? get size => _wrapped.size;
 
   set size(int? v) {

@@ -41,8 +41,22 @@ enum ImageFormat {
 
 /// The soonest that the JavaScript or CSS will be injected into the tab.
 enum RunAt {
+  /// Script is injected after any files from css, but before any other DOM is
+  /// constructed or any other script is run.
   documentStart('document_start'),
+
+  /// Script is injected immediately after the DOM is complete, but before
+  /// subresources like images and frames have loaded.
   documentEnd('document_end'),
+
+  /// The browser chooses a time to inject the script between "document_end" and
+  /// immediately after the `window.onload` event fires. The exact moment of
+  /// injection depends on how complex the document is and how long it is taking
+  /// to load, and is optimized for page load speed. Content scripts running at
+  /// "document_idle" don't need to listen for the `window.onload` event; they
+  /// are guaranteed to run after the DOM completes. If a script definitely
+  /// needs to run after `window.onload`, the extension can check if `onload`
+  /// has already fired by using the `document.readyState` property.
   documentIdle('document_idle');
 
   const RunAt(this.value);
@@ -133,6 +147,67 @@ enum ExecutionWorld {
   }
 }
 
+typedef ColorArray = List<int>;
+
+/// Pixel data for an image. Must be an ImageData object; for example, from a
+/// `canvas` element.
+typedef ImageDataType = JSObject;
+
+class Rect {
+  Rect.fromJS(this._wrapped);
+
+  Rect({
+    /// The x coordinate of the rectangle.
+    required int x,
+
+    /// The y coordinate of the rectangle.
+    required int y,
+
+    /// The width of the rectangle.
+    required int width,
+
+    /// The height of the rectangle.
+    required int height,
+  }) : _wrapped = $js.Rect(
+          x: x,
+          y: y,
+          width: width,
+          height: height,
+        );
+
+  final $js.Rect _wrapped;
+
+  $js.Rect get toJS => _wrapped;
+
+  /// The x coordinate of the rectangle.
+  int get x => _wrapped.x;
+
+  set x(int v) {
+    _wrapped.x = v;
+  }
+
+  /// The y coordinate of the rectangle.
+  int get y => _wrapped.y;
+
+  set y(int v) {
+    _wrapped.y = v;
+  }
+
+  /// The width of the rectangle.
+  int get width => _wrapped.width;
+
+  set width(int v) {
+    _wrapped.width = v;
+  }
+
+  /// The height of the rectangle.
+  int get height => _wrapped.height;
+
+  set height(int v) {
+    _wrapped.height = v;
+  }
+}
+
 class ImageDetails {
   ImageDetails.fromJS(this._wrapped);
 
@@ -145,9 +220,19 @@ class ImageDetails {
     /// resulting image will have more visual artifacts, and the number of bytes
     /// needed to store it will decrease.
     int? quality,
+
+    /// An object specifying the area of the document to capture, in CSS pixels,
+    /// relative to the page. If omitted, the currently visible viewport is
+    /// captured.
+    Rect? rect,
+
+    /// The scale factor to apply to the image. Defaults to devicePixelRatio.
+    double? scale,
   }) : _wrapped = $js.ImageDetails(
           format: format?.toJS,
           quality: quality,
+          rect: rect?.toJS,
+          scale: scale,
         );
 
   final $js.ImageDetails _wrapped;
@@ -170,6 +255,22 @@ class ImageDetails {
   set quality(int? v) {
     _wrapped.quality = v;
   }
+
+  /// An object specifying the area of the document to capture, in CSS pixels,
+  /// relative to the page. If omitted, the currently visible viewport is
+  /// captured.
+  Rect? get rect => _wrapped.rect?.let(Rect.fromJS);
+
+  set rect(Rect? v) {
+    _wrapped.rect = v?.toJS;
+  }
+
+  /// The scale factor to apply to the image. Defaults to devicePixelRatio.
+  double? get scale => _wrapped.scale;
+
+  set scale(double? v) {
+    _wrapped.scale = v;
+  }
 }
 
 class InjectDetails {
@@ -178,10 +279,10 @@ class InjectDetails {
   InjectDetails({
     /// JavaScript or CSS code to inject.
     ///
-    /// **Warning:**
-    /// Be careful using the `code` parameter. Incorrect use of it may open your
-    /// extension to [cross site
-    /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
+    /// <aside class='warning'>**Warning:** Be careful using the `code`
+    /// parameter. Incorrect use of it may open your extension to [cross site
+    /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting)
+    /// attacks</aside>
     String? code,
 
     /// JavaScript or CSS file to inject.
@@ -228,10 +329,10 @@ class InjectDetails {
 
   /// JavaScript or CSS code to inject.
   ///
-  /// **Warning:**
-  /// Be careful using the `code` parameter. Incorrect use of it may open your
-  /// extension to [cross site
-  /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
+  /// <aside class='warning'>**Warning:** Be careful using the `code` parameter.
+  /// Incorrect use of it may open your extension to [cross site
+  /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting)
+  /// attacks</aside>
   String? get code => _wrapped.code;
 
   set code(String? v) {

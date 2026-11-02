@@ -31,7 +31,7 @@ extension type JSAudio._(JSObject _) {
   /// |filter|: Device properties by which to filter the list of returned
   ///     audio devices. If the filter is not set or set to `{}`,
   ///     returned device list will contain all available audio devices.
-  /// |callback|: Reports the requested list of audio devices.
+  /// |Returns|: Reports the requested list of audio devices.
   external JSPromise<JSArray> getDevices(DeviceFilter? filter);
 
   /// Sets lists of active input and/or output devices.
@@ -50,8 +50,8 @@ extension type JSAudio._(JSObject _) {
 
   /// Gets the system-wide mute state for the specified stream type.
   /// |streamType|: Stream type for which mute state should be fetched.
-  /// |callback|: Callback reporting whether mute is set or not for specified
-  /// stream type.
+  /// |Returns|: Promise that resolves with a boolean indicating whether mute is
+  /// set or not for specified stream type.
   external JSPromise<JSBoolean> getMute(StreamType streamType);
 
   /// Sets mute state for a stream type. The mute state will apply to all audio
@@ -73,7 +73,6 @@ extension type JSAudio._(JSObject _) {
 
   /// Fired when audio devices change, either new devices being added, or
   /// existing devices being removed.
-  /// |devices|: List of all present audio devices after the change.
   external Event get onDeviceListChanged;
 }
 

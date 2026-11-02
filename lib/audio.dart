@@ -26,7 +26,7 @@ class ChromeAudio {
   /// |filter|: Device properties by which to filter the list of returned
   ///     audio devices. If the filter is not set or set to `{}`,
   ///     returned device list will contain all available audio devices.
-  /// |callback|: Reports the requested list of audio devices.
+  /// |Returns|: Reports the requested list of audio devices.
   Future<List<AudioDeviceInfo>> getDevices(DeviceFilter? filter) async {
     var $res = await $js.chrome.audio.getDevices(filter?.toJS).toDart;
     return $res.toDart
@@ -60,8 +60,8 @@ class ChromeAudio {
 
   /// Gets the system-wide mute state for the specified stream type.
   /// |streamType|: Stream type for which mute state should be fetched.
-  /// |callback|: Callback reporting whether mute is set or not for specified
-  /// stream type.
+  /// |Returns|: Promise that resolves with a boolean indicating whether mute is
+  /// set or not for specified stream type.
   Future<bool> getMute(StreamType streamType) async {
     var $res = await $js.chrome.audio.getMute(streamType.toJS).toDart;
     return $res.toDart;
@@ -101,7 +101,6 @@ class ChromeAudio {
 
   /// Fired when audio devices change, either new devices being added, or
   /// existing devices being removed.
-  /// |devices|: List of all present audio devices after the change.
   EventStream<List<AudioDeviceInfo>> get onDeviceListChanged =>
       $js.chrome.audio.onDeviceListChanged.asStream(($c) => (JSArray devices) {
             return $c(devices.toDart

@@ -28,21 +28,19 @@
                 "name": "title",
                 "type": "string",
                 "description": "Text that is displayed in sidebar caption."
-              },
-              {
-                "name": "callback",
-                "type": "function",
-                "description": "A callback invoked when the sidebar is created.",
-                "optional": true,
-                "parameters": [
-                  {
-                    "name": "result",
-                    "description": "An ExtensionSidebarPane object for created sidebar pane.",
-                    "$ref": "ExtensionSidebarPane"
-                  }
-                ]
               }
-            ]
+            ],
+            "returns_async": {
+              "name": "callback",
+              "description": "A callback invoked when the sidebar is created.",
+              "parameters": [
+                {
+                  "name": "result",
+                  "description": "An ExtensionSidebarPane object for created sidebar pane.",
+                  "$ref": "ExtensionSidebarPane"
+                }
+              ]
+            }
           }
         ]
       },
@@ -66,28 +64,26 @@
                 "name": "title",
                 "type": "string",
                 "description": "Text that is displayed in sidebar caption."
-              },
-              {
-                "name": "callback",
-                "type": "function",
-                "description": "A callback invoked when the sidebar is created.",
-                "optional": true,
-                "parameters": [
-                  {
-                    "name": "result",
-                    "description": "An ExtensionSidebarPane object for created sidebar pane.",
-                    "$ref": "ExtensionSidebarPane"
-                  }
-                ]
               }
-            ]
+            ],
+            "returns_async": {
+              "name": "callback",
+              "description": "A callback invoked when the sidebar is created.",
+              "parameters": [
+                {
+                  "name": "result",
+                  "description": "An ExtensionSidebarPane object for created sidebar pane.",
+                  "$ref": "ExtensionSidebarPane"
+                }
+              ]
+            }
           }
         ]
       },
       {
         "id": "ExtensionPanel",
         "type": "object",
-        "description": "Represents a panel created by extension.",
+        "description": "Represents a panel created by an extension.",
         "functions": [
           {
             "name": "createStatusBarButton",
@@ -110,6 +106,11 @@
               }
             ],
             "returns": { "$ref": "Button" }
+          },
+          {
+            "name": "show",
+            "description": "Shows the panel by activating the corresponding tab.",
+            "parameters": []
           }
         ],
         "events": [
@@ -120,7 +121,7 @@
               {
                 "name": "action",
                 "type": "string",
-                "description": "Type of search action being performed."
+                "description": "Type of search action being performed. One of  'cancelSearch', 'performSearch', 'nextSearchResult', or 'previousSearchResult'."
               },
               {
                 "name": "queryString",
@@ -183,14 +184,13 @@
                 "type": "string",
                 "optional": true,
                 "description": "An optional title for the root of the expression tree."
-              },
-              {
-                "name": "callback",
-                "type": "function",
-                "optional": true,
-                "description": "A callback invoked after the sidebar pane is updated with the expression evaluation results."
               }
-            ]
+            ],
+            "returns_async": {
+              "name": "callback",
+              "description": "A callback invoked after the sidebar pane is updated with the expression evaluation results.",
+              "parameters": []
+            }
           },
           {
             "name": "setObject",
@@ -207,14 +207,13 @@
                 "type": "string",
                 "optional": true,
                 "description": "An optional title for the root of the expression tree."
-              },
-              {
-                "name": "callback",
-                "type": "function",
-                "optional": true,
-                "description": "A callback invoked after the sidebar is updated with the object."
               }
-            ]
+            ],
+            "returns_async": {
+              "name": "callback",
+              "description": "A callback invoked after the sidebar is updated with the object.",
+              "parameters": []
+            }
           },
           {
             "name": "setPage",
@@ -288,6 +287,18 @@
             "description": "Fired when the button is clicked."
           }
         ]
+      },
+      {
+        "id": "Theme",
+        "type": "string",
+        "description": "Theme used by DevTools.",
+        "enum": [{
+          "name": "default",
+          "description": "Default DevTools theme. This is always the light theme."
+        }, {
+          "name": "dark",
+          "description": "Dark theme."
+        }]
       }
     ],
     "properties": {
@@ -324,21 +335,19 @@
             "name": "pagePath",
             "type": "string",
             "description": "Path of the panel's HTML page relative to the extension directory."
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "optional": true,
-            "description": "A function that is called when the panel is created.",
-            "parameters": [
-              {
-                "name": "panel",
-                "description": "An ExtensionPanel object representing the created panel.",
-                "$ref": "ExtensionPanel"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "description": "A function that is called when the panel is created.",
+          "parameters": [
+            {
+              "name": "panel",
+              "description": "An ExtensionPanel object representing the created panel.",
+              "$ref": "ExtensionPanel"
+            }
+          ]
+        }
       },
       {
         "name": "setOpenResourceHandler",
@@ -355,6 +364,11 @@
                 "name": "resource",
                 "$ref": "devtools.inspectedWindow.Resource",
                 "description": "A $(ref:devtools.inspectedWindow.Resource) object for the resource that was clicked."
+              },
+              {
+                "name": "lineNumber",
+                "type": "integer",
+                "description": "Specifies the line number within the resource that was clicked."
               }
             ]
           }
@@ -380,12 +394,31 @@
             "type": "integer",
             "optional": true,
             "description": "Specifies the column number to scroll to when the resource is loaded."
-          },
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "description": "A function that is called when the resource has been successfully loaded.",
+          "parameters": []
+        }
+      },
+      {
+        "name": "setThemeChangeHandler",
+        "type": "function",
+        "description": "Specifies the function to be called when the current theme changes in DevTools. To unset the handler, either call the method with no parameters or pass <code>null</code> as the parameter.",
+        "parameters": [
           {
             "name": "callback",
             "type": "function",
             "optional": true,
-            "description": "A function that is called when the resource has been successfully loaded."
+            "description": "A function that is called when the current theme changes in DevTools.",
+            "parameters": [
+              {
+                "name": "theme",
+                "$ref": "Theme",
+                "description": "Current theme in DevTools."
+              }
+            ]
           }
         ]
       }

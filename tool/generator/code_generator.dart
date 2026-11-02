@@ -452,6 +452,7 @@ class DartApiGenerator extends _GeneratorBase {
     return Method((b) => b
       ..name = event.name
       ..docs.add(documentationComment(event.documentation, indent: 2))
+      ..annotations.addAll(_deprecatedAnnotation(event.deprecated))
       ..returns = TypeReference((b) => b
         ..symbol = 'EventStream'
         ..types.add(event.type.dartType))
@@ -779,7 +780,10 @@ Expression _jsAnnotation([String? name]) =>
 
 Iterable<Expression> _deprecatedAnnotation(String? deprecated) sync* {
   if (deprecated != null) {
-    yield refer('Deprecated').call([literalString(deprecated, raw: true)]);
+    // "Use $(ref:tabs.onActivated)" => "Use tabs.onActivated"
+    var message = deprecated.replaceAllMapped(
+        RegExp(r'\$\(ref:([^)]+)\)'), (match) => match.group(1)!);
+    yield refer('Deprecated').call([literalString(message, raw: true)]);
   }
 }
 

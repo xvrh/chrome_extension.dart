@@ -34,38 +34,24 @@ class ChromeEnterprisePlatformKeys {
   /// contain the system-wide token with `id` `"system"`.
   /// The system-wide token will be the same for all sessions on this device
   /// (device in the sense of e.g. a Chromebook).
-  Future<List<Token>> getTokens() {
-    var $completer = Completer<List<Token>>();
-    $js.chrome.enterprise.platformKeys.getTokens((JSArray tokens) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(tokens.toDart
-            .cast<$js.Token>()
-            .map((e) => Token.fromJS(e))
-            .toList());
-      }
-    }.toJS);
-    return $completer.future;
+  /// |Returns|: Invoked by `getTokens` with the list of available
+  /// Tokens.
+  Future<List<Token>> getTokens() async {
+    var $res = await $js.chrome.enterprise.platformKeys.getTokens().toDart;
+    return $res.toDart.cast<$js.Token>().map((e) => Token.fromJS(e)).toList();
   }
 
   /// Returns the list of all client certificates available from the given
   /// token. Can be used to check for the existence and expiration of client
   /// certificates that are usable for a certain authentication.
   /// |tokenId|: The id of a Token returned by `getTokens`.
-  /// |callback|: Called back with the list of the available certificates.
-  Future<List<ByteBuffer>> getCertificates(String tokenId) {
-    var $completer = Completer<List<ByteBuffer>>();
-    $js.chrome.enterprise.platformKeys.getCertificates(
-      tokenId,
-      (JSArray certificates) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(certificates.toDart
-              .cast<JSArrayBuffer>()
-              .map((e) => e.toDart)
-              .toList());
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  /// |Returns|: Returns a Promise which resolves with the list of the
+  /// available certificates.
+  Future<List<ByteBuffer>> getCertificates(String tokenId) async {
+    var $res = await $js.chrome.enterprise.platformKeys
+        .getCertificates(tokenId)
+        .toDart;
+    return $res.toDart.cast<JSArrayBuffer>().map((e) => e.toDart).toList();
   }
 
   /// Imports `certificate` to the given token if the certified key
@@ -75,22 +61,18 @@ class ChromeEnterprisePlatformKeys {
   /// system and browser for authentication.
   /// |tokenId|: The id of a Token returned by `getTokens`.
   /// |certificate|: The DER encoding of a X.509 certificate.
-  /// |callback|: Called back when this operation is finished.
+  /// |Returns|: Returns a Promise which resolves when this operation is
+  /// finished.
   Future<void> importCertificate(
     String tokenId,
     ByteBuffer certificate,
-  ) {
-    var $completer = Completer<void>();
-    $js.chrome.enterprise.platformKeys.importCertificate(
-      tokenId,
-      certificate.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    await $js.chrome.enterprise.platformKeys
+        .importCertificate(
+          tokenId,
+          certificate.toJS,
+        )
+        .toDart;
   }
 
   /// Removes `certificate` from the given token if present.
@@ -99,41 +81,37 @@ class ChromeEnterprisePlatformKeys {
   /// choice. Should be used to free storage in the certificate store.
   /// |tokenId|: The id of a Token returned by `getTokens`.
   /// |certificate|: The DER encoding of a X.509 certificate.
-  /// |callback|: Called back when this operation is finished.
+  /// |Returns|: Returns a Promise which resolves when this operation is
+  /// finished.
   Future<void> removeCertificate(
     String tokenId,
     ByteBuffer certificate,
-  ) {
-    var $completer = Completer<void>();
-    $js.chrome.enterprise.platformKeys.removeCertificate(
-      tokenId,
-      certificate.toJS,
-      () {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(null);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    await $js.chrome.enterprise.platformKeys
+        .removeCertificate(
+          tokenId,
+          certificate.toJS,
+        )
+        .toDart;
   }
 
   /// Similar to `challengeMachineKey` and
   /// `challengeUserKey`, but allows specifying the algorithm of a
   /// registered key. Challenges a hardware-backed Enterprise Machine Key and
   /// emits the response as part of a remote attestation protocol. Only useful
-  /// on Chrome OS and in conjunction with the Verified Access Web API which
+  /// on ChromeOS and in conjunction with the Verified Access Web API which
   /// both issues challenges and verifies responses.
   ///
   /// A successful verification by the Verified Access Web API is a strong
-  /// signal that the current device is a legitimate Chrome OS device, the
+  /// signal that the current device is a legitimate ChromeOS device, the
   /// current device is managed by the domain specified during verification,
   /// the current signed-in user is managed by the domain specified during
   /// verification, and the current device state complies with enterprise
   /// device policy. For example, a policy may specify that the device must not
-  /// be in developer mode.  Any device identity emitted by the verification is
+  /// be in developer mode. Any device identity emitted by the verification is
   /// tightly bound to the hardware of the current device. If
-  /// `"user"` Scope is specified, the identity is also tighly bound
-  /// to the current signed-in user.
+  /// `"user"` Scope is specified, the identity is also tightly
+  /// bound to the current signed-in user.
   ///
   /// This function is highly restricted and will fail if the current device is
   /// not managed, the current user is not managed, or if this operation has
@@ -142,26 +120,20 @@ class ChromeEnterprisePlatformKeys {
   /// `"user"` token and is not accessible by any other API.
   /// |options|: Object containing the fields defined in
   ///            [ChallengeKeyOptions].
-  /// |callback|: Called back with the challenge response.
-  Future<ByteBuffer> challengeKey(ChallengeKeyOptions options) {
-    var $completer = Completer<ByteBuffer>();
-    $js.chrome.enterprise.platformKeys.challengeKey(
-      options.toJS,
-      (JSArrayBuffer response) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(response.toDart);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  /// |Returns|: Returns a Promise which resolves with the challenge response.
+  Future<ByteBuffer> challengeKey(ChallengeKeyOptions options) async {
+    var $res = await $js.chrome.enterprise.platformKeys
+        .challengeKey(options.toJS)
+        .toDart;
+    return $res.toDart;
   }
 
   /// Challenges a hardware-backed Enterprise Machine Key and emits the
-  /// response as part of a remote attestation protocol. Only useful on Chrome
-  /// OS and in conjunction with the Verified Access Web API which both issues
-  /// challenges and verifies responses. A successful verification by the
-  /// Verified Access Web API is a strong signal of all of the following:
-  /// * The current device is a legitimate Chrome OS device.
+  /// response as part of a remote attestation protocol. Only useful on
+  /// ChromeOS and in conjunction with the Verified Access Web API which both
+  /// issues challenges and verifies responses. A successful verification by
+  /// the Verified Access Web API is a strong signal of all of the following:
+  /// * The current device is a legitimate ChromeOS device.
   /// * The current device is managed by the domain specified during
   ///   verification.
   /// * The current signed-in user is managed by the domain specified during
@@ -184,31 +156,27 @@ class ChromeEnterprisePlatformKeys {
   ///                signing key. This key is 2048-bit RSA. Subsequent calls
   ///                to this function will then generate a new Enterprise
   ///                Machine Key.
-  /// |callback|: Called back with the challenge response.
-  @Deprecated(r'Use $(ref:challengeKey) instead.')
+  /// |Returns|: Returns a Promise which resolves with the challenge response.
+  @Deprecated(r'Use challengeKey instead.')
   Future<ByteBuffer> challengeMachineKey(
     ByteBuffer challenge,
     bool? registerKey,
-  ) {
-    var $completer = Completer<ByteBuffer>();
-    $js.chrome.enterprise.platformKeys.challengeMachineKey(
-      challenge.toJS,
-      registerKey,
-      (JSArrayBuffer response) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(response.toDart);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    var $res = await $js.chrome.enterprise.platformKeys
+        .challengeMachineKey(
+          challenge.toJS,
+          registerKey,
+        )
+        .toDart;
+    return $res.toDart;
   }
 
   /// Challenges a hardware-backed Enterprise User Key and emits the response
-  /// as part of a remote attestation protocol. Only useful on Chrome OS and in
+  /// as part of a remote attestation protocol. Only useful on ChromeOS and in
   /// conjunction with the Verified Access Web API which both issues challenges
   /// and verifies responses. A successful verification by the Verified Access
   /// Web API is a strong signal of all of the following:
-  /// * The current device is a legitimate Chrome OS device.
+  /// * The current device is a legitimate ChromeOS device.
   /// * The current device is managed by the domain specified during
   ///   verification.
   /// * The current signed-in user is managed by the domain specified during
@@ -230,23 +198,19 @@ class ChromeEnterprisePlatformKeys {
   ///                with a certificate and used like any other signing key.
   ///                This key is 2048-bit RSA. Subsequent calls to this
   ///                function will then generate a new Enterprise User Key.
-  /// |callback|: Called back with the challenge response.
-  @Deprecated(r'Use $(ref:challengeKey) instead.')
+  /// |Returns|: Returns a Promise which resolves with the challenge response.
+  @Deprecated(r'Use challengeKey instead.')
   Future<ByteBuffer> challengeUserKey(
     ByteBuffer challenge,
     bool registerKey,
-  ) {
-    var $completer = Completer<ByteBuffer>();
-    $js.chrome.enterprise.platformKeys.challengeUserKey(
-      challenge.toJS,
-      registerKey,
-      (JSArrayBuffer response) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(response.toDart);
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    var $res = await $js.chrome.enterprise.platformKeys
+        .challengeUserKey(
+          challenge.toJS,
+          registerKey,
+        )
+        .toDart;
+    return $res.toDart;
   }
 }
 
@@ -299,10 +263,13 @@ class Token {
     /// [SubtleCrypto](http://www.w3.org/TR/WebCryptoAPI/#subtlecrypto-interface)
     /// interface. The cryptographic operations, including key generation, are
     /// hardware-backed.
-    /// Only non-extractable RSASSA-PKCS1-V1_5 keys with
-    /// `modulusLength` up to 2048 and ECDSA with
-    /// `namedCurve` P-256 can be generated. Each key can be
-    /// used for signing data at most once.
+    /// Only non-extractable keys can be generated. The supported key types
+    /// are RSASSA-PKCS1-V1_5 with `modulusLength` up to 2048 and
+    /// ECDSA with `namedCurve` P-256. Each key can be used for
+    /// signing data at most once, unless the extension is allowlisted by the
+    /// [KeyPermissions
+    /// policy](https://chromeenterprise.google/policies/#KeyPermissions),
+    /// in which case the key can be used indefinitely.
     /// Keys generated on a specific `Token` cannot be used with
     /// any other Tokens, nor can they be used with
     /// `window.crypto.subtle`. Equally, `Key` objects
@@ -316,9 +283,13 @@ class Token {
     /// software-backed. Protection of the keys, and thus implementation of the
     /// non-extractable property, is done in software, so the keys are less
     /// protected than hardware-backed keys.
-    /// Only non-extractable RSASSA-PKCS1-V1_5 keys with
-    /// `modulusLength` up to 2048 can be generated. Each key can be
-    /// used for signing data at most once.
+    /// Only non-extractable keys can be generated. The only supported key
+    /// type is RSASSA-PKCS1-V1_5 with `modulusLength` up to 2048.
+    /// Each key can be used for signing data at most once, unless the extension
+    /// is allowlisted through the
+    /// [KeyPermissions
+    /// policy](https://chromeenterprise.google/policies/#KeyPermissions),
+    /// in which case the key can be used indefinitely.
     /// Keys generated on a specific `Token` cannot be used with
     /// any other Tokens, nor can they be used with
     /// `window.crypto.subtle`. Equally, `Key` objects
@@ -350,10 +321,13 @@ class Token {
   /// [SubtleCrypto](http://www.w3.org/TR/WebCryptoAPI/#subtlecrypto-interface)
   /// interface. The cryptographic operations, including key generation, are
   /// hardware-backed.
-  /// Only non-extractable RSASSA-PKCS1-V1_5 keys with
-  /// `modulusLength` up to 2048 and ECDSA with
-  /// `namedCurve` P-256 can be generated. Each key can be
-  /// used for signing data at most once.
+  /// Only non-extractable keys can be generated. The supported key types
+  /// are RSASSA-PKCS1-V1_5 with `modulusLength` up to 2048 and
+  /// ECDSA with `namedCurve` P-256. Each key can be used for
+  /// signing data at most once, unless the extension is allowlisted by the
+  /// [KeyPermissions
+  /// policy](https://chromeenterprise.google/policies/#KeyPermissions),
+  /// in which case the key can be used indefinitely.
   /// Keys generated on a specific `Token` cannot be used with
   /// any other Tokens, nor can they be used with
   /// `window.crypto.subtle`. Equally, `Key` objects
@@ -371,9 +345,13 @@ class Token {
   /// software-backed. Protection of the keys, and thus implementation of the
   /// non-extractable property, is done in software, so the keys are less
   /// protected than hardware-backed keys.
-  /// Only non-extractable RSASSA-PKCS1-V1_5 keys with
-  /// `modulusLength` up to 2048 can be generated. Each key can be
-  /// used for signing data at most once.
+  /// Only non-extractable keys can be generated. The only supported key
+  /// type is RSASSA-PKCS1-V1_5 with `modulusLength` up to 2048.
+  /// Each key can be used for signing data at most once, unless the extension
+  /// is allowlisted through the
+  /// [KeyPermissions
+  /// policy](https://chromeenterprise.google/policies/#KeyPermissions),
+  /// in which case the key can be used indefinitely.
   /// Keys generated on a specific `Token` cannot be used with
   /// any other Tokens, nor can they be used with
   /// `window.crypto.subtle`. Equally, `Key` objects

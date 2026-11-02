@@ -5,8 +5,8 @@
 library;
 
 import 'dart:js_interop';
-import 'browser_action.dart';
 import 'chrome.dart';
+import 'extension_types.dart';
 
 export 'chrome.dart';
 
@@ -73,13 +73,13 @@ extension type JSAction._(JSObject _) {
   /// Enables the action for a tab. By default, actions are enabled.
   external JSPromise enable(
 
-      /// The id of the tab for which you want to modify the action.
+      /// The ID of the tab for which you want to modify the action.
       int? tabId);
 
   /// Disables the action for a tab.
   external JSPromise disable(
 
-      /// The id of the tab for which you want to modify the action.
+      /// The ID of the tab for which you want to modify the action.
       int? tabId);
 
   /// Indicates whether the extension action is enabled for a tab (or globally
@@ -87,13 +87,14 @@ extension type JSAction._(JSObject _) {
   /// [declarativeContent] always return false.
   external JSPromise<JSBoolean> isEnabled(
 
-      /// The id of the tab for which you want check enabled status.
+      /// The ID of the tab for which you want check enabled status.
       int? tabId);
 
   /// Returns the user-specified settings relating to an extension's action.
   external JSPromise<UserSettings> getUserSettings();
 
-  /// Opens the extension's popup.
+  /// Opens the extension's popup. Between Chrome 118 and Chrome 126, this is
+  /// only available to policy installed extensions.
   external JSPromise openPopup(
 
       /// Specifies options for opening the popup.
@@ -102,6 +103,10 @@ extension type JSAction._(JSObject _) {
   /// Fired when an action icon is clicked.  This event will not fire if the
   /// action has a popup.
   external Event get onClicked;
+
+  /// Fired when user-specified settings relating to an extension's action
+  /// change.
+  external Event get onUserSettingsChanged;
 }
 extension type TabDetails._(JSObject _) implements JSObject {
   external factory TabDetails(
@@ -127,14 +132,27 @@ extension type UserSettings._(JSObject _) implements JSObject {
   /// user).
   external bool isOnToolbar;
 }
+extension type UserSettingsChange._(JSObject _) implements JSObject {
+  external factory UserSettingsChange(
+      {
+      /// Whether the extension's action icon is visible on browser windows'
+      /// top-level toolbar (i.e., whether the extension has been 'pinned' by the
+      /// user).
+      bool? isOnToolbar});
+
+  /// Whether the extension's action icon is visible on browser windows'
+  /// top-level toolbar (i.e., whether the extension has been 'pinned' by the
+  /// user).
+  external bool? isOnToolbar;
+}
 extension type OpenPopupOptions._(JSObject _) implements JSObject {
   external factory OpenPopupOptions(
       {
-      /// The id of the window to open the action popup in. Defaults to the
+      /// The ID of the window to open the action popup in. Defaults to the
       /// currently-active window if unspecified.
       int? windowId});
 
-  /// The id of the window to open the action popup in. Defaults to the
+  /// The ID of the window to open the action popup in. Defaults to the
   /// currently-active window if unspecified.
   external int? windowId;
 }

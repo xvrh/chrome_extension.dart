@@ -31,7 +31,7 @@ extension type JSExtension._(JSObject _) {
   /// [runtime.connect], but only sends a single request with an optional
   /// response. The [extension.onRequest] event is fired in each page of the
   /// extension.
-  @Deprecated(r'Please use $(ref:runtime.sendMessage).')
+  @Deprecated(r'Please use runtime.sendMessage.')
   external JSPromise<JSAny?> sendRequest(
     /// The extension ID of the extension you want to connect to. If omitted,
     /// default is your own extension.
@@ -41,7 +41,7 @@ extension type JSExtension._(JSObject _) {
 
   /// Converts a relative path within an extension install directory to a
   /// fully-qualified URL.
-  @Deprecated(r'Please use $(ref:runtime.getURL).')
+  @Deprecated(r'Please use runtime.getURL.')
   external String getURL(
 
       /// A path to a resource within an extension expressed relative to its
@@ -60,8 +60,7 @@ extension type JSExtension._(JSObject _) {
   /// Returns an array of the JavaScript 'window' objects for each of the tabs
   /// running inside the current extension. If `windowId` is specified, returns
   /// only the 'window' objects of tabs attached to the specified window.
-  @Deprecated(
-      r'Please use $(ref:extension.getViews) <code>{type: "tab"}</code>.')
+  @Deprecated(r'Please use extension.getViews <code>{type: "tab"}</code>.')
   external JSArray getExtensionTabs(int? windowId);
 
   /// Retrieves the state of the extension's access to Incognito-mode. This

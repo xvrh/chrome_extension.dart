@@ -89,6 +89,7 @@ export 'printing_metrics.dart'
 export 'privacy.dart' show ChromePrivacy, ChromePrivacyExtension;
 export 'processes.dart' show ChromeProcesses, ChromeProcessesExtension;
 export 'proxy.dart' show ChromeProxy, ChromeProxyExtension;
+export 'reading_list.dart' show ChromeReadingList, ChromeReadingListExtension;
 export 'runtime.dart' show ChromeRuntime, ChromeRuntimeExtension;
 export 'scripting.dart' show ChromeScripting, ChromeScriptingExtension;
 export 'search.dart' show ChromeSearch, ChromeSearchExtension;
@@ -114,6 +115,7 @@ export 'tts.dart' show ChromeTts, ChromeTtsExtension;
 export 'tts_engine.dart' show ChromeTtsEngine, ChromeTtsEngineExtension;
 export 'types.dart' show ChromeTypes, ChromeTypesExtension;
 export 'usb.dart' show ChromeUsb, ChromeUsbExtension;
+export 'user_scripts.dart' show ChromeUserScripts, ChromeUserScriptsExtension;
 export 'vpn_provider.dart' show ChromeVpnProvider, ChromeVpnProviderExtension;
 export 'wallpaper.dart' show ChromeWallpaper, ChromeWallpaperExtension;
 export 'web_authentication_proxy.dart'

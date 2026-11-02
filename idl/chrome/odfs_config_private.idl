@@ -26,6 +26,8 @@ namespace odfsConfigPrivate {
   callback GetAccountRestrictionsCallback = void(
       AccountRestrictionsInfo restrictions);
   callback ShowAutomatedMountErrorCallback = void();
+  callback OpenInOfficeAppCallback = void();
+  callback BoolCallback = void(boolean result);
 
   interface Functions {
     // Returns the OneDrive mount mode from the admin policy.
@@ -41,6 +43,21 @@ namespace odfsConfigPrivate {
     // Shows a notification that the automated mount failed.
     static void showAutomatedMountError(
         ShowAutomatedMountErrorCallback callback);
+
+    // Returns whether the FileSystemProviderCloudFileSystem feature flag is
+    // enabled.
+    static void isCloudFileSystemEnabled(BoolCallback callback);
+
+    // Returns whether the FileSystemProviderContentCache feature flag is
+    // enabled.
+    static void isContentCacheEnabled(BoolCallback callback);
+
+    // Opens the tab inside the M365 PWA. This will not cause a new navigation
+    // but instead re-parent the tab to a new instance of the M365 PWA. It does
+    // nothing if the M365 PWA is not installed.
+    //
+    // |tabId| : Specifies the tab which should be opened in Office
+    static void openInOfficeApp(long tabId, OpenInOfficeAppCallback callback);
   };
 
   interface Events {

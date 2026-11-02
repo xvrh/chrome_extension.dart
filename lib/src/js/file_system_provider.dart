@@ -37,6 +37,7 @@ extension type JSFileSystemProvider._(JSObject _) {
   ///
   /// In case of an error, [runtime.lastError] will be set with a
   /// corresponding error code.
+  /// |Returns|: A generic result callback to indicate success or failure.
   external JSPromise mount(MountOptions options);
 
   /// Unmounts a file system with the given `fileSystemId`. It
@@ -46,13 +47,16 @@ extension type JSFileSystemProvider._(JSObject _) {
   ///
   /// In case of an error, [runtime.lastError] will be set with a
   /// corresponding error code.
+  /// |Returns|: A generic result callback to indicate success or failure.
   external JSPromise unmount(UnmountOptions options);
 
   /// Returns all file systems mounted by the extension.
+  /// |Returns|: Callback to receive the result of [getAll] function.
   external JSPromise<JSArray> getAll();
 
   /// Returns information about a file system with the passed
   /// `fileSystemId`.
+  /// |Returns|: Callback to receive the result of [get] function.
   external JSPromise<FileSystemInfo> get(String fileSystemId);
 
   /// Notifies about changes in the watched directory at
@@ -84,6 +88,7 @@ extension type JSFileSystemProvider._(JSObject _) {
   ///
   /// In case of an error, [runtime.lastError] will be set
   /// will a corresponding error code.
+  /// |Returns|: A generic result callback to indicate success or failure.
   external JSPromise notify(NotifyOptions options);
 
   /// Raised when unmounting for the file system with the
@@ -234,6 +239,9 @@ typedef ActionsCallback = JSFunction;
 /// available, then `hasMore` must be set to false.
 typedef EntriesCallback = JSFunction;
 
+/// Success callback for the [onOpenFileRequested] event.
+typedef OpenFileSuccessCallback = JSFunction;
+
 /// Success callback for the [onReadFileRequested] event. If more
 /// data will be returned, then `hasMore` must be true, and it
 /// has to be called again with additional entries. If no more data is
@@ -253,6 +261,15 @@ extension type CloudIdentifier._(JSObject _) implements JSObject {
 
   /// The provider's identifier for the given file/directory.
   external String id;
+}
+extension type CloudFileInfo._(JSObject _) implements JSObject {
+  external factory CloudFileInfo(
+      {
+      /// A tag that represents the version of the file.
+      String? versionTag});
+
+  /// A tag that represents the version of the file.
+  external String? versionTag;
 }
 extension type EntryMetadata._(JSObject _) implements JSObject {
   external factory EntryMetadata({
@@ -286,6 +303,11 @@ extension type EntryMetadata._(JSObject _) implements JSObject {
     /// local files not backed by cloud storage, it should be undefined when
     /// requested.
     CloudIdentifier? cloudIdentifier,
+
+    /// Information that identifies a specific file in the underlying cloud file
+    /// system. Must be provided if requested in `options` and the
+    /// file is backed by cloud storage.
+    CloudFileInfo? cloudFileInfo,
   });
 
   /// True if it is a directory. Must be provided if requested in
@@ -318,6 +340,11 @@ extension type EntryMetadata._(JSObject _) implements JSObject {
   /// local files not backed by cloud storage, it should be undefined when
   /// requested.
   external CloudIdentifier? cloudIdentifier;
+
+  /// Information that identifies a specific file in the underlying cloud file
+  /// system. Must be provided if requested in `options` and the
+  /// file is backed by cloud storage.
+  external CloudFileInfo? cloudFileInfo;
 }
 extension type Watcher._(JSObject _) implements JSObject {
   external factory Watcher({
@@ -520,6 +547,10 @@ extension type GetMetadataRequestedOptions._(JSObject _) implements JSObject {
     /// Set to `true` if `cloudIdentifier` value is
     /// requested.
     bool cloudIdentifier,
+
+    /// Set to `true` if `cloudFileInfo` value is
+    /// requested.
+    bool cloudFileInfo,
   });
 
   /// The identifier of the file system related to this operation.
@@ -553,6 +584,10 @@ extension type GetMetadataRequestedOptions._(JSObject _) implements JSObject {
   /// Set to `true` if `cloudIdentifier` value is
   /// requested.
   external bool cloudIdentifier;
+
+  /// Set to `true` if `cloudFileInfo` value is
+  /// requested.
+  external bool cloudFileInfo;
 }
 extension type GetActionsRequestedOptions._(JSObject _) implements JSObject {
   external factory GetActionsRequestedOptions({
@@ -1035,6 +1070,9 @@ extension type Change._(JSObject _) implements JSObject {
 
     /// The type of the change which happened to the entry.
     ChangeType changeType,
+
+    /// Information relating to the file if backed by a cloud file system.
+    CloudFileInfo? cloudFileInfo,
   });
 
   /// The path of the changed entry.
@@ -1042,6 +1080,9 @@ extension type Change._(JSObject _) implements JSObject {
 
   /// The type of the change which happened to the entry.
   external ChangeType changeType;
+
+  /// Information relating to the file if backed by a cloud file system.
+  external CloudFileInfo? cloudFileInfo;
 }
 extension type NotifyOptions._(JSObject _) implements JSObject {
   external factory NotifyOptions({

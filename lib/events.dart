@@ -300,6 +300,10 @@ class UrlFilter {
     /// lists. For example `[80, 443, [1000, 1200]]` matches all requests on
     /// port 80, 443 and in the range 1000-1200.
     List<Object>? ports,
+
+    /// Matches if the host part of the URL is an IP address and is contained in
+    /// any of the CIDR blocks specified in the array.
+    List<String>? cidrBlocks,
   }) : _wrapped = $js.UrlFilter(
           hostContains: hostContains,
           hostEquals: hostEquals,
@@ -326,6 +330,7 @@ class UrlFilter {
                 _ => throw UnsupportedError(
                     'Received type: ${e.runtimeType}. Supported types are: int, List<int>')
               }),
+          cidrBlocks: cidrBlocks?.toJSArray((e) => e.toJS),
         );
 
   final $js.UrlFilter _wrapped;
@@ -507,5 +512,16 @@ class UrlFilter {
           _ => throw UnsupportedError(
               'Received type: ${e.runtimeType}. Supported types are: int, List<int>')
         });
+  }
+
+  /// Matches if the host part of the URL is an IP address and is contained in
+  /// any of the CIDR blocks specified in the array.
+  List<String>? get cidrBlocks => _wrapped.cidrBlocks?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
+
+  set cidrBlocks(List<String>? v) {
+    _wrapped.cidrBlocks = v?.toJSArray((e) => e.toJS);
   }
 }

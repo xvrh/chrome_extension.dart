@@ -31,7 +31,8 @@ extension JSChromeJSEnterpriseHardwarePlatformExtension on JSChromeEnterprise {
 extension type JSEnterpriseHardwarePlatform._(JSObject _) {
   /// Obtains the manufacturer and model for the hardware platform and, if
   /// the extension is authorized, returns it via |callback|.
-  /// |callback|: Called with the hardware platform info.
+  /// |Returns|: Returns a Promise which resolves with the hardware platform
+  ///   info.
   external JSPromise<HardwarePlatformInfo> getHardwarePlatformInfo();
 }
 extension type HardwarePlatformInfo._(JSObject _) implements JSObject {

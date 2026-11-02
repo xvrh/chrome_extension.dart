@@ -66,7 +66,7 @@ extension type Filter._(JSObject _) implements JSObject {
 extension type Session._(JSObject _) implements JSObject {
   external factory Session({
     /// The time when the window or tab was closed or modified, represented in
-    /// milliseconds since the epoch.
+    /// seconds since the epoch.
     int lastModified,
 
     /// The [tabs.Tab], if this entry describes a tab. Either this or
@@ -79,7 +79,7 @@ extension type Session._(JSObject _) implements JSObject {
   });
 
   /// The time when the window or tab was closed or modified, represented in
-  /// milliseconds since the epoch.
+  /// seconds since the epoch.
   external int lastModified;
 
   /// The [tabs.Tab], if this entry describes a tab. Either this or

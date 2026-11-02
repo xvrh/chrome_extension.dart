@@ -61,6 +61,10 @@ extension type JSTts._(JSObject _) {
 
   /// Used to pass events back to the function calling speak().
   external Event get onEvent;
+
+  /// Called when the list of [tts.TtsVoice] that would be returned by getVoices
+  /// has changed.
+  external Event get onVoicesChanged;
 }
 
 typedef EventType = JSString;

@@ -1,3 +1,17 @@
+## 0.6.0
+
+- Regenerate the bindings from the Chrome 156 API schemas. Chromium moved many
+  APIs to WebIDL, which the generator can now read.
+- Add the `readingList` and `userScripts` APIs.
+- New functions, events and properties across the APIs (for example `sidePanel`,
+  `omnibox` actions, split view in `tabs`, `cookies.getPartitionKey`,
+  `storage.getKeys`). Some types changed to follow Chrome:
+  `pageCapture.saveAsMHTML` resolves with a `Blob`,
+  `devtools.inspectedWindow.eval` resolves with a single response object and
+  `privacy.relatedWebsiteSetsEnabled` was removed.
+- Annotate deprecated functions and events with `@Deprecated`.
+- Fix the value of `usb.Recipient.interface`.
+
 ## 0.5.0
 
 - Support WebAssembly: the package can be compiled with `dart compile wasm` and

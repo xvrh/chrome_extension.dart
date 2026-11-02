@@ -219,6 +219,10 @@ extension type UrlFilter._(JSObject _) implements JSObject {
     /// lists. For example `[80, 443, [1000, 1200]]` matches all requests on port
     /// 80, 443 and in the range 1000-1200.
     JSArray? ports,
+
+    /// Matches if the host part of the URL is an IP address and is contained in
+    /// any of the CIDR blocks specified in the array.
+    JSArray? cidrBlocks,
   });
 
   /// Matches if the host name of the URL contains a specified string. To test
@@ -304,4 +308,8 @@ extension type UrlFilter._(JSObject _) implements JSObject {
   /// lists. For example `[80, 443, [1000, 1200]]` matches all requests on port
   /// 80, 443 and in the range 1000-1200.
   external JSArray? ports;
+
+  /// Matches if the host part of the URL is an IP address and is contained in
+  /// any of the CIDR blocks specified in the array.
+  external JSArray? cidrBlocks;
 }

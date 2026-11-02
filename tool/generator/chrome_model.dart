@@ -44,8 +44,10 @@ class Event {
   final String name;
   final String documentation;
   final AsyncReturnType type;
+  final String? deprecated;
 
-  Event(this.name, {required this.type, required this.documentation});
+  Event(this.name,
+      {required this.type, required this.documentation, this.deprecated});
 }
 
 class Method {

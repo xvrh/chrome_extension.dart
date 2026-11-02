@@ -27,9 +27,10 @@ class ChromeCertificateProvider {
   /// It's the extension's responsibility to try again later if another flow is
   /// in progress.
   /// |details|: Contains the details about the requested dialog.
-  /// |callback|: Is called when the dialog is resolved with the user input, or
-  /// when the dialog request finishes unsuccessfully (e.g. the dialog was
-  /// canceled by the user or was not allowed to be shown).
+  /// |Returns|: Returns a Promise which resolves when the PIN is provided by
+  /// the user. Rejects with an error if the dialog request finishes
+  /// unsuccessfully (e.g. the dialog was canceled by the user or was not
+  /// allowed to be shown).
   Future<PinResponseDetails?> requestPin(RequestPinDetails details) async {
     var $res =
         await $js.chrome.certificateProvider.requestPin(details.toJS).toDart;
@@ -39,8 +40,8 @@ class ChromeCertificateProvider {
   /// Stops the pin request started by the [requestPin] function.
   /// |details|: Contains the details about the reason for stopping the
   /// request flow.
-  /// |callback|: To be used by Chrome to send to the extension the status from
-  /// their request to close PIN dialog for user.
+  /// |Returns|: Returns a Promise which resolves when the request to close
+  ///   the PIN dialog is complete.
   Future<void> stopPinRequest(StopPinRequestDetails details) async {
     await $js.chrome.certificateProvider.stopPinRequest(details.toJS).toDart;
   }
@@ -52,7 +53,7 @@ class ChromeCertificateProvider {
   /// [onCertificatesUpdateRequested] every time this event is
   /// received.
   /// |details|: The certificates to set. Invalid certificates will be ignored.
-  /// |callback|: Called upon completion.
+  /// |Returns|: Returns a Promise which resolves upon completion.
   Future<void> setCertificates(SetCertificatesDetails details) async {
     await $js.chrome.certificateProvider.setCertificates(details.toJS).toDart;
   }
@@ -91,6 +92,7 @@ class ChromeCertificateProvider {
   /// certificates provided by this extension. The extension must call
   /// `reportCallback` exactly once with the current list of
   /// certificates.
+  @Deprecated(r'Use onCertificatesUpdateRequested instead.')
   EventStream<
           void Function(
             List<CertificateInfo>,
@@ -120,7 +122,7 @@ class ChromeCertificateProvider {
   /// appropriate algorithm and private key and return it by calling
   /// `reportCallback`. `reportCallback` must be called
   /// exactly once.
-  /// |request|: Contains the details about the sign request.
+  @Deprecated(r'Use onSignatureRequested instead.')
   EventStream<OnSignDigestRequestedEvent> get onSignDigestRequested =>
       $js.chrome.certificateProvider.onSignDigestRequested.asStream(($c) => (
             $js.SignRequest request,
@@ -140,8 +142,7 @@ enum Algorithm {
   /// Specifies the RSASSA PKCS#1 v1.5 signature algorithm with the MD5-SHA-1
   /// hashing. The extension must not prepend a DigestInfo prefix but only
   /// add PKCS#1 padding. This algorithm is deprecated and will never be
-  /// requested
-  ///  by Chrome as of version 109.
+  /// requested  by Chrome as of version 109.
   rsassaPkcs1V15Md5Sha1('RSASSA_PKCS1_v1_5_MD5_SHA1'),
 
   /// Specifies the RSASSA PKCS#1 v1.5 signature algorithm

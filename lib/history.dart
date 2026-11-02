@@ -52,7 +52,7 @@ class ChromeHistory {
     await $js.chrome.history.deleteUrl(details.toJS).toDart;
   }
 
-  /// Removes all items within the specified date range from the history.  Pages
+  /// Removes all items within the specified date range from the history. Pages
   /// will not be removed from the history unless all visits fall within the
   /// range.
   Future<void> deleteRange(DeleteRangeRange range) async {
@@ -64,15 +64,15 @@ class ChromeHistory {
     await $js.chrome.history.deleteAll().toDart;
   }
 
-  /// Fired when a URL is visited, providing the HistoryItem data for that URL.
-  /// This event fires before the page has loaded.
+  /// Fired when a URL is visited, providing the `HistoryItem` data for that
+  /// URL. This event fires before the page has loaded.
   EventStream<HistoryItem> get onVisited =>
       $js.chrome.history.onVisited.asStream(($c) => ($js.HistoryItem result) {
             return $c(HistoryItem.fromJS(result));
           }.toJS);
 
-  /// Fired when one or more URLs are removed from the history service.  When
-  /// all visits have been removed the URL is purged from history.
+  /// Fired when one or more URLs are removed from history. When all visits have
+  /// been removed the URL is purged from history.
   EventStream<OnVisitRemovedRemoved> get onVisitRemoved =>
       $js.chrome.history.onVisitRemoved
           .asStream(($c) => ($js.OnVisitRemovedRemoved removed) {
@@ -82,16 +82,51 @@ class ChromeHistory {
 
 /// The [transition type](#transition_types) for this visit from its referrer.
 enum TransitionType {
+  /// The user arrived at this page by clicking a link on another page.
   link('link'),
+
+  /// The user arrived at this page by typing the URL in the address bar. This
+  /// is also used for other explicit navigation actions.
   typed('typed'),
+
+  /// The user arrived at this page through a suggestion in the UI, for example,
+  /// through a menu item.
   autoBookmark('auto_bookmark'),
+
+  /// The user arrived at this page through subframe navigation that they didn't
+  /// request, such as through an ad loading in a frame on the previous page.
+  /// These don't always generate new navigation entries in the back and forward
+  /// menus.
   autoSubframe('auto_subframe'),
+
+  /// The user arrived at this page by selecting something in a subframe.
   manualSubframe('manual_subframe'),
+
+  /// The user arrived at this page by typing in the address bar and selecting
+  /// an entry that didn't look like a URL, such as a Google Search suggestion.
+  /// For example, a match might have the URL of a Google Search result page,
+  /// but it might appear to the user as "Search Google for ...". These are
+  /// different from typed navigations because the user didn't type or see the
+  /// destination URL. They're also related to keyword navigations.
   generated('generated'),
+
+  /// The page was specified in the command line or is the start page.
   autoToplevel('auto_toplevel'),
+
+  /// The user arrived at this page by filling out values in a form and
+  /// submitting the form. Not all form submissions use this transition type.
   formSubmit('form_submit'),
+
+  /// The user reloaded the page, either by clicking the reload button or by
+  /// pressing Enter in the address bar. Session restore and Reopen closed tab
+  /// also use this transition type.
   reload('reload'),
+
+  /// The URL for this page was generated from a replaceable keyword other than
+  /// the default search provider.
   keyword('keyword'),
+
+  /// Corresponds to a visit generated for a keyword.
   keywordGenerated('keyword_generated');
 
   const TransitionType(this.value);
@@ -273,7 +308,7 @@ class UrlDetails {
   UrlDetails(
       {
       /// The URL for the operation. It must be in the format as returned from a
-      /// call to history.search.
+      /// call to `history.search()`.
       required String url})
       : _wrapped = $js.UrlDetails(url: url);
 
@@ -282,7 +317,7 @@ class UrlDetails {
   $js.UrlDetails get toJS => _wrapped;
 
   /// The URL for the operation. It must be in the format as returned from a
-  /// call to history.search.
+  /// call to `history.search()`.
   String get url => _wrapped.url;
 
   set url(String v) {
@@ -294,7 +329,7 @@ class OnVisitRemovedRemoved {
   OnVisitRemovedRemoved.fromJS(this._wrapped);
 
   OnVisitRemovedRemoved({
-    /// True if all history was removed.  If true, then urls will be empty.
+    /// True if all history was removed. If true, then urls will be empty.
     required bool allHistory,
     List<String>? urls,
   }) : _wrapped = $js.OnVisitRemovedRemoved(
@@ -306,7 +341,7 @@ class OnVisitRemovedRemoved {
 
   $js.OnVisitRemovedRemoved get toJS => _wrapped;
 
-  /// True if all history was removed.  If true, then urls will be empty.
+  /// True if all history was removed. If true, then urls will be empty.
   bool get allHistory => _wrapped.allHistory;
 
   set allHistory(bool v) {
@@ -325,20 +360,20 @@ class SearchQuery {
   SearchQuery.fromJS(this._wrapped);
 
   SearchQuery({
-    /// A free-text query to the history service.  Leave empty to retrieve all
-    /// pages.
+    /// A free-text query to the history service. Leave this empty to retrieve
+    /// all pages.
     required String text,
 
     /// Limit results to those visited after this date, represented in
-    /// milliseconds since the epoch. If not specified, this defaults to 24
-    /// hours in the past.
+    /// milliseconds since the epoch. If property is not specified, it will
+    /// default to 24 hours.
     double? startTime,
 
     /// Limit results to those visited before this date, represented in
     /// milliseconds since the epoch.
     double? endTime,
 
-    /// The maximum number of results to retrieve.  Defaults to 100.
+    /// The maximum number of results to retrieve. Defaults to 100.
     int? maxResults,
   }) : _wrapped = $js.SearchQuery(
           text: text,
@@ -351,7 +386,7 @@ class SearchQuery {
 
   $js.SearchQuery get toJS => _wrapped;
 
-  /// A free-text query to the history service.  Leave empty to retrieve all
+  /// A free-text query to the history service. Leave this empty to retrieve all
   /// pages.
   String get text => _wrapped.text;
 
@@ -360,8 +395,8 @@ class SearchQuery {
   }
 
   /// Limit results to those visited after this date, represented in
-  /// milliseconds since the epoch. If not specified, this defaults to 24 hours
-  /// in the past.
+  /// milliseconds since the epoch. If property is not specified, it will
+  /// default to 24 hours.
   double? get startTime => _wrapped.startTime;
 
   set startTime(double? v) {
@@ -376,7 +411,7 @@ class SearchQuery {
     _wrapped.endTime = v;
   }
 
-  /// The maximum number of results to retrieve.  Defaults to 100.
+  /// The maximum number of results to retrieve. Defaults to 100.
   int? get maxResults => _wrapped.maxResults;
 
   set maxResults(int? v) {

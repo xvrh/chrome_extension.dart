@@ -54,6 +54,10 @@ extension type JSCookies._(JSObject _) {
   /// Lists all existing cookie stores.
   external JSPromise<JSArray> getAllCookieStores();
 
+  /// The partition key for the frame indicated.
+  external JSPromise<GetPartitionKeyCallbackDetails> getPartitionKey(
+      FrameDetails details);
+
   /// Fired when a cookie is set or removed. As a special case, note that
   /// updating a cookie's properties is implemented as a two step process: the
   /// cookie to be updated is first removed entirely, generating a notification
@@ -81,13 +85,23 @@ typedef SameSiteStatus = JSString;
 /// accordingly.
 typedef OnChangedCause = JSString;
 extension type CookiePartitionKey._(JSObject _) implements JSObject {
-  external factory CookiePartitionKey(
-      {
-      /// The top-level site the partitioned cookie is available in.
-      String? topLevelSite});
+  external factory CookiePartitionKey({
+    /// The top-level site the partitioned cookie is available in.
+    String? topLevelSite,
+
+    /// Indicates if the cookie was set in a cross-cross site context. This
+    /// prevents a top-level site embedded in a cross-site context from accessing
+    /// cookies set by the top-level site in a same-site context.
+    bool? hasCrossSiteAncestor,
+  });
 
   /// The top-level site the partitioned cookie is available in.
   external String? topLevelSite;
+
+  /// Indicates if the cookie was set in a cross-cross site context. This
+  /// prevents a top-level site embedded in a cross-site context from accessing
+  /// cookies set by the top-level site in a same-site context.
+  external bool? hasCrossSiteAncestor;
 }
 extension type Cookie._(JSObject _) implements JSObject {
   external factory Cookie({
@@ -231,6 +245,31 @@ extension type CookieDetails._(JSObject _) implements JSObject {
   /// The partition key for reading or modifying cookies with the Partitioned
   /// attribute.
   external CookiePartitionKey? partitionKey;
+}
+extension type FrameDetails._(JSObject _) implements JSObject {
+  external factory FrameDetails({
+    /// The unique identifier for the tab containing the frame.
+    int? tabId,
+
+    /// The unique identifier for the frame within the tab.
+    int? frameId,
+
+    /// The unique identifier for the document. If the frameId and/or tabId are
+    /// provided they will be validated to match the document found by provided
+    /// document ID.
+    String? documentId,
+  });
+
+  /// The unique identifier for the tab containing the frame.
+  external int? tabId;
+
+  /// The unique identifier for the frame within the tab.
+  external int? frameId;
+
+  /// The unique identifier for the document. If the frameId and/or tabId are
+  /// provided they will be validated to match the document found by provided
+  /// document ID.
+  external String? documentId;
 }
 extension type OnChangedChangeInfo._(JSObject _) implements JSObject {
   external factory OnChangedChangeInfo({
@@ -425,4 +464,16 @@ extension type RemoveCallbackDetails._(JSObject _) implements JSObject {
   /// The partition key for reading or modifying cookies with the Partitioned
   /// attribute.
   external CookiePartitionKey? partitionKey;
+}
+extension type GetPartitionKeyCallbackDetails._(JSObject _)
+    implements JSObject {
+  external factory GetPartitionKeyCallbackDetails(
+      {
+      /// The partition key for reading or modifying cookies with the Partitioned
+      /// attribute.
+      CookiePartitionKey partitionKey});
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  external CookiePartitionKey partitionKey;
 }

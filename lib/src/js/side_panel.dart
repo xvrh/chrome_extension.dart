@@ -27,30 +27,55 @@ extension JSChromeJSSidePanelExtension on JSChrome {
 extension type JSSidePanel._(JSObject _) {
   /// Configures the side panel.
   /// |options|: The configuration options to apply to the panel.
-  /// |callback|: Invoked when the options have been set.
+  /// |callback|: Returns a Promise which resolves when the options have been
+  /// set.
   external JSPromise setOptions(PanelOptions options);
 
   /// Returns the active panel configuration.
   /// |options|: Specifies the context to return the configuration for.
-  /// |callback|: Called with the active panel configuration.
+  /// |callback|: Returns a Promise which resolves with the active panel
+  /// configuration.
   external JSPromise<PanelOptions> getOptions(GetPanelOptions options);
 
   /// Configures the extension's side panel behavior. This is an upsert
   /// operation.
   /// |behavior|: The new behavior to be set.
-  /// |callback|: Called when the new behavior has been set.
+  /// |callback|: Returns a Promise which resolves when the new behavior has
+  /// been set.
   external JSPromise setPanelBehavior(PanelBehavior behavior);
 
   /// Returns the extension's current side panel behavior.
-  /// |callback|: Called with the extension's side panel behavior.
+  /// |callback|: Returns a Promise which resolves with the extension's side
+  /// panel behavior.
   external JSPromise<PanelBehavior> getPanelBehavior();
 
   /// Opens the side panel for the extension.
   /// This may only be called in response to a user action.
   /// |options|: Specifies the context in which to open the side panel.
-  /// |callback|: Called when the side panel has been opened.
+  /// |callback|: Returns a Promise which resolves when the side panel has been
+  /// opened.
   external JSPromise open(OpenOptions options);
+
+  /// Returns the side panel's current layout.
+  /// |callback|: Returns a Promise which resolves with a [PanelLayout].
+  external JSPromise<PanelLayout> getLayout();
+
+  /// Closes the extension's side panel.
+  /// This is a no-op if the panel is already closed.
+  /// |options|: Specifies the context in which to close the side panel.
+  /// |callback|: Returns a Promise which resolves when the side panel has been
+  /// closed.
+  external JSPromise close(CloseOptions options);
+
+  /// Fired when the extension's side panel is opened.
+  external Event get onOpened;
+
+  /// Fired when the extension's side panel is closed.
+  external Event get onClosed;
 }
+
+/// Defines the possible alignment for the side panel in the browser UI.
+typedef Side = JSString;
 extension type SidePanel._(JSObject _) implements JSObject {
   external factory SidePanel(
       {
@@ -61,9 +86,14 @@ extension type SidePanel._(JSObject _) implements JSObject {
   external String default_path;
 }
 extension type ManifestKeys._(JSObject _) implements JSObject {
-  external factory ManifestKeys({SidePanel side_panel});
+  external factory ManifestKeys({SidePanel? side_panel});
 
-  external SidePanel side_panel;
+  external SidePanel? side_panel;
+}
+extension type PanelLayout._(JSObject _) implements JSObject {
+  external factory PanelLayout({Side side});
+
+  external Side side;
 }
 extension type PanelOptions._(JSObject _) implements JSObject {
   external factory PanelOptions({
@@ -156,4 +186,89 @@ extension type OpenOptions._(JSObject _) implements JSObject {
   /// (global or tab-specific) in the corresponding tab. At least one of this
   /// or `windowId` must be provided.
   external int? tabId;
+}
+extension type CloseOptions._(JSObject _) implements JSObject {
+  external factory CloseOptions({
+    /// The window in which to close the side panel. If a global side panel is
+    /// open in the specified window, it will be closed for all tabs in that
+    /// window where no tab-specific panel is active. At least one of this or
+    /// `tabId` must be provided.
+    int? windowId,
+
+    /// The tab in which to close the side panel. If a tab-specific side panel
+    /// is open in the specified tab, it will be closed for that tab. If only the
+    /// global side panel is open, the promise returned by the call to
+    /// `close()` will reject with an error. This behavior was changed
+    /// in Chrome 145, with prior versions falling back to closing the global
+    /// panel. At least one of this or `windowId` must be provided.
+    int? tabId,
+  });
+
+  /// The window in which to close the side panel. If a global side panel is
+  /// open in the specified window, it will be closed for all tabs in that
+  /// window where no tab-specific panel is active. At least one of this or
+  /// `tabId` must be provided.
+  external int? windowId;
+
+  /// The tab in which to close the side panel. If a tab-specific side panel
+  /// is open in the specified tab, it will be closed for that tab. If only the
+  /// global side panel is open, the promise returned by the call to
+  /// `close()` will reject with an error. This behavior was changed
+  /// in Chrome 145, with prior versions falling back to closing the global
+  /// panel. At least one of this or `windowId` must be provided.
+  external int? tabId;
+}
+extension type PanelOpenedInfo._(JSObject _) implements JSObject {
+  external factory PanelOpenedInfo({
+    /// The ID of the window where the side panel is opened. This is available
+    /// for both global and tab-specific panels.
+    int windowId,
+
+    /// The optional ID of the tab where the side panel is opened. This is
+    /// provided only when the panel is tab-specific.
+    int? tabId,
+
+    /// The path of the local resource within the extension package whose content
+    /// is displayed in the panel.
+    String path,
+  });
+
+  /// The ID of the window where the side panel is opened. This is available
+  /// for both global and tab-specific panels.
+  external int windowId;
+
+  /// The optional ID of the tab where the side panel is opened. This is
+  /// provided only when the panel is tab-specific.
+  external int? tabId;
+
+  /// The path of the local resource within the extension package whose content
+  /// is displayed in the panel.
+  external String path;
+}
+extension type PanelClosedInfo._(JSObject _) implements JSObject {
+  external factory PanelClosedInfo({
+    /// The ID of the window where the side panel was closed. This is available
+    /// for both global and tab-specific panels.
+    int windowId,
+
+    /// The optional ID of the tab where the side panel was closed. This is
+    /// provided only when the panel is tab-specific.
+    int? tabId,
+
+    /// The path of the local resource within the extension package whose content
+    /// is displayed in the panel.
+    String path,
+  });
+
+  /// The ID of the window where the side panel was closed. This is available
+  /// for both global and tab-specific panels.
+  external int windowId;
+
+  /// The optional ID of the tab where the side panel was closed. This is
+  /// provided only when the panel is tab-specific.
+  external int? tabId;
+
+  /// The path of the local resource within the extension package whose content
+  /// is displayed in the panel.
+  external String path;
 }

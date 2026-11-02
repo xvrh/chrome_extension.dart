@@ -8,6 +8,7 @@ import 'generator/idl_convert.dart' as idl;
 import 'generator/json_convert.dart';
 import 'generator/json_model.dart' as json;
 import 'generator/utils/string.dart';
+import 'generator/webidl_convert.dart';
 
 final idlPath = 'idl';
 final targetPath = 'lib';
@@ -54,6 +55,9 @@ ChromeApi _createApi(Context context, String apiName) {
       _fixExtensionModel(jsonModel);
     }
     model = JsonModelConverter(context, jsonModel).convert();
+  } else if (idlFile.path.endsWith('.webidl')) {
+    model =
+        idl.IdlModelConverter(context, parseWebIdlNamespace(content)).convert();
   } else {
     model = idl.IdlModelConverter.fromString(context, content).convert();
   }
@@ -83,10 +87,9 @@ File _locateDefinitionFile(String apiName) {
   fileName = fileName.replaceFirst("devtools_", "devtools/");
 
   var possiblePaths = [
-    'chrome/$fileName.json',
-    'chrome/$fileName.idl',
-    'extensions/$fileName.json',
-    'extensions/$fileName.idl',
+    for (var directory in ['chrome', 'extensions', 'chromeos'])
+      for (var extension in ['json', 'idl', 'webidl'])
+        '$directory/$fileName.$extension',
   ];
 
   for (var path in possiblePaths) {

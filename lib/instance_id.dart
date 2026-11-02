@@ -22,8 +22,7 @@ class ChromeInstanceId {
   /// Retrieves an identifier for the app instance. The instance ID will be
   /// returned by the `callback`. The same ID will be returned as long as the
   /// application identity has not been revoked or expired.
-  /// [returns] Function called when the retrieval completes. It should check
-  /// [runtime.lastError] for error when instanceID is empty.
+  /// [returns] Resolves when the retrieval completes.
   Future<String> getID() async {
     var $res = await $js.chrome.instanceId.getID().toDart;
     return $res.toDart;
@@ -31,8 +30,7 @@ class ChromeInstanceId {
 
   /// Retrieves the time when the InstanceID has been generated. The creation
   /// time will be returned by the `callback`.
-  /// [returns] Function called when the retrieval completes. It should check
-  /// [runtime.lastError] for error when creationTime is zero.
+  /// [returns] Resolves when the retrieval completes.
   Future<double> getCreationTime() async {
     var $res = await $js.chrome.instanceId.getCreationTime().toDart;
     return $res.toDartDouble;
@@ -41,8 +39,7 @@ class ChromeInstanceId {
   /// Return a token that allows the authorized entity to access the service
   /// defined by scope.
   /// [getTokenParams] Parameters for getToken.
-  /// [returns] Function called when the retrieval completes. It should check
-  /// [runtime.lastError] for error when token is empty.
+  /// [returns] Resolves when the retrieval completes.
   Future<String> getToken(GetTokenParams getTokenParams) async {
     var $res = await $js.chrome.instanceId.getToken(getTokenParams.toJS).toDart;
     return $res.toDart;
@@ -50,16 +47,16 @@ class ChromeInstanceId {
 
   /// Revokes a granted token.
   /// [deleteTokenParams] Parameters for deleteToken.
-  /// [returns] Function called when the token deletion completes. The token
-  /// was revoked successfully if [runtime.lastError] is not set.
+  /// [returns] Resolves when the token deletion completes. The token was
+  /// revoked successfully if the promise does not reject.
   Future<void> deleteToken(DeleteTokenParams deleteTokenParams) async {
     await $js.chrome.instanceId.deleteToken(deleteTokenParams.toJS).toDart;
   }
 
   /// Resets the app instance identifier and revokes all tokens associated with
   /// it.
-  /// [returns] Function called when the deletion completes. The instance
-  /// identifier was revoked successfully if [runtime.lastError] is not set.
+  /// [returns] Resolves when the deletion completes. The instance identifier
+  /// was revoked successfully if the promise does not reject.
   Future<void> deleteID() async {
     await $js.chrome.instanceId.deleteID().toDart;
   }

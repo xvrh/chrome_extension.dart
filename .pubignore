@@ -5,3 +5,4 @@ build/
 docs/
 idl/
 *.iml
+test/generator/webidl/

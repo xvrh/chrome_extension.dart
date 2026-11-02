@@ -2,56 +2,51 @@ library;
 
 import 'dart:async';
 import 'dart:io';
-import 'generator/download/googlesource.dart';
+import 'package:path/path.dart' as p;
+import 'generator/download/github.dart';
 
 void main() => IdlDownloader().downloadIdls();
 
 class IdlDownloader {
-  static final _version = '122.0.6261.69';
-  static final _chromiumBaseUrl = 'https://chromium.googlesource.com';
-  static final _chromiumVersionPrefix = '/chromium/src/+/';
-  static final _idlDirs = [
-    'chrome/common/extensions/api',
-    'extensions/common/api'
-  ];
+  static final _version = '156.0.8078.73';
 
-  /// Finds the latest version of the Chrome IDL spec and downloads the files
-  /// to the appropriate local directories.
+  /// The directories of the Chromium source with the API schemas, and the
+  /// local directory (in `idl/`) to download them to.
+  static final _idlDirs = {
+    'chrome/common/extensions/api': 'chrome',
+    'extensions/common/api': 'extensions',
+    'chromeos/ash/experiences/extensions/common/api': 'chromeos',
+  };
+  static final _extensions = ['.idl', '.webidl', '.json'];
+
+  /// Downloads the API schemas of Chrome [_version] from the GitHub mirror of
+  /// the Chromium source.
   ///
-  /// The process is as follows: using the current version of Chrome, as
-  /// provided by the [OmahaVersionExtractor], we determine the path to the
-  /// source. Then, we crawl the source, with a [GoogleSourceCrawler], starting
-  /// in the directories we expect to find IDL and JSON files. Any files we
-  /// find, we download.
+  /// Set the `GITHUB_TOKEN` environment variable if the GitHub API rate limit
+  /// for anonymous requests is exceeded.
   Future downloadIdls() async {
-    var version = _version;
-    print('Downloading IDL and JSON for APIs at Chrome $version');
-    var googleSourceCrawler = GoogleSourceCrawler(_chromiumBaseUrl);
-    for (var dir in _idlDirs) {
-      var relativePath = '$_chromiumVersionPrefix$version/$dir';
-      await for (var file
-          in googleSourceCrawler.findAllMatchingFiles(relativePath)) {
-        try {
-          await _downloadFile(file);
-        } catch (e) {
-          print(
-              'Failed to download file: ${file.url}. ${e.runtimeType} $e.\n${file.rawHtml}');
-          rethrow;
+    print('Downloading IDL and JSON for APIs at Chrome $_version');
+    var github = GitHubDownloader(
+        repository: 'chromium/chromium',
+        ref: _version,
+        token: Platform.environment['GITHUB_TOKEN']);
+    try {
+      for (var MapEntry(key: sourceDir, value: localDir) in _idlDirs.entries) {
+        var targetDir = Directory(p.join('idl', localDir));
+        // Start from scratch so that the files removed or renamed upstream
+        // (for example .idl converted to .webidl) don't linger.
+        if (targetDir.existsSync()) targetDir.deleteSync(recursive: true);
+
+        await for (var file in github.listFiles(sourceDir,
+            filter: (path) => _extensions.any(path.endsWith))) {
+          var localFile = File(p.join(
+              targetDir.path, p.posix.relative(file.path, from: sourceDir)));
+          localFile.parent.createSync(recursive: true);
+          localFile.writeAsStringSync(await github.download(file));
         }
       }
+    } finally {
+      github.close();
     }
-  }
-
-  Future _downloadFile(GoogleSourceFile file) async {
-    var filePath = file.url.replaceFirst('/', '');
-    var localFile = File(_resolvePath(filePath));
-    await localFile.create(recursive: true);
-    await localFile.writeAsString(file.fileContents);
-  }
-
-  String _resolvePath(String rawPath) {
-    var path = rawPath.replaceFirst(RegExp('^.*[0-9]/'), '');
-    var prefix = path.split('/')[0];
-    return path.replaceFirst(RegExp('.*/api'), 'idl/$prefix');
   }
 }

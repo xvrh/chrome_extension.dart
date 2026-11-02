@@ -39,7 +39,6 @@
         "nocompile": true,
         "deprecated": "Please use $(ref:runtime.sendMessage).",
         "type": "function",
-        "allowAmbiguousOptionalArguments": true,
         "description": "Sends a single request to other listeners within the extension. Similar to $(ref:runtime.connect), but only sends a single request with an optional response. The $(ref:extension.onRequest) event is fired in each page of the extension.",
         "parameters": [
           {"type": "string", "name": "extensionId", "optional": true, "description": "The extension ID of the extension you want to connect to. If omitted, default is your own extension."},
@@ -52,7 +51,7 @@
             {
               "name": "response",
               "type": "any",
-              "description": "The JSON response object sent by the handler of the request. If an error occurs while connecting to the extension, the callback will be called with no arguments and $(ref:runtime.lastError) will be set to the error message."
+              "description": "The JSON response object sent by the handler of the request. If an error occurs while connecting to the extension, the promise will be rejected."
             }
           ]
         }

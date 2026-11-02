@@ -89,7 +89,7 @@ class Session {
 
   Session({
     /// The time when the window or tab was closed or modified, represented in
-    /// milliseconds since the epoch.
+    /// seconds since the epoch.
     required int lastModified,
 
     /// The [tabs.Tab], if this entry describes a tab. Either this or
@@ -110,7 +110,7 @@ class Session {
   $js.Session get toJS => _wrapped;
 
   /// The time when the window or tab was closed or modified, represented in
-  /// milliseconds since the epoch.
+  /// seconds since the epoch.
   int get lastModified => _wrapped.lastModified;
 
   set lastModified(int v) {

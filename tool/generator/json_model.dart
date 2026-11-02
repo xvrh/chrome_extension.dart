@@ -54,8 +54,23 @@ class JsonNamespace {
       }
     });
 
-    return JsonNamespace.fromJson((json.decode(newLines.join('\n')) as List)
-        .single as Map<String, dynamic>);
+    var namespace = (json.decode(newLines.join('\n')) as List).single
+        as Map<String, dynamic>;
+
+    // Functions with both a synchronous return and a callback describe the
+    // callback with "returns_async", but it stays a parameter as it doesn't
+    // support promises.
+    for (var function in (namespace['functions'] as List? ?? [])
+        .cast<Map<String, dynamic>>()) {
+      if (function['returns'] != null && function['returns_async'] != null) {
+        var callback = function.remove('returns_async') as Map<String, dynamic>
+          ..remove('does_not_support_promises');
+        ((function['parameters'] ??= <Object?>[]) as List)
+            .add({...callback, 'type': 'function'});
+      }
+    }
+
+    return JsonNamespace.fromJson(namespace);
   }
 }
 
@@ -246,6 +261,10 @@ class JsonProperty {
 
   final bool? nocompile;
 
+  /// The reason why a "returns_async" callback doesn't support promises.
+  @JsonKey(name: 'does_not_support_promises')
+  final String? doesNotSupportPromises;
+
   JsonProperty(
     this.name,
     this.type,
@@ -274,6 +293,7 @@ class JsonProperty {
     this.serializedType,
     this.minVersion,
     this.nocompile,
+    this.doesNotSupportPromises,
   );
 
   factory JsonProperty.fromJson(Map<String, dynamic> json) =>

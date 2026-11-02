@@ -72,7 +72,7 @@ JsonFunction _$JsonFunctionFromJson(Map<String, dynamic> json) {
     json['options'] as Map<String, dynamic>?,
     json['optional'] as bool?,
     json['allowAmbiguousOptionalArguments'] as bool?,
-    json['maximumManifestVersion'] as int?,
+    (json['maximumManifestVersion'] as num?)?.toInt(),
     json['min_version'] as String?,
     (json['platforms'] as List<dynamic>?)?.map((e) => e as String).toList(),
     json['filters'] as List<dynamic>?,
@@ -143,8 +143,8 @@ JsonDeclaredType _$JsonDeclaredTypeFromJson(Map<String, dynamic> json) {
     items: json['items'] == null
         ? null
         : JsonProperty.fromJson(json['items'] as Map<String, dynamic>),
-    maxItems: json['maxItems'] as int?,
-    minItems: json['minItems'] as int?,
+    maxItems: (json['maxItems'] as num?)?.toInt(),
+    minItems: (json['minItems'] as num?)?.toInt(),
     deprecated: json['deprecated'] as String?,
     optional: json['optional'] as bool?,
     required:
@@ -184,7 +184,8 @@ JsonProperty _$JsonPropertyFromJson(Map<String, dynamic> json) {
       'preserveNull',
       'serialized_type',
       'min_version',
-      'nocompile'
+      'nocompile',
+      'does_not_support_promises'
     ],
   );
   return JsonProperty(
@@ -192,8 +193,8 @@ JsonProperty _$JsonPropertyFromJson(Map<String, dynamic> json) {
     json['type'] as String?,
     json['minimum'] as num?,
     json['maximum'] as num?,
-    json['minLength'] as int?,
-    json['maxLength'] as int?,
+    (json['minLength'] as num?)?.toInt(),
+    (json['maxLength'] as num?)?.toInt(),
     json['optional'] as bool?,
     json['description'] as String? ?? '',
     json['deprecated'] as String?,
@@ -220,8 +221,8 @@ JsonProperty _$JsonPropertyFromJson(Map<String, dynamic> json) {
     (json['choices'] as List<dynamic>?)
         ?.map((e) => JsonProperty.fromJson(e as Map<String, dynamic>))
         .toList(),
-    json['maxItems'] as int?,
-    json['minItems'] as int?,
+    (json['maxItems'] as num?)?.toInt(),
+    (json['minItems'] as num?)?.toInt(),
     (json['enum'] as List<dynamic>?)
         ?.map((e) => const _JsonEnumConverter().fromJson(e as Object))
         .toList(),
@@ -230,5 +231,6 @@ JsonProperty _$JsonPropertyFromJson(Map<String, dynamic> json) {
     json['serialized_type'] as String?,
     json['min_version'] as String?,
     json['nocompile'] as bool?,
+    json['does_not_support_promises'] as String?,
   );
 }

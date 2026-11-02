@@ -37,10 +37,7 @@ extension type JSPlatformKeys._(JSObject _) {
   /// to the certificate.
   /// The selected/filtered client certificates will be passed to
   /// `callback`.
-  external void selectClientCertificates(
-    SelectDetails details,
-    JSFunction callback,
-  );
+  external JSPromise<JSArray> selectClientCertificates(SelectDetails details);
 
   /// Passes the key pair of `certificate` for usage with
   /// [platformKeys.subtleCrypto] to `callback`.
@@ -106,10 +103,8 @@ extension type JSPlatformKeys._(JSObject _) {
   /// certification path and checks trust by a known CA.
   /// The implementation is supposed to respect the EKU serverAuth and to
   /// support subject alternative names.
-  external void verifyTLSServerCertificate(
-    VerificationDetails details,
-    JSFunction callback,
-  );
+  external JSPromise<VerificationResult> verifyTLSServerCertificate(
+      VerificationDetails details);
 }
 
 typedef ClientCertificateType = JSString;

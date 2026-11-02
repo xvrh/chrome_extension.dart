@@ -13,10 +13,8 @@ extension JSChromeJSManagementExtension on JSChrome {
   @JS('management')
   external JSManagement? get managementNullable;
 
-  /// The `chrome.management` API provides ways to manage the list of
-  /// extensions/apps that are installed and running. It is particularly useful
-  /// for extensions that [override](develop/ui/override-chrome-pages) the
-  /// built-in New Tab page.
+  /// The `chrome.management` API provides ways to manage installed apps and
+  /// extensions.
   JSManagement get management {
     var managementNullable = this.managementNullable;
     if (managementNullable == null) {
