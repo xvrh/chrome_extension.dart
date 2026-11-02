@@ -29,7 +29,8 @@ class ChromeEnterpriseHardwarePlatform {
 
   /// Obtains the manufacturer and model for the hardware platform and, if
   /// the extension is authorized, returns it via |callback|.
-  /// |callback|: Called with the hardware platform info.
+  /// |Returns|: Returns a Promise which resolves with the hardware platform
+  ///   info.
   Future<HardwarePlatformInfo> getHardwarePlatformInfo() async {
     var $res = await $js.chrome.enterprise.hardwarePlatform
         .getHardwarePlatformInfo()

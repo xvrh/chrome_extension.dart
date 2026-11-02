@@ -16,8 +16,8 @@ extension JSChromeJSRuntimeExtension on JSChrome {
 
   /// Use the `chrome.runtime` API to retrieve the service worker, return
   /// details about the manifest, and listen for and respond to events in the
-  /// app or extension lifecycle. You can also use this API to convert the
-  /// relative path of URLs to fully-qualified URLs.
+  /// extension lifecycle. You can also use this API to convert the relative
+  /// path of URLs to fully-qualified URLs.
   JSRuntime get runtime {
     var runtimeNullable = this.runtimeNullable;
     if (runtimeNullable == null) {
@@ -32,15 +32,19 @@ extension type JSRuntime._(JSObject _) {
   /// inside the current extension/app. If the background page is an event page,
   /// the system will ensure it is loaded before calling the callback. If there
   /// is no background page, an error is set.
+  @Deprecated(r'Background pages do not exist in MV3 extensions.')
   external JSPromise<JSObject?> getBackgroundPage();
 
   /// Open your Extension's options page, if possible.
   ///
-  /// The precise behavior may depend on your manifest's
-  /// `[options_ui](optionsV2)` or `[options_page](options)` key, or what Chrome
-  /// happens to support at the time. For example, the page may be opened in a
-  /// new tab, within chrome://extensions, within an App, or it may just focus
-  /// an open options page. It will never cause the caller page to reload.
+  /// The precise behavior may depend on your manifest's <a
+  /// href="/docs/extensions/develop/ui/options-page#embedded_options">`options_ui`</a>
+  /// or <a
+  /// href="/docs/extensions/develop/ui/options-page#full_page">`options_page`</a>
+  /// key, or what Chrome happens to support at the time. For example, the page
+  /// may be opened in a new tab, within chrome://extensions, within an App, or
+  /// it may just focus an open options page. It will never cause the caller
+  /// page to reload.
   ///
   /// If your Extension does not declare an options page, or Chrome failed to
   /// create one for some other reason, the callback will set [lastError].
@@ -51,6 +55,9 @@ extension type JSRuntime._(JSObject _) {
   /// file](reference/manifest).
   external JSAny getManifest();
 
+  /// Returns the extension's version as declared in the manifest.
+  external String getVersion();
+
   /// Converts a relative path within an app/extension install directory to a
   /// fully-qualified URL.
   external String getURL(
@@ -58,6 +65,13 @@ extension type JSRuntime._(JSObject _) {
       /// A path to a resource within an app/extension expressed relative to its
       /// install directory.
       String path);
+
+  /// Signals that the extension has finished registering its event listeners
+  /// for the current service worker instance. The browser replaces persisted
+  /// listener registrations with the newly registered listeners and dispatches
+  /// any queued events. Only available in the service worker of extensions
+  /// declaring `"background.async_listener_registration": true`.
+  external JSPromise markListenerRegistrationComplete();
 
   /// Sets the URL to be visited upon uninstallation. This may be used to clean
   /// up server-side data, do analytics, and implement surveys. Maximum 1023
@@ -80,9 +94,9 @@ extension type JSRuntime._(JSObject _) {
   /// requestUpdateCheck.
   ///
   /// This method is only appropriate to call in very limited circumstances,
-  /// such as if your extension/app talks to a backend service, and the backend
-  /// service has determined that the client extension/app version is very far
-  /// out of date and you'd like to prompt a user to update. Most other uses of
+  /// such as if your extension talks to a backend service, and the backend
+  /// service has determined that the client extension version is very far out
+  /// of date and you'd like to prompt a user to update. Most other uses of
   /// requestUpdateCheck, such as calling it unconditionally based on a
   /// repeating timer, probably only serve to waste client, network, and server
   /// resources.
@@ -107,30 +121,31 @@ extension type JSRuntime._(JSObject _) {
       /// scheduled reboot.
       int seconds);
 
-  /// Attempts to connect listeners within an extension/app (such as the
-  /// background page), or other extensions/apps. This is useful for content
-  /// scripts connecting to their extension processes, inter-app/extension
+  /// Attempts to connect listeners within an extension (such as the background
+  /// page), or other extensions/apps. This is useful for content scripts
+  /// connecting to their extension processes, inter-app/extension
   /// communication, and [web
   /// messaging](/docs/extensions/manifest/externally_connectable). Note that
   /// this does not connect to any listeners in a content script. Extensions may
   /// connect to content scripts embedded in tabs via [tabs.connect].
   external Port connect(
-    /// The ID of the extension or app to connect to. If omitted, a connection
-    /// will be attempted with your own extension. Required if sending messages
-    /// from a web page for [web
+    /// The ID of the extension to connect to. If omitted, a connection will be
+    /// attempted with your own extension. Required if sending messages from a
+    /// web page for [web
     /// messaging](/docs/extensions/reference/manifest/externally-connectable).
     String? extensionId,
     ConnectInfo? connectInfo,
   );
 
-  /// Connects to a native application in the host machine. See [Native
+  /// Connects to a native application in the host machine. This method requires
+  /// the `"nativeMessaging"` permission. See [Native
   /// Messaging](develop/concepts/native-messaging) for more information.
   external Port connectNative(
 
       /// The name of the registered application to connect to.
-      String application);
+      JSAny application);
 
-  /// Sends a single message to event listeners within your extension/app or a
+  /// Sends a single message to event listeners within your extension or a
   /// different extension/app. Similar to [runtime.connect] but only sends a
   /// single message, with an optional response. If sending to your extension,
   /// the [runtime.onMessage] event will be fired in every frame of your
@@ -139,9 +154,9 @@ extension type JSRuntime._(JSObject _) {
   /// content scripts using this method. To send messages to content scripts,
   /// use [tabs.sendMessage].
   external JSPromise<JSAny?> sendMessage(
-    /// The ID of the extension/app to send the message to. If omitted, the
-    /// message will be sent to your own extension/app. Required if sending
-    /// messages from a web page for [web
+    /// The ID of the extension to send the message to. If omitted, the message
+    /// will be sent to your own extension/app. Required if sending messages
+    /// from a web page for [web
     /// messaging](/docs/extensions/manifest/externally_connectable).
     String? extensionId,
 
@@ -150,10 +165,11 @@ extension type JSRuntime._(JSObject _) {
     SendMessageOptions? options,
   );
 
-  /// Send a single message to a native application.
+  /// Send a single message to a native application. This method requires the
+  /// `"nativeMessaging"` permission.
   external JSPromise<JSAny> sendNativeMessage(
-    /// The name of the native messaging host.
-    String application,
+    /// The name of the native messaging host, or target details.
+    JSAny application,
 
     /// The message that will be passed to the native messaging host.
     JSAny message,
@@ -181,6 +197,10 @@ extension type JSRuntime._(JSObject _) {
   /// Fired when the extension is first installed, when the extension is updated
   /// to a new version, and when Chrome is updated to a new version.
   external Event get onInstalled;
+
+  /// Fired when an extension goes from being in a disabled state to an enabled
+  /// state.
+  external Event get onEnabled;
 
   /// Sent to the event page just before it is unloaded. This gives the
   /// extension opportunity to do some clean up. Note that since the page is
@@ -220,15 +240,16 @@ extension type JSRuntime._(JSObject _) {
   /// Fired when a connection is made from a user script from this extension.
   external Event get onUserScriptConnect;
 
-  /// Fired when a connection is made from a native application. Currently only
-  /// supported on Chrome OS.
+  /// Fired when a connection is made from a native application. This event
+  /// requires the `"nativeMessaging"` permission. It is only supported on
+  /// Chrome OS.
   external Event get onConnectNative;
 
-  /// Fired when a message is sent from either an extension process (by
-  /// [runtime.sendMessage]) or a content script (by [tabs.sendMessage]).
+  /// Fired when a message is sent from either [runtime.sendMessage] or
+  /// [tabs.sendMessage].
   external Event get onMessage;
 
-  /// Fired when a message is sent from another extension/app (by
+  /// Fired when a message is sent from another extension (by
   /// [runtime.sendMessage]). Cannot be used in a content script.
   external Event get onMessageExternal;
 
@@ -349,7 +370,7 @@ extension type MessageSender._(JSObject _) implements JSObject {
     /// Only available for component extensions.
     int? guestRenderFrameRoutingId,
 
-    /// The ID of the extension or app that opened the connection, if any.
+    /// The ID of the extension that opened the connection, if any.
     String? id,
 
     /// The URL of the page or frame that opened the connection. If the sender is
@@ -361,7 +382,7 @@ extension type MessageSender._(JSObject _) implements JSObject {
     String? nativeApplication,
 
     /// The TLS channel ID of the page or frame that opened the connection, if
-    /// requested by the extension or app, and if available.
+    /// requested by the extension, and if available.
     String? tlsChannelId,
 
     /// The origin of the page or frame that opened the connection. It can vary
@@ -397,7 +418,7 @@ extension type MessageSender._(JSObject _) implements JSObject {
   /// Only available for component extensions.
   external int? guestRenderFrameRoutingId;
 
-  /// The ID of the extension or app that opened the connection, if any.
+  /// The ID of the extension that opened the connection, if any.
   external String? id;
 
   /// The URL of the page or frame that opened the connection. If the sender is
@@ -409,7 +430,7 @@ extension type MessageSender._(JSObject _) implements JSObject {
   external String? nativeApplication;
 
   /// The TLS channel ID of the page or frame that opened the connection, if
-  /// requested by the extension or app, and if available.
+  /// requested by the extension, and if available.
   external String? tlsChannelId;
 
   /// The origin of the page or frame that opened the connection. It can vary
@@ -426,6 +447,31 @@ extension type MessageSender._(JSObject _) implements JSObject {
   /// have changed since port creation.
   external String? documentLifecycle;
 }
+extension type NativeMessageTarget._(JSObject _) implements JSObject {
+  external factory NativeMessageTarget({
+    /// The name of the native messaging host, or external Android app's package
+    /// name.
+    String application,
+
+    /// List of expected signing certificates for the external Android app
+    /// specified as SHA-256 fingerprints. If non-empty, the connection is
+    /// established if the app is signed by at least one of the certificates
+    /// provided. Must be non-empty for packed extensions on Android. Ignored for
+    /// other platforms.
+    JSArray? androidCertificates,
+  });
+
+  /// The name of the native messaging host, or external Android app's package
+  /// name.
+  external String application;
+
+  /// List of expected signing certificates for the external Android app
+  /// specified as SHA-256 fingerprints. If non-empty, the connection is
+  /// established if the app is signed by at least one of the certificates
+  /// provided. Must be non-empty for packed extensions on Android. Ignored for
+  /// other platforms.
+  external JSArray? androidCertificates;
+}
 extension type PlatformInfo._(JSObject _) implements JSObject {
   external factory PlatformInfo({
     /// The operating system Chrome is running on.
@@ -436,7 +482,7 @@ extension type PlatformInfo._(JSObject _) implements JSObject {
 
     /// The native client architecture. This may be different from arch on some
     /// platforms.
-    PlatformNaclArch nacl_arch,
+    PlatformNaclArch? nacl_arch,
   });
 
   /// The operating system Chrome is running on.
@@ -447,7 +493,7 @@ extension type PlatformInfo._(JSObject _) implements JSObject {
 
   /// The native client architecture. This may be different from arch on some
   /// platforms.
-  external PlatformNaclArch nacl_arch;
+  external PlatformNaclArch? nacl_arch;
 }
 extension type ExtensionContext._(JSObject _) implements JSObject {
   external factory ExtensionContext({

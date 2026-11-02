@@ -59,6 +59,15 @@ class ChromePrinting {
     return GetPrinterInfoResponse.fromJS($res);
   }
 
+  /// Returns the status of the print job. This call will fail with a runtime
+  /// error if the print job with the given `jobId` doesn't exist.
+  /// `jobId`: The id of the print job to return the status of. This should be
+  /// the same id received in a [SubmitJobResponse].
+  Future<JobStatus> getJobStatus(String jobId) async {
+    var $res = await $js.chrome.printing.getJobStatus(jobId).toDart;
+    return JobStatus.fromJS($res);
+  }
+
   /// The maximum number of times that [submitJob] can be called per
   /// minute.
   int get maxSubmitJobCallsPerMinute =>
@@ -205,13 +214,14 @@ class SubmitJobRequest {
 
   SubmitJobRequest({
     /// The print job to be submitted.
-    /// The only supported content type is "application/pdf", and the
+    /// Supported content types are "application/pdf" and "image/png". The
     /// [Cloud Job
     /// Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
     /// shouldn't include `FitToPageTicketItem`,
-    /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
-    /// and `VendorTicketItem` fields since they are
-    /// irrelevant for native printing. All other fields must be present.
+    /// `PageRangeTicketItem` and `ReverseOrderTicketItem`
+    /// fields since they are irrelevant for native printing.
+    /// `VendorTicketItem` is optional. All other fields must be
+    /// present.
     required PrintJob job,
 
     /// Used internally to store the blob uuid after parameter customization and
@@ -227,12 +237,13 @@ class SubmitJobRequest {
   $js.SubmitJobRequest get toJS => _wrapped;
 
   /// The print job to be submitted.
-  /// The only supported content type is "application/pdf", and the
+  /// Supported content types are "application/pdf" and "image/png". The
   /// [Cloud Job Ticket](https://developers.google.com/cloud-print/docs/cdd#cjt)
   /// shouldn't include `FitToPageTicketItem`,
-  /// `PageRangeTicketItem`, `ReverseOrderTicketItem`
-  /// and `VendorTicketItem` fields since they are
-  /// irrelevant for native printing. All other fields must be present.
+  /// `PageRangeTicketItem` and `ReverseOrderTicketItem`
+  /// fields since they are irrelevant for native printing.
+  /// `VendorTicketItem` is optional. All other fields must be
+  /// present.
   PrintJob get job => PrintJob.fromJS(_wrapped.job);
 
   set job(PrintJob v) {

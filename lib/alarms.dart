@@ -45,7 +45,7 @@ class ChromeAlarms {
   /// neither [when] or [delayInMinutes] is set for a
   /// repeating alarm, [periodInMinutes] is used as the default for
   /// [delayInMinutes].
-  /// |callback|: Invoked when the alarm has been created.
+  /// |Returns|: Promise that resolves when the alarm has been created.
   Future<void> create(
     String? name,
     AlarmCreateInfo alarmInfo,
@@ -85,7 +85,6 @@ class ChromeAlarms {
   }
 
   /// Fired when an alarm has elapsed. Useful for event pages.
-  /// |alarm|: The alarm that has elapsed.
   EventStream<Alarm> get onAlarm =>
       $js.chrome.alarms.onAlarm.asStream(($c) => ($js.Alarm alarm) {
             return $c(Alarm.fromJS(alarm));
@@ -107,10 +106,14 @@ class Alarm {
     /// If not null, the alarm is a repeating alarm and will fire again in
     /// [periodInMinutes] minutes.
     double? periodInMinutes,
+
+    /// Whether the alarm should persist across sessions (browser restarts).
+    required bool persistAcrossSessions,
   }) : _wrapped = $js.Alarm(
           name: name,
           scheduledTime: scheduledTime,
           periodInMinutes: periodInMinutes,
+          persistAcrossSessions: persistAcrossSessions,
         );
 
   final $js.Alarm _wrapped;
@@ -140,12 +143,22 @@ class Alarm {
   set periodInMinutes(double? v) {
     _wrapped.periodInMinutes = v;
   }
+
+  /// Whether the alarm should persist across sessions (browser restarts).
+  bool get persistAcrossSessions => _wrapped.persistAcrossSessions;
+
+  set persistAcrossSessions(bool v) {
+    _wrapped.persistAcrossSessions = v;
+  }
 }
 
 class AlarmCreateInfo {
   AlarmCreateInfo.fromJS(this._wrapped);
 
   AlarmCreateInfo({
+    /// Name of this alarm.
+    String? name,
+
     /// Time at which the alarm should fire, in milliseconds past the epoch
     /// (e.g. `Date.now() + n`).
     double? when,
@@ -162,15 +175,30 @@ class AlarmCreateInfo {
     ///
     /// <!-- TODO: need minimum=0 -->
     double? periodInMinutes,
+
+    /// Whether the alarm should persist across sessions (browser restarts). In
+    /// Chrome, this defaults to true to match historical behavior, but you
+    /// should
+    /// set this explicitly to maximize compatibility across browsers.
+    bool? persistAcrossSessions,
   }) : _wrapped = $js.AlarmCreateInfo(
+          name: name,
           when: when,
           delayInMinutes: delayInMinutes,
           periodInMinutes: periodInMinutes,
+          persistAcrossSessions: persistAcrossSessions,
         );
 
   final $js.AlarmCreateInfo _wrapped;
 
   $js.AlarmCreateInfo get toJS => _wrapped;
+
+  /// Name of this alarm.
+  String? get name => _wrapped.name;
+
+  set name(String? v) {
+    _wrapped.name = v;
+  }
 
   /// Time at which the alarm should fire, in milliseconds past the epoch
   /// (e.g. `Date.now() + n`).
@@ -199,5 +227,14 @@ class AlarmCreateInfo {
 
   set periodInMinutes(double? v) {
     _wrapped.periodInMinutes = v;
+  }
+
+  /// Whether the alarm should persist across sessions (browser restarts). In
+  /// Chrome, this defaults to true to match historical behavior, but you should
+  /// set this explicitly to maximize compatibility across browsers.
+  bool? get persistAcrossSessions => _wrapped.persistAcrossSessions;
+
+  set persistAcrossSessions(bool? v) {
+    _wrapped.persistAcrossSessions = v;
   }
 }

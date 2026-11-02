@@ -133,8 +133,12 @@ enum ProcessType {
   extension('extension'),
   notification('notification'),
   plugin('plugin'),
+
+  /// Obsolete, will never be returned.
   worker('worker'),
   nacl('nacl'),
+
+  /// Obsolete, will never be returned.
   serviceWorker('service_worker'),
   utility('utility'),
   gpu('gpu'),

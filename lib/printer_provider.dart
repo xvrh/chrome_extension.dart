@@ -25,8 +25,6 @@ class ChromePrinterProvider {
       $js.chrome.printerProviderNullable != null && alwaysTrue;
 
   /// Event fired when print manager requests printers provided by extensions.
-  /// |resultCallback|: Callback to return printer list. Every listener must
-  /// call callback exactly once.
   EventStream<void Function(List<PrinterInfo>)> get onGetPrintersRequested =>
       $js.chrome.printerProvider.onGetPrintersRequested
           .asStream(($c) => ($js.PrintersCallback resultCallback) {
@@ -41,11 +39,6 @@ class ChromePrinterProvider {
   /// _Note:_ An application should not rely on this event being
   /// fired more than once per device. If a connected device is supported it
   /// should be returned in the [onGetPrintersRequested] event.
-  /// |device|: The USB device.
-  /// |resultCallback|: Callback to return printer info. The receiving listener
-  /// must call callback exactly once. If the parameter to this callback is
-  /// undefined that indicates that the application has determined that the
-  /// device is not supported.
   EventStream<OnGetUsbPrinterInfoRequestedEvent>
       get onGetUsbPrinterInfoRequested =>
           $js.chrome.printerProvider.onGetUsbPrinterInfoRequested
@@ -62,11 +55,6 @@ class ChromePrinterProvider {
                   }.toJS);
 
   /// Event fired when print manager requests printer capabilities.
-  /// |printerId|: Unique ID of the printer whose capabilities are requested.
-  /// |resultCallback|: Callback to return device capabilities in
-  /// <a href="https://developers.google.com/cloud-print/docs/cdd#cdd">CDD
-  /// format</a>.
-  /// The receiving listener must call callback exectly once.
   EventStream<OnGetCapabilityRequestedEvent> get onGetCapabilityRequested =>
       $js.chrome.printerProvider.onGetCapabilityRequested.asStream(($c) => (
             String printerId,
@@ -81,9 +69,6 @@ class ChromePrinterProvider {
           }.toJS);
 
   /// Event fired when print manager requests printing.
-  /// |printJob|: The printing request parameters.
-  /// |resultCallback|: Callback that should be called when the printing
-  /// request is completed.
   EventStream<OnPrintRequestedEvent> get onPrintRequested =>
       $js.chrome.printerProvider.onPrintRequested.asStream(($c) => (
             $js.PrintJob printJob,

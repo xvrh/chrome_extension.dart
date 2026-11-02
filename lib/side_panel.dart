@@ -22,14 +22,16 @@ class ChromeSidePanel {
 
   /// Configures the side panel.
   /// |options|: The configuration options to apply to the panel.
-  /// |callback|: Invoked when the options have been set.
+  /// |callback|: Returns a Promise which resolves when the options have been
+  /// set.
   Future<void> setOptions(PanelOptions options) async {
     await $js.chrome.sidePanel.setOptions(options.toJS).toDart;
   }
 
   /// Returns the active panel configuration.
   /// |options|: Specifies the context to return the configuration for.
-  /// |callback|: Called with the active panel configuration.
+  /// |callback|: Returns a Promise which resolves with the active panel
+  /// configuration.
   Future<PanelOptions> getOptions(GetPanelOptions options) async {
     var $res = await $js.chrome.sidePanel.getOptions(options.toJS).toDart;
     return PanelOptions.fromJS($res);
@@ -38,13 +40,15 @@ class ChromeSidePanel {
   /// Configures the extension's side panel behavior. This is an upsert
   /// operation.
   /// |behavior|: The new behavior to be set.
-  /// |callback|: Called when the new behavior has been set.
+  /// |callback|: Returns a Promise which resolves when the new behavior has
+  /// been set.
   Future<void> setPanelBehavior(PanelBehavior behavior) async {
     await $js.chrome.sidePanel.setPanelBehavior(behavior.toJS).toDart;
   }
 
   /// Returns the extension's current side panel behavior.
-  /// |callback|: Called with the extension's side panel behavior.
+  /// |callback|: Returns a Promise which resolves with the extension's side
+  /// panel behavior.
   Future<PanelBehavior> getPanelBehavior() async {
     var $res = await $js.chrome.sidePanel.getPanelBehavior().toDart;
     return PanelBehavior.fromJS($res);
@@ -53,9 +57,55 @@ class ChromeSidePanel {
   /// Opens the side panel for the extension.
   /// This may only be called in response to a user action.
   /// |options|: Specifies the context in which to open the side panel.
-  /// |callback|: Called when the side panel has been opened.
+  /// |callback|: Returns a Promise which resolves when the side panel has been
+  /// opened.
   Future<void> open(OpenOptions options) async {
     await $js.chrome.sidePanel.open(options.toJS).toDart;
+  }
+
+  /// Returns the side panel's current layout.
+  /// |callback|: Returns a Promise which resolves with a [PanelLayout].
+  Future<PanelLayout> getLayout() async {
+    var $res = await $js.chrome.sidePanel.getLayout().toDart;
+    return PanelLayout.fromJS($res);
+  }
+
+  /// Closes the extension's side panel.
+  /// This is a no-op if the panel is already closed.
+  /// |options|: Specifies the context in which to close the side panel.
+  /// |callback|: Returns a Promise which resolves when the side panel has been
+  /// closed.
+  Future<void> close(CloseOptions options) async {
+    await $js.chrome.sidePanel.close(options.toJS).toDart;
+  }
+
+  /// Fired when the extension's side panel is opened.
+  EventStream<PanelOpenedInfo> get onOpened => $js.chrome.sidePanel.onOpened
+      .asStream(($c) => ($js.PanelOpenedInfo info) {
+            return $c(PanelOpenedInfo.fromJS(info));
+          }.toJS);
+
+  /// Fired when the extension's side panel is closed.
+  EventStream<PanelClosedInfo> get onClosed => $js.chrome.sidePanel.onClosed
+      .asStream(($c) => ($js.PanelClosedInfo info) {
+            return $c(PanelClosedInfo.fromJS(info));
+          }.toJS);
+}
+
+/// Defines the possible alignment for the side panel in the browser UI.
+enum Side {
+  left('left'),
+  right('right');
+
+  const Side(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static Side fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
   }
 }
 
@@ -83,17 +133,34 @@ class SidePanel {
 class ManifestKeys {
   ManifestKeys.fromJS(this._wrapped);
 
-  ManifestKeys({required SidePanel sidePanel})
-      : _wrapped = $js.ManifestKeys(side_panel: sidePanel.toJS);
+  ManifestKeys({SidePanel? sidePanel})
+      : _wrapped = $js.ManifestKeys(side_panel: sidePanel?.toJS);
 
   final $js.ManifestKeys _wrapped;
 
   $js.ManifestKeys get toJS => _wrapped;
 
-  SidePanel get sidePanel => SidePanel.fromJS(_wrapped.side_panel);
+  SidePanel? get sidePanel => _wrapped.side_panel?.let(SidePanel.fromJS);
 
-  set sidePanel(SidePanel v) {
-    _wrapped.side_panel = v.toJS;
+  set sidePanel(SidePanel? v) {
+    _wrapped.side_panel = v?.toJS;
+  }
+}
+
+class PanelLayout {
+  PanelLayout.fromJS(this._wrapped);
+
+  PanelLayout({required Side side})
+      : _wrapped = $js.PanelLayout(side: side.toJS);
+
+  final $js.PanelLayout _wrapped;
+
+  $js.PanelLayout get toJS => _wrapped;
+
+  Side get side => Side.fromJS(_wrapped.side);
+
+  set side(Side v) {
+    _wrapped.side = v.toJS;
   }
 }
 
@@ -254,5 +321,157 @@ class OpenOptions {
 
   set tabId(int? v) {
     _wrapped.tabId = v;
+  }
+}
+
+class CloseOptions {
+  CloseOptions.fromJS(this._wrapped);
+
+  CloseOptions({
+    /// The window in which to close the side panel. If a global side panel is
+    /// open in the specified window, it will be closed for all tabs in that
+    /// window where no tab-specific panel is active. At least one of this or
+    /// `tabId` must be provided.
+    int? windowId,
+
+    /// The tab in which to close the side panel. If a tab-specific side panel
+    /// is open in the specified tab, it will be closed for that tab. If only
+    /// the
+    /// global side panel is open, the promise returned by the call to
+    /// `close()` will reject with an error. This behavior was changed
+    /// in Chrome 145, with prior versions falling back to closing the global
+    /// panel. At least one of this or `windowId` must be provided.
+    int? tabId,
+  }) : _wrapped = $js.CloseOptions(
+          windowId: windowId,
+          tabId: tabId,
+        );
+
+  final $js.CloseOptions _wrapped;
+
+  $js.CloseOptions get toJS => _wrapped;
+
+  /// The window in which to close the side panel. If a global side panel is
+  /// open in the specified window, it will be closed for all tabs in that
+  /// window where no tab-specific panel is active. At least one of this or
+  /// `tabId` must be provided.
+  int? get windowId => _wrapped.windowId;
+
+  set windowId(int? v) {
+    _wrapped.windowId = v;
+  }
+
+  /// The tab in which to close the side panel. If a tab-specific side panel
+  /// is open in the specified tab, it will be closed for that tab. If only the
+  /// global side panel is open, the promise returned by the call to
+  /// `close()` will reject with an error. This behavior was changed
+  /// in Chrome 145, with prior versions falling back to closing the global
+  /// panel. At least one of this or `windowId` must be provided.
+  int? get tabId => _wrapped.tabId;
+
+  set tabId(int? v) {
+    _wrapped.tabId = v;
+  }
+}
+
+class PanelOpenedInfo {
+  PanelOpenedInfo.fromJS(this._wrapped);
+
+  PanelOpenedInfo({
+    /// The ID of the window where the side panel is opened. This is available
+    /// for both global and tab-specific panels.
+    required int windowId,
+
+    /// The optional ID of the tab where the side panel is opened. This is
+    /// provided only when the panel is tab-specific.
+    int? tabId,
+
+    /// The path of the local resource within the extension package whose
+    /// content
+    /// is displayed in the panel.
+    required String path,
+  }) : _wrapped = $js.PanelOpenedInfo(
+          windowId: windowId,
+          tabId: tabId,
+          path: path,
+        );
+
+  final $js.PanelOpenedInfo _wrapped;
+
+  $js.PanelOpenedInfo get toJS => _wrapped;
+
+  /// The ID of the window where the side panel is opened. This is available
+  /// for both global and tab-specific panels.
+  int get windowId => _wrapped.windowId;
+
+  set windowId(int v) {
+    _wrapped.windowId = v;
+  }
+
+  /// The optional ID of the tab where the side panel is opened. This is
+  /// provided only when the panel is tab-specific.
+  int? get tabId => _wrapped.tabId;
+
+  set tabId(int? v) {
+    _wrapped.tabId = v;
+  }
+
+  /// The path of the local resource within the extension package whose content
+  /// is displayed in the panel.
+  String get path => _wrapped.path;
+
+  set path(String v) {
+    _wrapped.path = v;
+  }
+}
+
+class PanelClosedInfo {
+  PanelClosedInfo.fromJS(this._wrapped);
+
+  PanelClosedInfo({
+    /// The ID of the window where the side panel was closed. This is available
+    /// for both global and tab-specific panels.
+    required int windowId,
+
+    /// The optional ID of the tab where the side panel was closed. This is
+    /// provided only when the panel is tab-specific.
+    int? tabId,
+
+    /// The path of the local resource within the extension package whose
+    /// content
+    /// is displayed in the panel.
+    required String path,
+  }) : _wrapped = $js.PanelClosedInfo(
+          windowId: windowId,
+          tabId: tabId,
+          path: path,
+        );
+
+  final $js.PanelClosedInfo _wrapped;
+
+  $js.PanelClosedInfo get toJS => _wrapped;
+
+  /// The ID of the window where the side panel was closed. This is available
+  /// for both global and tab-specific panels.
+  int get windowId => _wrapped.windowId;
+
+  set windowId(int v) {
+    _wrapped.windowId = v;
+  }
+
+  /// The optional ID of the tab where the side panel was closed. This is
+  /// provided only when the panel is tab-specific.
+  int? get tabId => _wrapped.tabId;
+
+  set tabId(int? v) {
+    _wrapped.tabId = v;
+  }
+
+  /// The path of the local resource within the extension package whose content
+  /// is displayed in the panel.
+  String get path => _wrapped.path;
+
+  set path(String v) {
+    _wrapped.path = v;
   }
 }

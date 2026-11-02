@@ -459,14 +459,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  mockito:
-    dependency: "direct dev"
-    description:
-      name: mockito
-      sha256: "6c1970612452260366064d4df80fdb3eece1ec5e52610ae34a0e51f2f3d8e64f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.8.1"
   node_preamble:
     dependency: transitive
     description:
@@ -568,10 +560,10 @@ packages:
     dependency: "direct dev"
     description:
       name: puppeteer
-      sha256: "9bd39e1f7d7f029e47006acac26066e68d11851312178dec2750e809bae5b44f"
+      sha256: d13b736a47af30a5ace7153678af3f3c1849d32cf47b2b47413ffa7e11906e3f
       url: "https://pub.dev"
     source: hosted
-    version: "3.27.0"
+    version: "3.28.0"
   qr:
     dependency: transitive
     description:

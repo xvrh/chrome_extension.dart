@@ -38,26 +38,19 @@ extension type JSDevtoolsInspectedWindow._(JSObject _) {
   /// parameter is non-null and has `isError` set to true and `code` set to an
   /// error code. In the case of a JavaScript error, `isException` is set to
   /// true and `value` is set to the string value of thrown object.
-  external void eval(
+  external JSPromise<EvalCallbackResponse> eval(
     /// An expression to evaluate.
     String expression,
 
     /// The options parameter can contain one or more options.
     EvalOptions? options,
-
-    /// A function called when evaluation completes.
-    JSFunction? callback,
   );
 
   /// Reloads the inspected page.
   external void reload(ReloadOptions? reloadOptions);
 
   /// Retrieves the list of resources from the inspected page.
-  external void getResources(
-
-      /// A function that receives the list of resources when the request
-      /// completes.
-      JSFunction callback);
+  external JSPromise<JSArray> getResources();
 
   /// Fired when a new resource is added to the inspected page.
   external Event get onResourceAdded;
@@ -80,13 +73,10 @@ extension type Resource._(JSObject _) implements JSObject {
   external String url;
 
   /// Gets the content of the resource.
-  external void getContent(
-
-      /// A function that receives resource content when the request completes.
-      JSFunction callback);
+  external JSPromise<GetContentCallbackResponse> getContent();
 
   /// Sets the content of the resource.
-  external void setContent(
+  external JSPromise<JSAny?> setContent(
     /// New content of the resource. Only resources with the text type are
     /// currently supported.
     String content,
@@ -95,61 +85,24 @@ extension type Resource._(JSObject _) implements JSObject {
     /// of the resource should be persisted; false if this is a minor change
     /// sent in progress of the user editing the resource.
     bool commit,
-
-    /// A function called upon request completion.
-    JSFunction? callback,
   );
 }
-extension type EvalExceptionInfo._(JSObject _) implements JSObject {
-  external factory EvalExceptionInfo({
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated.
-    bool isError,
+extension type EvalCallbackResponse._(JSObject _) implements JSObject {
+  external factory EvalCallbackResponse({
+    /// The result of evaluation.
+    JSAny result,
 
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated.
-    String code,
-
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated.
-    String description,
-
-    /// Set if the error occurred on the DevTools side before the expression is
-    /// evaluated, contains the array of the values that may be substituted into
-    /// the description string to provide more information about the cause of the
-    /// error.
-    JSArray details,
-
-    /// Set if the evaluated code produces an unhandled exception.
-    bool isException,
-
-    /// Set if the evaluated code produces an unhandled exception.
-    String value,
+    /// An object providing details if an exception occurred while evaluating the
+    /// expression.
+    EvalCallbackResponseExceptionInfo exceptionInfo,
   });
 
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated.
-  external bool isError;
+  /// The result of evaluation.
+  external JSAny result;
 
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated.
-  external String code;
-
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated.
-  external String description;
-
-  /// Set if the error occurred on the DevTools side before the expression is
-  /// evaluated, contains the array of the values that may be substituted into
-  /// the description string to provide more information about the cause of the
-  /// error.
-  external JSArray details;
-
-  /// Set if the evaluated code produces an unhandled exception.
-  external bool isException;
-
-  /// Set if the evaluated code produces an unhandled exception.
-  external String value;
+  /// An object providing details if an exception occurred while evaluating the
+  /// expression.
+  external EvalCallbackResponseExceptionInfo exceptionInfo;
 }
 extension type EvalOptions._(JSObject _) implements JSObject {
   external factory EvalOptions({
@@ -226,4 +179,73 @@ extension type ReloadOptions._(JSObject _) implements JSObject {
   /// The script will not be injected after subsequent reloads-for example, if
   /// the user presses Ctrl+R.
   external String? injectedScript;
+}
+extension type GetContentCallbackResponse._(JSObject _) implements JSObject {
+  external factory GetContentCallbackResponse({
+    /// Content of the resource (potentially encoded).
+    String content,
+
+    /// Empty if the content is not encoded, encoding name otherwise. Currently,
+    /// only base64 is supported.
+    String encoding,
+  });
+
+  /// Content of the resource (potentially encoded).
+  external String content;
+
+  /// Empty if the content is not encoded, encoding name otherwise. Currently,
+  /// only base64 is supported.
+  external String encoding;
+}
+extension type EvalCallbackResponseExceptionInfo._(JSObject _)
+    implements JSObject {
+  external factory EvalCallbackResponseExceptionInfo({
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated.
+    bool isError,
+
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated.
+    String code,
+
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated.
+    String description,
+
+    /// Set if the error occurred on the DevTools side before the expression is
+    /// evaluated, contains the array of the values that may be substituted into
+    /// the description string to provide more information about the cause of the
+    /// error.
+    JSArray details,
+
+    /// Set if the evaluated code produces an unhandled exception.
+    bool isException,
+
+    /// Set if the evaluated code produces an unhandled exception.
+    String value,
+  });
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated.
+  external bool isError;
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated.
+  external String code;
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated.
+  external String description;
+
+  /// Set if the error occurred on the DevTools side before the expression is
+  /// evaluated, contains the array of the values that may be substituted into
+  /// the description string to provide more information about the cause of the
+  /// error.
+  external JSArray details;
+
+  /// Set if the evaluated code produces an unhandled exception.
+  external bool isException;
+
+  /// Set if the evaluated code produces an unhandled exception.
+  external String value;
 }

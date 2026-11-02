@@ -4,6 +4,7 @@ library;
 
 import 'src/internal_helpers.dart';
 import 'src/js/browser_action.dart' as $js;
+import 'src/js/extension_types.dart' as $js_extension_types;
 import 'src/js/tabs.dart' as $js_tabs;
 import 'tabs.dart';
 
@@ -109,12 +110,6 @@ class ChromeBrowserAction {
             return $c(Tab.fromJS(tab));
           }.toJS);
 }
-
-typedef ColorArray = List<int>;
-
-/// Pixel data for an image. Must be an ImageData object; for example, from a
-/// `canvas` element.
-typedef ImageDataType = JSObject;
 
 class TabDetails {
   TabDetails.fromJS(this._wrapped);
@@ -232,7 +227,7 @@ class SetIconDetails {
   /// that 'details.imageData = foo' is equivalent to 'details.imageData =
   /// {'16': foo}'
   Object? get imageData => _wrapped.imageData?.when(
-        isOther: (v) => (v as $js.ImageDataType),
+        isOther: (v) => (v as $js_extension_types.ImageDataType),
         isMap: (v) => v.toDartMap(),
       );
 
@@ -386,7 +381,7 @@ class SetBadgeBackgroundColorDetails {
   /// example, `#FF0000` or `#F00` (red). Renders colors at full opacity.
   Object get color => _wrapped.color.when(
         isString: (v) => v,
-        isOther: (v) => (v as $js.ColorArray)
+        isOther: (v) => (v as $js_extension_types.ColorArray)
             .toDart
             .cast<JSNumber>()
             .map((e) => e.toDartInt)

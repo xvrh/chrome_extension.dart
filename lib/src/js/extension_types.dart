@@ -47,6 +47,39 @@ typedef DocumentLifecycle = JSString;
 /// shared with the page's JavaScript, or a user scripts world that is only
 /// available for scripts registered with the User Scripts API.
 typedef ExecutionWorld = JSString;
+
+typedef ColorArray = JSArray;
+
+/// Pixel data for an image. Must be an ImageData object; for example, from a
+/// `canvas` element.
+typedef ImageDataType = JSObject;
+extension type Rect._(JSObject _) implements JSObject {
+  external factory Rect({
+    /// The x coordinate of the rectangle.
+    int x,
+
+    /// The y coordinate of the rectangle.
+    int y,
+
+    /// The width of the rectangle.
+    int width,
+
+    /// The height of the rectangle.
+    int height,
+  });
+
+  /// The x coordinate of the rectangle.
+  external int x;
+
+  /// The y coordinate of the rectangle.
+  external int y;
+
+  /// The width of the rectangle.
+  external int width;
+
+  /// The height of the rectangle.
+  external int height;
+}
 extension type ImageDetails._(JSObject _) implements JSObject {
   external factory ImageDetails({
     /// The format of the resulting image.  Default is `"jpeg"`.
@@ -57,6 +90,14 @@ extension type ImageDetails._(JSObject _) implements JSObject {
     /// resulting image will have more visual artifacts, and the number of bytes
     /// needed to store it will decrease.
     int? quality,
+
+    /// An object specifying the area of the document to capture, in CSS pixels,
+    /// relative to the page. If omitted, the currently visible viewport is
+    /// captured.
+    Rect? rect,
+
+    /// The scale factor to apply to the image. Defaults to devicePixelRatio.
+    double? scale,
   });
 
   /// The format of the resulting image.  Default is `"jpeg"`.
@@ -67,15 +108,23 @@ extension type ImageDetails._(JSObject _) implements JSObject {
   /// resulting image will have more visual artifacts, and the number of bytes
   /// needed to store it will decrease.
   external int? quality;
+
+  /// An object specifying the area of the document to capture, in CSS pixels,
+  /// relative to the page. If omitted, the currently visible viewport is
+  /// captured.
+  external Rect? rect;
+
+  /// The scale factor to apply to the image. Defaults to devicePixelRatio.
+  external double? scale;
 }
 extension type InjectDetails._(JSObject _) implements JSObject {
   external factory InjectDetails({
     /// JavaScript or CSS code to inject.
     ///
-    /// **Warning:**
-    /// Be careful using the `code` parameter. Incorrect use of it may open your
-    /// extension to [cross site
-    /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
+    /// <aside class='warning'>**Warning:** Be careful using the `code` parameter.
+    /// Incorrect use of it may open your extension to [cross site
+    /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting)
+    /// attacks</aside>
     String? code,
 
     /// JavaScript or CSS file to inject.
@@ -109,10 +158,10 @@ extension type InjectDetails._(JSObject _) implements JSObject {
 
   /// JavaScript or CSS code to inject.
   ///
-  /// **Warning:**
-  /// Be careful using the `code` parameter. Incorrect use of it may open your
-  /// extension to [cross site
-  /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) attacks.
+  /// <aside class='warning'>**Warning:** Be careful using the `code` parameter.
+  /// Incorrect use of it may open your extension to [cross site
+  /// scripting](https://en.wikipedia.org/wiki/Cross-site_scripting)
+  /// attacks</aside>
   external String? code;
 
   /// JavaScript or CSS file to inject.

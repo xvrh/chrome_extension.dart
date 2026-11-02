@@ -56,6 +56,15 @@ extension type JSTtsEngine._(JSObject _) {
     AudioBuffer audio,
   );
 
+  /// Called by an engine when a language install is attempted, and when a
+  /// language is uninstalled. Also called in response to a status request from
+  /// a client. When a voice is installed or uninstalled, the engine should also
+  /// call ttsEngine.updateVoices to register the voice.
+  external void updateLanguage(
+
+      /// The install status of the language.
+      LanguageStatus status);
+
   /// Called when the user makes a call to tts.speak() and one of the voices
   /// from this extension's manifest is the first to match the options object.
   external Event get onSpeak;
@@ -81,9 +90,86 @@ extension type JSTtsEngine._(JSObject _) {
   /// the resume event, to continue speaking the current utterance, if any. Note
   /// that a stop event should also clear the paused state.
   external Event get onResume;
+
+  /// Fired when a TTS client requests to install a new language. The engine
+  /// should attempt to download and install the language, and call
+  /// ttsEngine.updateLanguage with the result. On success, the engine should
+  /// also call ttsEngine.updateVoices to register the newly available voices.
+  external Event get onInstallLanguageRequest;
+
+  /// Fired when a TTS client indicates a language is no longer needed.
+  external Event get onUninstallLanguageRequest;
+
+  /// Fired when a TTS client requests the install status of a language.
+  external Event get onLanguageStatusRequest;
 }
 
+/// Type of requestor.
+typedef TtsClientSource = JSString;
+
 typedef VoiceGender = JSString;
+
+/// The install status of a voice.
+typedef LanguageInstallStatus = JSString;
+extension type TtsClient._(JSObject _) implements JSObject {
+  external factory TtsClient({
+    /// Client making a language management request. For an extension, this is the
+    /// unique extension ID. For Chrome features, this is the human-readable name
+    /// of the feature.
+    String id,
+
+    /// Type of requestor.
+    TtsClientSource source,
+  });
+
+  /// Client making a language management request. For an extension, this is the
+  /// unique extension ID. For Chrome features, this is the human-readable name
+  /// of the feature.
+  external String id;
+
+  /// Type of requestor.
+  external TtsClientSource source;
+}
+extension type LanguageUninstallOptions._(JSObject _) implements JSObject {
+  external factory LanguageUninstallOptions(
+      {
+      /// True if the TTS client wants the language to be immediately uninstalled.
+      /// The engine may choose whether or when to uninstall the language, based on
+      /// this parameter and the requestor information. If false, it may use other
+      /// criteria, such as recent usage, to determine when to uninstall.
+      bool uninstallImmediately});
+
+  /// True if the TTS client wants the language to be immediately uninstalled.
+  /// The engine may choose whether or when to uninstall the language, based on
+  /// this parameter and the requestor information. If false, it may use other
+  /// criteria, such as recent usage, to determine when to uninstall.
+  external bool uninstallImmediately;
+}
+extension type LanguageStatus._(JSObject _) implements JSObject {
+  external factory LanguageStatus({
+    /// Language string in the form of language code-region code, where the region
+    /// may be omitted. Examples are en, en-AU, zh-CH.
+    String lang,
+
+    /// Installation status.
+    LanguageInstallStatus installStatus,
+
+    /// Detail about installation failures. Optionally populated if the language
+    /// failed to install.
+    String? error,
+  });
+
+  /// Language string in the form of language code-region code, where the region
+  /// may be omitted. Examples are en, en-AU, zh-CH.
+  external String lang;
+
+  /// Installation status.
+  external LanguageInstallStatus installStatus;
+
+  /// Detail about installation failures. Optionally populated if the language
+  /// failed to install.
+  external String? error;
+}
 extension type SpeakOptions._(JSObject _) implements JSObject {
   external factory SpeakOptions({
     /// The name of the voice to use for synthesis.

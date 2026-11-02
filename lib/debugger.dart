@@ -14,9 +14,9 @@ extension ChromeDebuggerExtension on Chrome {
   /// [remote debugging
   /// protocol](https://developer.chrome.com/devtools/docs/debugger-protocol).
   /// Use `chrome.debugger` to attach to one or more tabs to instrument network
-  /// interaction, debug JavaScript, mutate the DOM and CSS, etc. Use the
-  /// Debuggee `tabId` to target tabs with sendCommand and route events by
-  /// `tabId` from onEvent callbacks.
+  /// interaction, debug JavaScript, mutate the DOM and CSS, and more. Use the
+  /// [Debuggee] property `tabId` to target tabs with `sendCommand` and route
+  /// events by `tabId` from `onEvent` callbacks.
   ChromeDebugger get debugger => _debugger;
 }
 
@@ -31,9 +31,9 @@ class ChromeDebugger {
   /// only attach to the debuggee with matching major version and greater or
   /// equal minor version. List of the protocol versions can be obtained
   /// [here](https://developer.chrome.com/devtools/docs/debugger-protocol).
-  /// [returns] Called once the attach operation succeeds or fails. Callback
-  /// receives no arguments. If the attach fails, [runtime.lastError] will be
-  /// set to the error message.
+  /// [returns] Resolves once the attach operation succeeds or fails. The
+  /// promise resolves with no value. If the attach fails, the promise will be
+  /// rejected.
   Future<void> attach(
     Debuggee target,
     String requiredVersion,
@@ -48,9 +48,9 @@ class ChromeDebugger {
 
   /// Detaches debugger from the given target.
   /// [target] Debugging target from which you want to detach.
-  /// [returns] Called once the detach operation succeeds or fails. Callback
-  /// receives no arguments. If the detach fails, [runtime.lastError] will be
-  /// set to the error message.
+  /// [returns] Resolves once the detach operation succeeds or fails. The
+  /// promise resolves with no value. If the detach fails, the promise will be
+  /// rejected.
   Future<void> detach(Debuggee target) async {
     await $js.chrome.debugger.detach(target.toJS).toDart;
   }
@@ -63,10 +63,9 @@ class ChromeDebugger {
   /// [commandParams] JSON object with request parameters. This object must
   /// conform to the remote debugging params scheme for given method.
   /// [returns] Response body. If an error occurs while posting the message,
-  /// the callback will be called with no arguments and [runtime.lastError]
-  /// will be set to the error message.
+  /// the promise will be rejected.
   Future<Map?> sendCommand(
-    Debuggee target,
+    DebuggerSession target,
     String method,
     Map? commandParams,
   ) async {
@@ -92,12 +91,12 @@ class ChromeDebugger {
   /// Fired whenever debugging target issues instrumentation event.
   EventStream<OnEventEvent> get onEvent =>
       $js.chrome.debugger.onEvent.asStream(($c) => (
-            $js.Debuggee source,
+            $js.DebuggerSession source,
             String method,
             JSAny? params,
           ) {
             return $c(OnEventEvent(
-              source: Debuggee.fromJS(source),
+              source: DebuggerSession.fromJS(source),
               method: method,
               params: params?.toDartMap(),
             ));
@@ -199,6 +198,69 @@ class Debuggee {
 
   set targetId(String? v) {
     _wrapped.targetId = v;
+  }
+}
+
+class DebuggerSession {
+  DebuggerSession.fromJS(this._wrapped);
+
+  DebuggerSession({
+    /// The id of the tab which you intend to debug.
+    int? tabId,
+
+    /// The id of the extension which you intend to debug. Attaching to an
+    /// extension background page is only possible when the
+    /// `--silent-debugger-extension-api` command-line switch is used.
+    String? extensionId,
+
+    /// The opaque id of the debug target.
+    String? targetId,
+
+    /// The opaque id of the Chrome DevTools Protocol session. Identifies a
+    /// child session within the root session identified by tabId, extensionId
+    /// or targetId.
+    String? sessionId,
+  }) : _wrapped = $js.DebuggerSession(
+          tabId: tabId,
+          extensionId: extensionId,
+          targetId: targetId,
+          sessionId: sessionId,
+        );
+
+  final $js.DebuggerSession _wrapped;
+
+  $js.DebuggerSession get toJS => _wrapped;
+
+  /// The id of the tab which you intend to debug.
+  int? get tabId => _wrapped.tabId;
+
+  set tabId(int? v) {
+    _wrapped.tabId = v;
+  }
+
+  /// The id of the extension which you intend to debug. Attaching to an
+  /// extension background page is only possible when the
+  /// `--silent-debugger-extension-api` command-line switch is used.
+  String? get extensionId => _wrapped.extensionId;
+
+  set extensionId(String? v) {
+    _wrapped.extensionId = v;
+  }
+
+  /// The opaque id of the debug target.
+  String? get targetId => _wrapped.targetId;
+
+  set targetId(String? v) {
+    _wrapped.targetId = v;
+  }
+
+  /// The opaque id of the Chrome DevTools Protocol session. Identifies a child
+  /// session within the root session identified by tabId, extensionId or
+  /// targetId.
+  String? get sessionId => _wrapped.sessionId;
+
+  set sessionId(String? v) {
+    _wrapped.sessionId = v;
   }
 }
 
@@ -308,8 +370,8 @@ class OnEventEvent {
     required this.params,
   });
 
-  /// The debuggee that generated this event.
-  final Debuggee source;
+  /// The debugger session that generated this event.
+  final DebuggerSession source;
 
   /// Method name. Should be one of the notifications defined by the [remote
   /// debugging

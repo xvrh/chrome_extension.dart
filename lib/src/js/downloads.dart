@@ -37,12 +37,13 @@ extension type JSDownloads._(JSObject _) {
   /// a descriptive string. The error strings are not guaranteed to remain
   /// backwards compatible between releases. Extensions must not parse it.
   /// |options|: What to download and how.
-  /// |callback|: Called with the id of the new [DownloadItem].
+  /// |Returns|: Returns a Promise which resolves with the id of the new
+  /// [DownloadItem].
   external JSPromise<JSNumber> download(DownloadOptions options);
 
   /// Find [DownloadItem]. Set `query` to the empty object to get
-  /// all [DownloadItem]. To get a specific [DownloadItem], set only the
-  /// `id` field. To page through a large number of items, set
+  /// all [DownloadItem]. To get a specific [DownloadItem], set only
+  /// the `id` field. To page through a large number of items, set
   /// `orderBy: ['-startTime']`, set `limit` to the
   /// number of items per page, and set `startedAfter` to the
   /// `startTime` of the last item from the last page.
@@ -52,33 +53,41 @@ extension type JSDownloads._(JSObject _) {
   /// paused state. Otherwise [runtime.lastError] contains an error message.
   /// The request will fail if the download is not active.
   /// |downloadId|: The id of the download to pause.
-  /// |callback|: Called when the pause request is completed.
+  /// |Returns|: Returns a Promise which resolves when the pause request is
+  /// completed.
   external JSPromise pause(int downloadId);
 
   /// Resume a paused download. If the request was successful the download is
   /// in progress and unpaused. Otherwise [runtime.lastError] contains an
   /// error message. The request will fail if the download is not active.
   /// |downloadId|: The id of the download to resume.
-  /// |callback|: Called when the resume request is completed.
+  /// |Returns|: Returns a Promise which resolves when the resume request is
+  /// completed.
   external JSPromise resume(int downloadId);
 
   /// Cancel a download. When `callback` is run, the download is
   /// cancelled, completed, interrupted or doesn't exist anymore.
   /// |downloadId|: The id of the download to cancel.
-  /// |callback|: Called when the cancel request is completed.
+  /// |Returns|: Returns a Promise which resolves when the cancel request is
+  /// completed.
   external JSPromise cancel(int downloadId);
 
   /// Retrieve an icon for the specified download. For new downloads, file
-  /// icons are available after the [onCreated] event has been received. The
-  /// image returned by this function while a download is in progress may be
-  /// different from the image returned after the download is complete. Icon
-  /// retrieval is done by querying the underlying operating system or toolkit
-  /// depending on the platform. The icon that is returned will therefore
-  /// depend on a number of factors including state of the download, platform,
-  /// registered file types and visual theme. If a file icon cannot be
-  /// determined, [runtime.lastError] will contain an error message.
+  /// icons are available after the download's target filename has been
+  /// determined (for example, when [onChanged] fires with a
+  /// `filename` change). Attempting to retrieve the icon before the
+  /// filename is determined will result in an error through
+  /// [runtime.lastError]. The image returned by this function while a
+  /// download is in progress may be different from the image returned after the
+  /// download is complete. Icon retrieval is done by querying the underlying
+  /// operating system or toolkit depending on the platform. The icon that is
+  /// returned will therefore depend on a number of factors including state of
+  /// the download, platform, registered file types and visual theme. If a file
+  /// icon cannot be determined, [runtime.lastError] will contain an error
+  /// message.
   /// |downloadId|: The identifier for the download.
-  /// |callback|: A URL to an image that represents the download.
+  /// |Returns|: Returns a Promise which resolves with a URL to an image that
+  /// represents the download.
   external JSPromise<JSString?> getFileIcon(
     int downloadId,
     GetFileIconOptions? options,
@@ -91,7 +100,7 @@ extension type JSDownloads._(JSObject _) {
   /// when the item is opened for the first time. This method can only be called
   /// in response to a user gesture.
   /// |downloadId|: The identifier for the downloaded file.
-  external void open(int downloadId);
+  external JSPromise open(int downloadId);
 
   /// Show the downloaded file in its folder in a file manager.
   /// |downloadId|: The identifier for the downloaded file.
@@ -119,7 +128,8 @@ extension type JSDownloads._(JSObject _) {
   /// temporary file is renamed to the target filename, the |state| changes to
   /// 'complete', and [onChanged] fires.
   /// |downloadId|: The identifier for the [DownloadItem].
-  /// |callback|: Called when the danger prompt dialog closes.
+  /// |Returns|: Returns a Promise which resolves when the danger prompt
+  /// dialog closes.
   external JSPromise acceptDanger(int downloadId);
 
   /// Enable or disable the gray shelf at the bottom of every window associated
@@ -128,7 +138,7 @@ extension type JSDownloads._(JSObject _) {
   /// one other extension has disabled it will return an error through
   /// [runtime.lastError]. Requires the `"downloads.shelf"`
   /// permission in addition to the `"downloads"` permission.
-  @Deprecated(r'Use $(ref:setUiOptions) instead.')
+  @Deprecated(r'Use setUiOptions instead.')
   external void setShelfEnabled(bool enabled);
 
   /// Change the download UI of every window associated with the current
@@ -139,7 +149,8 @@ extension type JSDownloads._(JSObject _) {
   /// [runtime.lastError]. Requires the `"downloads.ui"`
   /// permission in addition to the `"downloads"` permission.
   /// |options|: Encapsulate a change to the download UI.
-  /// |callback|: Called when the UI update is completed.
+  /// |Returns|: Returns a Promise which resolves when the UI update is
+  /// completed.
   external JSPromise setUiOptions(UiOptions options);
 
   /// This event fires with the [DownloadItem] object when a download
@@ -148,8 +159,6 @@ extension type JSDownloads._(JSObject _) {
 
   /// Fires with the `downloadId` when a download is erased from
   /// history.
-  /// |downloadId|: The `id` of the [DownloadItem] that was
-  /// erased.
   external Event get onErased;
 
   /// When any of a [DownloadItem]'s properties except
@@ -196,26 +205,6 @@ typedef HttpMethod = JSString;
 
 typedef InterruptReason = JSString;
 
-/// <dl><dt>file</dt>
-///     <dd>The download's filename is suspicious.</dd>
-///     <dt>url</dt>
-///     <dd>The download's URL is known to be malicious.</dd>
-///     <dt>content</dt>
-///     <dd>The downloaded file is known to be malicious.</dd>
-///     <dt>uncommon</dt>
-///     <dd>The download's URL is not commonly downloaded and could be
-///     dangerous.</dd>
-///     <dt>host</dt>
-///     <dd>The download came from a host known to distribute malicious
-///     binaries and is likely dangerous.</dd>
-///     <dt>unwanted</dt>
-///     <dd>The download is potentially unwanted or unsafe. E.g. it could make
-///     changes to browser or computer settings.</dd>
-///     <dt>safe</dt>
-///     <dd>The download presents no known danger to the user's computer.</dd>
-///     <dt>accepted</dt>
-///     <dd>The user has accepted the dangerous download.</dd>
-/// </dl>
 typedef DangerType = JSString;
 
 /// <dl><dt>in_progress</dt>
@@ -245,24 +234,24 @@ extension type HeaderNameValuePair._(JSObject _) implements JSObject {
 }
 extension type FilenameSuggestion._(JSObject _) implements JSObject {
   external factory FilenameSuggestion({
-    /// The [DownloadItem]'s new target [DownloadItem.filename], as a path
-    /// relative to the user's default Downloads directory, possibly containing
-    /// subdirectories. Absolute paths, empty paths, and paths containing
-    /// back-references ".." will be ignored. `filename` is ignored if
-    /// there are any [onDeterminingFilename] listeners registered by any
-    /// extensions.
+    /// The [DownloadItem]'s new target [DownloadItem.filename], as a
+    /// path relative to the user's default Downloads directory, possibly
+    /// containing subdirectories. Absolute paths, empty paths, and paths
+    /// containing back-references ".." will be ignored. `filename` is
+    /// ignored if there are any [onDeterminingFilename] listeners registered
+    /// by any extensions.
     String filename,
 
     /// The action to take if `filename` already exists.
     FilenameConflictAction? conflictAction,
   });
 
-  /// The [DownloadItem]'s new target [DownloadItem.filename], as a path
-  /// relative to the user's default Downloads directory, possibly containing
-  /// subdirectories. Absolute paths, empty paths, and paths containing
-  /// back-references ".." will be ignored. `filename` is ignored if
-  /// there are any [onDeterminingFilename] listeners registered by any
-  /// extensions.
+  /// The [DownloadItem]'s new target [DownloadItem.filename], as a
+  /// path relative to the user's default Downloads directory, possibly
+  /// containing subdirectories. Absolute paths, empty paths, and paths
+  /// containing back-references ".." will be ignored. `filename` is
+  /// ignored if there are any [onDeterminingFilename] listeners registered
+  /// by any extensions.
   external String filename;
 
   /// The action to take if `filename` already exists.
@@ -534,40 +523,40 @@ extension type DownloadQuery._(JSObject _) implements JSObject {
     /// none of the search terms that do begin with a dash.
     JSArray? query,
 
-    /// Limits results to [DownloadItem] that
-    /// started before the given ms since the epoch.
+    /// Limits results to [DownloadItem] that started before the given ms in
+    /// ISO 8601 format.
     String? startedBefore,
 
-    /// Limits results to [DownloadItem] that
-    /// started after the given ms since the epoch.
+    /// Limits results to [DownloadItem] that started after the given ms in
+    /// ISO 8601 format.
     String? startedAfter,
 
-    /// Limits results to [DownloadItem] that ended before the given ms since the
-    /// epoch.
+    /// Limits results to [DownloadItem] that ended before the given ms in ISO
+    /// 8601 format.
     String? endedBefore,
 
-    /// Limits results to [DownloadItem] that ended after the given ms since the
-    /// epoch.
+    /// Limits results to [DownloadItem] that ended after the given ms in ISO
+    /// 8601 format
     String? endedAfter,
 
-    /// Limits results to [DownloadItem] whose
-    /// `totalBytes` is greater than the given integer.
+    /// Limits results to [DownloadItem] whose `totalBytes` is
+    /// greater than the given integer.
     double? totalBytesGreater,
 
-    /// Limits results to [DownloadItem] whose
-    /// `totalBytes` is less than the given integer.
+    /// Limits results to [DownloadItem] whose `totalBytes` is less
+    /// than the given integer.
     double? totalBytesLess,
 
-    /// Limits results to [DownloadItem] whose
-    /// `filename` matches the given regular expression.
+    /// Limits results to [DownloadItem] whose `filename` matches
+    /// the given regular expression.
     String? filenameRegex,
 
-    /// Limits results to [DownloadItem] whose
-    /// `url` matches the given regular expression.
+    /// Limits results to [DownloadItem] whose `url` matches the
+    /// given regular expression.
     String? urlRegex,
 
-    /// Limits results to [DownloadItem] whose
-    /// `finalUrl` matches the given regular expression.
+    /// Limits results to [DownloadItem] whose `finalUrl` matches
+    /// the given regular expression.
     String? finalUrlRegex,
 
     /// The maximum number of matching [DownloadItem] returned. Defaults to
@@ -585,8 +574,7 @@ extension type DownloadQuery._(JSObject _) implements JSObject {
     /// The `id` of the [DownloadItem] to query.
     int? id,
 
-    /// The absolute URL that this download initiated from, before any
-    /// redirects.
+    /// The absolute URL that this download initiated from, before any redirects.
     String? url,
 
     /// The absolute URL that this download is being made from, after all
@@ -640,40 +628,40 @@ extension type DownloadQuery._(JSObject _) implements JSObject {
   /// none of the search terms that do begin with a dash.
   external JSArray? query;
 
-  /// Limits results to [DownloadItem] that
-  /// started before the given ms since the epoch.
+  /// Limits results to [DownloadItem] that started before the given ms in
+  /// ISO 8601 format.
   external String? startedBefore;
 
-  /// Limits results to [DownloadItem] that
-  /// started after the given ms since the epoch.
+  /// Limits results to [DownloadItem] that started after the given ms in
+  /// ISO 8601 format.
   external String? startedAfter;
 
-  /// Limits results to [DownloadItem] that ended before the given ms since the
-  /// epoch.
+  /// Limits results to [DownloadItem] that ended before the given ms in ISO
+  /// 8601 format.
   external String? endedBefore;
 
-  /// Limits results to [DownloadItem] that ended after the given ms since the
-  /// epoch.
+  /// Limits results to [DownloadItem] that ended after the given ms in ISO
+  /// 8601 format
   external String? endedAfter;
 
-  /// Limits results to [DownloadItem] whose
-  /// `totalBytes` is greater than the given integer.
+  /// Limits results to [DownloadItem] whose `totalBytes` is
+  /// greater than the given integer.
   external double? totalBytesGreater;
 
-  /// Limits results to [DownloadItem] whose
-  /// `totalBytes` is less than the given integer.
+  /// Limits results to [DownloadItem] whose `totalBytes` is less
+  /// than the given integer.
   external double? totalBytesLess;
 
-  /// Limits results to [DownloadItem] whose
-  /// `filename` matches the given regular expression.
+  /// Limits results to [DownloadItem] whose `filename` matches
+  /// the given regular expression.
   external String? filenameRegex;
 
-  /// Limits results to [DownloadItem] whose
-  /// `url` matches the given regular expression.
+  /// Limits results to [DownloadItem] whose `url` matches the
+  /// given regular expression.
   external String? urlRegex;
 
-  /// Limits results to [DownloadItem] whose
-  /// `finalUrl` matches the given regular expression.
+  /// Limits results to [DownloadItem] whose `finalUrl` matches
+  /// the given regular expression.
   external String? finalUrlRegex;
 
   /// The maximum number of matching [DownloadItem] returned. Defaults to
@@ -691,8 +679,7 @@ extension type DownloadQuery._(JSObject _) implements JSObject {
   /// The `id` of the [DownloadItem] to query.
   external int? id;
 
-  /// The absolute URL that this download initiated from, before any
-  /// redirects.
+  /// The absolute URL that this download initiated from, before any redirects.
   external String? url;
 
   /// The absolute URL that this download is being made from, after all
@@ -771,8 +758,7 @@ extension type BooleanDelta._(JSObject _) implements JSObject {
 }
 extension type DownloadDelta._(JSObject _) implements JSObject {
   external factory DownloadDelta({
-    /// The `id` of the [DownloadItem]
-    /// that changed.
+    /// The `id` of the [DownloadItem] that changed.
     int id,
 
     /// The change in `url`, if any.
@@ -818,8 +804,7 @@ extension type DownloadDelta._(JSObject _) implements JSObject {
     BooleanDelta? exists,
   });
 
-  /// The `id` of the [DownloadItem]
-  /// that changed.
+  /// The `id` of the [DownloadItem] that changed.
   external int id;
 
   /// The change in `url`, if any.
@@ -867,16 +852,16 @@ extension type DownloadDelta._(JSObject _) implements JSObject {
 extension type GetFileIconOptions._(JSObject _) implements JSObject {
   external factory GetFileIconOptions(
       {
-      /// The size of the returned icon. The icon will be square with dimensions
-      /// size * size pixels. The default and largest size for the icon is 32x32
-      /// pixels. The only supported sizes are 16 and 32. It is an error to specify
-      /// any other size.
+      /// The size of the returned icon in density-independent pixels (DIPs). Must
+      /// be either 16 or 32 (defaults to 32). On high-DPI displays, the returned
+      /// image scales with the device scale factor (e.g., 64x64 px for size 32 on a
+      /// 2x display). Calls from background service workers default to 1x scale.
       int? size});
 
-  /// The size of the returned icon. The icon will be square with dimensions
-  /// size * size pixels. The default and largest size for the icon is 32x32
-  /// pixels. The only supported sizes are 16 and 32. It is an error to specify
-  /// any other size.
+  /// The size of the returned icon in density-independent pixels (DIPs). Must
+  /// be either 16 or 32 (defaults to 32). On high-DPI displays, the returned
+  /// image scales with the device scale factor (e.g., 64x64 px for size 32 on a
+  /// 2x display). Calls from background service workers default to 1x scale.
   external int? size;
 }
 extension type UiOptions._(JSObject _) implements JSObject {

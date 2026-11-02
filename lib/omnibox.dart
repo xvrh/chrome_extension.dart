@@ -85,6 +85,14 @@ class ChromeOmnibox {
       $js.chrome.omnibox.onDeleteSuggestion.asStream(($c) => (String text) {
             return $c(text);
           }.toJS);
+
+  /// User has selected an action attached to a suggested result by pressing the
+  /// corresponding button in the Omnibox.
+  EventStream<ActionExecution> get onActionExecuted =>
+      $js.chrome.omnibox.onActionExecuted
+          .asStream(($c) => ($js.ActionExecution actionExecution) {
+                return $c(ActionExecution.fromJS(actionExecution));
+              }.toJS);
 }
 
 /// The style type.
@@ -165,6 +173,67 @@ class MatchClassification {
   }
 }
 
+class Action {
+  Action.fromJS(this._wrapped);
+
+  Action({
+    /// The string sent to the extension in the event corresponding to the user
+    /// clicking on the action.
+    required String name,
+
+    /// The action button label.
+    required String label,
+
+    /// The action button hover tooltip text.
+    required String tooltipText,
+
+    /// The icon shown in the action button on the leading side of the  action
+    /// label. The icon must be specified as an imageData object. The size
+    /// should not be more than 160 px wide and tall.
+    Map? icon,
+  }) : _wrapped = $js.Action(
+          name: name,
+          label: label,
+          tooltipText: tooltipText,
+          icon: icon?.jsify(),
+        );
+
+  final $js.Action _wrapped;
+
+  $js.Action get toJS => _wrapped;
+
+  /// The string sent to the extension in the event corresponding to the user
+  /// clicking on the action.
+  String get name => _wrapped.name;
+
+  set name(String v) {
+    _wrapped.name = v;
+  }
+
+  /// The action button label.
+  String get label => _wrapped.label;
+
+  set label(String v) {
+    _wrapped.label = v;
+  }
+
+  /// The action button hover tooltip text.
+  String get tooltipText => _wrapped.tooltipText;
+
+  set tooltipText(String v) {
+    _wrapped.tooltipText = v;
+  }
+
+  /// The icon shown in the action button on the leading side of the  action
+  /// label. The icon must be specified as an imageData object. The size should
+  /// not be more than 160 px wide and tall.
+  Map? get icon => _wrapped.icon?.toDartMap();
+
+  set icon(Map? v) {
+    _wrapped.icon = v?.jsify();
+  }
+}
+
 class SuggestResult {
   SuggestResult.fromJS(this._wrapped);
 
@@ -188,11 +257,21 @@ class SuggestResult {
     /// An array of style ranges for the description, as provided by the
     /// extension.
     List<MatchClassification>? descriptionStyles,
+
+    /// An array of actions attached to the suggestion. Only supported for
+    /// suggestions added in unscoped mode.
+    List<Action>? actions,
+
+    /// An icon shown on the leading edge of the suggestion in the omnibox
+    /// dropdown. Only supported for suggestions added in unscoped mode.
+    String? iconUrl,
   }) : _wrapped = $js.SuggestResult(
           content: content,
           description: description,
           deletable: deletable,
           descriptionStyles: descriptionStyles?.toJSArray((e) => e.toJS),
+          actions: actions?.toJSArray((e) => e.toJS),
+          iconUrl: iconUrl,
         );
 
   final $js.SuggestResult _wrapped;
@@ -237,6 +316,25 @@ class SuggestResult {
 
   set descriptionStyles(List<MatchClassification>? v) {
     _wrapped.descriptionStyles = v?.toJSArray((e) => e.toJS);
+  }
+
+  /// An array of actions attached to the suggestion. Only supported for
+  /// suggestions added in unscoped mode.
+  List<Action>? get actions => _wrapped.actions?.toDart
+      .cast<$js.Action>()
+      .map((e) => Action.fromJS(e))
+      .toList();
+
+  set actions(List<Action>? v) {
+    _wrapped.actions = v?.toJSArray((e) => e.toJS);
+  }
+
+  /// An icon shown on the leading edge of the suggestion in the omnibox
+  /// dropdown. Only supported for suggestions added in unscoped mode.
+  String? get iconUrl => _wrapped.iconUrl;
+
+  set iconUrl(String? v) {
+    _wrapped.iconUrl = v;
   }
 }
 
@@ -284,6 +382,43 @@ class DefaultSuggestResult {
 
   set descriptionStyles(List<MatchClassification>? v) {
     _wrapped.descriptionStyles = v?.toJSArray((e) => e.toJS);
+  }
+}
+
+class ActionExecution {
+  ActionExecution.fromJS(this._wrapped);
+
+  ActionExecution({
+    /// The name of the action the user selected, as defined by the `action`
+    /// field in `Action`.
+    required String actionName,
+
+    /// The text of the suggestion corresponding to the action, as shown in the
+    /// Omnibox. The same as the `SuggestResult.content`.
+    required String content,
+  }) : _wrapped = $js.ActionExecution(
+          actionName: actionName,
+          content: content,
+        );
+
+  final $js.ActionExecution _wrapped;
+
+  $js.ActionExecution get toJS => _wrapped;
+
+  /// The name of the action the user selected, as defined by the `action` field
+  /// in `Action`.
+  String get actionName => _wrapped.actionName;
+
+  set actionName(String v) {
+    _wrapped.actionName = v;
+  }
+
+  /// The text of the suggestion corresponding to the action, as shown in the
+  /// Omnibox. The same as the `SuggestResult.content`.
+  String get content => _wrapped.content;
+
+  set content(String v) {
+    _wrapped.content = v;
   }
 }
 

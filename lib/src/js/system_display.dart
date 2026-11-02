@@ -28,55 +28,53 @@ extension JSChromeJSSystemDisplayExtension on JSChromeSystem {
 extension type JSSystemDisplay._(JSObject _) {
   /// Requests the information for all attached display devices.
   /// |flags|: Options affecting how the information is returned.
-  /// |callback|: The callback to invoke with the results.
+  /// |Returns|: Promise that resolves with the results.
   external JSPromise<JSArray> getInfo(GetInfoFlags? flags);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Requests the layout info for all displays.
-  /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
-  /// |callback|: The callback to invoke with the results.
+  /// |Returns|: Promise that resolves with the results.
   external JSPromise<JSArray> getDisplayLayout();
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Updates the properties for the display specified by |id|, according to
   /// the information provided in |info|. On failure, [runtime.lastError]
   /// will be set.
-  /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
   /// |id|: The display's unique identifier.
   /// |info|: The information about display properties that should be changed.
   ///     A property will be changed only if a new value for it is specified in
   ///     |info|.
-  /// |callback|: Empty function called when the function finishes. To find out
-  ///     whether the function succeeded, [runtime.lastError] should be
-  ///     queried.
+  /// |Returns|: Promise that resolves when the function finishes.
   external JSPromise setDisplayProperties(
     String id,
     DisplayProperties info,
   );
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Set the layout for all displays. Any display not included will use the
   /// default layout. If a layout would overlap or be otherwise invalid it
   /// will be adjusted to a valid layout. After layout is resolved, an
   /// onDisplayChanged event will be triggered.
-  /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
   /// |layouts|: The layout information, required for all displays except
   ///     the primary display.
-  /// |callback|: Empty function called when the function finishes. To find out
-  ///     whether the function succeeded, [runtime.lastError] should be
-  ///     queried.
+  /// |Returns|: Promise that resolves when the function finishes.
   external JSPromise setDisplayLayout(JSArray layouts);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Enables/disables the unified desktop feature. If enabled while mirroring
   /// is active, the desktop mode will not change until mirroring is turned
   /// off. Otherwise, the desktop mode will switch to unified immediately.
-  /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
   /// |enabled|: True if unified desktop should be enabled.
   external void enableUnifiedDesktop(bool enabled);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Starts overscan calibration for a display. This will show an overlay
   /// on the screen indicating the current overscan insets. If overscan
   /// calibration for display |id| is in progress this will reset calibration.
   /// |id|: The display's unique identifier.
   external void overscanCalibrationStart(String id);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Adjusts the current overscan insets for a display. Typically this should
   /// either move the display along an axis (e.g. left+right have the same
   /// value) or scale it along an axis (e.g. top+bottom have opposite values).
@@ -88,33 +86,38 @@ extension type JSSystemDisplay._(JSObject _) {
     Insets delta,
   );
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Resets the overscan insets for a display to the last saved value (i.e
   /// before Start was called).
   /// |id|: The display's unique identifier.
   external void overscanCalibrationReset(String id);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Complete overscan adjustments for a display  by saving the current values
   /// and hiding the overlay.
   /// |id|: The display's unique identifier.
   external void overscanCalibrationComplete(String id);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Displays the native touch calibration UX for the display with |id| as
   /// display id. This will show an overlay on the screen with required
   /// instructions on how to proceed. The callback will be invoked in case of
   /// successful calibration only. If the calibration fails, this will throw an
   /// error.
   /// |id|: The display's unique identifier.
-  /// |callback|: Optional callback to inform the caller that the touch
-  ///      calibration has ended. The argument of the callback informs if the
-  ///      calibration was a success or not.
+  /// |Returns|: Promise that resolves to inform the caller that the touch
+  /// calibration has ended. The boolean value informs if the calibration was a
+  /// success or not.
   external JSPromise<JSBoolean> showNativeTouchCalibration(String id);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Starts custom touch calibration for a display. This should be called when
   /// using a custom UX for collecting calibration data. If another touch
   /// calibration is already in progress this will throw an error.
   /// |id|: The display's unique identifier.
   external void startCustomTouchCalibration(String id);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Sets the touch calibration pairs for a display. These |pairs| would be
   /// used to calibrate the touch screen for display with |id| called in
   /// startCustomTouchCalibration(). Always call |startCustomTouchCalibration|
@@ -128,21 +131,20 @@ extension type JSSystemDisplay._(JSObject _) {
     Bounds bounds,
   );
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Resets the touch calibration for the display and brings it back to its
   /// default state by clearing any touch calibration data associated with the
   /// display.
   /// |id|: The display's unique identifier.
   external void clearTouchCalibration(String id);
 
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   /// Sets the display mode to the specified mirror mode. Each call resets the
   /// state from previous calls. Calling setDisplayProperties() will fail for
   /// the mirroring destination displays.
-  /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
   /// |info|: The information of the mirror mode that should be applied to the
   ///     display mode.
-  /// |callback|: Empty function called when the function finishes. To find out
-  ///     whether the function succeeded, [runtime.lastError] should be
-  ///     queried.
+  /// |Returns|: Promise that resolves when the function finishes.
   external JSPromise setMirrorMode(MirrorModeInfo info);
 
   /// Fired when anything changes to the display configuration.
@@ -397,15 +399,15 @@ extension type DisplayUnitInfo._(JSObject _) implements JSObject {
     /// The user-friendly name (e.g. "HP LCD monitor").
     String name,
 
-    /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
+    /// NOTE: This is only available to ChromeOS Kiosk apps.
     Edid? edid,
 
-    /// Chrome OS only. Identifier of the display that is being mirrored if
+    /// ChromeOS only. Identifier of the display that is being mirrored if
     /// mirroring is enabled, otherwise empty. This will be set for all displays
     /// (including the display being mirrored).
     String mirroringSourceId,
 
-    /// Chrome OS only. Identifiers of the displays to which the source display
+    /// ChromeOS only. Identifiers of the displays to which the source display
     /// is being mirrored. Empty if no displays are being mirrored. This will be
     /// set to the same value for all displays. This must not include
     /// |mirroringSourceId|.
@@ -460,7 +462,7 @@ extension type DisplayUnitInfo._(JSObject _) implements JSObject {
     Bounds workArea,
 
     /// The list of available display modes. The current mode will have
-    /// isSelected=true. Only available on Chrome OS. Will be set to an empty
+    /// isSelected=true. Only available on ChromeOS. Will be set to an empty
     /// array on other platforms.
     JSArray modes,
 
@@ -487,15 +489,15 @@ extension type DisplayUnitInfo._(JSObject _) implements JSObject {
   /// The user-friendly name (e.g. "HP LCD monitor").
   external String name;
 
-  /// NOTE: This is only available to Chrome OS Kiosk apps and Web UI.
+  /// NOTE: This is only available to ChromeOS Kiosk apps.
   external Edid? edid;
 
-  /// Chrome OS only. Identifier of the display that is being mirrored if
+  /// ChromeOS only. Identifier of the display that is being mirrored if
   /// mirroring is enabled, otherwise empty. This will be set for all displays
   /// (including the display being mirrored).
   external String mirroringSourceId;
 
-  /// Chrome OS only. Identifiers of the displays to which the source display
+  /// ChromeOS only. Identifiers of the displays to which the source display
   /// is being mirrored. Empty if no displays are being mirrored. This will be
   /// set to the same value for all displays. This must not include
   /// |mirroringSourceId|.
@@ -550,7 +552,7 @@ extension type DisplayUnitInfo._(JSObject _) implements JSObject {
   external Bounds workArea;
 
   /// The list of available display modes. The current mode will have
-  /// isSelected=true. Only available on Chrome OS. Will be set to an empty
+  /// isSelected=true. Only available on ChromeOS. Will be set to an empty
   /// array on other platforms.
   external JSArray modes;
 
@@ -572,14 +574,14 @@ extension type DisplayUnitInfo._(JSObject _) implements JSObject {
 }
 extension type DisplayProperties._(JSObject _) implements JSObject {
   external factory DisplayProperties({
-    /// Chrome OS only. If set to true, changes the display mode to unified
+    /// ChromeOS only. If set to true, changes the display mode to unified
     /// desktop (see [enableUnifiedDesktop] for details). If set to false,
     /// unified desktop mode will be disabled. This is only valid for the
     /// primary display. If provided, mirroringSourceId must not be provided and
     /// other properties will be ignored. This is has no effect if not provided.
     bool? isUnified,
 
-    /// Chrome OS only. If set and not empty, enables mirroring for this display
+    /// ChromeOS only. If set and not empty, enables mirroring for this display
     /// only. Otherwise disables mirroring for all displays. This value should
     /// indicate the id of the source display to mirror, which must not be the
     /// same as the id passed to setDisplayProperties. If set, no other property
@@ -626,14 +628,14 @@ extension type DisplayProperties._(JSObject _) implements JSObject {
     double? displayZoomFactor,
   });
 
-  /// Chrome OS only. If set to true, changes the display mode to unified
+  /// ChromeOS only. If set to true, changes the display mode to unified
   /// desktop (see [enableUnifiedDesktop] for details). If set to false,
   /// unified desktop mode will be disabled. This is only valid for the
   /// primary display. If provided, mirroringSourceId must not be provided and
   /// other properties will be ignored. This is has no effect if not provided.
   external bool? isUnified;
 
-  /// Chrome OS only. If set and not empty, enables mirroring for this display
+  /// ChromeOS only. If set and not empty, enables mirroring for this display
   /// only. Otherwise disables mirroring for all displays. This value should
   /// indicate the id of the source display to mirror, which must not be the
   /// same as the id passed to setDisplayProperties. If set, no other property

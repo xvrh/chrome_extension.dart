@@ -6,6 +6,7 @@ library;
 
 import 'dart:js_interop';
 import 'chrome.dart';
+import 'extension_types.dart';
 
 export 'chrome.dart';
 
@@ -81,12 +82,6 @@ extension type JSBrowserAction._(JSObject _) {
   /// action has a popup.
   external Event get onClicked;
 }
-
-typedef ColorArray = JSArray;
-
-/// Pixel data for an image. Must be an ImageData object; for example, from a
-/// `canvas` element.
-typedef ImageDataType = JSObject;
 extension type TabDetails._(JSObject _) implements JSObject {
   external factory TabDetails(
       {

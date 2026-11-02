@@ -29,7 +29,7 @@ extension JSChromeJSDevtoolsPanelsExtension on JSChromeDevtools {
 
 extension type JSDevtoolsPanels._(JSObject _) {
   /// Creates an extension panel.
-  external void create(
+  external JSPromise<ExtensionPanel> create(
     /// Title that is displayed next to the extension icon in the Developer
     /// Tools toolbar.
     String title,
@@ -39,9 +39,6 @@ extension type JSDevtoolsPanels._(JSObject _) {
 
     /// Path of the panel's HTML page relative to the extension directory.
     String pagePath,
-
-    /// A function that is called when the panel is created.
-    JSFunction? callback,
   );
 
   /// Specifies the function to be called when the user clicks a resource link
@@ -55,7 +52,7 @@ extension type JSDevtoolsPanels._(JSObject _) {
       JSFunction? callback);
 
   /// Requests DevTools to open a URL in a Developer Tools panel.
-  external void openResource(
+  external JSPromise openResource(
     /// The URL of the resource to open.
     String url,
 
@@ -64,11 +61,15 @@ extension type JSDevtoolsPanels._(JSObject _) {
 
     /// Specifies the column number to scroll to when the resource is loaded.
     int? columnNumber,
-
-    /// A function that is called when the resource has been successfully
-    /// loaded.
-    JSFunction? callback,
   );
+
+  /// Specifies the function to be called when the current theme changes in
+  /// DevTools. To unset the handler, either call the method with no parameters
+  /// or pass `null` as the parameter.
+  external void setThemeChangeHandler(
+
+      /// A function that is called when the current theme changes in DevTools.
+      JSFunction? callback);
 
   /// Elements panel.
   external ElementsPanel get elements;
@@ -80,17 +81,17 @@ extension type JSDevtoolsPanels._(JSObject _) {
   /// values: `default` (the default) and `dark`.
   external String get themeName;
 }
+
+/// Theme used by DevTools.
+typedef Theme = JSString;
 extension type ElementsPanel._(JSObject _) implements JSObject {
   external factory ElementsPanel();
 
   /// Creates a pane within panel's sidebar.
-  external void createSidebarPane(
-    /// Text that is displayed in sidebar caption.
-    String title,
+  external JSPromise<ExtensionSidebarPane> createSidebarPane(
 
-    /// A callback invoked when the sidebar is created.
-    JSFunction? callback,
-  );
+      /// Text that is displayed in sidebar caption.
+      String title);
 
   /// Fired when an object is selected in the panel.
   external Event get onSelectionChanged;
@@ -99,13 +100,10 @@ extension type SourcesPanel._(JSObject _) implements JSObject {
   external factory SourcesPanel();
 
   /// Creates a pane within panel's sidebar.
-  external void createSidebarPane(
-    /// Text that is displayed in sidebar caption.
-    String title,
+  external JSPromise<ExtensionSidebarPane> createSidebarPane(
 
-    /// A callback invoked when the sidebar is created.
-    JSFunction? callback,
-  );
+      /// Text that is displayed in sidebar caption.
+      String title);
 
   /// Fired when an object is selected in the panel.
   external Event get onSelectionChanged;
@@ -126,6 +124,9 @@ extension type ExtensionPanel._(JSObject _) implements JSObject {
     /// Whether the button is disabled.
     bool disabled,
   );
+
+  /// Shows the panel by activating the corresponding tab.
+  external void show();
 
   /// Fired upon a search action (start of a new search, search result
   /// navigation, or search being canceled).
@@ -148,7 +149,7 @@ extension type ExtensionSidebarPane._(JSObject _) implements JSObject {
 
   /// Sets an expression that is evaluated within the inspected page. The result
   /// is displayed in the sidebar pane.
-  external void setExpression(
+  external JSPromise setExpression(
     /// An expression to be evaluated in context of the inspected page.
     /// JavaScript objects and DOM nodes are displayed in an expandable tree
     /// similar to the console/watch.
@@ -156,23 +157,16 @@ extension type ExtensionSidebarPane._(JSObject _) implements JSObject {
 
     /// An optional title for the root of the expression tree.
     String? rootTitle,
-
-    /// A callback invoked after the sidebar pane is updated with the expression
-    /// evaluation results.
-    JSFunction? callback,
   );
 
   /// Sets a JSON-compliant object to be displayed in the sidebar pane.
-  external void setObject(
+  external JSPromise setObject(
     /// An object to be displayed in context of the inspected page. Evaluated in
     /// the context of the caller (API client).
     String jsonObject,
 
     /// An optional title for the root of the expression tree.
     String? rootTitle,
-
-    /// A callback invoked after the sidebar is updated with the object.
-    JSFunction? callback,
   );
 
   /// Sets an HTML page to be displayed in the sidebar pane.

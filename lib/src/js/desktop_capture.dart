@@ -14,8 +14,8 @@ extension JSChromeJSDesktopCaptureExtension on JSChrome {
   @JS('desktopCapture')
   external JSDesktopCapture? get desktopCaptureNullable;
 
-  /// Desktop Capture API that can be used to capture content of screen,
-  /// individual windows or tabs.
+  /// The Desktop Capture API captures the content of the screen, individual
+  /// windows, or individual tabs.
   JSDesktopCapture get desktopCapture {
     var desktopCaptureNullable = this.desktopCaptureNullable;
     if (desktopCaptureNullable == null) {
@@ -63,6 +63,10 @@ typedef DesktopCaptureSourceType = JSString;
 typedef SystemAudioPreferenceEnum = JSString;
 
 /// Mirrors
+/// [WindowAudioPreferenceEnum](https://w3c.github.io/mediacapture-screen-share/#dom-windowaudiopreferenceenum).
+typedef WindowAudioPreferenceEnum = JSString;
+
+/// Mirrors
 /// [SelfCapturePreferenceEnum](https://w3c.github.io/mediacapture-screen-share/#dom-selfcapturepreferenceenum).
 typedef SelfCapturePreferenceEnum = JSString;
 extension type ChooseDesktopMediaOptions._(JSObject _) implements JSObject {
@@ -70,6 +74,10 @@ extension type ChooseDesktopMediaOptions._(JSObject _) implements JSObject {
     /// Mirrors
     /// [systemAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-systemaudio).
     SystemAudioPreferenceEnum? systemAudio,
+
+    /// Mirrors
+    /// [windowAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-windowaudio).
+    WindowAudioPreferenceEnum? windowAudio,
 
     /// Mirrors
     /// [selfBrowserSurface](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-selfbrowsersurface).
@@ -84,6 +92,10 @@ extension type ChooseDesktopMediaOptions._(JSObject _) implements JSObject {
   /// Mirrors
   /// [systemAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-systemaudio).
   external SystemAudioPreferenceEnum? systemAudio;
+
+  /// Mirrors
+  /// [windowAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-windowaudio).
+  external WindowAudioPreferenceEnum? windowAudio;
 
   /// Mirrors
   /// [selfBrowserSurface](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-selfbrowsersurface).

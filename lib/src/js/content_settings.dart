@@ -33,9 +33,8 @@ extension type JSContentSettings._(JSObject _) {
   /// [allow]: Allow sites to use the Private State Tokens API,
   /// [block]: Block sites from using the Private State Tokens API.
   /// Default is [allow].
-  ///  The primary URL is the URL of the top-level frame. The secondary URL is
-  /// not used. NOTE: When calling `set()`, the primary pattern must be
-  /// `<all_urls>`.
+  ///  When calling `set()`, the primary URL pattern must be `&lt;all_urls&gt;`.
+  /// The secondary URL is not used.
   external ContentSetting get autoVerify;
 
   /// Whether to allow cookies and other local data to be set by websites. One
@@ -111,7 +110,8 @@ extension type JSContentSettings._(JSObject _) {
   /// Default is [ask].
   /// The primary URL is the URL of the document which requested microphone
   /// access. The secondary URL is not used.
-  /// NOTE: The 'allow' setting is not valid if both patterns are '<all_urls>'.
+  /// NOTE: The 'allow' setting is not valid if both patterns are
+  /// '&lt;all_urls&gt;'.
   external ContentSetting get microphone;
 
   /// Whether to allow sites to access the clipboard via advanced capabilities
@@ -134,7 +134,8 @@ extension type JSContentSettings._(JSObject _) {
   /// Default is [ask].
   /// The primary URL is the URL of the document which requested camera access.
   /// The secondary URL is not used.
-  /// NOTE: The 'allow' setting is not valid if both patterns are '<all_urls>'.
+  /// NOTE: The 'allow' setting is not valid if both patterns are
+  /// '&lt;all_urls&gt;'.
   external ContentSetting get camera;
 
   /// <i>Deprecated.</i> Previously, controlled whether to allow sites to run
@@ -152,6 +153,14 @@ extension type JSContentSettings._(JSObject _) {
   /// The primary URL is the URL of the top-level frame. The secondary URL is
   /// not used.
   external ContentSetting get automaticDownloads;
+
+  /// Whether to allow sites to play sound. One of
+  /// [allow]: Allow sites to play sound,
+  /// [block]: Don't allow sites to play sound.
+  /// Default is [allow].
+  /// The primary URL is the URL of the document which wants to play sound. The
+  /// secondary URL is not used.
+  external ContentSetting get sound;
 }
 
 /// The scope of the ContentSetting. One of
@@ -191,6 +200,8 @@ typedef CameraContentSetting = JSString;
 typedef PpapiBrokerContentSetting = JSString;
 
 typedef MultipleAutomaticDownloadsContentSetting = JSString;
+
+typedef SoundContentSetting = JSString;
 extension type ResourceIdentifier._(JSObject _) implements JSObject {
   external factory ResourceIdentifier({
     /// The resource identifier for the given content type.

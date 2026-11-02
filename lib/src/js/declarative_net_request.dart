@@ -40,22 +40,24 @@ extension type JSDeclarativeNetRequest._(JSObject _) {
   /// extension updates.</li>
   /// <li>Static rules specified as part of the extension package can not be
   /// removed using this function.</li>
-  /// <li>[MAX_NUMBER_OF_DYNAMIC_AND_SESSION_RULES] is the maximum number
-  /// of combined dynamic and session rules an extension can add.</li>
+  /// <li>[MAX_NUMBER_OF_DYNAMIC_RULES] is the maximum number
+  /// of dynamic rules an extension can add. The number of
+  /// [unsafe rules](#safe_rules) must not exceed
+  /// [MAX_NUMBER_OF_UNSAFE_DYNAMIC_RULES].</li>
   /// </ul>
-  /// |callback|: Called once the update is complete or has failed. In case of
-  /// an error, [runtime.lastError] will be set and no change will be made
-  /// to the rule set. This can happen for multiple reasons, such as invalid
-  /// rule format, duplicate rule ID, rule count limit exceeded, internal
-  /// errors, and others.
+  /// |Returns|: Promise that resolves once the update is complete.
+  /// In case of an error, the promise will be rejected and no change will be
+  /// made to the rule set. This can happen for multiple reasons, such as
+  /// invalid rule format, duplicate rule ID, rule count limit exceeded,
+  /// internal errors, and others.
   external JSPromise updateDynamicRules(UpdateRuleOptions options);
 
   /// Returns the current set of dynamic rules for the extension. Callers can
   /// optionally filter the list of fetched rules by specifying a
   /// `filter`.
   /// |filter|: An object to filter the list of fetched rules.
-  /// |callback|: Called with the set of dynamic rules. An error might be
-  /// raised in case of transient internal errors.
+  /// |Returns|: Promise that resolves with the set of dynamic rules. The
+  /// Promise may be rejected in case of transient internal errors.
   external JSPromise<JSArray> getDynamicRules(GetRulesFilter? filter);
 
   /// Modifies the current set of session scoped rules for the extension.
@@ -67,20 +69,21 @@ extension type JSDeclarativeNetRequest._(JSObject _) {
   /// specified rules are added and removed, or an error is returned.</li>
   /// <li>These rules are not persisted across sessions and are backed in
   /// memory.</li>
-  /// <li>[MAX_NUMBER_OF_DYNAMIC_AND_SESSION_RULES] is the maximum number
-  /// of combined dynamic and session rules an extension can add.</li>
+  /// <li>[MAX_NUMBER_OF_SESSION_RULES] is the maximum number
+  /// of session rules an extension can add.</li>
   /// </ul>
-  /// |callback|: Called once the update is complete or has failed. In case of
-  /// an error, [runtime.lastError] will be set and no change will be made
-  /// to the rule set. This can happen for multiple reasons, such as invalid
-  /// rule format, duplicate rule ID, rule count limit exceeded, and others.
+  /// |Returns|: Promise that resolves once the update is complete. In case
+  /// of an error, the promise will be rejected and no change will be
+  /// made to the rule set. This can happen for multiple reasons, such as
+  /// invalid rule format, duplicate rule ID, rule count limit exceeded, and
+  /// others.
   external JSPromise updateSessionRules(UpdateRuleOptions options);
 
   /// Returns the current set of session scoped rules for the extension.
   /// Callers can optionally filter the list of fetched rules by specifying a
   /// `filter`.
   /// |filter|: An object to filter the list of fetched rules.
-  /// |callback|: Called with the set of session scoped rules.
+  /// |Returns|: Promise that resolves with the set of session scoped rules.
   external JSPromise<JSArray> getSessionRules(GetRulesFilter? filter);
 
   /// Updates the set of enabled static rulesets for the extension. The
@@ -91,46 +94,46 @@ extension type JSDeclarativeNetRequest._(JSObject _) {
   /// but not across extension updates, i.e. the `rule_resources`
   /// manifest key will determine the set of enabled static rulesets on each
   /// extension update.
-  /// |callback|: Called once the update is complete. In case of an error,
-  /// [runtime.lastError] will be set and no change will be made to set of
-  /// enabled rulesets. This can happen for multiple reasons, such as invalid
-  /// ruleset IDs, rule count limit exceeded, or internal errors.
+  /// |Returns|: Promise that resolves once the update is complete. In case of
+  /// an error, the promise will be rejected and no change will be made to the
+  /// set of enabled rulesets. This can happen for multiple reasons, such as
+  /// invalid ruleset IDs, rule count limit exceeded, or internal errors.
   external JSPromise updateEnabledRulesets(UpdateRulesetOptions options);
 
   /// Returns the ids for the current set of enabled static rulesets.
-  /// |callback|: Called with a list of ids, where each id corresponds to an
-  /// enabled static [Ruleset].
+  /// |Returns|: Promise that resolves with a list of ids, where each id
+  /// corresponds to an enabled static [Ruleset].
   external JSPromise<JSArray> getEnabledRulesets();
 
   /// Disables and enables individual static rules in a [Ruleset].
   /// Changes to rules belonging to a disabled [Ruleset] will take
   /// effect the next time that it becomes enabled.
-  /// |callback|: Called once the update is complete. In case of an error,
-  /// [runtime.lastError] will be set and no change will be made to the
+  /// |Returns|: Promise that resolves when the update is complete. In case of
+  /// an error, the promise will be rejected and no change will be made to the
   /// enabled static rules.
   external JSPromise updateStaticRules(UpdateStaticRulesOptions options);
 
   /// Returns the list of static rules in the given [Ruleset] that are
   /// currently disabled.
   /// |options|: Specifies the ruleset to query.
-  /// |callback|: Called with a list of ids that correspond to the disabled
-  /// rules in that ruleset.
+  /// |Returns|: Promise that resolves with a list of ids that correspond to
+  ///  the disabled rules in that ruleset.
   external JSPromise<JSArray> getDisabledRuleIds(
       GetDisabledRuleIdsOptions options);
 
   /// Returns all rules matched for the extension. Callers can optionally
   /// filter the list of matched rules by specifying a `filter`.
   /// This method is only available to extensions with the
-  /// `declarativeNetRequestFeedback` permission or having the
-  /// `activeTab` permission granted for the `tabId`
+  /// `"declarativeNetRequestFeedback"` permission or having the
+  /// `"activeTab"` permission granted for the `tabId`
   /// specified in `filter`.
   /// Note: Rules not associated with an active document that were matched more
   /// than five minutes ago will not be returned.
   /// |filter|: An object to filter the list of matched rules.
-  /// |callback|: Called once the list of matched rules has been fetched. In
-  /// case of an error, [runtime.lastError] will be set and no rules will
-  /// be returned. This can happen for multiple reasons, such as insufficient
-  /// permissions, or exceeding the quota.
+  /// |Returns|: Promise that resolves once the list of matched rules has been
+  /// fetched. In case of an error, the Promise will be rejected. This can
+  /// happen for multiple reasons, such as insufficient permissions, or
+  /// exceeding the quota.
   external JSPromise<RulesMatchedDetails> getMatchedRules(
       MatchedRulesFilter? filter);
 
@@ -142,8 +145,8 @@ extension type JSDeclarativeNetRequest._(JSObject _) {
   /// Checks if the given regular expression will be supported as a
   /// `regexFilter` rule condition.
   /// |regexOptions|: The regular expression to check.
-  /// |callback|: Called with details consisting of whether the regular
-  /// expression is supported and the reason if not.
+  /// |Returns|: Promise that resolves with details consisting of whether the
+  /// regular expression is supported and the reason if not.
   external JSPromise<IsRegexSupportedResult> isRegexSupported(
       RegexOptions regexOptions);
 
@@ -157,15 +160,13 @@ extension type JSDeclarativeNetRequest._(JSObject _) {
   /// Note: Only available for unpacked extensions as this is only intended to
   /// be used during extension development.
   /// |requestDetails|: The request details to test.
-  /// |callback|: Called with the details of matched rules.
+  /// |Returns|: Promise that resolves with the details of matched rules.
   external JSPromise<TestMatchOutcomeResult> testMatchOutcome(
       TestMatchRequestDetails request);
 
   /// Fired when a rule is matched with a request. Only available for unpacked
-  /// extensions with the `declarativeNetRequestFeedback` permission
+  /// extensions with the `"declarativeNetRequestFeedback"` permission
   /// as this is intended to be used for debugging purposes only.
-  /// |info|: The rule that has been matched along with information about the
-  /// associated request.
   external Event get onRuleMatchedDebug;
 
   /// The minimum number of static rules guaranteed to an extension across its
@@ -240,6 +241,11 @@ typedef RuleActionType = JSString;
 
 /// Describes the reason why a given regular expression isn't supported.
 typedef UnsupportedRegexReason = JSString;
+
+/// <!-- Lists the types of condition currently supported by RuleCondition, to
+/// aid feature detection. Must be kept consistent with the RuleCondition
+/// dictionary. -->
+typedef RuleConditionKeys = JSString;
 extension type Ruleset._(JSObject _) implements JSObject {
   external factory Ruleset({
     /// A non-empty string uniquely identifying the ruleset. IDs beginning with
@@ -396,27 +402,45 @@ extension type Redirect._(JSObject _) implements JSObject {
 }
 extension type HeaderInfo._(JSObject _) implements JSObject {
   external factory HeaderInfo({
-    /// The name of the header.
+    /// The name of the header. This condition matches on the name
+    /// only if both `values` and `excludedValues` are not specified.
     String header,
 
-    /// If specified, match this rule if the header's value contains at least one
-    /// element in this list.
+    /// If specified, this condition matches if the header's value matches at
+    /// least one pattern in this list. This supports case-insensitive header
+    /// value matching plus the following constructs:
+    ///
+    /// **'*'**  : Matches any number of characters.
+    ///
+    /// **'?'**  : Matches zero or one character(s).
+    ///
+    /// '*' and '?' can be escaped with a backslash, e.g. '\*' and '\?'
     JSArray? values,
 
-    /// If specified, the rule is not matched if the header exists but its value
-    /// contains at least one element in this list.
+    /// If specified, this condition is not matched if the header exists but its
+    /// value contains at least one element in this list. This uses the same
+    /// match pattern syntax as `values`.
     JSArray? excludedValues,
   });
 
-  /// The name of the header.
+  /// The name of the header. This condition matches on the name
+  /// only if both `values` and `excludedValues` are not specified.
   external String header;
 
-  /// If specified, match this rule if the header's value contains at least one
-  /// element in this list.
+  /// If specified, this condition matches if the header's value matches at
+  /// least one pattern in this list. This supports case-insensitive header
+  /// value matching plus the following constructs:
+  ///
+  /// **'*'**  : Matches any number of characters.
+  ///
+  /// **'?'**  : Matches zero or one character(s).
+  ///
+  /// '*' and '?' can be escaped with a backslash, e.g. '\*' and '\?'
   external JSArray? values;
 
-  /// If specified, the rule is not matched if the header exists but its value
-  /// contains at least one element in this list.
+  /// If specified, this condition is not matched if the header exists but its
+  /// value contains at least one element in this list. This uses the same
+  /// match pattern syntax as `values`.
   external JSArray? excludedValues;
 }
 extension type RuleCondition._(JSObject _) implements JSObject {
@@ -429,12 +453,13 @@ extension type RuleCondition._(JSObject _) implements JSObject {
     /// **'|'**  : Left/right anchor: If used at either end of the pattern,
     ///               specifies the beginning/end of the url respectively.
     ///
-    /// **'||'** : Domain name anchor: If used at the beginning of the pattern,
-    ///               specifies the start of a (sub-)domain of the URL.
+    /// **'||'** : Domain name anchor: If used at the beginning of the
+    ///               pattern, specifies the start of a (sub-)domain of the URL.
     ///
-    /// **'^'**  : Separator character: This matches anything except a letter, a
-    ///               digit or one of the following: _ - . %. This can also match
-    ///               the end of the URL.
+    /// **'^'**  : Separator character: This matches anything except a letter,
+    ///               a digit, or one of the following: `_`,
+    ///               `-`, `.`, or `%`. This
+    ///               also match the end of the URL.
     ///
     /// Therefore `urlFilter` is composed of the following parts:
     /// (optional Left/Domain name anchor) + pattern + (optional Right anchor).
@@ -534,6 +559,41 @@ extension type RuleCondition._(JSObject _) implements JSObject {
     /// </ul>
     JSArray? excludedRequestDomains,
 
+    /// The rule will only match network requests when the associated top-level
+    /// frame's domain matches one from the list of `topDomains`. If
+    /// the list is omitted, the rule is applied to requests associated with all
+    /// top-level frame domains. An empty list is not allowed.
+    ///
+    /// Notes:
+    /// <ul>
+    ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+    ///  <li>The entries must consist of only ascii characters.</li>
+    ///  <li>Use punycode encoding for internationalized domains.</li>
+    ///  <li>Sub-domains of the listed domains are also matched.</li>
+    ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+    ///      initiated requests, the request initiator's domain is considered
+    ///      instead.</li>
+    /// </ul>
+    JSArray? topDomains,
+
+    /// The rule will not match network requests when the associated top-level
+    /// frame's domain matches one from the list of
+    /// `excludedTopDomains`. If the list is empty or omitted, no
+    /// domains are excluded. This takes precedence over
+    /// `topDomains`.
+    ///
+    /// Notes:
+    /// <ul>
+    ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+    ///  <li>The entries must consist of only ascii characters.</li>
+    ///  <li>Use punycode encoding for internationalized domains.</li>
+    ///  <li>Sub-domains of the listed domains are also excluded.</li>
+    ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+    ///      initiated requests, the request initiator's domain is considered
+    ///      instead.</li>
+    /// </ul>
+    JSArray? excludedTopDomains,
+
     /// The rule will only match network requests originating from the list of
     /// `domains`.
     JSArray? domains,
@@ -586,13 +646,14 @@ extension type RuleCondition._(JSObject _) implements JSObject {
     /// tab. Only supported for session-scoped rules.
     JSArray? excludedTabIds,
 
-    /// Rule matches if the request matches any response header in this list (if
-    /// specified).
-    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+    /// Rule matches if the request matches any response header condition in this
+    /// list (if specified).
     JSArray? responseHeaders,
 
-    /// Rule does not match if the request has any of the specified headers.
-    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+    /// Rule does not match if the request matches any response header
+    /// condition in this list (if specified). If both `excludedResponseHeaders`
+    /// and `responseHeaders` are specified, then the `excludedResponseHeaders`
+    /// property takes precedence.
     JSArray? excludedResponseHeaders,
   });
 
@@ -604,12 +665,13 @@ extension type RuleCondition._(JSObject _) implements JSObject {
   /// **'|'**  : Left/right anchor: If used at either end of the pattern,
   ///               specifies the beginning/end of the url respectively.
   ///
-  /// **'||'** : Domain name anchor: If used at the beginning of the pattern,
-  ///               specifies the start of a (sub-)domain of the URL.
+  /// **'||'** : Domain name anchor: If used at the beginning of the
+  ///               pattern, specifies the start of a (sub-)domain of the URL.
   ///
-  /// **'^'**  : Separator character: This matches anything except a letter, a
-  ///               digit or one of the following: _ - . %. This can also match
-  ///               the end of the URL.
+  /// **'^'**  : Separator character: This matches anything except a letter,
+  ///               a digit, or one of the following: `_`,
+  ///               `-`, `.`, or `%`. This
+  ///               also match the end of the URL.
   ///
   /// Therefore `urlFilter` is composed of the following parts:
   /// (optional Left/Domain name anchor) + pattern + (optional Right anchor).
@@ -709,6 +771,41 @@ extension type RuleCondition._(JSObject _) implements JSObject {
   /// </ul>
   external JSArray? excludedRequestDomains;
 
+  /// The rule will only match network requests when the associated top-level
+  /// frame's domain matches one from the list of `topDomains`. If
+  /// the list is omitted, the rule is applied to requests associated with all
+  /// top-level frame domains. An empty list is not allowed.
+  ///
+  /// Notes:
+  /// <ul>
+  ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+  ///  <li>The entries must consist of only ascii characters.</li>
+  ///  <li>Use punycode encoding for internationalized domains.</li>
+  ///  <li>Sub-domains of the listed domains are also matched.</li>
+  ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+  ///      initiated requests, the request initiator's domain is considered
+  ///      instead.</li>
+  /// </ul>
+  external JSArray? topDomains;
+
+  /// The rule will not match network requests when the associated top-level
+  /// frame's domain matches one from the list of
+  /// `excludedTopDomains`. If the list is empty or omitted, no
+  /// domains are excluded. This takes precedence over
+  /// `topDomains`.
+  ///
+  /// Notes:
+  /// <ul>
+  ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+  ///  <li>The entries must consist of only ascii characters.</li>
+  ///  <li>Use punycode encoding for internationalized domains.</li>
+  ///  <li>Sub-domains of the listed domains are also excluded.</li>
+  ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+  ///      initiated requests, the request initiator's domain is considered
+  ///      instead.</li>
+  /// </ul>
+  external JSArray? excludedTopDomains;
+
   /// The rule will only match network requests originating from the list of
   /// `domains`.
   external JSArray? domains;
@@ -761,14 +858,30 @@ extension type RuleCondition._(JSObject _) implements JSObject {
   /// tab. Only supported for session-scoped rules.
   external JSArray? excludedTabIds;
 
-  /// Rule matches if the request matches any response header in this list (if
-  /// specified).
-  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+  /// Rule matches if the request matches any response header condition in this
+  /// list (if specified).
   external JSArray? responseHeaders;
 
-  /// Rule does not match if the request has any of the specified headers.
-  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+  /// Rule does not match if the request matches any response header
+  /// condition in this list (if specified). If both `excludedResponseHeaders`
+  /// and `responseHeaders` are specified, then the `excludedResponseHeaders`
+  /// property takes precedence.
   external JSArray? excludedResponseHeaders;
+}
+extension type HeaderRegexOptions._(JSObject _) implements JSObject {
+  external factory HeaderRegexOptions(
+      {
+      /// Whether the regex should match all groups for the value. This is only
+      /// relevant if a regex substitution is present and would thus need to be
+      /// applied onto all matching groups. Equivalent to the "g" flag.
+      /// Defaults to false.
+      bool? matchAll});
+
+  /// Whether the regex should match all groups for the value. This is only
+  /// relevant if a regex substitution is present and would thus need to be
+  /// applied onto all matching groups. Equivalent to the "g" flag.
+  /// Defaults to false.
+  external bool? matchAll;
 }
 extension type ModifyHeaderInfo._(JSObject _) implements JSObject {
   external factory ModifyHeaderInfo({
@@ -776,22 +889,56 @@ extension type ModifyHeaderInfo._(JSObject _) implements JSObject {
     String header,
 
     /// The operation to be performed on a header.
+    /// <!-- TODO(crbug.com/352093575): Make this field optional: It is ignored
+    /// if `regexSubstitution` is specified but is required otherwise. -->
     HeaderOperation operation,
 
     /// The new value for the header. Must be specified for `append`
     /// and `set` operations.
+    /// <!-- TODO(crbug.com/352093575): Ignored if `regexSubstitution` is
+    /// specified, -->
     String? value,
+
+    /// A regular expression to match against the header value. This follows the
+    /// RE2 syntax for consistency with the rest of the API.
+    String? regexFilter,
+
+    /// Substitution pattern for the response header. `regexFilter` must be
+    /// specified for this to be valid. Takes precedence over `value` and
+    /// `operation` if specified and valid.
+    String? regexSubstitution,
+
+    /// Options for the regex filter. If not specified, all options will be
+    /// default.
+    HeaderRegexOptions? regexOptions,
   });
 
   /// The name of the header to be modified.
   external String header;
 
   /// The operation to be performed on a header.
+  /// <!-- TODO(crbug.com/352093575): Make this field optional: It is ignored
+  /// if `regexSubstitution` is specified but is required otherwise. -->
   external HeaderOperation operation;
 
   /// The new value for the header. Must be specified for `append`
   /// and `set` operations.
+  /// <!-- TODO(crbug.com/352093575): Ignored if `regexSubstitution` is
+  /// specified, -->
   external String? value;
+
+  /// A regular expression to match against the header value. This follows the
+  /// RE2 syntax for consistency with the rest of the API.
+  external String? regexFilter;
+
+  /// Substitution pattern for the response header. `regexFilter` must be
+  /// specified for this to be valid. Takes precedence over `value` and
+  /// `operation` if specified and valid.
+  external String? regexSubstitution;
+
+  /// Options for the regex filter. If not specified, all options will be
+  /// default.
+  external HeaderRegexOptions? regexOptions;
 }
 extension type RuleAction._(JSObject _) implements JSObject {
   external factory RuleAction({
@@ -1048,6 +1195,18 @@ extension type TestMatchRequestDetails._(JSObject _) implements JSObject {
     /// not need to correspond to a real tab ID. Default is -1, meaning that
     /// the request isn't related to a tab.
     int? tabId,
+
+    /// The associated top-level frame URL (if any) for the request.
+    String? topUrl,
+
+    /// The headers provided by a hypothetical response if the request does not
+    /// get blocked or redirected before it is sent. Represented as an object
+    /// which maps a header name to a list of string values. If not specified,
+    /// the hypothetical response would return empty response headers, which can
+    /// match rules which match on the non-existence of headers.
+    /// E.g. `{"content-type": ["text/html; charset=utf-8",
+    /// "multipart/form-data"]}`
+    JSAny? responseHeaders,
   });
 
   /// The URL of the hypothetical request.
@@ -1067,6 +1226,18 @@ extension type TestMatchRequestDetails._(JSObject _) implements JSObject {
   /// not need to correspond to a real tab ID. Default is -1, meaning that
   /// the request isn't related to a tab.
   external int? tabId;
+
+  /// The associated top-level frame URL (if any) for the request.
+  external String? topUrl;
+
+  /// The headers provided by a hypothetical response if the request does not
+  /// get blocked or redirected before it is sent. Represented as an object
+  /// which maps a header name to a list of string values. If not specified,
+  /// the hypothetical response would return empty response headers, which can
+  /// match rules which match on the non-existence of headers.
+  /// E.g. `{"content-type": ["text/html; charset=utf-8",
+  /// "multipart/form-data"]}`
+  external JSAny? responseHeaders;
 }
 extension type MatchedRuleInfoDebug._(JSObject _) implements JSObject {
   external factory MatchedRuleInfoDebug({
@@ -1085,11 +1256,6 @@ extension type DNRInfo._(JSObject _) implements JSObject {
   external factory DNRInfo({JSArray rule_resources});
 
   external JSArray rule_resources;
-}
-extension type ManifestKeys._(JSObject _) implements JSObject {
-  external factory ManifestKeys({DNRInfo declarative_net_request});
-
-  external DNRInfo declarative_net_request;
 }
 extension type RegexOptions._(JSObject _) implements JSObject {
   external factory RegexOptions({

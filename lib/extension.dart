@@ -30,7 +30,7 @@ class ChromeExtension {
   /// extension.
   /// [extensionId] The extension ID of the extension you want to connect to.
   /// If omitted, default is your own extension.
-  @Deprecated(r'Please use $(ref:runtime.sendMessage).')
+  @Deprecated(r'Please use runtime.sendMessage.')
   Future<Object?> sendRequest(
     String? extensionId,
     Object request,
@@ -49,7 +49,7 @@ class ChromeExtension {
   /// [path] A path to a resource within an extension expressed relative to
   /// its install directory.
   /// [returns] The fully-qualified URL to the resource.
-  @Deprecated(r'Please use $(ref:runtime.getURL).')
+  @Deprecated(r'Please use runtime.getURL.')
   String getURL(String path) {
     return $js.chrome.extension.getURL(path);
   }
@@ -77,8 +77,7 @@ class ChromeExtension {
   /// running inside the current extension. If `windowId` is specified, returns
   /// only the 'window' objects of tabs attached to the specified window.
   /// [returns] Array of global window objects
-  @Deprecated(
-      r'Please use $(ref:extension.getViews) <code>{type: "tab"}</code>.')
+  @Deprecated(r'Please use extension.getViews <code>{type: "tab"}</code>.')
   List<JSObject> getExtensionTabs(int? windowId) {
     return $js.chrome.extension
         .getExtensionTabs(windowId)
@@ -124,6 +123,7 @@ class ChromeExtension {
 
   /// Fired when a request is sent from either an extension process or a content
   /// script.
+  @Deprecated(r'Please use runtime.onMessage.')
   EventStream<OnRequestEvent> get onRequest =>
       $js.chrome.extension.onRequest.asStream(($c) => (
             JSAny? request,
@@ -138,6 +138,7 @@ class ChromeExtension {
           }.toJS);
 
   /// Fired when a request is sent from another extension.
+  @Deprecated(r'Please use runtime.onMessageExternal.')
   EventStream<OnRequestExternalEvent> get onRequestExternal =>
       $js.chrome.extension.onRequestExternal.asStream(($c) => (
             JSAny? request,

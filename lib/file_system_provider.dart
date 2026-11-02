@@ -34,6 +34,7 @@ class ChromeFileSystemProvider {
   ///
   /// In case of an error, [runtime.lastError] will be set with a
   /// corresponding error code.
+  /// |Returns|: A generic result callback to indicate success or failure.
   Future<void> mount(MountOptions options) async {
     await $js.chrome.fileSystemProvider.mount(options.toJS).toDart;
   }
@@ -45,11 +46,13 @@ class ChromeFileSystemProvider {
   ///
   /// In case of an error, [runtime.lastError] will be set with a
   /// corresponding error code.
+  /// |Returns|: A generic result callback to indicate success or failure.
   Future<void> unmount(UnmountOptions options) async {
     await $js.chrome.fileSystemProvider.unmount(options.toJS).toDart;
   }
 
   /// Returns all file systems mounted by the extension.
+  /// |Returns|: Callback to receive the result of [getAll] function.
   Future<List<FileSystemInfo>> getAll() async {
     var $res = await $js.chrome.fileSystemProvider.getAll().toDart;
     return $res.toDart
@@ -60,6 +63,7 @@ class ChromeFileSystemProvider {
 
   /// Returns information about a file system with the passed
   /// `fileSystemId`.
+  /// |Returns|: Callback to receive the result of [get] function.
   Future<FileSystemInfo> get(String fileSystemId) async {
     var $res = await $js.chrome.fileSystemProvider.get(fileSystemId).toDart;
     return FileSystemInfo.fromJS($res);
@@ -94,6 +98,7 @@ class ChromeFileSystemProvider {
   ///
   /// In case of an error, [runtime.lastError] will be set
   /// will a corresponding error code.
+  /// |Returns|: A generic result callback to indicate success or failure.
   Future<void> notify(NotifyOptions options) async {
     await $js.chrome.fileSystemProvider.notify(options.toJS).toDart;
   }
@@ -195,15 +200,13 @@ class ChromeFileSystemProvider {
   EventStream<OnOpenFileRequestedEvent> get onOpenFileRequested =>
       $js.chrome.fileSystemProvider.onOpenFileRequested.asStream(($c) => (
             $js.OpenFileRequestedOptions options,
-            $js.ProviderSuccessCallback successCallback,
+            $js.OpenFileSuccessCallback successCallback,
             $js.ProviderErrorCallback errorCallback,
           ) {
             return $c(OnOpenFileRequestedEvent(
               options: OpenFileRequestedOptions.fromJS(options),
-              successCallback: () {
-                successCallback.callAsFunction(
-                  null,
-                );
+              successCallback: (EntryMetadata? metadata) {
+                successCallback.callAsFunction(null, metadata?.toJS);
               },
               errorCallback: (ProviderError error) {
                 errorCallback.callAsFunction(null, error.toJS);
@@ -654,6 +657,9 @@ typedef EntriesCallback = void Function(
   bool,
 );
 
+/// Success callback for the [onOpenFileRequested] event.
+typedef OpenFileSuccessCallback = void Function(EntryMetadata?);
+
 /// Success callback for the [onReadFileRequested] event. If more
 /// data will be returned, then `hasMore` must be true, and it
 /// has to be called again with additional entries. If no more data is
@@ -696,6 +702,27 @@ class CloudIdentifier {
   }
 }
 
+class CloudFileInfo {
+  CloudFileInfo.fromJS(this._wrapped);
+
+  CloudFileInfo(
+      {
+      /// A tag that represents the version of the file.
+      String? versionTag})
+      : _wrapped = $js.CloudFileInfo(versionTag: versionTag);
+
+  final $js.CloudFileInfo _wrapped;
+
+  $js.CloudFileInfo get toJS => _wrapped;
+
+  /// A tag that represents the version of the file.
+  String? get versionTag => _wrapped.versionTag;
+
+  set versionTag(String? v) {
+    _wrapped.versionTag = v;
+  }
+}
+
 class EntryMetadata {
   EntryMetadata.fromJS(this._wrapped);
 
@@ -732,6 +759,11 @@ class EntryMetadata {
     /// local files not backed by cloud storage, it should be undefined when
     /// requested.
     CloudIdentifier? cloudIdentifier,
+
+    /// Information that identifies a specific file in the underlying cloud file
+    /// system. Must be provided if requested in `options` and the
+    /// file is backed by cloud storage.
+    CloudFileInfo? cloudFileInfo,
   }) : _wrapped = $js.EntryMetadata(
           isDirectory: isDirectory,
           name: name,
@@ -740,6 +772,7 @@ class EntryMetadata {
           mimeType: mimeType,
           thumbnail: thumbnail,
           cloudIdentifier: cloudIdentifier?.toJS,
+          cloudFileInfo: cloudFileInfo?.toJS,
         );
 
   final $js.EntryMetadata _wrapped;
@@ -804,6 +837,16 @@ class EntryMetadata {
 
   set cloudIdentifier(CloudIdentifier? v) {
     _wrapped.cloudIdentifier = v?.toJS;
+  }
+
+  /// Information that identifies a specific file in the underlying cloud file
+  /// system. Must be provided if requested in `options` and the
+  /// file is backed by cloud storage.
+  CloudFileInfo? get cloudFileInfo =>
+      _wrapped.cloudFileInfo?.let(CloudFileInfo.fromJS);
+
+  set cloudFileInfo(CloudFileInfo? v) {
+    _wrapped.cloudFileInfo = v?.toJS;
   }
 }
 
@@ -1174,6 +1217,10 @@ class GetMetadataRequestedOptions {
     /// Set to `true` if `cloudIdentifier` value is
     /// requested.
     required bool cloudIdentifier,
+
+    /// Set to `true` if `cloudFileInfo` value is
+    /// requested.
+    required bool cloudFileInfo,
   }) : _wrapped = $js.GetMetadataRequestedOptions(
           fileSystemId: fileSystemId,
           requestId: requestId,
@@ -1185,6 +1232,7 @@ class GetMetadataRequestedOptions {
           mimeType: mimeType,
           thumbnail: thumbnail,
           cloudIdentifier: cloudIdentifier,
+          cloudFileInfo: cloudFileInfo,
         );
 
   final $js.GetMetadataRequestedOptions _wrapped;
@@ -1261,6 +1309,14 @@ class GetMetadataRequestedOptions {
 
   set cloudIdentifier(bool v) {
     _wrapped.cloudIdentifier = v;
+  }
+
+  /// Set to `true` if `cloudFileInfo` value is
+  /// requested.
+  bool get cloudFileInfo => _wrapped.cloudFileInfo;
+
+  set cloudFileInfo(bool v) {
+    _wrapped.cloudFileInfo = v;
   }
 }
 
@@ -2230,9 +2286,13 @@ class Change {
 
     /// The type of the change which happened to the entry.
     required ChangeType changeType,
+
+    /// Information relating to the file if backed by a cloud file system.
+    CloudFileInfo? cloudFileInfo,
   }) : _wrapped = $js.Change(
           entryPath: entryPath,
           changeType: changeType.toJS,
+          cloudFileInfo: cloudFileInfo?.toJS,
         );
 
   final $js.Change _wrapped;
@@ -2251,6 +2311,14 @@ class Change {
 
   set changeType(ChangeType v) {
     _wrapped.changeType = v.toJS;
+  }
+
+  /// Information relating to the file if backed by a cloud file system.
+  CloudFileInfo? get cloudFileInfo =>
+      _wrapped.cloudFileInfo?.let(CloudFileInfo.fromJS);
+
+  set cloudFileInfo(CloudFileInfo? v) {
+    _wrapped.cloudFileInfo = v?.toJS;
   }
 }
 
@@ -2447,7 +2515,7 @@ class OnOpenFileRequestedEvent {
 
   final OpenFileRequestedOptions options;
 
-  final void Function() successCallback;
+  final void Function(EntryMetadata?) successCallback;
 
   final void Function(ProviderError) errorCallback;
 }

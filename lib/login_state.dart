@@ -46,7 +46,10 @@ enum ProfileType {
   signinProfile('SIGNIN_PROFILE'),
 
   /// Specifies that the extension is in the user profile.
-  userProfile('USER_PROFILE');
+  userProfile('USER_PROFILE'),
+
+  /// Specifies that the extension is in the lock screen profile.
+  lockProfile('LOCK_PROFILE');
 
   const ProfileType(this.value);
 

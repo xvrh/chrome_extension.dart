@@ -2,6 +2,7 @@
 
 library;
 
+import 'dart:typed_data';
 import 'extension_types.dart';
 import 'src/internal_helpers.dart';
 import 'src/js/web_request.dart' as $js;
@@ -249,7 +250,14 @@ enum OnHeadersReceivedOptions {
   responseHeaders('responseHeaders'),
 
   /// Specifies that headers can violate Cross-Origin Resource Sharing (CORS).
-  extraHeaders('extraHeaders');
+  extraHeaders('extraHeaders'),
+
+  /// Specifies that the SecurityInfo should be included in the event.
+  securityInfo('securityInfo'),
+
+  /// Specifies that the SecurityInfo with raw bytes of certificates should be
+  /// included in the event.
+  securityInfoRawDer('securityInfoRawDer');
 
   const OnHeadersReceivedOptions(this.value);
 
@@ -577,6 +585,43 @@ class UploadData {
   }
 }
 
+class SecurityInfo {
+  SecurityInfo.fromJS(this._wrapped);
+
+  SecurityInfo({
+    /// A list of certificates
+    required List<SecurityInfoCertificates> certificates,
+
+    /// State of the connection. One of secure, insecure, broken.
+    required String state,
+  }) : _wrapped = $js.SecurityInfo(
+          certificates: certificates.toJSArray((e) => e.toJS),
+          state: state,
+        );
+
+  final $js.SecurityInfo _wrapped;
+
+  $js.SecurityInfo get toJS => _wrapped;
+
+  /// A list of certificates
+  List<SecurityInfoCertificates> get certificates =>
+      _wrapped.certificates.toDart
+          .cast<$js.SecurityInfoCertificates>()
+          .map((e) => SecurityInfoCertificates.fromJS(e))
+          .toList();
+
+  set certificates(List<SecurityInfoCertificates> v) {
+    _wrapped.certificates = v.toJSArray((e) => e.toJS);
+  }
+
+  /// State of the connection. One of secure, insecure, broken.
+  String get state => _wrapped.state;
+
+  set state(String v) {
+    _wrapped.state = v;
+  }
+}
+
 class OnBeforeRequestDetails {
   OnBeforeRequestDetails.fromJS(this._wrapped);
 
@@ -788,7 +833,7 @@ class OnBeforeSendHeadersDetails {
     required int parentFrameId,
 
     /// The UUID of the document making the request.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -880,9 +925,9 @@ class OnBeforeSendHeadersDetails {
   }
 
   /// The UUID of the document making the request.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -975,7 +1020,7 @@ class OnSendHeadersDetails {
     required int parentFrameId,
 
     /// The UUID of the document making the request.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1066,9 +1111,9 @@ class OnSendHeadersDetails {
   }
 
   /// The UUID of the document making the request.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -1161,7 +1206,7 @@ class OnHeadersReceivedDetails {
     required int parentFrameId,
 
     /// The UUID of the document making the request.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1196,6 +1241,11 @@ class OnHeadersReceivedDetails {
 
     /// Standard HTTP status code returned by the server.
     required int statusCode,
+
+    /// Information about the TLS/QUIC connection used for the underlying
+    /// connection. Only provided if `securityInfo` is specified in the
+    /// `extraInfoSpec` parameter.
+    SecurityInfo? securityInfo,
   }) : _wrapped = $js.OnHeadersReceivedDetails(
           requestId: requestId,
           url: url,
@@ -1213,6 +1263,7 @@ class OnHeadersReceivedDetails {
           statusLine: statusLine,
           responseHeaders: responseHeaders?.toJSArray((e) => e.toJS),
           statusCode: statusCode,
+          securityInfo: securityInfo?.toJS,
         );
 
   final $js.OnHeadersReceivedDetails _wrapped;
@@ -1261,9 +1312,9 @@ class OnHeadersReceivedDetails {
   }
 
   /// The UUID of the document making the request.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -1345,6 +1396,16 @@ class OnHeadersReceivedDetails {
   set statusCode(int v) {
     _wrapped.statusCode = v;
   }
+
+  /// Information about the TLS/QUIC connection used for the underlying
+  /// connection. Only provided if `securityInfo` is specified in the
+  /// `extraInfoSpec` parameter.
+  SecurityInfo? get securityInfo =>
+      _wrapped.securityInfo?.let(SecurityInfo.fromJS);
+
+  set securityInfo(SecurityInfo? v) {
+    _wrapped.securityInfo = v?.toJS;
+  }
 }
 
 class OnAuthRequiredDetails {
@@ -1372,7 +1433,7 @@ class OnAuthRequiredDetails {
     required int parentFrameId,
 
     /// The UUID of the document making the request.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1489,9 +1550,9 @@ class OnAuthRequiredDetails {
   }
 
   /// The UUID of the document making the request.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -1630,7 +1691,7 @@ class OnResponseStartedDetails {
     required int parentFrameId,
 
     /// The UUID of the document making the request.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1740,9 +1801,9 @@ class OnResponseStartedDetails {
   }
 
   /// The UUID of the document making the request.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -1867,7 +1928,7 @@ class OnBeforeRedirectDetails {
     required int parentFrameId,
 
     /// The UUID of the document making the request.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -1981,9 +2042,9 @@ class OnBeforeRedirectDetails {
   }
 
   /// The UUID of the document making the request.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -2115,7 +2176,7 @@ class OnCompletedDetails {
     required int parentFrameId,
 
     /// The UUID of the document making the request.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -2225,9 +2286,9 @@ class OnCompletedDetails {
   }
 
   /// The UUID of the document making the request.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -2353,7 +2414,7 @@ class OnErrorOccurredDetails {
 
     /// The UUID of the document making the request. This value is not present
     /// if the request is a navigation of a frame.
-    required String documentId,
+    String? documentId,
 
     /// The UUID of the parent document owning this frame. This is not set if
     /// there is no parent.
@@ -2456,9 +2517,9 @@ class OnErrorOccurredDetails {
 
   /// The UUID of the document making the request. This value is not present if
   /// the request is a navigation of a frame.
-  String get documentId => _wrapped.documentId;
+  String? get documentId => _wrapped.documentId;
 
-  set documentId(String v) {
+  set documentId(String? v) {
     _wrapped.documentId = v;
   }
 
@@ -2654,6 +2715,40 @@ class BlockingResponseAuthCredentials {
   }
 }
 
+class SecurityInfoCertificates {
+  SecurityInfoCertificates.fromJS(this._wrapped);
+
+  SecurityInfoCertificates({
+    /// Raw bytes of DER encoded server certificate
+    ByteBuffer? rawDer,
+
+    /// Fingerprints of the certificate.
+    required SecurityInfoCertificatesFingerprint fingerprint,
+  }) : _wrapped = $js.SecurityInfoCertificates(
+          rawDER: rawDer?.toJS,
+          fingerprint: fingerprint.toJS,
+        );
+
+  final $js.SecurityInfoCertificates _wrapped;
+
+  $js.SecurityInfoCertificates get toJS => _wrapped;
+
+  /// Raw bytes of DER encoded server certificate
+  ByteBuffer? get rawDer => _wrapped.rawDER?.toDart;
+
+  set rawDer(ByteBuffer? v) {
+    _wrapped.rawDER = v?.toJS;
+  }
+
+  /// Fingerprints of the certificate.
+  SecurityInfoCertificatesFingerprint get fingerprint =>
+      SecurityInfoCertificatesFingerprint.fromJS(_wrapped.fingerprint);
+
+  set fingerprint(SecurityInfoCertificatesFingerprint v) {
+    _wrapped.fingerprint = v.toJS;
+  }
+}
+
 class OnBeforeRequestDetailsRequestBody {
   OnBeforeRequestDetailsRequestBody.fromJS(this._wrapped);
 
@@ -2741,6 +2836,27 @@ class OnAuthRequiredDetailsChallenger {
 
   set port(int v) {
     _wrapped.port = v;
+  }
+}
+
+class SecurityInfoCertificatesFingerprint {
+  SecurityInfoCertificatesFingerprint.fromJS(this._wrapped);
+
+  SecurityInfoCertificatesFingerprint(
+      {
+      /// sha256 fingerprint of the certificate.
+      required String sha256})
+      : _wrapped = $js.SecurityInfoCertificatesFingerprint(sha256: sha256);
+
+  final $js.SecurityInfoCertificatesFingerprint _wrapped;
+
+  $js.SecurityInfoCertificatesFingerprint get toJS => _wrapped;
+
+  /// sha256 fingerprint of the certificate.
+  String get sha256 => _wrapped.sha256;
+
+  set sha256(String v) {
+    _wrapped.sha256 = v;
   }
 }
 

@@ -76,7 +76,9 @@ class IdlModelConverter {
       var callback = _asyncTypeFromParameter(e.parameters,
           parentName: '${e.name.upperCamel}Event', jsIsNullable: false);
       yield Event(e.name,
-          type: callback, documentation: _toDocumentation(e.documentation));
+          type: callback,
+          documentation: _toDocumentation(e.documentation),
+          deprecated: _deprecated(e.attribute));
     }
   }
 
@@ -177,10 +179,12 @@ class IdlModelConverter {
               orElse: () => throw StateError(
                   'Look for callback ${paramDecl.types.name} ${model.name} ${function.name}'));
 
+          // Chrome supports promises for the functions with a trailing
+          // callback unless they're marked [doesNotSupportPromises].
           callback = _asyncTypeFromParameter(callbackDeclaration.parameters,
               parentName: '${function.name.upperCamel}Result',
               jsIsNullable: paramDecl.isOptional)
-            ..supportsPromises = function.attribute.supportsPromises;
+            ..supportsPromises = !function.attribute.doesNotSupportPromises;
           if (function.returnType.name != 'void') {
             throw UnimplementedError(
                 'Async with non void function ${model.name} / ${function.name}');
@@ -208,10 +212,7 @@ class IdlModelConverter {
         parameters: parameters,
         documentation: _toDocumentation(function.documentation),
         returns: returns,
-        deprecated: function.attribute?.attributes
-            .firstWhereOrNull(
-                (e) => e.attributeType == IDLAttributeTypeEnum.deprecated)
-            ?.attributeValue,
+        deprecated: _deprecated(function.attribute),
       );
     }
   }
@@ -257,6 +258,10 @@ class IdlModelConverter {
 
 //TODO(xha): keep the raw documentation and now re-wrap it in code-generation
 String _toDocumentation(List<String> documentation) => documentation.join('\n');
+
+String? _deprecated(IDLAttributeDeclaration? attribute) => attribute?.attributes
+    .firstWhereOrNull((e) => e.attributeType == IDLAttributeTypeEnum.deprecated)
+    ?.attributeValue;
 
 bool _hasPlatforms(IDLAttributeDeclaration? attribute) {
   return attribute?.attributes

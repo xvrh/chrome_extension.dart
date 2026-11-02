@@ -31,10 +31,9 @@ class ChromeNotifications {
   ///
   /// The `notificationId` parameter is required before Chrome 42.
   /// |options|: Contents of the notification.
-  /// |callback|: Returns the notification id (either supplied or generated)
-  /// that represents the created notification.
-  ///
-  /// The callback is required before Chrome 42.
+  /// |Returns|: Returns a Promise which resolves with the notification id
+  /// (either supplied or generated) that represents the created
+  /// notification.
   Future<String> create(
     String? notificationId,
     NotificationOptions options,
@@ -52,9 +51,8 @@ class ChromeNotifications {
   /// |notificationId|: The id of the notification to be updated. This is
   /// returned by [notifications.create] method.
   /// |options|: Contents of the notification to update to.
-  /// |callback|: Called to indicate whether a matching notification existed.
-  ///
-  /// The callback is required before Chrome 42.
+  /// |Returns|: Returns a Promise which resolves to indicate whether a
+  /// matching notification existed.
   Future<bool> update(
     String notificationId,
     NotificationOptions options,
@@ -71,16 +69,16 @@ class ChromeNotifications {
   /// Clears the specified notification.
   /// |notificationId|: The id of the notification to be cleared. This is
   /// returned by [notifications.create] method.
-  /// |callback|: Called to indicate whether a matching notification existed.
-  ///
-  /// The callback is required before Chrome 42.
+  /// |Returns|: Returns a Promise which resolves to indicate whether a
+  /// matching notification existed.
   Future<bool> clear(String notificationId) async {
     var $res = await $js.chrome.notifications.clear(notificationId).toDart;
     return $res.toDart;
   }
 
   /// Retrieves all the notifications of this app or extension.
-  /// |callback|: Returns the set of notification_ids currently in the system.
+  /// |Returns|: Returns a Promise which resolves with the set of
+  /// notification_ids currently in the system.
   Future<Map> getAll() async {
     var $res = await $js.chrome.notifications.getAll().toDart;
     return $res.toDartMap();
@@ -88,7 +86,8 @@ class ChromeNotifications {
 
   /// Retrieves whether the user has enabled notifications from this app
   /// or extension.
-  /// |callback|: Returns the current permission level.
+  /// |Returns|: Returns a Promise which resolves with the current permission
+  /// level.
   Future<PermissionLevel> getPermissionLevel() async {
     var $res = await $js.chrome.notifications.getPermissionLevel().toDart;
     return PermissionLevel.fromJS($res);
@@ -135,6 +134,7 @@ class ChromeNotifications {
   /// The user clicked on a link for the app's notification settings.  As of
   /// Chrome 47, only ChromeOS has UI that dispatches this event.
   /// As of Chrome 65, that UI has been removed from ChromeOS, too.
+  @Deprecated(r'Custom notification settings button is no longer supported.')
   EventStream<void> get onShowSettings =>
       $js.chrome.notifications.onShowSettings.asStream(($c) => () {
             return $c(null);
@@ -142,16 +142,15 @@ class ChromeNotifications {
 }
 
 enum TemplateType {
-  /// Contains an icon, title, message, expandedMessage, and up to two
-  /// buttons.
+  /// Contains an icon, title, message, expandedMessage, and up to two buttons.
   basic('basic'),
 
   /// Contains an icon, title, message, expandedMessage, image, and up
   ///  to two buttons.
   image('image'),
 
-  /// Contains an icon, title, message, items, and up to two buttons.
-  /// Users on Mac OS X only see the first item.
+  /// Contains an icon, title, message, items, and up to two buttons. Users on
+  /// Mac OS X only see the first item.
   list('list'),
 
   /// Contains an icon, title, message, progress, and up to two buttons.
@@ -170,12 +169,12 @@ enum TemplateType {
 }
 
 enum PermissionLevel {
-  /// Specifies that the user has elected to show notifications
-  /// from the app or extension. This is the default at install time.
+  /// Specifies that the user has elected to show notifications from the app or
+  /// extension. This is the default at install time.
   granted('granted'),
 
-  /// Specifies that the user has elected not to show notifications
-  /// from the app or extension.
+  /// Specifies that the user has elected not to show notifications from the app
+  /// or extension.
   denied('denied');
 
   const PermissionLevel(this.value);
@@ -308,8 +307,10 @@ class NotificationOptions {
     /// notifications.
     ///
     /// URLs can be a data URL, a blob URL, or a URL relative to a resource
-    /// within this extension's .crx file
-    /// _Required for [notifications.create]_ method.
+    /// within
+    /// this extension's .crx file
+    /// <aside class="note">**Note:**This value is required for the
+    /// [notifications.create]`()` method.</aside>
     String? iconUrl,
     NotificationBitmap? iconBitmap,
 
@@ -317,25 +318,30 @@ class NotificationOptions {
     /// $(ref:notifications.NotificationOptions.iconUrl iconUrl).
     ///
     /// The app icon mask should be in alpha channel, as only the alpha channel
-    /// of the image will be considered.
+    /// of
+    /// the image will be considered.
     String? appIconMaskUrl,
     NotificationBitmap? appIconMaskBitmap,
 
     /// Title of the notification (e.g. sender name for email).
-    /// _Required for [notifications.create]_ method.
+    /// <aside class="note">**Note:**This value is required for the
+    /// [notifications.create]`()` method.</aside>
     String? title,
 
     /// Main notification content.
-    /// _Required for [notifications.create]_ method.
+    /// <aside class="note">**Note:**This value is required for the
+    /// [notifications.create]`()` method.</aside>
     String? message,
 
     /// Alternate notification content with a lower-weight font.
     String? contextMessage,
 
     /// Priority ranges from -2 to 2. -2 is lowest priority. 2 is highest. Zero
-    /// is default.  On platforms that don't support a notification center
-    /// (Windows, Linux & Mac), -2 and -1 result in an error as notifications
-    /// with those priorities will not be shown at all.
+    /// is
+    /// default.  On platforms that don't support a notification center
+    /// (Windows,
+    /// Linux & Mac), -2 and -1 result in an error as notifications with those
+    /// priorities will not be shown at all.
     int? priority,
 
     /// A timestamp associated with the notification, in milliseconds past the
@@ -368,7 +374,8 @@ class NotificationOptions {
     bool? requireInteraction,
 
     /// Indicates that no sounds or vibrations should be made when the
-    /// notification is being shown. This defaults to false.
+    /// notification
+    /// is being shown. This defaults to false.
     bool? silent,
   }) : _wrapped = $js.NotificationOptions(
           type: type?.toJS,
@@ -407,9 +414,10 @@ class NotificationOptions {
   /// A URL to the sender's avatar, app icon, or a thumbnail for image
   /// notifications.
   ///
-  /// URLs can be a data URL, a blob URL, or a URL relative to a resource
-  /// within this extension's .crx file
-  /// _Required for [notifications.create]_ method.
+  /// URLs can be a data URL, a blob URL, or a URL relative to a resource within
+  /// this extension's .crx file
+  /// <aside class="note">**Note:**This value is required for the
+  /// [notifications.create]`()` method.</aside>
   String? get iconUrl => _wrapped.iconUrl;
 
   set iconUrl(String? v) {
@@ -426,8 +434,8 @@ class NotificationOptions {
   /// A URL to the app icon mask. URLs have the same restrictions as
   /// $(ref:notifications.NotificationOptions.iconUrl iconUrl).
   ///
-  /// The app icon mask should be in alpha channel, as only the alpha channel
-  /// of the image will be considered.
+  /// The app icon mask should be in alpha channel, as only the alpha channel of
+  /// the image will be considered.
   String? get appIconMaskUrl => _wrapped.appIconMaskUrl;
 
   set appIconMaskUrl(String? v) {
@@ -442,7 +450,8 @@ class NotificationOptions {
   }
 
   /// Title of the notification (e.g. sender name for email).
-  /// _Required for [notifications.create]_ method.
+  /// <aside class="note">**Note:**This value is required for the
+  /// [notifications.create]`()` method.</aside>
   String? get title => _wrapped.title;
 
   set title(String? v) {
@@ -450,7 +459,8 @@ class NotificationOptions {
   }
 
   /// Main notification content.
-  /// _Required for [notifications.create]_ method.
+  /// <aside class="note">**Note:**This value is required for the
+  /// [notifications.create]`()` method.</aside>
   String? get message => _wrapped.message;
 
   set message(String? v) {
@@ -464,10 +474,10 @@ class NotificationOptions {
     _wrapped.contextMessage = v;
   }
 
-  /// Priority ranges from -2 to 2. -2 is lowest priority. 2 is highest. Zero
-  /// is default.  On platforms that don't support a notification center
-  /// (Windows, Linux & Mac), -2 and -1 result in an error as notifications
-  /// with those priorities will not be shown at all.
+  /// Priority ranges from -2 to 2. -2 is lowest priority. 2 is highest. Zero is
+  /// default.  On platforms that don't support a notification center (Windows,
+  /// Linux & Mac), -2 and -1 result in an error as notifications with those
+  /// priorities will not be shown at all.
   int? get priority => _wrapped.priority;
 
   set priority(int? v) {
@@ -548,7 +558,8 @@ class NotificationOptions {
   }
 
   /// Indicates that no sounds or vibrations should be made when the
-  /// notification is being shown. This defaults to false.
+  /// notification
+  /// is being shown. This defaults to false.
   bool? get silent => _wrapped.silent;
 
   set silent(bool? v) {

@@ -91,7 +91,7 @@ void _tests(TestContext context) {
     expect(
         () async =>
             await chrome.contextMenus.update('not a real id', updateProperties),
-        throwsA(isA<Exception>()));
+        throwsA((e) => '$e'.contains('Cannot find menu item')));
   });
 
   test('remove -- successful', () async {
@@ -100,6 +100,6 @@ void _tests(TestContext context) {
 
   test('remove -- failure', () async {
     expect(() async => await chrome.contextMenus.remove('not a real id'),
-        throwsA(isA<Exception>()));
+        throwsA((e) => '$e'.contains('Cannot find menu item')));
   });
 }

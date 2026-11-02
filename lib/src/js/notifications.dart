@@ -34,10 +34,9 @@ extension type JSNotifications._(JSObject _) {
   ///
   /// The `notificationId` parameter is required before Chrome 42.
   /// |options|: Contents of the notification.
-  /// |callback|: Returns the notification id (either supplied or generated)
-  /// that represents the created notification.
-  ///
-  /// The callback is required before Chrome 42.
+  /// |Returns|: Returns a Promise which resolves with the notification id
+  /// (either supplied or generated) that represents the created
+  /// notification.
   external JSPromise<JSString> create(
     String? notificationId,
     NotificationOptions options,
@@ -47,9 +46,8 @@ extension type JSNotifications._(JSObject _) {
   /// |notificationId|: The id of the notification to be updated. This is
   /// returned by [notifications.create] method.
   /// |options|: Contents of the notification to update to.
-  /// |callback|: Called to indicate whether a matching notification existed.
-  ///
-  /// The callback is required before Chrome 42.
+  /// |Returns|: Returns a Promise which resolves to indicate whether a
+  /// matching notification existed.
   external JSPromise<JSBoolean> update(
     String notificationId,
     NotificationOptions options,
@@ -58,18 +56,19 @@ extension type JSNotifications._(JSObject _) {
   /// Clears the specified notification.
   /// |notificationId|: The id of the notification to be cleared. This is
   /// returned by [notifications.create] method.
-  /// |callback|: Called to indicate whether a matching notification existed.
-  ///
-  /// The callback is required before Chrome 42.
+  /// |Returns|: Returns a Promise which resolves to indicate whether a
+  /// matching notification existed.
   external JSPromise<JSBoolean> clear(String notificationId);
 
   /// Retrieves all the notifications of this app or extension.
-  /// |callback|: Returns the set of notification_ids currently in the system.
+  /// |Returns|: Returns a Promise which resolves with the set of
+  /// notification_ids currently in the system.
   external JSPromise<JSAny> getAll();
 
   /// Retrieves whether the user has enabled notifications from this app
   /// or extension.
-  /// |callback|: Returns the current permission level.
+  /// |Returns|: Returns a Promise which resolves with the current permission
+  /// level.
   external JSPromise<PermissionLevel> getPermissionLevel();
 
   /// The notification closed, either by the system or by user action.
@@ -144,35 +143,38 @@ extension type NotificationOptions._(JSObject _) implements JSObject {
     /// A URL to the sender's avatar, app icon, or a thumbnail for image
     /// notifications.
     ///
-    /// URLs can be a data URL, a blob URL, or a URL relative to a resource
-    /// within this extension's .crx file
-    /// _Required for [notifications.create]_ method.
+    /// URLs can be a data URL, a blob URL, or a URL relative to a resource within
+    /// this extension's .crx file
+    /// <aside class="note">**Note:**This value is required for the
+    /// [notifications.create]`()` method.</aside>
     String? iconUrl,
     NotificationBitmap? iconBitmap,
 
     /// A URL to the app icon mask. URLs have the same restrictions as
     /// $(ref:notifications.NotificationOptions.iconUrl iconUrl).
     ///
-    /// The app icon mask should be in alpha channel, as only the alpha channel
-    /// of the image will be considered.
+    /// The app icon mask should be in alpha channel, as only the alpha channel of
+    /// the image will be considered.
     String? appIconMaskUrl,
     NotificationBitmap? appIconMaskBitmap,
 
     /// Title of the notification (e.g. sender name for email).
-    /// _Required for [notifications.create]_ method.
+    /// <aside class="note">**Note:**This value is required for the
+    /// [notifications.create]`()` method.</aside>
     String? title,
 
     /// Main notification content.
-    /// _Required for [notifications.create]_ method.
+    /// <aside class="note">**Note:**This value is required for the
+    /// [notifications.create]`()` method.</aside>
     String? message,
 
     /// Alternate notification content with a lower-weight font.
     String? contextMessage,
 
-    /// Priority ranges from -2 to 2. -2 is lowest priority. 2 is highest. Zero
-    /// is default.  On platforms that don't support a notification center
-    /// (Windows, Linux & Mac), -2 and -1 result in an error as notifications
-    /// with those priorities will not be shown at all.
+    /// Priority ranges from -2 to 2. -2 is lowest priority. 2 is highest. Zero is
+    /// default.  On platforms that don't support a notification center (Windows,
+    /// Linux & Mac), -2 and -1 result in an error as notifications with those
+    /// priorities will not be shown at all.
     int? priority,
 
     /// A timestamp associated with the notification, in milliseconds past the
@@ -204,7 +206,8 @@ extension type NotificationOptions._(JSObject _) implements JSObject {
     bool? requireInteraction,
 
     /// Indicates that no sounds or vibrations should be made when the
-    /// notification is being shown. This defaults to false.
+    /// notification
+    /// is being shown. This defaults to false.
     bool? silent,
   });
 
@@ -215,9 +218,10 @@ extension type NotificationOptions._(JSObject _) implements JSObject {
   /// A URL to the sender's avatar, app icon, or a thumbnail for image
   /// notifications.
   ///
-  /// URLs can be a data URL, a blob URL, or a URL relative to a resource
-  /// within this extension's .crx file
-  /// _Required for [notifications.create]_ method.
+  /// URLs can be a data URL, a blob URL, or a URL relative to a resource within
+  /// this extension's .crx file
+  /// <aside class="note">**Note:**This value is required for the
+  /// [notifications.create]`()` method.</aside>
   external String? iconUrl;
 
   external NotificationBitmap? iconBitmap;
@@ -225,27 +229,29 @@ extension type NotificationOptions._(JSObject _) implements JSObject {
   /// A URL to the app icon mask. URLs have the same restrictions as
   /// $(ref:notifications.NotificationOptions.iconUrl iconUrl).
   ///
-  /// The app icon mask should be in alpha channel, as only the alpha channel
-  /// of the image will be considered.
+  /// The app icon mask should be in alpha channel, as only the alpha channel of
+  /// the image will be considered.
   external String? appIconMaskUrl;
 
   external NotificationBitmap? appIconMaskBitmap;
 
   /// Title of the notification (e.g. sender name for email).
-  /// _Required for [notifications.create]_ method.
+  /// <aside class="note">**Note:**This value is required for the
+  /// [notifications.create]`()` method.</aside>
   external String? title;
 
   /// Main notification content.
-  /// _Required for [notifications.create]_ method.
+  /// <aside class="note">**Note:**This value is required for the
+  /// [notifications.create]`()` method.</aside>
   external String? message;
 
   /// Alternate notification content with a lower-weight font.
   external String? contextMessage;
 
-  /// Priority ranges from -2 to 2. -2 is lowest priority. 2 is highest. Zero
-  /// is default.  On platforms that don't support a notification center
-  /// (Windows, Linux & Mac), -2 and -1 result in an error as notifications
-  /// with those priorities will not be shown at all.
+  /// Priority ranges from -2 to 2. -2 is lowest priority. 2 is highest. Zero is
+  /// default.  On platforms that don't support a notification center (Windows,
+  /// Linux & Mac), -2 and -1 result in an error as notifications with those
+  /// priorities will not be shown at all.
   external int? priority;
 
   /// A timestamp associated with the notification, in milliseconds past the
@@ -279,6 +285,7 @@ extension type NotificationOptions._(JSObject _) implements JSObject {
   external bool? requireInteraction;
 
   /// Indicates that no sounds or vibrations should be made when the
-  /// notification is being shown. This defaults to false.
+  /// notification
+  /// is being shown. This defaults to false.
   external bool? silent;
 }

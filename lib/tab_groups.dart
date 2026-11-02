@@ -144,12 +144,16 @@ class TabGroup {
 
     /// The ID of the window that contains the group.
     required int windowId,
+
+    /// Whether the group is shared.
+    required bool shared,
   }) : _wrapped = $js.TabGroup(
           id: id,
           collapsed: collapsed,
           color: color.toJS,
           title: title,
           windowId: windowId,
+          shared: shared,
         );
 
   final $js.TabGroup _wrapped;
@@ -191,6 +195,13 @@ class TabGroup {
   set windowId(int v) {
     _wrapped.windowId = v;
   }
+
+  /// Whether the group is shared.
+  bool get shared => _wrapped.shared;
+
+  set shared(bool v) {
+    _wrapped.shared = v;
+  }
 }
 
 class QueryInfo {
@@ -206,6 +217,9 @@ class QueryInfo {
     /// Match group titles against a pattern.
     String? title,
 
+    /// Whether the group is shared.
+    bool? shared,
+
     /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
     /// [current window](windows#current-window).
     int? windowId,
@@ -213,6 +227,7 @@ class QueryInfo {
           collapsed: collapsed,
           color: color?.toJS,
           title: title,
+          shared: shared,
           windowId: windowId,
         );
 
@@ -239,6 +254,13 @@ class QueryInfo {
 
   set title(String? v) {
     _wrapped.title = v;
+  }
+
+  /// Whether the group is shared.
+  bool? get shared => _wrapped.shared;
+
+  set shared(bool? v) {
+    _wrapped.shared = v;
   }
 
   /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the

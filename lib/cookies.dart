@@ -63,6 +63,13 @@ class ChromeCookies {
         .toList();
   }
 
+  /// The partition key for the frame indicated.
+  Future<GetPartitionKeyCallbackDetails> getPartitionKey(
+      FrameDetails details) async {
+    var $res = await $js.chrome.cookies.getPartitionKey(details.toJS).toDart;
+    return GetPartitionKeyCallbackDetails.fromJS($res);
+  }
+
   /// Fired when a cookie is set or removed. As a special case, note that
   /// updating a cookie's properties is implemented as a two step process: the
   /// cookie to be updated is first removed entirely, generating a notification
@@ -129,11 +136,18 @@ enum OnChangedCause {
 class CookiePartitionKey {
   CookiePartitionKey.fromJS(this._wrapped);
 
-  CookiePartitionKey(
-      {
-      /// The top-level site the partitioned cookie is available in.
-      String? topLevelSite})
-      : _wrapped = $js.CookiePartitionKey(topLevelSite: topLevelSite);
+  CookiePartitionKey({
+    /// The top-level site the partitioned cookie is available in.
+    String? topLevelSite,
+
+    /// Indicates if the cookie was set in a cross-cross site context. This
+    /// prevents a top-level site embedded in a cross-site context from
+    /// accessing cookies set by the top-level site in a same-site context.
+    bool? hasCrossSiteAncestor,
+  }) : _wrapped = $js.CookiePartitionKey(
+          topLevelSite: topLevelSite,
+          hasCrossSiteAncestor: hasCrossSiteAncestor,
+        );
 
   final $js.CookiePartitionKey _wrapped;
 
@@ -144,6 +158,15 @@ class CookiePartitionKey {
 
   set topLevelSite(String? v) {
     _wrapped.topLevelSite = v;
+  }
+
+  /// Indicates if the cookie was set in a cross-cross site context. This
+  /// prevents a top-level site embedded in a cross-site context from accessing
+  /// cookies set by the top-level site in a same-site context.
+  bool? get hasCrossSiteAncestor => _wrapped.hasCrossSiteAncestor;
+
+  set hasCrossSiteAncestor(bool? v) {
+    _wrapped.hasCrossSiteAncestor = v;
   }
 }
 
@@ -404,6 +427,54 @@ class CookieDetails {
 
   set partitionKey(CookiePartitionKey? v) {
     _wrapped.partitionKey = v?.toJS;
+  }
+}
+
+class FrameDetails {
+  FrameDetails.fromJS(this._wrapped);
+
+  FrameDetails({
+    /// The unique identifier for the tab containing the frame.
+    int? tabId,
+
+    /// The unique identifier for the frame within the tab.
+    int? frameId,
+
+    /// The unique identifier for the document. If the frameId and/or tabId are
+    /// provided they will be validated to match the document found by provided
+    /// document ID.
+    String? documentId,
+  }) : _wrapped = $js.FrameDetails(
+          tabId: tabId,
+          frameId: frameId,
+          documentId: documentId,
+        );
+
+  final $js.FrameDetails _wrapped;
+
+  $js.FrameDetails get toJS => _wrapped;
+
+  /// The unique identifier for the tab containing the frame.
+  int? get tabId => _wrapped.tabId;
+
+  set tabId(int? v) {
+    _wrapped.tabId = v;
+  }
+
+  /// The unique identifier for the frame within the tab.
+  int? get frameId => _wrapped.frameId;
+
+  set frameId(int? v) {
+    _wrapped.frameId = v;
+  }
+
+  /// The unique identifier for the document. If the frameId and/or tabId are
+  /// provided they will be validated to match the document found by provided
+  /// document ID.
+  String? get documentId => _wrapped.documentId;
+
+  set documentId(String? v) {
+    _wrapped.documentId = v;
   }
 }
 
@@ -764,5 +835,30 @@ class RemoveCallbackDetails {
 
   set partitionKey(CookiePartitionKey? v) {
     _wrapped.partitionKey = v?.toJS;
+  }
+}
+
+class GetPartitionKeyCallbackDetails {
+  GetPartitionKeyCallbackDetails.fromJS(this._wrapped);
+
+  GetPartitionKeyCallbackDetails(
+      {
+      /// The partition key for reading or modifying cookies with the Partitioned
+      /// attribute.
+      required CookiePartitionKey partitionKey})
+      : _wrapped =
+            $js.GetPartitionKeyCallbackDetails(partitionKey: partitionKey.toJS);
+
+  final $js.GetPartitionKeyCallbackDetails _wrapped;
+
+  $js.GetPartitionKeyCallbackDetails get toJS => _wrapped;
+
+  /// The partition key for reading or modifying cookies with the Partitioned
+  /// attribute.
+  CookiePartitionKey get partitionKey =>
+      CookiePartitionKey.fromJS(_wrapped.partitionKey);
+
+  set partitionKey(CookiePartitionKey v) {
+    _wrapped.partitionKey = v.toJS;
   }
 }

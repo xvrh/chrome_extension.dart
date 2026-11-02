@@ -29,9 +29,8 @@ class ChromeContentSettings {
   /// [allow]: Allow sites to use the Private State Tokens API,
   /// [block]: Block sites from using the Private State Tokens API.
   /// Default is [allow].
-  ///  The primary URL is the URL of the top-level frame. The secondary URL is
-  /// not used. NOTE: When calling `set()`, the primary pattern must be
-  /// `<all_urls>`.
+  ///  When calling `set()`, the primary URL pattern must be `&lt;all_urls&gt;`.
+  /// The secondary URL is not used.
   ContentSetting get autoVerify =>
       ContentSetting.fromJS($js.chrome.contentSettings.autoVerify);
 
@@ -117,7 +116,8 @@ class ChromeContentSettings {
   /// Default is [ask].
   /// The primary URL is the URL of the document which requested microphone
   /// access. The secondary URL is not used.
-  /// NOTE: The 'allow' setting is not valid if both patterns are '<all_urls>'.
+  /// NOTE: The 'allow' setting is not valid if both patterns are
+  /// '&lt;all_urls&gt;'.
   ContentSetting get microphone =>
       ContentSetting.fromJS($js.chrome.contentSettings.microphone);
 
@@ -142,7 +142,8 @@ class ChromeContentSettings {
   /// Default is [ask].
   /// The primary URL is the URL of the document which requested camera access.
   /// The secondary URL is not used.
-  /// NOTE: The 'allow' setting is not valid if both patterns are '<all_urls>'.
+  /// NOTE: The 'allow' setting is not valid if both patterns are
+  /// '&lt;all_urls&gt;'.
   ContentSetting get camera =>
       ContentSetting.fromJS($js.chrome.contentSettings.camera);
 
@@ -163,6 +164,15 @@ class ChromeContentSettings {
   /// not used.
   ContentSetting get automaticDownloads =>
       ContentSetting.fromJS($js.chrome.contentSettings.automaticDownloads);
+
+  /// Whether to allow sites to play sound. One of
+  /// [allow]: Allow sites to play sound,
+  /// [block]: Don't allow sites to play sound.
+  /// Default is [allow].
+  /// The primary URL is the URL of the document which wants to play sound. The
+  /// secondary URL is not used.
+  ContentSetting get sound =>
+      ContentSetting.fromJS($js.chrome.contentSettings.sound);
 }
 
 /// The scope of the ContentSetting. One of
@@ -425,6 +435,22 @@ enum MultipleAutomaticDownloadsContentSetting {
   JSString get toJS => value.toJS;
 
   static MultipleAutomaticDownloadsContentSetting fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
+enum SoundContentSetting {
+  allow('allow'),
+  block('block');
+
+  const SoundContentSetting(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static SoundContentSetting fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
   }

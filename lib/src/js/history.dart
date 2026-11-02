@@ -41,7 +41,7 @@ extension type JSHistory._(JSObject _) {
   /// Removes all occurrences of the given URL from the history.
   external JSPromise deleteUrl(UrlDetails details);
 
-  /// Removes all items within the specified date range from the history.  Pages
+  /// Removes all items within the specified date range from the history. Pages
   /// will not be removed from the history unless all visits fall within the
   /// range.
   external JSPromise deleteRange(DeleteRangeRange range);
@@ -49,12 +49,12 @@ extension type JSHistory._(JSObject _) {
   /// Deletes all items from the history.
   external JSPromise deleteAll();
 
-  /// Fired when a URL is visited, providing the HistoryItem data for that URL.
-  /// This event fires before the page has loaded.
+  /// Fired when a URL is visited, providing the `HistoryItem` data for that
+  /// URL. This event fires before the page has loaded.
   external Event get onVisited;
 
-  /// Fired when one or more URLs are removed from the history service.  When
-  /// all visits have been removed the URL is purged from history.
+  /// Fired when one or more URLs are removed from history. When all visits have
+  /// been removed the URL is purged from history.
   external Event get onVisitRemoved;
 }
 
@@ -148,58 +148,58 @@ extension type UrlDetails._(JSObject _) implements JSObject {
   external factory UrlDetails(
       {
       /// The URL for the operation. It must be in the format as returned from a
-      /// call to history.search.
+      /// call to `history.search()`.
       String url});
 
   /// The URL for the operation. It must be in the format as returned from a
-  /// call to history.search.
+  /// call to `history.search()`.
   external String url;
 }
 extension type OnVisitRemovedRemoved._(JSObject _) implements JSObject {
   external factory OnVisitRemovedRemoved({
-    /// True if all history was removed.  If true, then urls will be empty.
+    /// True if all history was removed. If true, then urls will be empty.
     bool allHistory,
     JSArray? urls,
   });
 
-  /// True if all history was removed.  If true, then urls will be empty.
+  /// True if all history was removed. If true, then urls will be empty.
   external bool allHistory;
 
   external JSArray? urls;
 }
 extension type SearchQuery._(JSObject _) implements JSObject {
   external factory SearchQuery({
-    /// A free-text query to the history service.  Leave empty to retrieve all
+    /// A free-text query to the history service. Leave this empty to retrieve all
     /// pages.
     String text,
 
     /// Limit results to those visited after this date, represented in
-    /// milliseconds since the epoch. If not specified, this defaults to 24 hours
-    /// in the past.
+    /// milliseconds since the epoch. If property is not specified, it will
+    /// default to 24 hours.
     double? startTime,
 
     /// Limit results to those visited before this date, represented in
     /// milliseconds since the epoch.
     double? endTime,
 
-    /// The maximum number of results to retrieve.  Defaults to 100.
+    /// The maximum number of results to retrieve. Defaults to 100.
     int? maxResults,
   });
 
-  /// A free-text query to the history service.  Leave empty to retrieve all
+  /// A free-text query to the history service. Leave this empty to retrieve all
   /// pages.
   external String text;
 
   /// Limit results to those visited after this date, represented in
-  /// milliseconds since the epoch. If not specified, this defaults to 24 hours
-  /// in the past.
+  /// milliseconds since the epoch. If property is not specified, it will
+  /// default to 24 hours.
   external double? startTime;
 
   /// Limit results to those visited before this date, represented in
   /// milliseconds since the epoch.
   external double? endTime;
 
-  /// The maximum number of results to retrieve.  Defaults to 100.
+  /// The maximum number of results to retrieve. Defaults to 100.
   external int? maxResults;
 }
 extension type DeleteRangeRange._(JSObject _) implements JSObject {

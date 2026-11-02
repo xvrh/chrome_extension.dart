@@ -38,32 +38,23 @@ extension type JSContextMenus._(JSObject _) {
   );
 
   /// Updates a previously created context menu item.
-  external void update(
+  external JSPromise update(
     /// The ID of the item to update.
     JSAny id,
 
     /// The properties to update. Accepts the same values as the
     /// [contextMenus.create] function.
     UpdateProperties updateProperties,
-
-    /// Called when the context menu has been updated.
-    JSFunction? callback,
   );
 
   /// Removes a context menu item.
-  external void remove(
-    /// The ID of the context menu item to remove.
-    JSAny menuItemId,
+  external JSPromise remove(
 
-    /// Called when the context menu has been removed.
-    JSFunction? callback,
-  );
+      /// The ID of the context menu item to remove.
+      JSAny menuItemId);
 
   /// Removes all context menu items added by this extension.
-  external void removeAll(
-
-      /// Called when removal is complete.
-      JSFunction? callback);
+  external JSPromise removeAll();
 
   /// Fired when a context menu item is clicked.
   external Event get onClicked;
@@ -203,7 +194,7 @@ extension type CreateProperties._(JSObject _) implements JSObject {
     bool? visible,
 
     /// A function that is called back when the menu item is clicked. This is not
-    /// available inside of a service worker; instead, they should register a
+    /// available inside of a service worker; instead, you should register a
     /// listener for [contextMenus.onClicked].
     JSFunction? onclick,
 
@@ -250,7 +241,7 @@ extension type CreateProperties._(JSObject _) implements JSObject {
   external bool? visible;
 
   /// A function that is called back when the menu item is clicked. This is not
-  /// available inside of a service worker; instead, they should register a
+  /// available inside of a service worker; instead, you should register a
   /// listener for [contextMenus.onClicked].
   external JSFunction? onclick;
 

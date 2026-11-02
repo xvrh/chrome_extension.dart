@@ -35,19 +35,15 @@ class ChromeDevtoolsPanels {
     String title,
     String iconPath,
     String pagePath,
-  ) {
-    var $completer = Completer<ExtensionPanel>();
-    $js.chrome.devtools.panels.create(
-      title,
-      iconPath,
-      pagePath,
-      ($js.ExtensionPanel panel) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(ExtensionPanel.fromJS(panel));
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  ) async {
+    var $res = await $js.chrome.devtools.panels
+        .create(
+          title,
+          iconPath,
+          pagePath,
+        )
+        .toDart;
+    return ExtensionPanel.fromJS($res);
   }
 
   /// Specifies the function to be called when the user clicks a resource link
@@ -66,20 +62,29 @@ class ChromeDevtoolsPanels {
   /// loaded.
   /// [columnNumber] Specifies the column number to scroll to when the
   /// resource is loaded.
-  /// [callback] A function that is called when the resource has been
+  /// [returns] A function that is called when the resource has been
   /// successfully loaded.
-  void openResource(
+  Future<void> openResource(
     String url,
     int lineNumber,
     int? columnNumber,
-    JSFunction? callback,
-  ) {
-    $js.chrome.devtools.panels.openResource(
-      url,
-      lineNumber,
-      columnNumber,
-      callback,
-    );
+  ) async {
+    await $js.chrome.devtools.panels
+        .openResource(
+          url,
+          lineNumber,
+          columnNumber,
+        )
+        .toDart;
+  }
+
+  /// Specifies the function to be called when the current theme changes in
+  /// DevTools. To unset the handler, either call the method with no parameters
+  /// or pass `null` as the parameter.
+  /// [callback] A function that is called when the current theme changes in
+  /// DevTools.
+  void setThemeChangeHandler(JSFunction? callback) {
+    $js.chrome.devtools.panels.setThemeChangeHandler(callback);
   }
 
   /// Elements panel.
@@ -95,6 +100,26 @@ class ChromeDevtoolsPanels {
   String get themeName => $js.chrome.devtools.panels.themeName;
 }
 
+/// Theme used by DevTools.
+enum Theme {
+  /// Default DevTools theme. This is always the light theme.
+  default$('default'),
+
+  /// Dark theme.
+  dark('dark');
+
+  const Theme(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static Theme fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
 class ElementsPanel {
   ElementsPanel.fromJS(this._wrapped);
 
@@ -107,17 +132,9 @@ class ElementsPanel {
   /// Creates a pane within panel's sidebar.
   /// [title] Text that is displayed in sidebar caption.
   /// [returns] A callback invoked when the sidebar is created.
-  Future<ExtensionSidebarPane> createSidebarPane(String title) {
-    var $completer = Completer<ExtensionSidebarPane>();
-    _wrapped.createSidebarPane(
-      title,
-      ($js.ExtensionSidebarPane result) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(ExtensionSidebarPane.fromJS(result));
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<ExtensionSidebarPane> createSidebarPane(String title) async {
+    var $res = await _wrapped.createSidebarPane(title).toDart;
+    return ExtensionSidebarPane.fromJS($res);
   }
 
   /// Fired when an object is selected in the panel.
@@ -139,17 +156,9 @@ class SourcesPanel {
   /// Creates a pane within panel's sidebar.
   /// [title] Text that is displayed in sidebar caption.
   /// [returns] A callback invoked when the sidebar is created.
-  Future<ExtensionSidebarPane> createSidebarPane(String title) {
-    var $completer = Completer<ExtensionSidebarPane>();
-    _wrapped.createSidebarPane(
-      title,
-      ($js.ExtensionSidebarPane result) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(ExtensionSidebarPane.fromJS(result));
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<ExtensionSidebarPane> createSidebarPane(String title) async {
+    var $res = await _wrapped.createSidebarPane(title).toDart;
+    return ExtensionSidebarPane.fromJS($res);
   }
 
   /// Fired when an object is selected in the panel.
@@ -186,6 +195,11 @@ class ExtensionPanel {
       tooltipText,
       disabled,
     ));
+  }
+
+  /// Shows the panel by activating the corresponding tab.
+  void show() {
+    _wrapped.show();
   }
 
   /// Fired upon a search action (start of a new search, search result
@@ -234,36 +248,36 @@ class ExtensionSidebarPane {
   /// page. JavaScript objects and DOM nodes are displayed in an expandable
   /// tree similar to the console/watch.
   /// [rootTitle] An optional title for the root of the expression tree.
-  /// [callback] A callback invoked after the sidebar pane is updated with the
+  /// [returns] A callback invoked after the sidebar pane is updated with the
   /// expression evaluation results.
-  void setExpression(
+  Future<void> setExpression(
     String expression,
     String? rootTitle,
-    JSFunction? callback,
-  ) {
-    _wrapped.setExpression(
-      expression,
-      rootTitle,
-      callback,
-    );
+  ) async {
+    await _wrapped
+        .setExpression(
+          expression,
+          rootTitle,
+        )
+        .toDart;
   }
 
   /// Sets a JSON-compliant object to be displayed in the sidebar pane.
   /// [jsonObject] An object to be displayed in context of the inspected page.
   /// Evaluated in the context of the caller (API client).
   /// [rootTitle] An optional title for the root of the expression tree.
-  /// [callback] A callback invoked after the sidebar is updated with the
+  /// [returns] A callback invoked after the sidebar is updated with the
   /// object.
-  void setObject(
+  Future<void> setObject(
     String jsonObject,
     String? rootTitle,
-    JSFunction? callback,
-  ) {
-    _wrapped.setObject(
-      jsonObject,
-      rootTitle,
-      callback,
-    );
+  ) async {
+    await _wrapped
+        .setObject(
+          jsonObject,
+          rootTitle,
+        )
+        .toDart;
   }
 
   /// Sets an HTML page to be displayed in the sidebar pane.
@@ -325,7 +339,8 @@ class ExtensionPanelOnSearchEvent {
     required this.queryString,
   });
 
-  /// Type of search action being performed.
+  /// Type of search action being performed. One of  'cancelSearch',
+  /// 'performSearch', 'nextSearchResult', or 'previousSearchResult'.
   final String action;
 
   /// Query string (only for 'performSearch').

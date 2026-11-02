@@ -34,8 +34,8 @@ extension type JSEnterpriseNetworkingAttributes._(JSObject _) {
   /// Retrieves the network details of the device's default network.
   /// If the user is not affiliated or the device is not connected to a
   /// network, [runtime.lastError] will be set with a failure reason.
-  /// |callback| : Called with the device's default network's
-  /// [NetworkDetails].
+  /// |Returns|: Returns a Promise which resolves with the device's default
+  /// network's [NetworkDetails].
   external JSPromise<NetworkDetails> getNetworkDetails();
 }
 extension type NetworkDetails._(JSObject _) implements JSObject {

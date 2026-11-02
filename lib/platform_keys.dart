@@ -33,20 +33,11 @@ class ChromePlatformKeys {
   /// to the certificate.
   /// The selected/filtered client certificates will be passed to
   /// `callback`.
-  Future<List<Match>> selectClientCertificates(SelectDetails details) {
-    var $completer = Completer<List<Match>>();
-    $js.chrome.platformKeys.selectClientCertificates(
-      details.toJS,
-      (JSArray matches) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(matches.toDart
-              .cast<$js.Match>()
-              .map((e) => Match.fromJS(e))
-              .toList());
-        }
-      }.toJS,
-    );
-    return $completer.future;
+  Future<List<Match>> selectClientCertificates(SelectDetails details) async {
+    var $res = await $js.chrome.platformKeys
+        .selectClientCertificates(details.toJS)
+        .toDart;
+    return $res.toDart.cast<$js.Match>().map((e) => Match.fromJS(e)).toList();
   }
 
   /// Passes the key pair of `certificate` for usage with
@@ -150,17 +141,11 @@ class ChromePlatformKeys {
   /// The implementation is supposed to respect the EKU serverAuth and to
   /// support subject alternative names.
   Future<VerificationResult> verifyTLSServerCertificate(
-      VerificationDetails details) {
-    var $completer = Completer<VerificationResult>();
-    $js.chrome.platformKeys.verifyTLSServerCertificate(
-      details.toJS,
-      ($js.VerificationResult result) {
-        if (checkRuntimeLastError($completer)) {
-          $completer.complete(VerificationResult.fromJS(result));
-        }
-      }.toJS,
-    );
-    return $completer.future;
+      VerificationDetails details) async {
+    var $res = await $js.chrome.platformKeys
+        .verifyTLSServerCertificate(details.toJS)
+        .toDart;
+    return VerificationResult.fromJS($res);
   }
 }
 

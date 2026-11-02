@@ -22,8 +22,9 @@ class ChromeWebNavigation {
   bool get isAvailable =>
       $js.chrome.webNavigationNullable != null && alwaysTrue;
 
-  /// Retrieves information about the given frame. A frame refers to an <iframe>
-  /// or a <frame> of a web page and is identified by a tab ID and a frame ID.
+  /// Retrieves information about the given frame. A frame refers to an
+  /// &lt;iframe&gt; or a &lt;frame&gt; of a web page and is identified by a tab
+  /// ID and a frame ID.
   /// [details] Information about the frame to retrieve information about.
   Future<GetFrameCallbackDetails?> getFrame(GetFrameDetails details) async {
     var $res = await $js.chrome.webNavigation.getFrame(details.toJS).toDart;

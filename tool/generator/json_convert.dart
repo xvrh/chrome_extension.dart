@@ -4,6 +4,7 @@ import 'utils/string.dart';
 
 final _autoCallbackToReturnFalsePositives = <String>{
   'devtools.panels.setOpenResourceHandler',
+  'devtools.panels.setThemeChangeHandler',
 };
 
 class JsonModelConverter {
@@ -92,7 +93,9 @@ class JsonModelConverter {
         returnName: null,
         jsIsNullable: false);
     return Event(event.name,
-        type: returnType, documentation: event.description);
+        type: returnType,
+        documentation: event.description,
+        deprecated: event.deprecated);
   }
 
   Iterable<Method> _convertFunctions() sync* {
@@ -132,7 +135,8 @@ class JsonModelConverter {
             returnName: jsonReturns.name!,
             syntheticTypeName: '${function.name.upperCamel}Result',
             jsIsNullable: jsonReturns.optional ?? false)
-          ..supportsPromises = function.returnsAsync != null;
+          ..supportsPromises = function.returnsAsync != null &&
+              function.returnsAsync!.doesNotSupportPromises == null;
       } else {
         returnType = _addSyntheticTypeIfNeeded(
                 jsonReturns, 'Return', function.name,
@@ -366,11 +370,12 @@ class JsonModelConverter {
         '${model.namespace} ${prop.properties}');
 
     var typeName = prop.isInstanceOf ?? prop.type ?? prop.$ref;
-    if (typeName == null) {
-      if (prop.value is int) {
-        typeName = 'integer';
-      }
-    }
+    typeName ??= switch (prop.value) {
+      int() => 'integer',
+      double() => 'number',
+      String() => 'string',
+      _ => null,
+    };
     return typeName!;
   }
 }

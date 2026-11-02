@@ -28,10 +28,7 @@ extension JSChromeJSDevtoolsNetworkExtension on JSChromeDevtools {
 
 extension type JSDevtoolsNetwork._(JSObject _) {
   /// Returns HAR log that contains all known network requests.
-  external void getHAR(
-
-      /// A function that receives the HAR log when the request completes.
-      JSFunction callback);
+  external JSPromise<JSAny> getHAR();
 
   /// Fired when a network request is finished and all request data are
   /// available.
@@ -44,8 +41,22 @@ extension type Request._(JSObject _) implements JSObject {
   external factory Request();
 
   /// Returns content of the response body.
-  external void getContent(
+  external JSPromise<GetContentCallbackResponse> getContent();
+}
+extension type GetContentCallbackResponse._(JSObject _) implements JSObject {
+  external factory GetContentCallbackResponse({
+    /// Content of the response body (potentially encoded).
+    String content,
 
-      /// A function that receives the response body when the request completes.
-      JSFunction callback);
+    /// Empty if content is not encoded, encoding name otherwise. Currently, only
+    /// base64 is supported.
+    String encoding,
+  });
+
+  /// Content of the response body (potentially encoded).
+  external String content;
+
+  /// Empty if content is not encoded, encoding name otherwise. Currently, only
+  /// base64 is supported.
+  external String encoding;
 }

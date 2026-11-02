@@ -23,6 +23,40 @@
         }
       },
       {
+        "id": "KeyboardEvent",
+        "type": "object",
+        "description": "An object that resembles a web KeyboardEvent object, with the addition of a unique ID property.",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "altKey": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "string"
+          },
+          "ctrlKey": {
+            "type": "boolean"
+          },
+          "key": {
+            "type": "string"
+          },
+          "keyCode": {
+            "type": "number"
+          },
+          "metaKey": {
+            "type": "boolean"
+          },
+          "repeat": {
+            "type": "boolean"
+          },
+          "shiftKey": {
+            "type": "boolean"
+          }
+        }
+      },
+      {
         "id": "ScreenRect",
         "type": "object",
         "description": "Bounding rectangle in global screen coordinates.",
@@ -89,7 +123,7 @@
       {
         "id": "SwitchAccessMenuAction",
         "type": "string",
-        "enum": [ "copy", "cut", "decrement", "dictation", "endTextSelection", "increment", "itemScan", "jumpToBeginningOfText", "jumpToEndOfText", "keyboard", "leftClick", "moveBackwardOneCharOfText", "moveBackwardOneWordOfText", "moveCursor", "moveDownOneLineOfText", "moveForwardOneCharOfText", "moveForwardOneWordOfText", "moveUpOneLineOfText", "paste", "pointScan", "rightClick", "scrollDown", "scrollLeft", "scrollRight", "scrollUp", "select", "settings", "startTextSelection" ],
+        "enum": [ "copy", "cut", "decrement", "dictation", "drillDown", "endTextSelection", "increment", "itemScan", "jumpToBeginningOfText", "jumpToEndOfText", "keyboard", "leftClick", "moveBackwardOneCharOfText", "moveBackwardOneWordOfText", "moveCursor", "moveDownOneLineOfText", "moveForwardOneCharOfText", "moveForwardOneWordOfText", "moveUpOneLineOfText", "paste", "pointScan", "rightClick", "scrollDown", "scrollLeft", "scrollRight", "scrollUp", "select", "settings", "startTextSelection" ],
         "description": "Available actions to be shown in the Switch Access menu. Must be kept in sync with the strings in ash/system/accessibility/switch_access/switch_access_menu_view.cc"
       },
       {
@@ -164,6 +198,26 @@
           "mouseButton": {
             "$ref": "SyntheticMouseEventButton",
             "description": "The default mouse button is set to left if mouseButton is not specified.",
+            "optional": true
+          },
+          "isDoubleClick": {
+            "type": "boolean",
+            "description": "True if the double click flag should be set.",
+            "optional": true
+          },
+          "isTripleClick": {
+            "type": "boolean",
+            "description": "True if the triple click flag should be set.",
+            "optional": true
+          },
+          "useRewriters": {
+            "type": "boolean",
+            "description": "If true, uses rewriters for the mouse event; only allowed if used from FaceGaze. Otherwise indicates that rewriters should be skipped.",
+            "optional": true
+          },
+          "forceNotSynthetic": {
+            "type": "boolean",
+            "description": "If true, forces mouse event to appear as a real mouse event; only allowed if used from FaceGaze. Otherwise indicates that this mouse event should be marked as synthetic.",
             "optional": true
           }
         }
@@ -240,7 +294,7 @@
       {
         "id": "AccessibilityFeature",
         "type": "string",
-        "enum": [ "googleTtsLanguagePacks", "dictationContextChecking", "faceGaze", "googleTtsHighQualityVoices"],
+        "enum": ["dictationContextChecking", "googleTtsHighQualityVoices", "googleTtsAutomaticReconnect"],
         "description": "Subset of accessibility features."
       },
       {
@@ -421,6 +475,64 @@
             "description": "The contents of the vision_wasm_internal.wasm file as a Uint8Array."
           }
         }
+      },
+      {
+        "id": "ScrollDirection",
+        "type": "string",
+        "enum": [ "up", "down", "left", "right" ],
+        "description": "The four directions for scrolling."
+      },
+      {
+        "id": "TenjiData",
+        "type": "object",
+        "properties": {
+          "wasm": {
+            "type": "binary",
+            "description": "The contents of the tenji_wasm_wrapper.wasm file as a Uint8Array."
+          },
+          "wrapperJs": {
+            "type": "binary",
+            "description": "The contents of the tenji_wasm_wrapper.js file as a Uint8Array."
+          }
+        }
+      },
+      {
+        "id": "FacialGesture",
+        "type": "string",
+        "description": "The facial gestures supported by FaceGaze. Keep this in sync with facial_gestures.ts, FacialGesturesToMediapipeGestures in facegaze/gesture_detector.ts, and ConvertFacialGestureType in accessibility_extension_api_ash.cc.",
+        "enum": ["browInnerUp",
+            "browsDown",
+            "eyeSquintLeft",
+            "eyeSquintRight",
+            "eyesBlink",
+            "eyesLookDown",
+            "eyesLookLeft",
+            "eyesLookRight",
+            "eyesLookUp",
+            "jawLeft",
+            "jawOpen",
+            "jawRight",
+            "mouthFunnel",
+            "mouthLeft",
+            "mouthPucker",
+            "mouthRight",
+            "mouthSmile",
+            "mouthUpperUp"]
+      },
+      {
+        "id": "GestureInfo",
+        "type": "object",
+        "description": "Information about a detected facial gesture.",
+        "properties": {
+          "gesture": {
+            "$ref": "FacialGesture",
+            "description": "The detected facial gesture."
+          },
+          "confidence": {
+            "type": "number",
+            "description": "The confidence value."
+          }
+        }
       }
     ],
     "properties": {
@@ -458,7 +570,7 @@
         "parameters": [],
         "returns_async": {
           "name": "callback",
-          "description": "Returns battery description as a string.",
+          "description": "Resolves with battery description as a string.",
           "parameters": [
             {
               "name": "batteryDescription",
@@ -474,7 +586,7 @@
         "parameters": [],
         "returns_async": {
           "name": "callback",
-          "description": "Runs when Pumpkin download finishes.",
+          "description": "Resolves when Pumpkin download finishes.",
           "parameters": [
             {
               "name": "data",
@@ -490,11 +602,27 @@
         "parameters": [],
         "returns_async": {
           "name": "callback",
-          "description": "Runs when the DLC download finishes.",
+          "description": "Resolves when the DLC download finishes.",
           "parameters": [
             {
               "name": "assets",
               "$ref": "FaceGazeAssets"
+            }
+          ]
+        }
+      },
+      {
+        "name": "installTenji",
+        "type": "function",
+        "description": "Installs the Tenji Braille DLC",
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "description": "Resolves when Tenji download finishes.",
+          "parameters": [
+            {
+              "name": "data",
+              "$ref": "TenjiData"
             }
           ]
         }
@@ -548,9 +676,21 @@
         ]
       },
       {
+        "name": "setChromeVoxFocus",
+        "type": "function",
+        "description": "Informs the system where Chrome Vox's focus is in screen coordinates when Magnifier is enabled. No-op when Magnifier is not enabled. Causes chrome.accessibilityPrivate.onChromeVoxFocusChanged to be fired within the AccessibilityCommon component extension.",
+        "parameters": [
+          {
+            "name": "bounds",
+            "$ref": "ScreenRect",
+            "description": "Bounds of current ChromeVox focus ring."
+          }
+        ]
+      },
+      {
         "name": "setSelectToSpeakFocus",
         "type": "function",
-        "description": "Informs the system where Select to Speak's reading focus is in screen coordinates. Causes chrome.accessibilityPrivate.onSelectToSpeakFocusChanged to be fired within the AccessibilityCommon component extension.",
+        "description": "Informs the system where Select to Speak's reading focus is in screen coordinates when Magnifier is enabled. No-op when Magnifier is not enabled. Causes chrome.accessibilityPrivate.onSelectToSpeakFocusChanged to be fired within the AccessibilityCommon component extension.",
         "parameters": [
           {
             "name": "bounds",
@@ -652,17 +792,17 @@
             "description": "True for ChromeVox (native), false for TalkBack."
           }
         ],
-	"returns_async": {
-	  "name": "callback",
-	  "desctiprion": "Callback function.",
-	  "parameters": [
+        "returns_async": {
+          "name": "callback",
+          "description": "Resolves with the response.",
+          "parameters": [
             {
-	      "name": "response",
-	      "$ref": "SetNativeChromeVoxResponse",
-	      "description": "Return Success if successfully toggled. Return error description otherwise."
-	    }
-	  ]
-	}
+              "name": "response",
+              "$ref": "SetNativeChromeVoxResponse",
+              "description": "Return Success if successfully toggled. Return error description otherwise."
+            }
+          ]
+        }
       },
       {
         "name": "sendSyntheticKeyEvent",
@@ -677,7 +817,13 @@
           {
             "name": "useRewriters",
             "type": "boolean",
-            "description": "If true, uses rewriters for the key event; only allowed if used from Dictation. Otherwise indicates that rewriters should be skipped.",
+            "description": "If true, uses rewriters for the key event; only allowed if used from Dictation or FaceGaze. Otherwise indicates that rewriters should be skipped.",
+            "optional": true
+          },
+          {
+            "name": "isRepeat",
+            "type": "boolean",
+            "description": "If true, sets the key event to repeat, which should occur if the key event should be held. Otherwise, the key event should not repeat.",
             "optional": true
           }
         ]
@@ -693,6 +839,23 @@
             "description": "True if accessibility component extensions should receive mouse events."
           }
         ]
+      },
+      {
+        "name": "enableLiveCaption",
+        "type": "function",
+        "description": "Enables or disables live captioning",
+        "parameters": [
+          {
+            "name": "enabled",
+            "type": "boolean",
+            "description": "True if live caption should be turned on."
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [],
+          "optional": true
+        }
       },
       {
         "name": "setCursorPosition",
@@ -726,17 +889,6 @@
           {
             "name": "state",
             "$ref": "SelectToSpeakState"
-          }
-        ]
-      },
-      {
-        "name": "clipboardCopyInActiveLacrosGoogleDoc",
-        "type": "function",
-        "description": "Called by the Select-to-Speak extension to request a clipboard copy in the active Lacros Google Docs tab for the copy-paste fallback.",
-        "parameters": [ {
-            "name": "url",
-            "type": "string",
-            "description": "URL of the Google Docs tab."
           }
         ]
       },
@@ -825,7 +977,7 @@
         ],
         "returns_async": {
           "name": "callback",
-          "description": "Returns whether feature is enabled.",
+          "description": "Resolves with whether the feature is enabled.",
           "parameters": [
             {
               "name": "featureEnabled",
@@ -888,7 +1040,7 @@
         ],
         "returns_async": {
           "name": "callback",
-          "description": "Called when the dialog is confirmed or cancelled.",
+          "description": "Resolves when the dialog is confirmed or cancelled.",
           "parameters": [
             {
               "type": "boolean",
@@ -910,7 +1062,7 @@
         ],
         "returns_async": {
           "name": "callback",
-          "description": "Called with the resulting Dom key string.",
+          "description": "Resolves with the resulting Dom key string.",
           "parameters": [
             {
               "type": "string",
@@ -951,7 +1103,7 @@
         ],
         "returns_async": {
           "name": "callback",
-          "description": "A callback that is run when the contents are returned.",
+          "description": "A promise that resolves when the contents are returned.",
           "parameters": [
             {
               "name": "contents",
@@ -979,7 +1131,7 @@
         ],
         "returns_async": {
           "name": "callback",
-          "description": "A callback that is run when the contents are returned.",
+          "description": "A promise that resolves when the contents are returned.",
           "parameters": [
             {
               "name": "contents",
@@ -996,30 +1148,13 @@
         "parameters": [],
         "returns_async": {
           "name": "callback",
-          "description": "A callback that is run when the result is returned.",
+          "description": "A promise that resolves when the result is returned.",
           "parameters": [
             {
               "type": "array",
               "items": { "$ref": "ScreenRect" },
               "name": "rects",
               "description": "Array of rects represeting the display bounds in screen coordinates for all displays."
-            }
-          ]
-        }
-      },
-      {
-        "name": "isLacrosPrimary",
-        "type": "function",
-        "description": "Gets whether new browser windows and tabs should be in Lacros browser.",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "description": "A callback that is run when the result is returned.",
-          "parameters": [
-            {
-              "type": "boolean",
-              "name": "useLacros",
-              "description": "True if new browser windows and tabs should be in Lacros."
             }
           ]
         }
@@ -1033,6 +1168,98 @@
           "$ref": "ToastType",
           "description": "The type of toast to show."
         }]
+      },
+      {
+        "name": "scrollAtPoint",
+        "type": "function",
+        "description": "Scrolls at the target location in the specified direction.",
+        "parameters": [
+          {
+            "name": "target",
+            "$ref": "ScreenPoint"
+          },
+          {
+            "name": "direction",
+            "$ref": "ScrollDirection"
+          }
+        ]
+      },
+      {
+        "name": "sendGestureInfoToSettings",
+        "type": "function",
+        "description": "Fired when FaceGaze processes a video frame, detects facial gestures from the frame, then sends information about the recognized facial gesture to the settings.",
+        "parameters": [
+          {
+            "name": "gestureInfo",
+            "type": "array",
+            "items": { "$ref": "GestureInfo" },
+            "description": "The recognized facial gestures and their associated confidence values."
+          }
+        ]
+      },
+      {
+        "name": "updateFaceGazeBubble",
+        "type": "function",
+        "description": "Updates FaceGaze's bubble UI.",
+        "parameters": [
+          {
+            "name": "text",
+            "type": "string",
+            "description": "The text to be displayed in the bubble UI."
+          },
+          {
+            "name": "isWarning",
+            "type": "boolean",
+            "description": "True if the bubble UI contains a warning about state.",
+            "optional": true
+          }
+        ]
+      },
+      {
+        "name": "enableDragEventRewriter",
+        "type": "function",
+        "description": "Turns on/off the DragEventRewriter, which rewrites kMouseMoved events into kMouseDragged events.",
+        "parameters": [
+          {
+            "name": "enabled",
+            "type": "boolean",
+            "description": "Whether or not the DragEventRewriter should be enabled."
+          }
+        ]
+      },
+      {
+        "name": "enableSpokenFeedbackMv3KeyHandling",
+        "type": "function",
+        "description": "Used by the ChromeVox extension to enable key handling for the Manifest V3 version of the extension.",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "type": "number",
+            "description": "The session ID of the ChromeVox instance."
+          }
+        ]
+      },
+      {
+        "name": "processPendingSpokenFeedbackEvent",
+        "type": "function",
+        "description": "Used by the ChromeVox extension to process a pending spoken feedback event.",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "integer",
+            "description": "The ID of the key event."
+          },
+          {
+            "name": "propagate",
+            "type": "boolean",
+            "description": "Whether or not to propagate the key."
+          },
+          {
+            "name": "sessionId",
+            "type": "number",
+            "description": "The session ID of the ChromeVox instance."
+          }
+        ]
       }
     ],
     "events": [
@@ -1040,6 +1267,18 @@
         "name": "onIntroduceChromeVox",
         "type": "function",
         "description": "Fired whenever ChromeVox should output introduction."
+      },
+      {
+        "name": "onChromeVoxFocusChanged",
+        "type": "function",
+        "description": "Fired when the ChromeVox focus changes and Magnifier is enabled.",
+        "parameters": [
+          {
+            "name": "bounds",
+            "$ref": "ScreenRect",
+            "description": "ChromeVox's focus bounds in global screen coordinates."
+          }
+        ]
       },
       {
         "name": "onAccessibilityGesture",
@@ -1081,7 +1320,7 @@
       {
         "name": "onSelectToSpeakFocusChanged",
         "type": "function",
-        "description": "Fired when the Select to Speak reading focus changes.",
+        "description": "Fired when the Select to Speak reading focus changes and Magnifier is enabled.",
         "parameters": [
           {
             "name": "bounds",
@@ -1249,6 +1488,40 @@
             "name": "activated",
             "type": "boolean",
             "description": "True if Dictation was activated, false if it was deactivated."
+          }
+        ]
+      },
+      {
+        "name": "onToggleGestureInfoForSettings",
+        "type": "function",
+        "description": "Fired only from the FaceGaze settings when the settings page requests to receive or stop receiving gesture detection information from FaceGaze.",
+        "parameters": [
+          {
+            "name": "enabled",
+            "type": "boolean",
+            "description": "True if FaceGaze should start sending gesture detection information, false if FaceGaze should stop."
+          }
+        ]
+      },
+      {
+        "name": "onKeyDown",
+        "type": "function",
+        "description": "Fired when a key is pressed.",
+        "parameters": [
+          {
+            "name": "event",
+            "$ref": "KeyboardEvent"
+          }
+        ]
+      },
+      {
+        "name": "onKeyUp",
+        "type": "function",
+        "description": "Fired when a key is released.",
+        "parameters": [
+          {
+            "name": "event",
+            "$ref": "KeyboardEvent"
           }
         ]
       }

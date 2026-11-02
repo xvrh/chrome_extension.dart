@@ -88,6 +88,9 @@ extension type TabGroup._(JSObject _) implements JSObject {
 
     /// The ID of the window that contains the group.
     int windowId,
+
+    /// Whether the group is shared.
+    bool shared,
   });
 
   /// The ID of the group. Group IDs are unique within a browser session.
@@ -105,6 +108,9 @@ extension type TabGroup._(JSObject _) implements JSObject {
 
   /// The ID of the window that contains the group.
   external int windowId;
+
+  /// Whether the group is shared.
+  external bool shared;
 }
 extension type QueryInfo._(JSObject _) implements JSObject {
   external factory QueryInfo({
@@ -116,6 +122,9 @@ extension type QueryInfo._(JSObject _) implements JSObject {
 
     /// Match group titles against a pattern.
     String? title,
+
+    /// Whether the group is shared.
+    bool? shared,
 
     /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
     /// [current window](windows#current-window).
@@ -130,6 +139,9 @@ extension type QueryInfo._(JSObject _) implements JSObject {
 
   /// Match group titles against a pattern.
   external String? title;
+
+  /// Whether the group is shared.
+  external bool? shared;
 
   /// The ID of the parent window, or [windows.WINDOW_ID_CURRENT] for the
   /// [current window](windows#current-window).

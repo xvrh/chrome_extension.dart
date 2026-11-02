@@ -50,7 +50,7 @@ extension type JSAlarms._(JSObject _) {
   /// neither [when] or [delayInMinutes] is set for a
   /// repeating alarm, [periodInMinutes] is used as the default for
   /// [delayInMinutes].
-  /// |callback|: Invoked when the alarm has been created.
+  /// |Returns|: Promise that resolves when the alarm has been created.
   external JSPromise create(
     String? name,
     AlarmCreateInfo alarmInfo,
@@ -71,7 +71,6 @@ extension type JSAlarms._(JSObject _) {
   external JSPromise<JSBoolean> clearAll();
 
   /// Fired when an alarm has elapsed. Useful for event pages.
-  /// |alarm|: The alarm that has elapsed.
   external Event get onAlarm;
 }
 extension type Alarm._(JSObject _) implements JSObject {
@@ -87,6 +86,9 @@ extension type Alarm._(JSObject _) implements JSObject {
     /// If not null, the alarm is a repeating alarm and will fire again in
     /// [periodInMinutes] minutes.
     double? periodInMinutes,
+
+    /// Whether the alarm should persist across sessions (browser restarts).
+    bool persistAcrossSessions,
   });
 
   /// Name of this alarm.
@@ -100,9 +102,15 @@ extension type Alarm._(JSObject _) implements JSObject {
   /// If not null, the alarm is a repeating alarm and will fire again in
   /// [periodInMinutes] minutes.
   external double? periodInMinutes;
+
+  /// Whether the alarm should persist across sessions (browser restarts).
+  external bool persistAcrossSessions;
 }
 extension type AlarmCreateInfo._(JSObject _) implements JSObject {
   external factory AlarmCreateInfo({
+    /// Name of this alarm.
+    String? name,
+
     /// Time at which the alarm should fire, in milliseconds past the epoch
     /// (e.g. `Date.now() + n`).
     double? when,
@@ -119,7 +127,15 @@ extension type AlarmCreateInfo._(JSObject _) implements JSObject {
     ///
     /// <!-- TODO: need minimum=0 -->
     double? periodInMinutes,
+
+    /// Whether the alarm should persist across sessions (browser restarts). In
+    /// Chrome, this defaults to true to match historical behavior, but you should
+    /// set this explicitly to maximize compatibility across browsers.
+    bool? persistAcrossSessions,
   });
+
+  /// Name of this alarm.
+  external String? name;
 
   /// Time at which the alarm should fire, in milliseconds past the epoch
   /// (e.g. `Date.now() + n`).
@@ -137,4 +153,9 @@ extension type AlarmCreateInfo._(JSObject _) implements JSObject {
   ///
   /// <!-- TODO: need minimum=0 -->
   external double? periodInMinutes;
+
+  /// Whether the alarm should persist across sessions (browser restarts). In
+  /// Chrome, this defaults to true to match historical behavior, but you should
+  /// set this explicitly to maximize compatibility across browsers.
+  external bool? persistAcrossSessions;
 }

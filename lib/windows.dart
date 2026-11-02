@@ -138,7 +138,10 @@ enum WindowType {
   app('app'),
 
   /// A Developer Tools window.
-  devtools('devtools');
+  devtools('devtools'),
+
+  /// An Android custom tab browser window.
+  customTab('custom-tab');
 
   const WindowType(this.value);
 

@@ -58,16 +58,41 @@ enum IPHandlingPolicy {
   }
 }
 
+/// Categories of Autofill data.
+enum AutofillBlockedType {
+  contactInfo('contact_info'),
+  payments('payments'),
+  identityDocs('identity_docs'),
+  travel('travel'),
+  all('all');
+
+  const AutofillBlockedType(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static AutofillBlockedType fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
+/// Site-specific block rules for Autofill features.
+typedef AutofillSettings = List<AutofillSettingsItems>;
+
 class PrivacyNetwork {
   PrivacyNetwork.fromJS(this._wrapped);
 
   PrivacyNetwork({
     /// If enabled, Chrome attempts to speed up your web browsing experience by
-    /// pre-resolving DNS entries and preemptively opening TCP and SSL
-    /// connections to servers. This preference only affects actions taken by
-    /// Chrome's internal prediction service. It does not affect
-    /// webpage-initiated prefectches or preconnects. This preference's value is
-    /// a boolean, defaulting to `true`.
+    /// pre-resolving DNS entries, preemptively opening TCP and SSL connections
+    /// to servers, and preloading pages. Disabling this preference overrides
+    /// site owners' ability to speculatively load content (such as prefetching
+    /// or prerendering via the [Speculation Rules
+    /// API](https://developer.mozilla.org/docs/Web/API/Speculation_Rules_API)).
+    /// It does not affect webpage-initiated preconnects or DNS prefetches. This
+    /// preference's value is a boolean, defaulting to `true`.
     required ChromeSetting networkPredictionEnabled,
 
     /// Allow users to specify the media performance/privacy tradeoffs which
@@ -85,11 +110,13 @@ class PrivacyNetwork {
   $js.PrivacyNetwork get toJS => _wrapped;
 
   /// If enabled, Chrome attempts to speed up your web browsing experience by
-  /// pre-resolving DNS entries and preemptively opening TCP and SSL connections
-  /// to servers. This preference only affects actions taken by Chrome's
-  /// internal prediction service. It does not affect webpage-initiated
-  /// prefectches or preconnects. This preference's value is a boolean,
-  /// defaulting to `true`.
+  /// pre-resolving DNS entries, preemptively opening TCP and SSL connections to
+  /// servers, and preloading pages. Disabling this preference overrides site
+  /// owners' ability to speculatively load content (such as prefetching or
+  /// prerendering via the [Speculation Rules
+  /// API](https://developer.mozilla.org/docs/Web/API/Speculation_Rules_API)).
+  /// It does not affect webpage-initiated preconnects or DNS prefetches. This
+  /// preference's value is a boolean, defaulting to `true`.
   ChromeSetting get networkPredictionEnabled =>
       ChromeSetting.fromJS(_wrapped.networkPredictionEnabled);
 
@@ -129,6 +156,10 @@ class PrivacyServices {
     /// This preference's value is a boolean, defaulting to `true`.
     required ChromeSetting autofillCreditCardEnabled,
 
+    /// If set, allows site-specific control over Autofill features by blocking
+    /// specific data categories on matching URL patterns.
+    required ChromeSetting autofillSettings,
+
     /// If enabled, the password manager will ask if you want to save passwords.
     /// This preference's value is a boolean, defaulting to `true`.
     required ChromeSetting passwordSavingEnabled,
@@ -160,6 +191,7 @@ class PrivacyServices {
           autofillEnabled: autofillEnabled.toJS,
           autofillAddressEnabled: autofillAddressEnabled.toJS,
           autofillCreditCardEnabled: autofillCreditCardEnabled.toJS,
+          autofillSettings: autofillSettings.toJS,
           passwordSavingEnabled: passwordSavingEnabled.toJS,
           safeBrowsingEnabled: safeBrowsingEnabled.toJS,
           safeBrowsingExtendedReportingEnabled:
@@ -207,6 +239,15 @@ class PrivacyServices {
 
   set autofillCreditCardEnabled(ChromeSetting v) {
     _wrapped.autofillCreditCardEnabled = v.toJS;
+  }
+
+  /// If set, allows site-specific control over Autofill features by blocking
+  /// specific data categories on matching URL patterns.
+  ChromeSetting get autofillSettings =>
+      ChromeSetting.fromJS(_wrapped.autofillSettings);
+
+  set autofillSettings(ChromeSetting v) {
+    _wrapped.autofillSettings = v.toJS;
   }
 
   /// If enabled, the password manager will ask if you want to save passwords.
@@ -273,7 +314,16 @@ class PrivacyWebsites {
   PrivacyWebsites({
     /// If disabled, Chrome blocks third-party sites from setting cookies. The
     /// value of this preference is of type boolean, and the default value is
-    /// `true`.
+    /// `true`. Extensions may not enable this API in Incognito mode, where
+    /// third-party cookies are blocked and can only be allowed at the site
+    /// level. If you try setting this API to true in Incognito, it will throw
+    /// an error.
+    /// </br>Note: Individual sites may still be able to access third-party
+    /// cookies when this API returns `false`, if they have a valid
+    /// [exemption](https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/preserving-critical-user-experiences)
+    /// or they use the [Storage Access
+    /// API](https://developers.google.com/privacy-sandbox/cookies/storage-access-api)
+    /// instead.
     required ChromeSetting thirdPartyCookiesAllowed,
 
     /// If disabled, the [Topics
@@ -302,9 +352,9 @@ class PrivacyWebsites {
     /// it will throw an error.
     required ChromeSetting adMeasurementEnabled,
 
-    /// If enabled, Chrome sends auditing pings when requested by a website (`<a
-    /// ping>`). The value of this preference is of type boolean, and the
-    /// default value is `true`.
+    /// If enabled, Chrome sends auditing pings when requested by a website
+    /// (`&lt;a ping&gt;`). The value of this preference is of type boolean, and
+    /// the default value is `true`.
     required ChromeSetting hyperlinkAuditingEnabled,
 
     /// If enabled, Chrome sends `referer` headers with your requests. Yes, the
@@ -322,14 +372,6 @@ class PrivacyWebsites {
     /// unique ID to plugins in order to run protected content. The value of
     /// this preference is of type boolean, and the default value is `true`.
     ChromeSetting? protectedContentEnabled,
-
-    /// If disabled, [Related Website
-    /// Sets](https://developer.chrome.com/docs/privacy-sandbox/related-website-sets/)
-    /// is deactivated. The value of this preference is of type boolean, and the
-    /// default value is `true`. Extensions may only disable this API by setting
-    /// the value to `false`. If you try setting this API to `true`, it will
-    /// throw an error.
-    required ChromeSetting relatedWebsiteSetsEnabled,
   }) : _wrapped = $js.PrivacyWebsites(
           thirdPartyCookiesAllowed: thirdPartyCookiesAllowed.toJS,
           topicsEnabled: topicsEnabled.toJS,
@@ -339,7 +381,6 @@ class PrivacyWebsites {
           referrersEnabled: referrersEnabled.toJS,
           doNotTrackEnabled: doNotTrackEnabled.toJS,
           protectedContentEnabled: protectedContentEnabled?.toJS,
-          relatedWebsiteSetsEnabled: relatedWebsiteSetsEnabled.toJS,
         );
 
   final $js.PrivacyWebsites _wrapped;
@@ -348,7 +389,15 @@ class PrivacyWebsites {
 
   /// If disabled, Chrome blocks third-party sites from setting cookies. The
   /// value of this preference is of type boolean, and the default value is
-  /// `true`.
+  /// `true`. Extensions may not enable this API in Incognito mode, where
+  /// third-party cookies are blocked and can only be allowed at the site level.
+  /// If you try setting this API to true in Incognito, it will throw an error.
+  /// </br>Note: Individual sites may still be able to access third-party
+  /// cookies when this API returns `false`, if they have a valid
+  /// [exemption](https://developers.google.com/privacy-sandbox/cookies/temporary-exceptions/preserving-critical-user-experiences)
+  /// or they use the [Storage Access
+  /// API](https://developers.google.com/privacy-sandbox/cookies/storage-access-api)
+  /// instead.
   ChromeSetting get thirdPartyCookiesAllowed =>
       ChromeSetting.fromJS(_wrapped.thirdPartyCookiesAllowed);
 
@@ -397,9 +446,9 @@ class PrivacyWebsites {
     _wrapped.adMeasurementEnabled = v.toJS;
   }
 
-  /// If enabled, Chrome sends auditing pings when requested by a website (`<a
-  /// ping>`). The value of this preference is of type boolean, and the default
-  /// value is `true`.
+  /// If enabled, Chrome sends auditing pings when requested by a website
+  /// (`&lt;a ping&gt;`). The value of this preference is of type boolean, and
+  /// the default value is `true`.
   ChromeSetting get hyperlinkAuditingEnabled =>
       ChromeSetting.fromJS(_wrapped.hyperlinkAuditingEnabled);
 
@@ -437,17 +486,40 @@ class PrivacyWebsites {
   set protectedContentEnabled(ChromeSetting? v) {
     _wrapped.protectedContentEnabled = v?.toJS;
   }
+}
 
-  /// If disabled, [Related Website
-  /// Sets](https://developer.chrome.com/docs/privacy-sandbox/related-website-sets/)
-  /// is deactivated. The value of this preference is of type boolean, and the
-  /// default value is `true`. Extensions may only disable this API by setting
-  /// the value to `false`. If you try setting this API to `true`, it will throw
-  /// an error.
-  ChromeSetting get relatedWebsiteSetsEnabled =>
-      ChromeSetting.fromJS(_wrapped.relatedWebsiteSetsEnabled);
+class AutofillSettingsItems {
+  AutofillSettingsItems.fromJS(this._wrapped);
 
-  set relatedWebsiteSetsEnabled(ChromeSetting v) {
-    _wrapped.relatedWebsiteSetsEnabled = v.toJS;
+  AutofillSettingsItems({
+    /// A URL pattern specifying the sites for which the block rule applies.
+    required String urlPattern,
+
+    /// The categories of Autofill data to block on matching sites.
+    required List<AutofillBlockedType> blockedTypes,
+  }) : _wrapped = $js.AutofillSettingsItems(
+          urlPattern: urlPattern,
+          blockedTypes: blockedTypes.toJSArray((e) => e.toJS),
+        );
+
+  final $js.AutofillSettingsItems _wrapped;
+
+  $js.AutofillSettingsItems get toJS => _wrapped;
+
+  /// A URL pattern specifying the sites for which the block rule applies.
+  String get urlPattern => _wrapped.urlPattern;
+
+  set urlPattern(String v) {
+    _wrapped.urlPattern = v;
+  }
+
+  /// The categories of Autofill data to block on matching sites.
+  List<AutofillBlockedType> get blockedTypes => _wrapped.blockedTypes.toDart
+      .cast<$js.AutofillBlockedType>()
+      .map((e) => AutofillBlockedType.fromJS(e))
+      .toList();
+
+  set blockedTypes(List<AutofillBlockedType> v) {
+    _wrapped.blockedTypes = v.toJSArray((e) => e.toJS);
   }
 }

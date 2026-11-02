@@ -13,8 +13,8 @@ final _runtime = ChromeRuntime._();
 extension ChromeRuntimeExtension on Chrome {
   /// Use the `chrome.runtime` API to retrieve the service worker, return
   /// details about the manifest, and listen for and respond to events in the
-  /// app or extension lifecycle. You can also use this API to convert the
-  /// relative path of URLs to fully-qualified URLs.
+  /// extension lifecycle. You can also use this API to convert the relative
+  /// path of URLs to fully-qualified URLs.
   ChromeRuntime get runtime => _runtime;
 }
 
@@ -27,6 +27,7 @@ class ChromeRuntime {
   /// inside the current extension/app. If the background page is an event page,
   /// the system will ensure it is loaded before calling the callback. If there
   /// is no background page, an error is set.
+  @Deprecated(r'Background pages do not exist in MV3 extensions.')
   Future<JSObject?> getBackgroundPage() async {
     var $res = await $js.chrome.runtime.getBackgroundPage().toDart;
     return $res;
@@ -34,11 +35,14 @@ class ChromeRuntime {
 
   /// Open your Extension's options page, if possible.
   ///
-  /// The precise behavior may depend on your manifest's
-  /// `[options_ui](optionsV2)` or `[options_page](options)` key, or what Chrome
-  /// happens to support at the time. For example, the page may be opened in a
-  /// new tab, within chrome://extensions, within an App, or it may just focus
-  /// an open options page. It will never cause the caller page to reload.
+  /// The precise behavior may depend on your manifest's <a
+  /// href="/docs/extensions/develop/ui/options-page#embedded_options">`options_ui`</a>
+  /// or <a
+  /// href="/docs/extensions/develop/ui/options-page#full_page">`options_page`</a>
+  /// key, or what Chrome happens to support at the time. For example, the page
+  /// may be opened in a new tab, within chrome://extensions, within an App, or
+  /// it may just focus an open options page. It will never cause the caller
+  /// page to reload.
   ///
   /// If your Extension does not declare an options page, or Chrome failed to
   /// create one for some other reason, the callback will set [lastError].
@@ -54,6 +58,12 @@ class ChromeRuntime {
     return $js.chrome.runtime.getManifest().toDartMap();
   }
 
+  /// Returns the extension's version as declared in the manifest.
+  /// [returns] The extension's version.
+  String getVersion() {
+    return $js.chrome.runtime.getVersion();
+  }
+
   /// Converts a relative path within an app/extension install directory to a
   /// fully-qualified URL.
   /// [path] A path to a resource within an app/extension expressed relative
@@ -63,14 +73,27 @@ class ChromeRuntime {
     return $js.chrome.runtime.getURL(path);
   }
 
+  /// Signals that the extension has finished registering its event listeners
+  /// for the current service worker instance. The browser replaces persisted
+  /// listener registrations with the newly registered listeners and dispatches
+  /// any queued events. Only available in the service worker of extensions
+  /// declaring `"background.async_listener_registration": true`.
+  /// [returns] Called once the browser has committed the listener
+  /// registration. The promise is rejected if the extension is not opted in,
+  /// the caller is not the service worker, or no listener registration is in
+  /// progress.
+  Future<void> markListenerRegistrationComplete() async {
+    await $js.chrome.runtime.markListenerRegistrationComplete().toDart;
+  }
+
   /// Sets the URL to be visited upon uninstallation. This may be used to clean
   /// up server-side data, do analytics, and implement surveys. Maximum 1023
   /// characters.
   /// [url] URL to be opened after the extension is uninstalled. This URL must
   /// have an http: or https: scheme. Set an empty string to not open a new
   /// tab upon uninstallation.
-  /// [returns] Called when the uninstall URL is set. If the given URL is
-  /// invalid, [runtime.lastError] will be set.
+  /// [returns] Promise that resolves when the uninstall URL is set. If the
+  /// given URL is invalid, the promise will be rejected.
   Future<void> setUninstallURL(String url) async {
     await $js.chrome.runtime.setUninstallURL(url).toDart;
   }
@@ -88,9 +111,9 @@ class ChromeRuntime {
   /// requestUpdateCheck.
   ///
   /// This method is only appropriate to call in very limited circumstances,
-  /// such as if your extension/app talks to a backend service, and the backend
-  /// service has determined that the client extension/app version is very far
-  /// out of date and you'd like to prompt a user to update. Most other uses of
+  /// such as if your extension talks to a backend service, and the backend
+  /// service has determined that the client extension version is very far out
+  /// of date and you'd like to prompt a user to update. Most other uses of
   /// requestUpdateCheck, such as calling it unconditionally based on a
   /// repeating timer, probably only serve to waste client, network, and server
   /// resources.
@@ -116,26 +139,26 @@ class ChromeRuntime {
   /// the first extension to invoke this API.
   /// [seconds] Time to wait in seconds before rebooting the device, or -1 to
   /// cancel a scheduled reboot.
-  /// [returns] A callback to be invoked when a restart request was
-  /// successfully rescheduled.
+  /// [returns] Promise that resolves when a restart request was successfully
+  /// rescheduled.
   Future<void> restartAfterDelay(int seconds) async {
     await $js.chrome.runtime.restartAfterDelay(seconds).toDart;
   }
 
-  /// Attempts to connect listeners within an extension/app (such as the
-  /// background page), or other extensions/apps. This is useful for content
-  /// scripts connecting to their extension processes, inter-app/extension
+  /// Attempts to connect listeners within an extension (such as the background
+  /// page), or other extensions/apps. This is useful for content scripts
+  /// connecting to their extension processes, inter-app/extension
   /// communication, and [web
   /// messaging](/docs/extensions/manifest/externally_connectable). Note that
   /// this does not connect to any listeners in a content script. Extensions may
   /// connect to content scripts embedded in tabs via [tabs.connect].
-  /// [extensionId] The ID of the extension or app to connect to. If omitted,
-  /// a connection will be attempted with your own extension. Required if
+  /// [extensionId] The ID of the extension to connect to. If omitted, a
+  /// connection will be attempted with your own extension. Required if
   /// sending messages from a web page for [web
   /// messaging](/docs/extensions/reference/manifest/externally-connectable).
   /// [returns] Port through which messages can be sent and received. The
-  /// port's $(ref:Port onDisconnect) event is fired if the extension/app does
-  /// not exist.
+  /// port's $(ref:Port onDisconnect) event is fired if the extension does not
+  /// exist.
   Port connect(
     String? extensionId,
     ConnectInfo? connectInfo,
@@ -146,16 +169,22 @@ class ChromeRuntime {
     ));
   }
 
-  /// Connects to a native application in the host machine. See [Native
+  /// Connects to a native application in the host machine. This method requires
+  /// the `"nativeMessaging"` permission. See [Native
   /// Messaging](develop/concepts/native-messaging) for more information.
   /// [application] The name of the registered application to connect to.
   /// [returns] Port through which messages can be sent and received with the
   /// application
-  Port connectNative(String application) {
-    return Port.fromJS($js.chrome.runtime.connectNative(application));
+  Port connectNative(Object application) {
+    return Port.fromJS($js.chrome.runtime.connectNative(switch (application) {
+      String() => application.toJS,
+      NativeMessageTarget() => application.toJS,
+      _ => throw UnsupportedError(
+          'Received type: ${application.runtimeType}. Supported types are: String, NativeMessageTarget')
+    }));
   }
 
-  /// Sends a single message to event listeners within your extension/app or a
+  /// Sends a single message to event listeners within your extension or a
   /// different extension/app. Similar to [runtime.connect] but only sends a
   /// single message, with an optional response. If sending to your extension,
   /// the [runtime.onMessage] event will be fired in every frame of your
@@ -163,12 +192,15 @@ class ChromeRuntime {
   /// if a different extension. Note that extensions cannot send messages to
   /// content scripts using this method. To send messages to content scripts,
   /// use [tabs.sendMessage].
-  /// [extensionId] The ID of the extension/app to send the message to. If
+  /// [extensionId] The ID of the extension to send the message to. If
   /// omitted, the message will be sent to your own extension/app. Required if
   /// sending messages from a web page for [web
   /// messaging](/docs/extensions/manifest/externally_connectable).
   /// [message] The message to send. This message should be a JSON-ifiable
   /// object.
+  /// [returns] Promise support was added for extension contexts in Chrome 99.
+  /// When communicating from a web page to an extension, promises are
+  /// available from Chrome 118.
   Future<Object?> sendMessage(
     String? extensionId,
     Object message,
@@ -184,16 +216,22 @@ class ChromeRuntime {
     return $res?.dartify();
   }
 
-  /// Send a single message to a native application.
-  /// [application] The name of the native messaging host.
+  /// Send a single message to a native application. This method requires the
+  /// `"nativeMessaging"` permission.
+  /// [application] The name of the native messaging host, or target details.
   /// [message] The message that will be passed to the native messaging host.
   Future<Map> sendNativeMessage(
-    String application,
+    Object application,
     Map message,
   ) async {
     var $res = await $js.chrome.runtime
         .sendNativeMessage(
-          application,
+          switch (application) {
+            String() => application.toJS,
+            NativeMessageTarget() => application.toJS,
+            _ => throw UnsupportedError(
+                'Received type: ${application.runtimeType}. Supported types are: String, NativeMessageTarget')
+          },
           message.jsify()!,
         )
         .toDart;
@@ -201,7 +239,8 @@ class ChromeRuntime {
   }
 
   /// Returns information about the current platform.
-  /// [returns] Called with results
+  /// [returns] Promise that resolves with information about the current
+  /// platform.
   Future<PlatformInfo> getPlatformInfo() async {
     var $res = await $js.chrome.runtime.getPlatformInfo().toDart;
     return PlatformInfo.fromJS($res);
@@ -217,7 +256,7 @@ class ChromeRuntime {
   /// [filter] A filter to find matching contexts. A context matches if it
   /// matches all specified fields in the filter. Any unspecified field in the
   /// filter matches all contexts.
-  /// [returns] Invoked with the matching contexts, if any.
+  /// [returns] Promise that resolves with the matching contexts, if any.
   Future<List<ExtensionContext>> getContexts(ContextFilter filter) async {
     var $res = await $js.chrome.runtime.getContexts(filter.toJS).toDart;
     return $res.toDart
@@ -254,6 +293,13 @@ class ChromeRuntime {
                 return $c(OnInstalledDetails.fromJS(details));
               }.toJS);
 
+  /// Fired when an extension goes from being in a disabled state to an enabled
+  /// state.
+  EventStream<void> get onEnabled =>
+      $js.chrome.runtime.onEnabled.asStream(($c) => () {
+            return $c(null);
+          }.toJS);
+
   /// Sent to the event page just before it is unloaded. This gives the
   /// extension opportunity to do some clean up. Note that since the page is
   /// unloading, any asynchronous operations started while handling this event
@@ -289,6 +335,7 @@ class ChromeRuntime {
 
   /// Fired when a Chrome update is available, but isn't installed immediately
   /// because a browser restart is required.
+  @Deprecated(r'Please use runtime.onRestartRequired.')
   EventStream<void> get onBrowserUpdateAvailable =>
       $js.chrome.runtime.onBrowserUpdateAvailable.asStream(($c) => () {
             return $c(null);
@@ -314,15 +361,16 @@ class ChromeRuntime {
             return $c(Port.fromJS(port));
           }.toJS);
 
-  /// Fired when a connection is made from a native application. Currently only
-  /// supported on Chrome OS.
+  /// Fired when a connection is made from a native application. This event
+  /// requires the `"nativeMessaging"` permission. It is only supported on
+  /// Chrome OS.
   EventStream<Port> get onConnectNative =>
       $js.chrome.runtime.onConnectNative.asStream(($c) => ($js.Port port) {
             return $c(Port.fromJS(port));
           }.toJS);
 
-  /// Fired when a message is sent from either an extension process (by
-  /// [runtime.sendMessage]) or a content script (by [tabs.sendMessage]).
+  /// Fired when a message is sent from either [runtime.sendMessage] or
+  /// [tabs.sendMessage].
   EventStream<OnMessageEvent> get onMessage =>
       $js.chrome.runtime.onMessage.asStream(($c) => (
             JSAny? message,
@@ -336,7 +384,7 @@ class ChromeRuntime {
             ));
           }.toJS);
 
-  /// Fired when a message is sent from another extension/app (by
+  /// Fired when a message is sent from another extension (by
   /// [runtime.sendMessage]). Cannot be used in a content script.
   EventStream<OnMessageExternalEvent> get onMessageExternal =>
       $js.chrome.runtime.onMessageExternal.asStream(($c) => (
@@ -396,10 +444,7 @@ enum PlatformOs {
   linux('linux'),
 
   /// Specifies the OpenBSD operating system.
-  openbsd('openbsd'),
-
-  /// Specifies the Fuchsia operating system.
-  fuchsia('fuchsia');
+  openbsd('openbsd');
 
   const PlatformOs(this.value);
 
@@ -431,7 +476,10 @@ enum PlatformArch {
   mips('mips'),
 
   /// Specifies the processer architecture as mips64.
-  mips64('mips64');
+  mips64('mips64'),
+
+  /// Specifies the processer architecture as riscv64.
+  riscv64('riscv64');
 
   const PlatformArch(this.value);
 
@@ -566,7 +614,10 @@ enum ContextType {
   offscreenDocument('OFFSCREEN_DOCUMENT'),
 
   /// Specifies the context type as a side panel.
-  sidePanel('SIDE_PANEL');
+  sidePanel('SIDE_PANEL'),
+
+  /// Specifies the context type as developer tools.
+  developerTools('DEVELOPER_TOOLS');
 
   const ContextType(this.value);
 
@@ -693,7 +744,7 @@ class MessageSender {
     /// available. Only available for component extensions.
     int? guestRenderFrameRoutingId,
 
-    /// The ID of the extension or app that opened the connection, if any.
+    /// The ID of the extension that opened the connection, if any.
     String? id,
 
     /// The URL of the page or frame that opened the connection. If the sender
@@ -705,7 +756,7 @@ class MessageSender {
     String? nativeApplication,
 
     /// The TLS channel ID of the page or frame that opened the connection, if
-    /// requested by the extension or app, and if available.
+    /// requested by the extension, and if available.
     String? tlsChannelId,
 
     /// The origin of the page or frame that opened the connection. It can vary
@@ -773,7 +824,7 @@ class MessageSender {
     _wrapped.guestRenderFrameRoutingId = v;
   }
 
-  /// The ID of the extension or app that opened the connection, if any.
+  /// The ID of the extension that opened the connection, if any.
   String? get id => _wrapped.id;
 
   set id(String? v) {
@@ -797,7 +848,7 @@ class MessageSender {
   }
 
   /// The TLS channel ID of the page or frame that opened the connection, if
-  /// requested by the extension or app, and if available.
+  /// requested by the extension, and if available.
   String? get tlsChannelId => _wrapped.tlsChannelId;
 
   set tlsChannelId(String? v) {
@@ -831,6 +882,52 @@ class MessageSender {
   }
 }
 
+class NativeMessageTarget {
+  NativeMessageTarget.fromJS(this._wrapped);
+
+  NativeMessageTarget({
+    /// The name of the native messaging host, or external Android app's package
+    /// name.
+    required String application,
+
+    /// List of expected signing certificates for the external Android app
+    /// specified as SHA-256 fingerprints. If non-empty, the connection is
+    /// established if the app is signed by at least one of the certificates
+    /// provided. Must be non-empty for packed extensions on Android. Ignored
+    /// for other platforms.
+    List<String>? androidCertificates,
+  }) : _wrapped = $js.NativeMessageTarget(
+          application: application,
+          androidCertificates: androidCertificates?.toJSArray((e) => e.toJS),
+        );
+
+  final $js.NativeMessageTarget _wrapped;
+
+  $js.NativeMessageTarget get toJS => _wrapped;
+
+  /// The name of the native messaging host, or external Android app's package
+  /// name.
+  String get application => _wrapped.application;
+
+  set application(String v) {
+    _wrapped.application = v;
+  }
+
+  /// List of expected signing certificates for the external Android app
+  /// specified as SHA-256 fingerprints. If non-empty, the connection is
+  /// established if the app is signed by at least one of the certificates
+  /// provided. Must be non-empty for packed extensions on Android. Ignored for
+  /// other platforms.
+  List<String>? get androidCertificates => _wrapped.androidCertificates?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
+
+  set androidCertificates(List<String>? v) {
+    _wrapped.androidCertificates = v?.toJSArray((e) => e.toJS);
+  }
+}
+
 class PlatformInfo {
   PlatformInfo.fromJS(this._wrapped);
 
@@ -843,11 +940,11 @@ class PlatformInfo {
 
     /// The native client architecture. This may be different from arch on some
     /// platforms.
-    required PlatformNaclArch naclArch,
+    PlatformNaclArch? naclArch,
   }) : _wrapped = $js.PlatformInfo(
           os: os.toJS,
           arch: arch.toJS,
-          nacl_arch: naclArch.toJS,
+          nacl_arch: naclArch?.toJS,
         );
 
   final $js.PlatformInfo _wrapped;
@@ -870,10 +967,11 @@ class PlatformInfo {
 
   /// The native client architecture. This may be different from arch on some
   /// platforms.
-  PlatformNaclArch get naclArch => PlatformNaclArch.fromJS(_wrapped.nacl_arch);
+  PlatformNaclArch? get naclArch =>
+      _wrapped.nacl_arch?.let(PlatformNaclArch.fromJS);
 
-  set naclArch(PlatformNaclArch v) {
-    _wrapped.nacl_arch = v.toJS;
+  set naclArch(PlatformNaclArch? v) {
+    _wrapped.nacl_arch = v?.toJS;
   }
 }
 

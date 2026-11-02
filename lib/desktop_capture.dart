@@ -11,8 +11,8 @@ export 'src/chrome.dart' show chrome, EventStream;
 final _desktopCapture = ChromeDesktopCapture._();
 
 extension ChromeDesktopCaptureExtension on Chrome {
-  /// Desktop Capture API that can be used to capture content of screen,
-  /// individual windows or tabs.
+  /// The Desktop Capture API captures the content of the screen, individual
+  /// windows, or individual tabs.
   ChromeDesktopCapture get desktopCapture => _desktopCapture;
 }
 
@@ -97,6 +97,25 @@ enum SystemAudioPreferenceEnum {
 }
 
 /// Mirrors
+/// [WindowAudioPreferenceEnum](https://w3c.github.io/mediacapture-screen-share/#dom-windowaudiopreferenceenum).
+enum WindowAudioPreferenceEnum {
+  system('system'),
+  window('window'),
+  exclude('exclude');
+
+  const WindowAudioPreferenceEnum(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static WindowAudioPreferenceEnum fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
+/// Mirrors
 /// [SelfCapturePreferenceEnum](https://w3c.github.io/mediacapture-screen-share/#dom-selfcapturepreferenceenum).
 enum SelfCapturePreferenceEnum {
   include('include'),
@@ -123,6 +142,10 @@ class ChooseDesktopMediaOptions {
     SystemAudioPreferenceEnum? systemAudio,
 
     /// Mirrors
+    /// [windowAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-windowaudio).
+    WindowAudioPreferenceEnum? windowAudio,
+
+    /// Mirrors
     /// [selfBrowserSurface](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamconstraints-selfbrowsersurface).
     SelfCapturePreferenceEnum? selfBrowserSurface,
 
@@ -133,6 +156,7 @@ class ChooseDesktopMediaOptions {
     bool? suppressLocalAudioPlaybackIntended,
   }) : _wrapped = $js.ChooseDesktopMediaOptions(
           systemAudio: systemAudio?.toJS,
+          windowAudio: windowAudio?.toJS,
           selfBrowserSurface: selfBrowserSurface?.toJS,
           suppressLocalAudioPlaybackIntended:
               suppressLocalAudioPlaybackIntended,
@@ -149,6 +173,15 @@ class ChooseDesktopMediaOptions {
 
   set systemAudio(SystemAudioPreferenceEnum? v) {
     _wrapped.systemAudio = v?.toJS;
+  }
+
+  /// Mirrors
+  /// [windowAudio](https://w3c.github.io/mediacapture-screen-share/#dom-displaymediastreamoptions-windowaudio).
+  WindowAudioPreferenceEnum? get windowAudio =>
+      _wrapped.windowAudio?.let(WindowAudioPreferenceEnum.fromJS);
+
+  set windowAudio(WindowAudioPreferenceEnum? v) {
+    _wrapped.windowAudio = v?.toJS;
   }
 
   /// Mirrors

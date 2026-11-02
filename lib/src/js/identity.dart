@@ -24,20 +24,20 @@ extension JSChromeJSIdentityExtension on JSChrome {
 }
 
 extension type JSIdentity._(JSObject _) {
-  /// Retrieves a list of AccountInfo objects describing the accounts
-  /// present on the profile.
+  /// Retrieves a list of AccountInfo objects describing the accounts present on
+  /// the profile.
   ///
   /// `getAccounts` is only supported on dev channel.
   external JSPromise<JSArray> getAccounts();
 
-  /// Gets an OAuth2 access token using the client ID and scopes
-  /// specified in the <a
-  /// href="/docs/apps/app_identity#update_manifest">`oauth2`
+  /// Gets an OAuth2 access token using the client ID and scopes specified in
+  /// the
+  /// <a href="/docs/apps/app_identity#update_manifest">`oauth2`
   /// section of manifest.json</a>.
   ///
-  /// The Identity API caches access tokens in memory, so it's ok to
-  /// call `getAuthToken` non-interactively any time a token is
-  /// required. The token cache automatically handles expiration.
+  /// The Identity API caches access tokens in memory, so it's ok to call
+  /// `getAuthToken` non-interactively any time a token is required.
+  /// The token cache automatically handles expiration.
   ///
   /// For a good user experience it is important interactive token requests are
   /// initiated by UI in your app explaining what the authorization is for.
@@ -48,42 +48,45 @@ extension type JSIdentity._(JSObject _) {
   ///
   /// Note: When called with a callback, instead of returning an object this
   /// function will return the two properties as separate arguments passed to
-  /// the callback.
+  /// the
+  /// callback.
   ///
   /// |details| : Token options.
-  /// |callback| : Called with an OAuth2 access token as specified by the
-  /// manifest, or undefined if there was an error. The
+  /// |Returns| : Returns a Promise which resolves with an OAuth2 access token
+  /// as
+  /// specified by the manifest, or rejects if there was an error. The
   /// `grantedScopes` parameter is populated since Chrome 87. When
   /// available, this parameter contains the list of granted scopes
   /// corresponding with the returned token.
   external JSPromise<GetAuthTokenResult> getAuthToken(TokenDetails? details);
 
-  /// Retrieves email address and obfuscated gaia id of the user
-  /// signed into a profile.
+  /// Retrieves email address and obfuscated gaia id of the user signed into a
+  /// profile.
   ///
   /// Requires the `identity.email` manifest permission. Otherwise,
   /// returns an empty result.
   ///
-  /// This API is different from identity.getAccounts in two
-  /// ways. The information returned is available offline, and it
-  /// only applies to the primary account for the profile.
+  /// This API is different from identity.getAccounts in two ways. The
+  /// information returned is available offline, and it only applies to the
+  /// primary account for the profile.
   ///
   /// |details|: Profile options.
-  /// |callback|: Called with the `ProfileUserInfo` of the primary
-  /// Chrome account, of an empty `ProfileUserInfo` if the account
-  /// with given `details` doesn't exist.
+  /// |Returns|: Returns a Promise which resolves with the
+  /// `ProfileUserInfo` of the primary Chrome account, or an empty
+  /// `ProfileUserInfo` if the account with given
+  /// `details` doesn't exist.
   external JSPromise<ProfileUserInfo> getProfileUserInfo(
       ProfileDetails? details);
 
   /// Removes an OAuth2 access token from the Identity API's token cache.
   ///
-  /// If an access token is discovered to be invalid, it should be
-  /// passed to removeCachedAuthToken to remove it from the
-  /// cache. The app may then retrieve a fresh token with
-  /// `getAuthToken`.
+  /// If an access token is discovered to be invalid, it should be passed to
+  /// removeCachedAuthToken to remove it from the cache. The app may then
+  /// retrieve a fresh token with `getAuthToken`.
   ///
   /// |details| : Token information.
-  /// |callback| : Called when the token has been removed from the cache.
+  /// |Returns| : Returns a Promise which resolves when the token has been
+  /// removed from the cache.
   external JSPromise removeCachedAuthToken(InvalidTokenDetails details);
 
   /// Resets the state of the Identity API:
@@ -93,16 +96,16 @@ extension type JSIdentity._(JSObject _) {
   ///   <li>De-authorizes the user from all auth flows</li>
   /// </ul>
   ///
-  /// |callback| : Called when the state has been cleared.
+  /// |Returns| : Returns a Promise which resolves when the state has been
+  /// cleared.
   external JSPromise clearAllCachedAuthTokens();
 
   /// Starts an auth flow at the specified URL.
   ///
-  /// This method enables auth flows with non-Google identity
-  /// providers by launching a web view and navigating it to the
-  /// first URL in the provider's auth flow. When the provider
-  /// redirects to a URL matching the pattern
-  /// `https://<app-id>.chromiumapp.org/*`, the
+  /// This method enables auth flows with non-Google identity providers by
+  /// launching a web view and navigating it to the first URL in the provider's
+  /// auth flow. When the provider redirects to a URL matching the pattern
+  /// `https://&lt;app-id&gt;.chromiumapp.org/*`, the
   /// window will close, and the final redirect URL will be passed to
   /// the [callback] function.
   ///
@@ -113,13 +116,14 @@ extension type JSIdentity._(JSObject _) {
   /// when your app is first launched.
   ///
   /// |details| : WebAuth flow options.
-  /// |callback| : Called with the URL redirected back to your application.
+  /// |Returns| : Returns a Promise which resolves with the URL redirected back
+  /// to your application.
   external JSPromise<JSString?> launchWebAuthFlow(WebAuthFlowDetails details);
 
   /// Generates a redirect URL to be used in |launchWebAuthFlow|.
   ///
   /// The generated URLs match the pattern
-  /// `https://<app-id>.chromiumapp.org/*`.
+  /// `https://&lt;app-id&gt;.chromiumapp.org/*`.
   ///
   /// |path| : The path appended to the end of the generated URL.
   external String getRedirectURL(String? path);
@@ -155,39 +159,35 @@ extension type ProfileDetails._(JSObject _) implements JSObject {
 }
 extension type ProfileUserInfo._(JSObject _) implements JSObject {
   external factory ProfileUserInfo({
-    /// An email address for the user account signed into the current
-    /// profile. Empty if the user is not signed in or the
-    /// `identity.email` manifest permission is not
-    /// specified.
+    /// An email address for the user account signed into the current profile.
+    /// Empty if the user is not signed in or the `identity.email`
+    /// manifest permission is not specified.
     String email,
 
-    /// A unique identifier for the account. This ID will not change
-    /// for the lifetime of the account. Empty if the user is not
-    /// signed in or (in M41+) the `identity.email`
-    /// manifest permission is not specified.
+    /// A unique identifier for the account. This ID will not change for the
+    /// lifetime of the account. Empty if the user is not signed in or (in M41+)
+    /// the `identity.email` manifest permission is not specified.
     String id,
   });
 
-  /// An email address for the user account signed into the current
-  /// profile. Empty if the user is not signed in or the
-  /// `identity.email` manifest permission is not
-  /// specified.
+  /// An email address for the user account signed into the current profile.
+  /// Empty if the user is not signed in or the `identity.email`
+  /// manifest permission is not specified.
   external String email;
 
-  /// A unique identifier for the account. This ID will not change
-  /// for the lifetime of the account. Empty if the user is not
-  /// signed in or (in M41+) the `identity.email`
-  /// manifest permission is not specified.
+  /// A unique identifier for the account. This ID will not change for the
+  /// lifetime of the account. Empty if the user is not signed in or (in M41+)
+  /// the `identity.email` manifest permission is not specified.
   external String id;
 }
 extension type TokenDetails._(JSObject _) implements JSObject {
   external factory TokenDetails({
-    /// Fetching a token may require the user to sign-in to Chrome, or
-    /// approve the application's requested scopes. If the interactive
-    /// flag is `true`, `getAuthToken` will
-    /// prompt the user as necessary. When the flag is
-    /// `false` or omitted, `getAuthToken` will
-    /// return failure any time a prompt would be required.
+    /// Fetching a token may require the user to sign-in to Chrome, or approve the
+    /// application's requested scopes. If the interactive flag is
+    /// `true`, `getAuthToken` will prompt the user as
+    /// necessary. When the flag is `false` or omitted,
+    /// `getAuthToken` will return failure any time a prompt would be
+    /// required.
     bool? interactive,
 
     /// The account ID whose token should be returned. If not specified, the
@@ -197,22 +197,22 @@ extension type TokenDetails._(JSObject _) implements JSObject {
 
     /// A list of OAuth2 scopes to request.
     ///
-    /// When the `scopes` field is present, it overrides the
-    /// list of scopes specified in manifest.json.
+    /// When the `scopes` field is present, it overrides the list of
+    /// scopes specified in manifest.json.
     JSArray? scopes,
 
-    /// The `enableGranularPermissions` flag allows extensions to
-    /// opt-in early to the granular permissions consent screen, in which
-    /// requested permissions are granted or denied individually.
+    /// The `enableGranularPermissions` flag allows extensions to opt-in
+    /// early to the granular permissions consent screen, in which requested
+    /// permissions are granted or denied individually.
     bool? enableGranularPermissions,
   });
 
-  /// Fetching a token may require the user to sign-in to Chrome, or
-  /// approve the application's requested scopes. If the interactive
-  /// flag is `true`, `getAuthToken` will
-  /// prompt the user as necessary. When the flag is
-  /// `false` or omitted, `getAuthToken` will
-  /// return failure any time a prompt would be required.
+  /// Fetching a token may require the user to sign-in to Chrome, or approve the
+  /// application's requested scopes. If the interactive flag is
+  /// `true`, `getAuthToken` will prompt the user as
+  /// necessary. When the flag is `false` or omitted,
+  /// `getAuthToken` will return failure any time a prompt would be
+  /// required.
   external bool? interactive;
 
   /// The account ID whose token should be returned. If not specified, the
@@ -222,13 +222,13 @@ extension type TokenDetails._(JSObject _) implements JSObject {
 
   /// A list of OAuth2 scopes to request.
   ///
-  /// When the `scopes` field is present, it overrides the
-  /// list of scopes specified in manifest.json.
+  /// When the `scopes` field is present, it overrides the list of
+  /// scopes specified in manifest.json.
   external JSArray? scopes;
 
-  /// The `enableGranularPermissions` flag allows extensions to
-  /// opt-in early to the granular permissions consent screen, in which
-  /// requested permissions are granted or denied individually.
+  /// The `enableGranularPermissions` flag allows extensions to opt-in
+  /// early to the granular permissions consent screen, in which requested
+  /// permissions are granted or denied individually.
   external bool? enableGranularPermissions;
 }
 extension type InvalidTokenDetails._(JSObject _) implements JSObject {
@@ -252,10 +252,10 @@ extension type WebAuthFlowDetails._(JSObject _) implements JSObject {
     /// navigation either redirects to the final URL, or finishes loading a page
     /// meant to be displayed.
     ///
-    /// If the `interactive` flag is `true`, the window
-    /// will be displayed when a page load completes. If the flag is
-    /// `false` or omitted, `launchWebAuthFlow` will return
-    /// with an error if the initial navigation does not complete the flow.
+    /// If the `interactive` flag is `true`, the window will
+    /// be displayed when a page load completes. If the flag is `false`
+    /// or omitted, `launchWebAuthFlow` will return with an error if the
+    /// initial navigation does not complete the flow.
     ///
     /// For flows that use JavaScript for redirection,
     /// `abortOnLoadForNonInteractive` can be set to `false`
@@ -267,18 +267,16 @@ extension type WebAuthFlowDetails._(JSObject _) implements JSObject {
     /// requests after the page loads. This parameter does not affect interactive
     /// flows.
     ///
-    /// When set to `true` (default) the flow will terminate
-    /// immediately after the page loads. When set to `false`, the
-    /// flow will only terminate after the
-    /// `timeoutMsForNonInteractive` passes. This is useful for
-    /// identity providers that use JavaScript to perform redirections after the
-    /// page loads.
+    /// When set to `true` (default) the flow will terminate immediately
+    /// after the page loads. When set to `false`, the flow will only
+    /// terminate after the `timeoutMsForNonInteractive` passes. This is
+    /// useful for identity providers that use JavaScript to perform redirections
+    /// after the page loads.
     bool? abortOnLoadForNonInteractive,
 
-    /// The maximum amount of time, in miliseconds,
-    /// `launchWebAuthFlow` is allowed to run in non-interactive mode
-    /// in total. Only has an effect if `interactive` is
-    /// `false`.
+    /// The maximum amount of time, in miliseconds, `launchWebAuthFlow`
+    /// is allowed to run in non-interactive mode in total. Only has an effect if
+    /// `interactive` is `false`.
     int? timeoutMsForNonInteractive,
   });
 
@@ -292,10 +290,10 @@ extension type WebAuthFlowDetails._(JSObject _) implements JSObject {
   /// navigation either redirects to the final URL, or finishes loading a page
   /// meant to be displayed.
   ///
-  /// If the `interactive` flag is `true`, the window
-  /// will be displayed when a page load completes. If the flag is
-  /// `false` or omitted, `launchWebAuthFlow` will return
-  /// with an error if the initial navigation does not complete the flow.
+  /// If the `interactive` flag is `true`, the window will
+  /// be displayed when a page load completes. If the flag is `false`
+  /// or omitted, `launchWebAuthFlow` will return with an error if the
+  /// initial navigation does not complete the flow.
   ///
   /// For flows that use JavaScript for redirection,
   /// `abortOnLoadForNonInteractive` can be set to `false`
@@ -307,18 +305,16 @@ extension type WebAuthFlowDetails._(JSObject _) implements JSObject {
   /// requests after the page loads. This parameter does not affect interactive
   /// flows.
   ///
-  /// When set to `true` (default) the flow will terminate
-  /// immediately after the page loads. When set to `false`, the
-  /// flow will only terminate after the
-  /// `timeoutMsForNonInteractive` passes. This is useful for
-  /// identity providers that use JavaScript to perform redirections after the
-  /// page loads.
+  /// When set to `true` (default) the flow will terminate immediately
+  /// after the page loads. When set to `false`, the flow will only
+  /// terminate after the `timeoutMsForNonInteractive` passes. This is
+  /// useful for identity providers that use JavaScript to perform redirections
+  /// after the page loads.
   external bool? abortOnLoadForNonInteractive;
 
-  /// The maximum amount of time, in miliseconds,
-  /// `launchWebAuthFlow` is allowed to run in non-interactive mode
-  /// in total. Only has an effect if `interactive` is
-  /// `false`.
+  /// The maximum amount of time, in miliseconds, `launchWebAuthFlow`
+  /// is allowed to run in non-interactive mode in total. Only has an effect if
+  /// `interactive` is `false`.
   external int? timeoutMsForNonInteractive;
 }
 extension type GetAuthTokenResult._(JSObject _) implements JSObject {

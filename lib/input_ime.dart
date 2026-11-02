@@ -26,8 +26,9 @@ class ChromeInputIme {
 
   /// Set the current composition. If this extension does not own the active
   /// IME, this fails.
-  /// [returns] Called when the operation completes with a boolean indicating
-  /// if the text was accepted or not. On failure, [runtime.lastError] is set.
+  /// [returns] Resolves when the operation completes with a boolean
+  /// indicating if the text was accepted or not. On failure, the promise will
+  /// be rejected.
   Future<bool> setComposition(SetCompositionParameters parameters) async {
     var $res =
         await $js.chrome.input.ime.setComposition(parameters.toJS).toDart;
@@ -36,8 +37,9 @@ class ChromeInputIme {
 
   /// Clear the current composition. If this extension does not own the active
   /// IME, this fails.
-  /// [returns] Called when the operation completes with a boolean indicating
-  /// if the text was accepted or not. On failure, [runtime.lastError] is set.
+  /// [returns] Resolves when the operation completes with a boolean
+  /// indicating if the text was accepted or not. On failure, the promise will
+  /// be rejected.
   Future<bool> clearComposition(ClearCompositionParameters parameters) async {
     var $res =
         await $js.chrome.input.ime.clearComposition(parameters.toJS).toDart;
@@ -45,8 +47,9 @@ class ChromeInputIme {
   }
 
   /// Commits the provided text to the current input.
-  /// [returns] Called when the operation completes with a boolean indicating
-  /// if the text was accepted or not. On failure, [runtime.lastError] is set.
+  /// [returns] Resolves when the operation completes with a boolean
+  /// indicating if the text was accepted or not. On failure, the promise will
+  /// be rejected.
   Future<bool> commitText(CommitTextParameters parameters) async {
     var $res = await $js.chrome.input.ime.commitText(parameters.toJS).toDart;
     return $res.toDart;
@@ -55,7 +58,7 @@ class ChromeInputIme {
   /// Sends the key events.  This function is expected to be used by virtual
   /// keyboards.  When key(s) on a virtual keyboard is pressed by a user, this
   /// function is used to propagate that event to the system.
-  /// [returns] Called when the operation completes.
+  /// [returns] Resolves when the operation completes.
   Future<void> sendKeyEvents(SendKeyEventsParameters parameters) async {
     await $js.chrome.input.ime.sendKeyEvents(parameters.toJS).toDart;
   }
@@ -68,7 +71,7 @@ class ChromeInputIme {
 
   /// Sets the properties of the candidate window. This fails if the extension
   /// doesn't own the active IME
-  /// [returns] Called when the operation completes.
+  /// [returns] Resolves when the operation completes.
   Future<bool> setCandidateWindowProperties(
       SetCandidateWindowPropertiesParameters parameters) async {
     var $res = await $js.chrome.input.ime
@@ -79,7 +82,7 @@ class ChromeInputIme {
 
   /// Sets the current candidate list. This fails if this extension doesn't own
   /// the active IME
-  /// [returns] Called when the operation completes.
+  /// [returns] Resolves when the operation completes.
   Future<bool> setCandidates(SetCandidatesParameters parameters) async {
     var $res = await $js.chrome.input.ime.setCandidates(parameters.toJS).toDart;
     return $res.toDart;
@@ -87,7 +90,7 @@ class ChromeInputIme {
 
   /// Set the position of the cursor in the candidate window. This is a no-op if
   /// this extension does not own the active IME.
-  /// [returns] Called when the operation completes
+  /// [returns] Resolves when the operation completes
   Future<bool> setCursorPosition(SetCursorPositionParameters parameters) async {
     var $res =
         await $js.chrome.input.ime.setCursorPosition(parameters.toJS).toDart;
@@ -95,7 +98,7 @@ class ChromeInputIme {
   }
 
   /// Shows/Hides an assistive window with the given properties.
-  /// [returns] Called when the operation completes.
+  /// [returns] Resolves when the operation completes.
   Future<bool> setAssistiveWindowProperties(
       SetAssistiveWindowPropertiesParameters parameters) async {
     var $res = await $js.chrome.input.ime
@@ -105,8 +108,8 @@ class ChromeInputIme {
   }
 
   /// Highlights/Unhighlights a button in an assistive window.
-  /// [returns] Called when the operation completes. On failure,
-  /// [runtime.lastError] is set.
+  /// [returns] Resolves when the operation completes. On failure, the promise
+  /// will be rejected.
   Future<void> setAssistiveWindowButtonHighlighted(
       SetAssistiveWindowButtonHighlightedParameters parameters) async {
     await $js.chrome.input.ime
@@ -120,13 +123,13 @@ class ChromeInputIme {
   }
 
   /// Updates the state of the MenuItems specified
-  /// [returns] Called when the operation completes
+  /// [returns] Resolves when the operation completes
   Future<void> updateMenuItems(MenuParameters parameters) async {
     await $js.chrome.input.ime.updateMenuItems(parameters.toJS).toDart;
   }
 
   /// Deletes the text around the caret.
-  /// [returns] Called when the operation completes.
+  /// [returns] Resolves when the operation completes.
   Future<void> deleteSurroundingText(
       DeleteSurroundingTextParameters parameters) async {
     await $js.chrome.input.ime.deleteSurroundingText(parameters.toJS).toDart;

@@ -17,9 +17,9 @@ extension JSChromeJSDebuggerExtension on JSChrome {
   /// [remote debugging
   /// protocol](https://developer.chrome.com/devtools/docs/debugger-protocol).
   /// Use `chrome.debugger` to attach to one or more tabs to instrument network
-  /// interaction, debug JavaScript, mutate the DOM and CSS, etc. Use the
-  /// Debuggee `tabId` to target tabs with sendCommand and route events by
-  /// `tabId` from onEvent callbacks.
+  /// interaction, debug JavaScript, mutate the DOM and CSS, and more. Use the
+  /// [Debuggee] property `tabId` to target tabs with `sendCommand` and route
+  /// events by `tabId` from `onEvent` callbacks.
   JSDebugger get debugger {
     var debuggerNullable = this.debuggerNullable;
     if (debuggerNullable == null) {
@@ -51,7 +51,7 @@ extension type JSDebugger._(JSObject _) {
   /// Sends given command to the debugging target.
   external JSPromise<JSAny?> sendCommand(
     /// Debugging target to which you want to send the command.
-    Debuggee target,
+    DebuggerSession target,
 
     /// Method name. Should be one of the methods defined by the [remote
     /// debugging
@@ -104,6 +104,41 @@ extension type Debuggee._(JSObject _) implements JSObject {
 
   /// The opaque id of the debug target.
   external String? targetId;
+}
+extension type DebuggerSession._(JSObject _) implements JSObject {
+  external factory DebuggerSession({
+    /// The id of the tab which you intend to debug.
+    int? tabId,
+
+    /// The id of the extension which you intend to debug. Attaching to an
+    /// extension background page is only possible when the
+    /// `--silent-debugger-extension-api` command-line switch is used.
+    String? extensionId,
+
+    /// The opaque id of the debug target.
+    String? targetId,
+
+    /// The opaque id of the Chrome DevTools Protocol session. Identifies a child
+    /// session within the root session identified by tabId, extensionId or
+    /// targetId.
+    String? sessionId,
+  });
+
+  /// The id of the tab which you intend to debug.
+  external int? tabId;
+
+  /// The id of the extension which you intend to debug. Attaching to an
+  /// extension background page is only possible when the
+  /// `--silent-debugger-extension-api` command-line switch is used.
+  external String? extensionId;
+
+  /// The opaque id of the debug target.
+  external String? targetId;
+
+  /// The opaque id of the Chrome DevTools Protocol session. Identifies a child
+  /// session within the root session identified by tabId, extensionId or
+  /// targetId.
+  external String? sessionId;
 }
 extension type TargetInfo._(JSObject _) implements JSObject {
   external factory TargetInfo({

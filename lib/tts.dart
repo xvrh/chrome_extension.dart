@@ -28,9 +28,9 @@ class ChromeTts {
   /// strip away the tags and speak the text. The maximum length of the text
   /// is 32,768 characters.
   /// [options] The speech options.
-  /// [returns] Called right away, before speech finishes. Check
-  /// [runtime.lastError] to make sure there were no errors. Use
-  /// options.onEvent to get more detailed feedback.
+  /// [returns] Resolves right away, before speech finishes. If an error
+  /// occurs, the promise will be rejected. Use options.onEvent to get more
+  /// detailed feedback.
   Future<void> speak(
     String utterance,
     TtsOptions? options,
@@ -82,6 +82,13 @@ class ChromeTts {
   EventStream<TtsEvent> get onEvent =>
       $js.chrome.tts.onEvent.asStream(($c) => ($js.TtsEvent event) {
             return $c(TtsEvent.fromJS(event));
+          }.toJS);
+
+  /// Called when the list of [tts.TtsVoice] that would be returned by getVoices
+  /// has changed.
+  EventStream<void> get onVoicesChanged =>
+      $js.chrome.tts.onVoicesChanged.asStream(($c) => () {
+            return $c(null);
           }.toJS);
 }
 

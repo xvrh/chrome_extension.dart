@@ -8,7 +8,7 @@
 [
   {
     "namespace": "runtime",
-    "description": "Use the <code>chrome.runtime</code> API to retrieve the service worker, return details about the manifest, and listen for and respond to events in the app or extension lifecycle. You can also use this API to convert the relative path of URLs to fully-qualified URLs.",
+    "description": "Use the <code>chrome.runtime</code> API to retrieve the service worker, return details about the manifest, and listen for and respond to events in the extension lifecycle. You can also use this API to convert the relative path of URLs to fully-qualified URLs.",
     "types": [
       {
         "id": "Port",
@@ -66,13 +66,32 @@
           "frameId": {"type": "integer", "optional": true, "description": "The <a href='webNavigation#frame_ids'>frame</a> that opened the connection. 0 for top-level frames, positive for child frames. This will only be set when <code>tab</code> is set.", "extension_types": ["extension", "legacy_packaged_app"]},
           "guestProcessId": {"type": "integer", "optional": true, "nodoc": true, "description": "The guest process id of the requesting webview, if available. Only available for component extensions.", "extension_types": ["extension"]},
           "guestRenderFrameRoutingId": {"type": "integer", "optional": true, "nodoc": true, "description": "The guest render frame routing id of the requesting webview, if available. Only available for component extensions.", "extension_types": ["extension"]},
-          "id": {"type": "string", "optional": true, "description": "The ID of the extension or app that opened the connection, if any."},
+          "id": {"type": "string", "optional": true, "description": "The ID of the extension that opened the connection, if any."},
           "url": {"type": "string", "optional": true, "description": "The URL of the page or frame that opened the connection. If the sender is in an iframe, it will be iframe's URL not the URL of the page which hosts it."},
           "nativeApplication": {"type": "string", "optional": true, "description": "The name of the native application that opened the connection, if any."},
-          "tlsChannelId": {"type": "string", "optional": true, "description": "The TLS channel ID of the page or frame that opened the connection, if requested by the extension or app, and if available."},
+          "tlsChannelId": {"type": "string", "optional": true, "description": "The TLS channel ID of the page or frame that opened the connection, if requested by the extension, and if available."},
           "origin": {"type": "string", "optional": true, "description": "The origin of the page or frame that opened the connection. It can vary from the url property (e.g., about:blank) or can be opaque (e.g., sandboxed iframes). This is useful for identifying if the origin can be trusted if we can't immediately tell from the URL."},
           "documentId": {"type": "string", "optional": true, "description": "A UUID of the document that opened the connection."},
           "documentLifecycle": {"type": "string", "optional": true, "description": "The lifecycle the document that opened the connection is in at the time the port was created. Note that the lifecycle state of the document may have changed since port creation."}
+        }
+      },
+      {
+        "id": "NativeMessageTarget",
+        "type": "object",
+        "nocompile": true,
+        "nodoc": true,
+        "description": "Specifies an external application target for extension messages.",
+        "properties": {
+          "application": {
+            "type": "string",
+            "description": "The name of the native messaging host, or external Android app's package name."
+          },
+          "androidCertificates": {
+            "type": "array",
+            "items": { "type": "string" },
+            "optional": true,
+            "description": "List of expected signing certificates for the external Android app specified as SHA-256 fingerprints. If non-empty, the connection is established if the app is signed by at least one of the certificates provided. Must be non-empty for packed extensions on Android. Ignored for other platforms."
+          }
         }
       },
       {
@@ -85,8 +104,7 @@
             {"name": "android", "description": "Specifies the Android operating system."},
             {"name": "cros", "description": "Specifies the Chrome operating system."},
             {"name": "linux", "description": "Specifies the Linux operating system."},
-            {"name": "openbsd", "description": "Specifies the OpenBSD operating system."},
-            {"name": "fuchsia", "description": "Specifies the Fuchsia operating system."}
+            {"name": "openbsd", "description": "Specifies the OpenBSD operating system."}
         ]
       },
       {
@@ -98,12 +116,14 @@
             {"name": "x86-32", "description": "Specifies the processer architecture as x86-32."},
             {"name": "x86-64", "description": "Specifies the processer architecture as x86-64."},
             {"name": "mips", "description": "Specifies the processer architecture as mips."},
-            {"name": "mips64", "description": "Specifies the processer architecture as mips64."}
+            {"name": "mips64", "description": "Specifies the processer architecture as mips64."},
+            {"name": "riscv64", "description": "Specifies the processer architecture as riscv64."}
          ],
         "description": "The machine's processor architecture."
       },
       {
         "id": "PlatformNaclArch",
+        "deprecated": "This enum is deprecated following complete removal of Native Client.",
         "description": "The native client architecture. This may be different from arch on some platforms.",
         "type": "string",
         "enum": [
@@ -128,6 +148,8 @@
             "description": "The machine's processor architecture."
           },
           "nacl_arch" : {
+            "optional": true,
+            "deprecated": "This attribute is deprecated following complete removal of Native Client.",
             "description": "The native client architecture. This may be different from arch on some platforms.",
             "$ref": "PlatformNaclArch"
           }
@@ -172,7 +194,8 @@
           {"name": "POPUP", "description": "Specifies the context type as an extension popup window"},
           {"name": "BACKGROUND", "description": "Specifies the context type as a service worker."},
           {"name": "OFFSCREEN_DOCUMENT", "description": "Specifies the context type as an offscreen document."},
-          {"name": "SIDE_PANEL", "description": "Specifies the context type as a side panel."}
+          {"name": "SIDE_PANEL", "description": "Specifies the context type as a side panel."},
+          {"name": "DEVELOPER_TOOLS", "description": "Specifies the context type as developer tools."}
         ]
       },
       {
@@ -297,6 +320,7 @@
         "type": "function",
         "description": "Retrieves the JavaScript 'window' object for the background page running inside the current extension/app. If the background page is an event page, the system will ensure it is loaded before calling the callback. If there is no background page, an error is set.",
         "parameters": [],
+        "deprecated": "Background pages do not exist in MV3 extensions.",
         "returns_async": {
           "name": "callback",
           "parameters": [
@@ -316,7 +340,7 @@
       {
         "name": "openOptionsPage",
         "type": "function",
-        "description": "<p>Open your Extension's options page, if possible.</p><p>The precise behavior may depend on your manifest's <code><a href=\"optionsV2\">options_ui</a></code> or <code><a href=\"options\">options_page</a></code> key, or what Chrome happens to support at the time. For example, the page may be opened in a new tab, within chrome://extensions, within an App, or it may just focus an open options page. It will never cause the caller page to reload.</p><p>If your Extension does not declare an options page, or Chrome failed to create one for some other reason, the callback will set $(ref:lastError).</p>",
+        "description": "<p>Open your Extension's options page, if possible.</p><p>The precise behavior may depend on your manifest's <a href=\"/docs/extensions/develop/ui/options-page#embedded_options\"><code>options_ui</code></a> or <a href=\"/docs/extensions/develop/ui/options-page#full_page\"><code>options_page</code></a> key, or what Chrome happens to support at the time. For example, the page may be opened in a new tab, within chrome://extensions, within an App, or it may just focus an open options page. It will never cause the caller page to reload.</p><p>If your Extension does not declare an options page, or Chrome failed to create one for some other reason, the callback will set $(ref:lastError).</p>",
         "parameters": [],
         "returns_async": {
           "name": "callback",
@@ -338,6 +362,17 @@
         }
       },
       {
+        "name": "getVersion",
+        "description": "Returns the extension's version as declared in the manifest.",
+        "type": "function",
+        "nocompile": true,
+        "parameters": [],
+        "returns": {
+          "type": "string",
+          "description": "The extension's version."
+        }
+      },
+      {
         "name": "getURL",
         "type": "function",
         "nocompile": true,
@@ -355,6 +390,19 @@
         }
       },
       {
+        "name": "markListenerRegistrationComplete",
+        "type": "function",
+        "nodoc": true,
+        "description": "Signals that the extension has finished registering its event listeners for the current service worker instance. The browser replaces persisted listener registrations with the newly registered listeners and dispatches any queued events. Only available in the service worker of extensions declaring <code>\"background.async_listener_registration\": true</code>.",
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "optional": true,
+          "description": "Called once the browser has committed the listener registration. The promise is rejected if the extension is not opted in, the caller is not the service worker, or no listener registration is in progress.",
+          "parameters": []
+        }
+      },
+      {
         "name": "setUninstallURL",
         "type": "function",
         "description": "Sets the URL to be visited upon uninstallation. This may be used to clean up server-side data, do analytics, and implement surveys. Maximum 1023 characters.",
@@ -369,7 +417,7 @@
         "returns_async": {
           "name": "callback",
           "optional": true,
-          "description": "Called when the uninstall URL is set. If the given URL is invalid, $(ref:runtime.lastError) will be set.",
+          "description": "Promise that resolves when the uninstall URL is set. If the given URL is invalid, the promise will be rejected.",
           "parameters": []
         }
       },
@@ -382,7 +430,7 @@
       {
         "name": "requestUpdateCheck",
         "type": "function",
-        "description": "<p>Requests an immediate update check be done for this app/extension.</p> <p><b>Important</b>: Most extensions/apps should <b>not</b> use this method, since Chrome already does automatic checks every few hours, and you can listen for the $(ref:runtime.onUpdateAvailable) event without needing to call requestUpdateCheck.</p><p>This method is only appropriate to call in very limited circumstances, such as if your extension/app talks to a backend service, and the backend service has determined that the client extension/app version is very far out of date and you'd like to prompt a user to update. Most other uses of requestUpdateCheck, such as calling it unconditionally based on a repeating timer, probably only serve to waste client, network, and server resources.</p><p>Note: When called with a callback, instead of returning an object this function will return the two properties as separate arguments passed to the callback.</p>",
+        "description": "<p>Requests an immediate update check be done for this app/extension.</p> <p><b>Important</b>: Most extensions/apps should <b>not</b> use this method, since Chrome already does automatic checks every few hours, and you can listen for the $(ref:runtime.onUpdateAvailable) event without needing to call requestUpdateCheck.</p><p>This method is only appropriate to call in very limited circumstances, such as if your extension talks to a backend service, and the backend service has determined that the client extension version is very far out of date and you'd like to prompt a user to update. Most other uses of requestUpdateCheck, such as calling it unconditionally based on a repeating timer, probably only serve to waste client, network, and server resources.</p><p>Note: When called with a callback, instead of returning an object this function will return the two properties as separate arguments passed to the callback.</p>",
         "parameters": [],
         "returns_async": {
           "name": "callback",
@@ -425,7 +473,7 @@
         ],
         "returns_async": {
           "name": "callback",
-          "description": "A callback to be invoked when a restart request was successfully rescheduled.",
+          "description": "Promise that resolves when a restart request was successfully rescheduled.",
           "parameters": [],
           "optional": true
         }
@@ -434,9 +482,9 @@
         "name": "connect",
         "type": "function",
         "nocompile": true,
-        "description": "Attempts to connect listeners within an extension/app (such as the background page), or other extensions/apps. This is useful for content scripts connecting to their extension processes, inter-app/extension communication, and <a href=\"/docs/extensions/manifest/externally_connectable\">web messaging</a>. Note that this does not connect to any listeners in a content script. Extensions may connect to content scripts embedded in tabs via $(ref:tabs.connect).",
+        "description": "Attempts to connect listeners within an extension (such as the background page), or other extensions/apps. This is useful for content scripts connecting to their extension processes, inter-app/extension communication, and <a href=\"/docs/extensions/manifest/externally_connectable\">web messaging</a>. Note that this does not connect to any listeners in a content script. Extensions may connect to content scripts embedded in tabs via $(ref:tabs.connect).",
         "parameters": [
-          {"type": "string", "name": "extensionId", "optional": true, "description": "The ID of the extension or app to connect to. If omitted, a connection will be attempted with your own extension. Required if sending messages from a web page for <a href=\"/docs/extensions/reference/manifest/externally-connectable\">web messaging</a>."},
+          {"type": "string", "name": "extensionId", "optional": true, "description": "The ID of the extension to connect to. If omitted, a connection will be attempted with your own extension. Required if sending messages from a web page for <a href=\"/docs/extensions/reference/manifest/externally-connectable\">web messaging</a>."},
           {
             "type": "object",
             "name": "connectInfo",
@@ -449,19 +497,28 @@
         ],
         "returns": {
           "$ref": "Port",
-          "description": "Port through which messages can be sent and received. The port's $(ref:Port onDisconnect) event is fired if the extension/app does not exist. "
+          "description": "Port through which messages can be sent and received. The port's $(ref:Port onDisconnect) event is fired if the extension does not exist. "
         }
       },
       {
         "name": "connectNative",
         "type": "function",
         "nocompile": true,
-        "description": "Connects to a native application in the host machine. See <a href=\"develop/concepts/native-messaging\">Native Messaging</a> for more information.",
+        "description": "Connects to a native application in the host machine. This method requires the <code>\"nativeMessaging\"</code> permission. See <a href=\"develop/concepts/native-messaging\">Native Messaging</a> for more information.",
         "parameters": [
           {
-            "type": "string",
             "name": "application",
-            "description": "The name of the registered application to connect to."
+            "description": "The name of the registered application to connect to.",
+            "choices": [
+              {
+                "type": "string",
+                "description": "The name of the registered application to connect to."
+              },
+              {
+                "$ref": "NativeMessageTarget",
+                "nodoc": true
+              }
+            ]
           }
         ],
         "returns": {
@@ -473,10 +530,9 @@
         "name": "sendMessage",
         "type": "function",
         "nocompile": true,
-        "allowAmbiguousOptionalArguments": true,
-        "description": "Sends a single message to event listeners within your extension/app or a different extension/app. Similar to $(ref:runtime.connect) but only sends a single message, with an optional response. If sending to your extension, the $(ref:runtime.onMessage) event will be fired in every frame of your extension (except for the sender's frame), or $(ref:runtime.onMessageExternal), if a different extension. Note that extensions cannot send messages to content scripts using this method. To send messages to content scripts, use $(ref:tabs.sendMessage).",
+        "description": "Sends a single message to event listeners within your extension or a different extension/app. Similar to $(ref:runtime.connect) but only sends a single message, with an optional response. If sending to your extension, the $(ref:runtime.onMessage) event will be fired in every frame of your extension (except for the sender's frame), or $(ref:runtime.onMessageExternal), if a different extension. Note that extensions cannot send messages to content scripts using this method. To send messages to content scripts, use $(ref:tabs.sendMessage).",
         "parameters": [
-          {"type": "string", "name": "extensionId", "optional": true, "description": "The ID of the extension/app to send the message to. If omitted, the message will be sent to your own extension/app. Required if sending messages from a web page for <a href=\"/docs/extensions/manifest/externally_connectable\">web messaging</a>."},
+          {"type": "string", "name": "extensionId", "optional": true, "description": "The ID of the extension to send the message to. If omitted, the message will be sent to your own extension/app. Required if sending messages from a web page for <a href=\"/docs/extensions/manifest/externally_connectable\">web messaging</a>."},
           { "type": "any", "name": "message", "description": "The message to send. This message should be a JSON-ifiable object." },
           {
             "type": "object",
@@ -490,6 +546,7 @@
         "returns_async": {
           "name": "callback",
           "optional": true,
+          "description": "Promise support was added for extension contexts in Chrome 99. When communicating from a web page to an extension, promises are available from Chrome 118.",
           "parameters": [
             {
               "name": "response",
@@ -503,12 +560,21 @@
         "name": "sendNativeMessage",
         "type": "function",
         "nocompile": true,
-        "description": "Send a single message to a native application.",
+        "description": "Send a single message to a native application. This method requires the <code>\"nativeMessaging\"</code> permission.",
         "parameters": [
           {
             "name": "application",
-            "description": "The name of the native messaging host.",
-            "type": "string"
+            "description": "The name of the native messaging host, or target details.",
+            "choices": [
+              {
+                "type": "string",
+                "description": "The name of the native messaging host, or external Android app's package name. Packed extensions on Android must specify a $(ref:runtime.NativeMessageTarget)."
+              },
+              {
+                "$ref": "NativeMessageTarget",
+                "nodoc": true
+              }
+            ]
           },
           {
             "name": "message",
@@ -541,7 +607,7 @@
         "parameters": [],
         "returns_async": {
           "name": "callback",
-          "description": "Called with results",
+          "description": "Promise that resolves with information about the current platform.",
           "parameters": [
             {
               "name": "platformInfo",
@@ -580,7 +646,7 @@
         ],
         "returns_async": {
           "name": "callback",
-          "description": "Invoked with the matching contexts, if any.",
+          "description": "Promise that resolves with the matching contexts, if any.",
           "parameters": [
             {
               "name": "contexts",
@@ -624,6 +690,11 @@
             }
           }
         ]
+      },
+      {
+        "name": "onEnabled",
+        "type": "function",
+        "description": "Fired when an extension goes from being in a disabled state to an enabled state."
       },
       {
         "name": "onSuspend",
@@ -698,7 +769,7 @@
         "name": "onConnectNative",
         "type": "function",
         "nocompile": true,
-        "description": "Fired when a connection is made from a native application. Currently only supported on Chrome OS.",
+        "description": "Fired when a connection is made from a native application. This event requires the <code>\"nativeMessaging\"</code> permission. It is only supported on Chrome OS.",
         "parameters": [
           {"$ref": "Port", "name": "port"}
         ]
@@ -710,16 +781,26 @@
         "options": {
           "unmanaged": true
         },
-        "description": "Fired when a message is sent from either an extension process (by $(ref:runtime.sendMessage)) or a content script (by $(ref:tabs.sendMessage)).",
+        "description": "Fired when a message is sent from either $(ref:runtime.sendMessage) or $(ref:tabs.sendMessage).",
         "parameters": [
           {"name": "message", "type": "any", "optional": true, "description": "The message sent by the calling script."},
           {"name": "sender", "$ref": "MessageSender" },
-          {"name": "sendResponse", "type": "function", "description": "Function to call (at most once) when you have a response. The argument should be any JSON-ifiable object. If you have more than one <code>onMessage</code> listener in the same document, then only one may send a response. This function becomes invalid when the event listener returns, <strong>unless you return true</strong> from the event listener to indicate you wish to send a response asynchronously (this will keep the message channel open to the other end until <code>sendResponse</code> is called)." }
+          {
+            "name": "sendResponse",
+            "type": "function",
+            "description": "Function to call (at most once) when you have a response. The argument should be any JSON-ifiable object. If you have more than one <code>onMessage</code> listener in the same document, then only one may send a response. This function becomes invalid when the event listener returns, <strong>unless you return true</strong> from the event listener to indicate you wish to send a response asynchronously (this will keep the message channel open to the other end until <code>sendResponse</code> is called).",
+            "parameters": [
+              {"name": "response", "type": "any", "optional": true, "description": "The response to return to the message sender."}
+            ]
+          }
         ],
         "returns": {
-          "type": "boolean",
+          "choices": [
+            {"type": "boolean"},
+            {"type": "object", "isInstanceOf": "Promise"}
+          ],
           "optional": true,
-          "description": "Return true from the event listener if you wish to call <code>sendResponse</code> after the event listener returns."
+          "description": "Return true (or a Promise) from the event listener if you wish to call <code>sendResponse</code> after the event listener returns."
         }
       },
       {
@@ -727,16 +808,26 @@
         "type": "function",
         "nocompile": true,
         "options": { "unmanaged": true },
-        "description": "Fired when a message is sent from another extension/app (by $(ref:runtime.sendMessage)). Cannot be used in a content script.",
+        "description": "Fired when a message is sent from another extension (by $(ref:runtime.sendMessage)). Cannot be used in a content script.",
         "parameters": [
           {"name": "message", "type": "any", "optional": true, "description": "The message sent by the calling script."},
           {"name": "sender", "$ref": "MessageSender" },
-          {"name": "sendResponse", "type": "function", "description": "Function to call (at most once) when you have a response. The argument should be any JSON-ifiable object. If you have more than one <code>onMessage</code> listener in the same document, then only one may send a response. This function becomes invalid when the event listener returns, <strong>unless you return true</strong> from the event listener to indicate you wish to send a response asynchronously (this will keep the message channel open to the other end until <code>sendResponse</code> is called)." }
+          {
+            "name": "sendResponse",
+            "type": "function",
+            "description": "Function to call (at most once) when you have a response. The argument should be any JSON-ifiable object. If you have more than one <code>onMessage</code> listener in the same document, then only one may send a response. This function becomes invalid when the event listener returns, <strong>unless you return true</strong> from the event listener to indicate you wish to send a response asynchronously (this will keep the message channel open to the other end until <code>sendResponse</code> is called).",
+            "parameters": [
+              {"name": "response", "type": "any", "optional": true, "description": "The response to return to the message sender."}
+            ]
+          }
         ],
         "returns": {
-          "type": "boolean",
+          "choices": [
+            {"type": "boolean"},
+            {"type": "object", "isInstanceOf": "Promise"}
+          ],
           "optional": true,
-          "description": "Return true from the event listener if you wish to call <code>sendResponse</code> after the event listener returns."
+          "description": "Return true (or a Promise) from the event listener if you wish to call <code>sendResponse</code> after the event listener returns."
         }
       },
       {
@@ -748,7 +839,14 @@
         "parameters": [
           {"name": "message", "type": "any", "optional": true, "description": "The message sent by the user script."},
           {"name": "sender", "$ref": "MessageSender" },
-          {"name": "sendResponse", "type": "function", "description": "Function to call (at most once) when you have a response. The argument should be any JSON-ifiable object. If you have more than one <code>onMessage</code> listener in the same document, then only one may send a response. This function becomes invalid when the event listener returns, <strong>unless you return true</strong> from the event listener to indicate you wish to send a response asynchronously (this will keep the message channel open to the other end until <code>sendResponse</code> is called)." }
+          {
+            "name": "sendResponse",
+            "type": "function",
+            "description": "Function to call (at most once) when you have a response. The argument should be any JSON-ifiable object. If you have more than one <code>onMessage</code> listener in the same document, then only one may send a response. This function becomes invalid when the event listener returns, <strong>unless you return true</strong> from the event listener to indicate you wish to send a response asynchronously (this will keep the message channel open to the other end until <code>sendResponse</code> is called).",
+            "parameters": [
+              {"name": "response", "type": "any", "optional": true, "description": "The response to return to the message sender."}
+            ]
+          }
         ],
         "returns": {
           "type": "boolean",

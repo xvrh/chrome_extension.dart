@@ -21,14 +21,17 @@ class ChromeScripting {
 
   bool get isAvailable => $js.chrome.scriptingNullable != null && alwaysTrue;
 
-  /// Injects a script into a target context. The script will be run at
-  /// `document_idle`. If the script evaluates to a promise,
-  /// the browser will wait for the promise to settle and return the
-  /// resulting value.
+  /// Injects a script into a target context. By default, the script will be run
+  /// at `document_idle`, or immediately if the page has already
+  /// loaded. If the `injectImmediately` property is set, the script
+  /// will inject without waiting, even if the page has not finished loading. If
+  /// the script evaluates to a promise, the browser will wait for the promise
+  /// to
+  /// settle and return the resulting value.
   /// |injection|: The details of the script which to inject.
-  /// |callback|: Invoked upon completion of the injection. The resulting
-  /// array contains the result of execution for each frame where the
-  /// injection succeeded.
+  /// |Returns|: Returns a Promise which resolves upon completion of the
+  /// injection. The resulting array contains the result of execution for each
+  /// frame where the injection succeeded.
   Future<List<InjectionResult>> executeScript(ScriptInjection injection) async {
     var $res = await $js.chrome.scripting.executeScript(injection.toJS).toDart;
     return $res.toDart
@@ -40,7 +43,8 @@ class ChromeScripting {
   /// Inserts a CSS stylesheet into a target context.
   /// If multiple frames are specified, unsuccessful injections are ignored.
   /// |injection|: The details of the styles to insert.
-  /// |callback|: Invoked upon completion of the insertion.
+  /// |Returns|: Returns a Promise which resolves upon completion of the
+  /// insertion.
   Future<void> insertCSS(CSSInjection injection) async {
     await $js.chrome.scripting.insertCSS(injection.toJS).toDart;
   }
@@ -51,7 +55,8 @@ class ChromeScripting {
   /// `css`, `files`, and `origin` properties
   /// must exactly match the stylesheet inserted through [insertCSS].
   /// Attempting to remove a non-existent stylesheet is a no-op.
-  /// |callback|: A callback to be invoked upon the completion of the removal.
+  /// |Returns|: Returns a Promise which resolves upon the completion of the
+  /// removal.
   Future<void> removeCSS(CSSInjection injection) async {
     await $js.chrome.scripting.removeCSS(injection.toJS).toDart;
   }
@@ -60,8 +65,8 @@ class ChromeScripting {
   /// |scripts|: Contains a list of scripts to be registered. If there are
   /// errors during script parsing/file validation, or if the IDs specified
   /// already exist, then no scripts are registered.
-  /// |callback|: A callback to be invoked once scripts have been fully
-  /// registered or if an error has occurred.
+  /// |Returns|: Returns a Promise which resolves once scripts have been
+  /// fully registered or rejects if an error has occurred.
   Future<void> registerContentScripts(
       List<RegisteredContentScript> scripts) async {
     await $js.chrome.scripting
@@ -88,8 +93,8 @@ class ChromeScripting {
   /// |filter|: If specified, only unregisters dynamic content scripts which
   /// match the filter. Otherwise, all of the extension's dynamic content
   /// scripts are unregistered.
-  /// |callback|: A callback to be invoked once scripts have been unregistered
-  /// or if an error has occurred.
+  /// |Returns|: Returns a Promise which resolves once scripts have been
+  /// unregistered or rejects if an error has occurred.
   Future<void> unregisterContentScripts(ContentScriptFilter? filter) async {
     await $js.chrome.scripting.unregisterContentScripts(filter?.toJS).toDart;
   }
@@ -100,21 +105,14 @@ class ChromeScripting {
   /// there are errors during script parsing/file validation, or if the IDs
   /// specified do not correspond to a fully registered script, then no scripts
   /// are updated.
-  /// |callback|: A callback to be invoked once scripts have been updated or
-  /// if an error has occurred.
+  /// |Returns|: Returns a Promise which resolves once scripts have been
+  /// updated or rejects if an error has occurred.
   Future<void> updateContentScripts(
       List<RegisteredContentScript> scripts) async {
     await $js.chrome.scripting
         .updateContentScripts(scripts.toJSArray((e) => e.toJS))
         .toDart;
   }
-
-  /// An object available for content scripts running in isolated worlds to use
-  /// and modify as a JS object. One instance exists per frame and is shared
-  /// between all content scripts for a given extension. This object is
-  /// initialized when the frame is created, before document_start.
-  /// TODO(crbug.com/1054624): Enable this once implementation is complete.
-  int get globalParams => $js.chrome.scripting.globalParams;
 }
 
 /// The origin for a style change.
@@ -252,7 +250,7 @@ class ScriptInjection {
 
     /// We used to call the injected function `function`, but this is
     /// incompatible with JavaScript's object declaration shorthand (see
-    /// https://crbug.com/1166438). We leave this silently in for backwards
+    /// https://crbug.com/40742098). We leave this silently in for backwards
     /// compatibility.
     /// TODO(devlin): Remove this in M95.
     JSAny? function,
@@ -312,7 +310,7 @@ class ScriptInjection {
 
   /// We used to call the injected function `function`, but this is
   /// incompatible with JavaScript's object declaration shorthand (see
-  /// https://crbug.com/1166438). We leave this silently in for backwards
+  /// https://crbug.com/40742098). We leave this silently in for backwards
   /// compatibility.
   /// TODO(devlin): Remove this in M95.
   JSAny? get function => _wrapped.function;

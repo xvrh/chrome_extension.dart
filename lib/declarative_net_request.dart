@@ -37,14 +37,16 @@ class ChromeDeclarativeNetRequest {
   /// extension updates.</li>
   /// <li>Static rules specified as part of the extension package can not be
   /// removed using this function.</li>
-  /// <li>[MAX_NUMBER_OF_DYNAMIC_AND_SESSION_RULES] is the maximum number
-  /// of combined dynamic and session rules an extension can add.</li>
+  /// <li>[MAX_NUMBER_OF_DYNAMIC_RULES] is the maximum number
+  /// of dynamic rules an extension can add. The number of
+  /// [unsafe rules](#safe_rules) must not exceed
+  /// [MAX_NUMBER_OF_UNSAFE_DYNAMIC_RULES].</li>
   /// </ul>
-  /// |callback|: Called once the update is complete or has failed. In case of
-  /// an error, [runtime.lastError] will be set and no change will be made
-  /// to the rule set. This can happen for multiple reasons, such as invalid
-  /// rule format, duplicate rule ID, rule count limit exceeded, internal
-  /// errors, and others.
+  /// |Returns|: Promise that resolves once the update is complete.
+  /// In case of an error, the promise will be rejected and no change will be
+  /// made to the rule set. This can happen for multiple reasons, such as
+  /// invalid rule format, duplicate rule ID, rule count limit exceeded,
+  /// internal errors, and others.
   Future<void> updateDynamicRules(UpdateRuleOptions options) async {
     await $js.chrome.declarativeNetRequest
         .updateDynamicRules(options.toJS)
@@ -55,8 +57,8 @@ class ChromeDeclarativeNetRequest {
   /// optionally filter the list of fetched rules by specifying a
   /// `filter`.
   /// |filter|: An object to filter the list of fetched rules.
-  /// |callback|: Called with the set of dynamic rules. An error might be
-  /// raised in case of transient internal errors.
+  /// |Returns|: Promise that resolves with the set of dynamic rules. The
+  /// Promise may be rejected in case of transient internal errors.
   Future<List<Rule>> getDynamicRules(GetRulesFilter? filter) async {
     var $res = await $js.chrome.declarativeNetRequest
         .getDynamicRules(filter?.toJS)
@@ -73,13 +75,14 @@ class ChromeDeclarativeNetRequest {
   /// specified rules are added and removed, or an error is returned.</li>
   /// <li>These rules are not persisted across sessions and are backed in
   /// memory.</li>
-  /// <li>[MAX_NUMBER_OF_DYNAMIC_AND_SESSION_RULES] is the maximum number
-  /// of combined dynamic and session rules an extension can add.</li>
+  /// <li>[MAX_NUMBER_OF_SESSION_RULES] is the maximum number
+  /// of session rules an extension can add.</li>
   /// </ul>
-  /// |callback|: Called once the update is complete or has failed. In case of
-  /// an error, [runtime.lastError] will be set and no change will be made
-  /// to the rule set. This can happen for multiple reasons, such as invalid
-  /// rule format, duplicate rule ID, rule count limit exceeded, and others.
+  /// |Returns|: Promise that resolves once the update is complete. In case
+  /// of an error, the promise will be rejected and no change will be
+  /// made to the rule set. This can happen for multiple reasons, such as
+  /// invalid rule format, duplicate rule ID, rule count limit exceeded, and
+  /// others.
   Future<void> updateSessionRules(UpdateRuleOptions options) async {
     await $js.chrome.declarativeNetRequest
         .updateSessionRules(options.toJS)
@@ -90,7 +93,7 @@ class ChromeDeclarativeNetRequest {
   /// Callers can optionally filter the list of fetched rules by specifying a
   /// `filter`.
   /// |filter|: An object to filter the list of fetched rules.
-  /// |callback|: Called with the set of session scoped rules.
+  /// |Returns|: Promise that resolves with the set of session scoped rules.
   Future<List<Rule>> getSessionRules(GetRulesFilter? filter) async {
     var $res = await $js.chrome.declarativeNetRequest
         .getSessionRules(filter?.toJS)
@@ -106,10 +109,10 @@ class ChromeDeclarativeNetRequest {
   /// but not across extension updates, i.e. the `rule_resources`
   /// manifest key will determine the set of enabled static rulesets on each
   /// extension update.
-  /// |callback|: Called once the update is complete. In case of an error,
-  /// [runtime.lastError] will be set and no change will be made to set of
-  /// enabled rulesets. This can happen for multiple reasons, such as invalid
-  /// ruleset IDs, rule count limit exceeded, or internal errors.
+  /// |Returns|: Promise that resolves once the update is complete. In case of
+  /// an error, the promise will be rejected and no change will be made to the
+  /// set of enabled rulesets. This can happen for multiple reasons, such as
+  /// invalid ruleset IDs, rule count limit exceeded, or internal errors.
   Future<void> updateEnabledRulesets(UpdateRulesetOptions options) async {
     await $js.chrome.declarativeNetRequest
         .updateEnabledRulesets(options.toJS)
@@ -117,8 +120,8 @@ class ChromeDeclarativeNetRequest {
   }
 
   /// Returns the ids for the current set of enabled static rulesets.
-  /// |callback|: Called with a list of ids, where each id corresponds to an
-  /// enabled static [Ruleset].
+  /// |Returns|: Promise that resolves with a list of ids, where each id
+  /// corresponds to an enabled static [Ruleset].
   Future<List<String>> getEnabledRulesets() async {
     var $res =
         await $js.chrome.declarativeNetRequest.getEnabledRulesets().toDart;
@@ -128,8 +131,8 @@ class ChromeDeclarativeNetRequest {
   /// Disables and enables individual static rules in a [Ruleset].
   /// Changes to rules belonging to a disabled [Ruleset] will take
   /// effect the next time that it becomes enabled.
-  /// |callback|: Called once the update is complete. In case of an error,
-  /// [runtime.lastError] will be set and no change will be made to the
+  /// |Returns|: Promise that resolves when the update is complete. In case of
+  /// an error, the promise will be rejected and no change will be made to the
   /// enabled static rules.
   Future<void> updateStaticRules(UpdateStaticRulesOptions options) async {
     await $js.chrome.declarativeNetRequest
@@ -140,8 +143,8 @@ class ChromeDeclarativeNetRequest {
   /// Returns the list of static rules in the given [Ruleset] that are
   /// currently disabled.
   /// |options|: Specifies the ruleset to query.
-  /// |callback|: Called with a list of ids that correspond to the disabled
-  /// rules in that ruleset.
+  /// |Returns|: Promise that resolves with a list of ids that correspond to
+  ///  the disabled rules in that ruleset.
   Future<List<int>> getDisabledRuleIds(
       GetDisabledRuleIdsOptions options) async {
     var $res = await $js.chrome.declarativeNetRequest
@@ -153,16 +156,16 @@ class ChromeDeclarativeNetRequest {
   /// Returns all rules matched for the extension. Callers can optionally
   /// filter the list of matched rules by specifying a `filter`.
   /// This method is only available to extensions with the
-  /// `declarativeNetRequestFeedback` permission or having the
-  /// `activeTab` permission granted for the `tabId`
+  /// `"declarativeNetRequestFeedback"` permission or having the
+  /// `"activeTab"` permission granted for the `tabId`
   /// specified in `filter`.
   /// Note: Rules not associated with an active document that were matched more
   /// than five minutes ago will not be returned.
   /// |filter|: An object to filter the list of matched rules.
-  /// |callback|: Called once the list of matched rules has been fetched. In
-  /// case of an error, [runtime.lastError] will be set and no rules will
-  /// be returned. This can happen for multiple reasons, such as insufficient
-  /// permissions, or exceeding the quota.
+  /// |Returns|: Promise that resolves once the list of matched rules has been
+  /// fetched. In case of an error, the Promise will be rejected. This can
+  /// happen for multiple reasons, such as insufficient permissions, or
+  /// exceeding the quota.
   Future<RulesMatchedDetails> getMatchedRules(
       MatchedRulesFilter? filter) async {
     var $res = await $js.chrome.declarativeNetRequest
@@ -183,8 +186,8 @@ class ChromeDeclarativeNetRequest {
   /// Checks if the given regular expression will be supported as a
   /// `regexFilter` rule condition.
   /// |regexOptions|: The regular expression to check.
-  /// |callback|: Called with details consisting of whether the regular
-  /// expression is supported and the reason if not.
+  /// |Returns|: Promise that resolves with details consisting of whether the
+  /// regular expression is supported and the reason if not.
   Future<IsRegexSupportedResult> isRegexSupported(
       RegexOptions regexOptions) async {
     var $res = await $js.chrome.declarativeNetRequest
@@ -208,7 +211,7 @@ class ChromeDeclarativeNetRequest {
   /// Note: Only available for unpacked extensions as this is only intended to
   /// be used during extension development.
   /// |requestDetails|: The request details to test.
-  /// |callback|: Called with the details of matched rules.
+  /// |Returns|: Promise that resolves with the details of matched rules.
   Future<TestMatchOutcomeResult> testMatchOutcome(
       TestMatchRequestDetails request) async {
     var $res = await $js.chrome.declarativeNetRequest
@@ -283,10 +286,8 @@ class ChromeDeclarativeNetRequest {
       $js.chrome.declarativeNetRequest.SESSION_RULESET_ID;
 
   /// Fired when a rule is matched with a request. Only available for unpacked
-  /// extensions with the `declarativeNetRequestFeedback` permission
+  /// extensions with the `"declarativeNetRequestFeedback"` permission
   /// as this is intended to be used for debugging purposes only.
-  /// |info|: The rule that has been matched along with information about the
-  /// associated request.
   EventStream<MatchedRuleInfoDebug> get onRuleMatchedDebug =>
       $js.chrome.declarativeNetRequest.onRuleMatchedDebug
           .asStream(($c) => ($js.MatchedRuleInfoDebug info) {
@@ -372,8 +373,9 @@ enum DomainType {
 
 /// This describes the possible operations for a "modifyHeaders" rule.
 enum HeaderOperation {
-  /// Adds a new entry for the specified header. This operation is not
-  /// supported for request headers.
+  /// Adds a new entry for the specified header. When modifying the headers of
+  /// a request, this operation is only supported for
+  /// [specific headers](#header_modification).
   append('append'),
 
   /// Sets a new value for the specified header, removing any existing headers
@@ -447,6 +449,43 @@ enum UnsupportedRegexReason {
   JSString get toJS => value.toJS;
 
   static UnsupportedRegexReason fromJS(JSString value) {
+    var dartValue = value.toDart;
+    return values.firstWhere((e) => e.value == dartValue);
+  }
+}
+
+/// <!-- Lists the types of condition currently supported by RuleCondition, to
+/// aid feature detection. Must be kept consistent with the RuleCondition
+/// dictionary. -->
+enum RuleConditionKeys {
+  urlFilter('urlFilter'),
+  regexFilter('regexFilter'),
+  isUrlFilterCaseSensitive('isUrlFilterCaseSensitive'),
+  initiatorDomains('initiatorDomains'),
+  excludedInitiatorDomains('excludedInitiatorDomains'),
+  requestDomains('requestDomains'),
+  excludedRequestDomains('excludedRequestDomains'),
+  topDomains('topDomains'),
+  excludedTopDomains('excludedTopDomains'),
+  domains('domains'),
+  excludedDomains('excludedDomains'),
+  resourceTypes('resourceTypes'),
+  excludedResourceTypes('excludedResourceTypes'),
+  requestMethods('requestMethods'),
+  excludedRequestMethods('excludedRequestMethods'),
+  domainType('domainType'),
+  tabIds('tabIds'),
+  excludedTabIds('excludedTabIds'),
+  responseHeaders('responseHeaders'),
+  excludedResponseHeaders('excludedResponseHeaders');
+
+  const RuleConditionKeys(this.value);
+
+  final String value;
+
+  JSString get toJS => value.toJS;
+
+  static RuleConditionKeys fromJS(JSString value) {
     var dartValue = value.toDart;
     return values.firstWhere((e) => e.value == dartValue);
   }
@@ -763,16 +802,24 @@ class HeaderInfo {
   HeaderInfo.fromJS(this._wrapped);
 
   HeaderInfo({
-    /// The name of the header.
+    /// The name of the header. This condition matches on the name
+    /// only if both `values` and `excludedValues` are not specified.
     required String header,
 
-    /// If specified, match this rule if the header's value contains at least
-    /// one
-    /// element in this list.
+    /// If specified, this condition matches if the header's value matches at
+    /// least one pattern in this list. This supports case-insensitive header
+    /// value matching plus the following constructs:
+    ///
+    /// **'*'**  : Matches any number of characters.
+    ///
+    /// **'?'**  : Matches zero or one character(s).
+    ///
+    /// '*' and '?' can be escaped with a backslash, e.g. '\*' and '\?'
     List<String>? values,
 
-    /// If specified, the rule is not matched if the header exists but its value
-    /// contains at least one element in this list.
+    /// If specified, this condition is not matched if the header exists but its
+    /// value contains at least one element in this list. This uses the same
+    /// match pattern syntax as `values`.
     List<String>? excludedValues,
   }) : _wrapped = $js.HeaderInfo(
           header: header,
@@ -784,15 +831,23 @@ class HeaderInfo {
 
   $js.HeaderInfo get toJS => _wrapped;
 
-  /// The name of the header.
+  /// The name of the header. This condition matches on the name
+  /// only if both `values` and `excludedValues` are not specified.
   String get header => _wrapped.header;
 
   set header(String v) {
     _wrapped.header = v;
   }
 
-  /// If specified, match this rule if the header's value contains at least one
-  /// element in this list.
+  /// If specified, this condition matches if the header's value matches at
+  /// least one pattern in this list. This supports case-insensitive header
+  /// value matching plus the following constructs:
+  ///
+  /// **'*'**  : Matches any number of characters.
+  ///
+  /// **'?'**  : Matches zero or one character(s).
+  ///
+  /// '*' and '?' can be escaped with a backslash, e.g. '\*' and '\?'
   List<String>? get values =>
       _wrapped.values?.toDart.cast<JSString>().map((e) => e.toDart).toList();
 
@@ -800,8 +855,9 @@ class HeaderInfo {
     _wrapped.values = v?.toJSArray((e) => e.toJS);
   }
 
-  /// If specified, the rule is not matched if the header exists but its value
-  /// contains at least one element in this list.
+  /// If specified, this condition is not matched if the header exists but its
+  /// value contains at least one element in this list. This uses the same
+  /// match pattern syntax as `values`.
   List<String>? get excludedValues => _wrapped.excludedValues?.toDart
       .cast<JSString>()
       .map((e) => e.toDart)
@@ -824,13 +880,13 @@ class RuleCondition {
     /// **'|'**  : Left/right anchor: If used at either end of the pattern,
     ///               specifies the beginning/end of the url respectively.
     ///
-    /// **'||'** : Domain name anchor: If used at the beginning of the pattern,
-    ///               specifies the start of a (sub-)domain of the URL.
+    /// **'||'** : Domain name anchor: If used at the beginning of the
+    ///               pattern, specifies the start of a (sub-)domain of the URL.
     ///
-    /// **'^'**  : Separator character: This matches anything except a letter, a
-    ///               digit or one of the following: _ - . %. This can also
-    /// match
-    ///               the end of the URL.
+    /// **'^'**  : Separator character: This matches anything except a letter,
+    ///               a digit, or one of the following: `_`,
+    ///               `-`, `.`, or `%`. This
+    ///               also match the end of the URL.
     ///
     /// Therefore `urlFilter` is composed of the following parts:
     /// (optional Left/Domain name anchor) + pattern + (optional Right anchor).
@@ -932,6 +988,41 @@ class RuleCondition {
     /// </ul>
     List<String>? excludedRequestDomains,
 
+    /// The rule will only match network requests when the associated top-level
+    /// frame's domain matches one from the list of `topDomains`. If
+    /// the list is omitted, the rule is applied to requests associated with all
+    /// top-level frame domains. An empty list is not allowed.
+    ///
+    /// Notes:
+    /// <ul>
+    ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+    ///  <li>The entries must consist of only ascii characters.</li>
+    ///  <li>Use punycode encoding for internationalized domains.</li>
+    ///  <li>Sub-domains of the listed domains are also matched.</li>
+    ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+    ///      initiated requests, the request initiator's domain is considered
+    ///      instead.</li>
+    /// </ul>
+    List<String>? topDomains,
+
+    /// The rule will not match network requests when the associated top-level
+    /// frame's domain matches one from the list of
+    /// `excludedTopDomains`. If the list is empty or omitted, no
+    /// domains are excluded. This takes precedence over
+    /// `topDomains`.
+    ///
+    /// Notes:
+    /// <ul>
+    ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+    ///  <li>The entries must consist of only ascii characters.</li>
+    ///  <li>Use punycode encoding for internationalized domains.</li>
+    ///  <li>Sub-domains of the listed domains are also excluded.</li>
+    ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+    ///      initiated requests, the request initiator's domain is considered
+    ///      instead.</li>
+    /// </ul>
+    List<String>? excludedTopDomains,
+
     /// The rule will only match network requests originating from the list of
     /// `domains`.
     List<String>? domains,
@@ -985,14 +1076,16 @@ class RuleCondition {
     /// tab. Only supported for session-scoped rules.
     List<int>? excludedTabIds,
 
-    /// Rule matches if the request matches any response header in this list (if
-    /// specified).
-    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+    /// Rule matches if the request matches any response header condition in
+    /// this
+    /// list (if specified).
     List<HeaderInfo>? responseHeaders,
 
-    /// Rule does not match if the request has any of the specified headers.
-    /// TODO(crbug,com/1141166): Add documentation once feature is complete.
-    List<String>? excludedResponseHeaders,
+    /// Rule does not match if the request matches any response header
+    /// condition in this list (if specified). If both `excludedResponseHeaders`
+    /// and `responseHeaders` are specified, then the `excludedResponseHeaders`
+    /// property takes precedence.
+    List<HeaderInfo>? excludedResponseHeaders,
   }) : _wrapped = $js.RuleCondition(
           urlFilter: urlFilter,
           regexFilter: regexFilter,
@@ -1003,6 +1096,8 @@ class RuleCondition {
           requestDomains: requestDomains?.toJSArray((e) => e.toJS),
           excludedRequestDomains:
               excludedRequestDomains?.toJSArray((e) => e.toJS),
+          topDomains: topDomains?.toJSArray((e) => e.toJS),
+          excludedTopDomains: excludedTopDomains?.toJSArray((e) => e.toJS),
           domains: domains?.toJSArray((e) => e.toJS),
           excludedDomains: excludedDomains?.toJSArray((e) => e.toJS),
           resourceTypes: resourceTypes?.toJSArray((e) => e.toJS),
@@ -1031,12 +1126,13 @@ class RuleCondition {
   /// **'|'**  : Left/right anchor: If used at either end of the pattern,
   ///               specifies the beginning/end of the url respectively.
   ///
-  /// **'||'** : Domain name anchor: If used at the beginning of the pattern,
-  ///               specifies the start of a (sub-)domain of the URL.
+  /// **'||'** : Domain name anchor: If used at the beginning of the
+  ///               pattern, specifies the start of a (sub-)domain of the URL.
   ///
-  /// **'^'**  : Separator character: This matches anything except a letter, a
-  ///               digit or one of the following: _ - . %. This can also match
-  ///               the end of the URL.
+  /// **'^'**  : Separator character: This matches anything except a letter,
+  ///               a digit, or one of the following: `_`,
+  ///               `-`, `.`, or `%`. This
+  ///               also match the end of the URL.
   ///
   /// Therefore `urlFilter` is composed of the following parts:
   /// (optional Left/Domain name anchor) + pattern + (optional Right anchor).
@@ -1178,6 +1274,55 @@ class RuleCondition {
     _wrapped.excludedRequestDomains = v?.toJSArray((e) => e.toJS);
   }
 
+  /// The rule will only match network requests when the associated top-level
+  /// frame's domain matches one from the list of `topDomains`. If
+  /// the list is omitted, the rule is applied to requests associated with all
+  /// top-level frame domains. An empty list is not allowed.
+  ///
+  /// Notes:
+  /// <ul>
+  ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+  ///  <li>The entries must consist of only ascii characters.</li>
+  ///  <li>Use punycode encoding for internationalized domains.</li>
+  ///  <li>Sub-domains of the listed domains are also matched.</li>
+  ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+  ///      initiated requests, the request initiator's domain is considered
+  ///      instead.</li>
+  /// </ul>
+  List<String>? get topDomains => _wrapped.topDomains?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
+
+  set topDomains(List<String>? v) {
+    _wrapped.topDomains = v?.toJSArray((e) => e.toJS);
+  }
+
+  /// The rule will not match network requests when the associated top-level
+  /// frame's domain matches one from the list of
+  /// `excludedTopDomains`. If the list is empty or omitted, no
+  /// domains are excluded. This takes precedence over
+  /// `topDomains`.
+  ///
+  /// Notes:
+  /// <ul>
+  ///  <li>Sub-domains like "a.example.com" are also allowed.</li>
+  ///  <li>The entries must consist of only ascii characters.</li>
+  ///  <li>Use punycode encoding for internationalized domains.</li>
+  ///  <li>Sub-domains of the listed domains are also excluded.</li>
+  ///  <li>For requests with no associated top-level frame (e.g. ServiceWorker
+  ///      initiated requests, the request initiator's domain is considered
+  ///      instead.</li>
+  /// </ul>
+  List<String>? get excludedTopDomains => _wrapped.excludedTopDomains?.toDart
+      .cast<JSString>()
+      .map((e) => e.toDart)
+      .toList();
+
+  set excludedTopDomains(List<String>? v) {
+    _wrapped.excludedTopDomains = v?.toJSArray((e) => e.toJS);
+  }
+
   /// The rule will only match network requests originating from the list of
   /// `domains`.
   List<String>? get domains =>
@@ -1288,9 +1433,8 @@ class RuleCondition {
     _wrapped.excludedTabIds = v?.toJSArray((e) => e.toJS);
   }
 
-  /// Rule matches if the request matches any response header in this list (if
-  /// specified).
-  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
+  /// Rule matches if the request matches any response header condition in this
+  /// list (if specified).
   List<HeaderInfo>? get responseHeaders => _wrapped.responseHeaders?.toDart
       .cast<$js.HeaderInfo>()
       .map((e) => HeaderInfo.fromJS(e))
@@ -1300,16 +1444,45 @@ class RuleCondition {
     _wrapped.responseHeaders = v?.toJSArray((e) => e.toJS);
   }
 
-  /// Rule does not match if the request has any of the specified headers.
-  /// TODO(crbug,com/1141166): Add documentation once feature is complete.
-  List<String>? get excludedResponseHeaders =>
+  /// Rule does not match if the request matches any response header
+  /// condition in this list (if specified). If both `excludedResponseHeaders`
+  /// and `responseHeaders` are specified, then the `excludedResponseHeaders`
+  /// property takes precedence.
+  List<HeaderInfo>? get excludedResponseHeaders =>
       _wrapped.excludedResponseHeaders?.toDart
-          .cast<JSString>()
-          .map((e) => e.toDart)
+          .cast<$js.HeaderInfo>()
+          .map((e) => HeaderInfo.fromJS(e))
           .toList();
 
-  set excludedResponseHeaders(List<String>? v) {
+  set excludedResponseHeaders(List<HeaderInfo>? v) {
     _wrapped.excludedResponseHeaders = v?.toJSArray((e) => e.toJS);
+  }
+}
+
+class HeaderRegexOptions {
+  HeaderRegexOptions.fromJS(this._wrapped);
+
+  HeaderRegexOptions(
+      {
+      /// Whether the regex should match all groups for the value. This is only
+      /// relevant if a regex substitution is present and would thus need to be
+      /// applied onto all matching groups. Equivalent to the "g" flag.
+      /// Defaults to false.
+      bool? matchAll})
+      : _wrapped = $js.HeaderRegexOptions(matchAll: matchAll);
+
+  final $js.HeaderRegexOptions _wrapped;
+
+  $js.HeaderRegexOptions get toJS => _wrapped;
+
+  /// Whether the regex should match all groups for the value. This is only
+  /// relevant if a regex substitution is present and would thus need to be
+  /// applied onto all matching groups. Equivalent to the "g" flag.
+  /// Defaults to false.
+  bool? get matchAll => _wrapped.matchAll;
+
+  set matchAll(bool? v) {
+    _wrapped.matchAll = v;
   }
 }
 
@@ -1321,15 +1494,35 @@ class ModifyHeaderInfo {
     required String header,
 
     /// The operation to be performed on a header.
+    /// <!-- TODO(crbug.com/352093575): Make this field optional: It is ignored
+    /// if `regexSubstitution` is specified but is required otherwise. -->
     required HeaderOperation operation,
 
     /// The new value for the header. Must be specified for `append`
     /// and `set` operations.
+    /// <!-- TODO(crbug.com/352093575): Ignored if `regexSubstitution` is
+    /// specified, -->
     String? value,
+
+    /// A regular expression to match against the header value. This follows the
+    /// RE2 syntax for consistency with the rest of the API.
+    String? regexFilter,
+
+    /// Substitution pattern for the response header. `regexFilter` must be
+    /// specified for this to be valid. Takes precedence over `value` and
+    /// `operation` if specified and valid.
+    String? regexSubstitution,
+
+    /// Options for the regex filter. If not specified, all options will be
+    /// default.
+    HeaderRegexOptions? regexOptions,
   }) : _wrapped = $js.ModifyHeaderInfo(
           header: header,
           operation: operation.toJS,
           value: value,
+          regexFilter: regexFilter,
+          regexSubstitution: regexSubstitution,
+          regexOptions: regexOptions?.toJS,
         );
 
   final $js.ModifyHeaderInfo _wrapped;
@@ -1344,6 +1537,8 @@ class ModifyHeaderInfo {
   }
 
   /// The operation to be performed on a header.
+  /// <!-- TODO(crbug.com/352093575): Make this field optional: It is ignored
+  /// if `regexSubstitution` is specified but is required otherwise. -->
   HeaderOperation get operation => HeaderOperation.fromJS(_wrapped.operation);
 
   set operation(HeaderOperation v) {
@@ -1352,10 +1547,38 @@ class ModifyHeaderInfo {
 
   /// The new value for the header. Must be specified for `append`
   /// and `set` operations.
+  /// <!-- TODO(crbug.com/352093575): Ignored if `regexSubstitution` is
+  /// specified, -->
   String? get value => _wrapped.value;
 
   set value(String? v) {
     _wrapped.value = v;
+  }
+
+  /// A regular expression to match against the header value. This follows the
+  /// RE2 syntax for consistency with the rest of the API.
+  String? get regexFilter => _wrapped.regexFilter;
+
+  set regexFilter(String? v) {
+    _wrapped.regexFilter = v;
+  }
+
+  /// Substitution pattern for the response header. `regexFilter` must be
+  /// specified for this to be valid. Takes precedence over `value` and
+  /// `operation` if specified and valid.
+  String? get regexSubstitution => _wrapped.regexSubstitution;
+
+  set regexSubstitution(String? v) {
+    _wrapped.regexSubstitution = v;
+  }
+
+  /// Options for the regex filter. If not specified, all options will be
+  /// default.
+  HeaderRegexOptions? get regexOptions =>
+      _wrapped.regexOptions?.let(HeaderRegexOptions.fromJS);
+
+  set regexOptions(HeaderRegexOptions? v) {
+    _wrapped.regexOptions = v?.toJS;
   }
 }
 
@@ -1839,12 +2062,26 @@ class TestMatchRequestDetails {
     /// not need to correspond to a real tab ID. Default is -1, meaning that
     /// the request isn't related to a tab.
     int? tabId,
+
+    /// The associated top-level frame URL (if any) for the request.
+    String? topUrl,
+
+    /// The headers provided by a hypothetical response if the request does not
+    /// get blocked or redirected before it is sent. Represented as an object
+    /// which maps a header name to a list of string values. If not specified,
+    /// the hypothetical response would return empty response headers, which can
+    /// match rules which match on the non-existence of headers.
+    /// E.g. `{"content-type": ["text/html; charset=utf-8",
+    /// "multipart/form-data"]}`
+    Map? responseHeaders,
   }) : _wrapped = $js.TestMatchRequestDetails(
           url: url,
           initiator: initiator,
           method: method?.toJS,
           type: type.toJS,
           tabId: tabId,
+          topUrl: topUrl,
+          responseHeaders: responseHeaders?.jsify(),
         );
 
   final $js.TestMatchRequestDetails _wrapped;
@@ -1887,6 +2124,26 @@ class TestMatchRequestDetails {
 
   set tabId(int? v) {
     _wrapped.tabId = v;
+  }
+
+  /// The associated top-level frame URL (if any) for the request.
+  String? get topUrl => _wrapped.topUrl;
+
+  set topUrl(String? v) {
+    _wrapped.topUrl = v;
+  }
+
+  /// The headers provided by a hypothetical response if the request does not
+  /// get blocked or redirected before it is sent. Represented as an object
+  /// which maps a header name to a list of string values. If not specified,
+  /// the hypothetical response would return empty response headers, which can
+  /// match rules which match on the non-existence of headers.
+  /// E.g. `{"content-type": ["text/html; charset=utf-8",
+  /// "multipart/form-data"]}`
+  Map? get responseHeaders => _wrapped.responseHeaders?.toDartMap();
+
+  set responseHeaders(Map? v) {
+    _wrapped.responseHeaders = v?.jsify();
   }
 }
 
@@ -1939,25 +2196,6 @@ class DNRInfo {
 
   set ruleResources(List<Ruleset> v) {
     _wrapped.rule_resources = v.toJSArray((e) => e.toJS);
-  }
-}
-
-class ManifestKeys {
-  ManifestKeys.fromJS(this._wrapped);
-
-  ManifestKeys({required DNRInfo declarativeNetRequest})
-      : _wrapped = $js.ManifestKeys(
-            declarative_net_request: declarativeNetRequest.toJS);
-
-  final $js.ManifestKeys _wrapped;
-
-  $js.ManifestKeys get toJS => _wrapped;
-
-  DNRInfo get declarativeNetRequest =>
-      DNRInfo.fromJS(_wrapped.declarative_net_request);
-
-  set declarativeNetRequest(DNRInfo v) {
-    _wrapped.declarative_net_request = v.toJS;
   }
 }
 

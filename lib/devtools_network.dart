@@ -26,14 +26,9 @@ class ChromeDevtoolsNetwork {
   /// Returns HAR log that contains all known network requests.
   /// [returns] A function that receives the HAR log when the request
   /// completes.
-  Future<Map> getHAR() {
-    var $completer = Completer<Map>();
-    $js.chrome.devtools.network.getHAR((JSAny harLog) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(harLog.toDartMap());
-      }
-    }.toJS);
-    return $completer.future;
+  Future<Map> getHAR() async {
+    var $res = await $js.chrome.devtools.network.getHAR().toDart;
+    return $res.toDartMap();
   }
 
   /// Fired when a network request is finished and all request data are
@@ -63,33 +58,43 @@ class Request {
   /// Returns content of the response body.
   /// [returns] A function that receives the response body when the request
   /// completes.
-  Future<GetContentResult> getContent() {
-    var $completer = Completer<GetContentResult>();
-    _wrapped.getContent((
-      String content,
-      String encoding,
-    ) {
-      if (checkRuntimeLastError($completer)) {
-        $completer.complete(GetContentResult(
-          content: content,
-          encoding: encoding,
-        ));
-      }
-    }.toJS);
-    return $completer.future;
+  Future<GetContentCallbackResponse> getContent() async {
+    var $res = await _wrapped.getContent().toDart;
+    return GetContentCallbackResponse.fromJS($res);
   }
 }
 
-class GetContentResult {
-  GetContentResult({
-    required this.content,
-    required this.encoding,
-  });
+class GetContentCallbackResponse {
+  GetContentCallbackResponse.fromJS(this._wrapped);
+
+  GetContentCallbackResponse({
+    /// Content of the response body (potentially encoded).
+    required String content,
+
+    /// Empty if content is not encoded, encoding name otherwise. Currently,
+    /// only base64 is supported.
+    required String encoding,
+  }) : _wrapped = $js.GetContentCallbackResponse(
+          content: content,
+          encoding: encoding,
+        );
+
+  final $js.GetContentCallbackResponse _wrapped;
+
+  $js.GetContentCallbackResponse get toJS => _wrapped;
 
   /// Content of the response body (potentially encoded).
-  final String content;
+  String get content => _wrapped.content;
+
+  set content(String v) {
+    _wrapped.content = v;
+  }
 
   /// Empty if content is not encoded, encoding name otherwise. Currently, only
   /// base64 is supported.
-  final String encoding;
+  String get encoding => _wrapped.encoding;
+
+  set encoding(String v) {
+    _wrapped.encoding = v;
+  }
 }

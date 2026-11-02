@@ -22,12 +22,6 @@
                 "description": "Whether to request permission to the whole ChromeOS desktop. If granted, this gives the extension access to every aspect of the desktop, and every site and app. If this permission is requested, all other permissions are implicitly included and do not need to be requested separately.",
                 "optional": true,
                 "type": "boolean"
-              },
-              "matches": {
-                "description": "A list of URL patterns for which this extension may request an automation tree. If not specified, automation permission will be granted for the sites for which the extension has a <a href='https://developer.chrome.com/extensions/declare_permissions#host-permissions'>host permission</a> or <a href='https://developer.chrome.com/extensions/declare_permissions#activeTab'>activeTab permission</a>).",
-                "optional": true,
-                "type": "array",
-                "items": { "type": "string" }
               }
             }
           }
@@ -64,7 +58,7 @@
             "items": {"type": "string"}
           },
           "matches": {
-            "description": "<p>The URL patterns for <em>web pages</em> that are allowed to connect. <em>This does not affect content scripts.</em> If left empty or unspecified, no web pages can connect.</p><p>Patterns cannot include wildcard domains nor subdomains of <a href=\"http://publicsuffix.org/list/\">(effective) top level domains</a>; <code>*://google.com/*</code> and <code>http://*.chromium.org/*</code> are valid, while <code><all_urls></code>, <code>http://*/*</code>, <code>*://*.com/*</code>, and even <code>http://*.appspot.com/*</code> are not.</p>",
+            "description": "<p>The URL patterns for <em>web pages</em> that are allowed to connect. <em>This does not affect content scripts.</em> If left empty or unspecified, no web pages can connect.</p><p>Patterns cannot include wildcard domains nor subdomains of <a href=\"http://publicsuffix.org/list/\">(effective) top level domains</a>; <code>*://google.com/*</code> and <code>http://*.chromium.org/*</code> are valid, while <code>&lt;all_urls&gt;</code>, <code>http://*/*</code>, <code>*://*.com/*</code>, and even <code>http://*.appspot.com/*</code> are not.</p>",
             "optional": true,
             "type": "array",
             "items": {"type": "string"}

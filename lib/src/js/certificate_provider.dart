@@ -30,16 +30,17 @@ extension type JSCertificateProvider._(JSObject _) {
   /// It's the extension's responsibility to try again later if another flow is
   /// in progress.
   /// |details|: Contains the details about the requested dialog.
-  /// |callback|: Is called when the dialog is resolved with the user input, or
-  /// when the dialog request finishes unsuccessfully (e.g. the dialog was
-  /// canceled by the user or was not allowed to be shown).
+  /// |Returns|: Returns a Promise which resolves when the PIN is provided by
+  /// the user. Rejects with an error if the dialog request finishes
+  /// unsuccessfully (e.g. the dialog was canceled by the user or was not
+  /// allowed to be shown).
   external JSPromise<PinResponseDetails?> requestPin(RequestPinDetails details);
 
   /// Stops the pin request started by the [requestPin] function.
   /// |details|: Contains the details about the reason for stopping the
   /// request flow.
-  /// |callback|: To be used by Chrome to send to the extension the status from
-  /// their request to close PIN dialog for user.
+  /// |Returns|: Returns a Promise which resolves when the request to close
+  ///   the PIN dialog is complete.
   external JSPromise stopPinRequest(StopPinRequestDetails details);
 
   /// Sets a list of certificates to use in the browser.
@@ -49,7 +50,7 @@ extension type JSCertificateProvider._(JSObject _) {
   /// [onCertificatesUpdateRequested] every time this event is
   /// received.
   /// |details|: The certificates to set. Invalid certificates will be ignored.
-  /// |callback|: Called upon completion.
+  /// |Returns|: Returns a Promise which resolves upon completion.
   external JSPromise setCertificates(SetCertificatesDetails details);
 
   /// Should be called as a response to [onSignatureRequested].
@@ -85,7 +86,6 @@ extension type JSCertificateProvider._(JSObject _) {
   /// appropriate algorithm and private key and return it by calling
   /// `reportCallback`. `reportCallback` must be called
   /// exactly once.
-  /// |request|: Contains the details about the sign request.
   external Event get onSignDigestRequested;
 }
 

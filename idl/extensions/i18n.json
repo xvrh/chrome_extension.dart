@@ -51,7 +51,7 @@
               "escapeLt": {
                 "type": "boolean",
                 "optional": true,
-                "description": "Escape <code><</code> in translation to <code>&amp;lt;</code>. This applies only to the message itself, not to the placeholders. Developers might want to use this if the translation is used in an HTML context. Closure Templates used with Closure Compiler generate this automatically."
+                "description": "Escape <code>&lt;</code> in translation to <code>&amp;lt;</code>. This applies only to the message itself, not to the placeholders. Developers might want to use this if the translation is used in an HTML context. Closure Templates used with Closure Compiler generate this automatically."
               }
             }
           }
