@@ -9,6 +9,11 @@
   `pageCapture.saveAsMHTML` resolves with a `Blob`,
   `devtools.inspectedWindow.eval` resolves with a single response object and
   `privacy.relatedWebsiteSetsEnabled` was removed.
+- `downloads.open`, `devtools.panels.openResource` and the DevTools sidebar
+  `setExpression` and `setObject` return a `Future`.
+- Some functions that used a callback now use Chrome's promise (for example
+  `contextMenus.update` and `contextMenus.remove`). When they fail, they throw
+  Chrome's JS error instead of a Dart `Exception`.
 - Annotate deprecated functions and events with `@Deprecated`.
 - Fix the value of `usb.Recipient.interface`.
 
